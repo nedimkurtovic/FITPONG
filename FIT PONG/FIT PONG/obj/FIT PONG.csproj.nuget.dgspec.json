@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\talicni\\Desktop\\Git_ReposFIT\\Neko_ime\\ozbiljnaprica\\FIT PONG\\FIT PONG\\FIT PONG.csproj": {}
+    "C:\\Users\\NedimKurtović\\Documents\\MOJ FAKULTET FIT\\5 SEMESTAR\\RS_1\\seminarskirad\\webappRepo\\webapp\\FIT PONG\\FIT PONG\\FIT PONG.csproj": {}
   },
   "projects": {
-    "C:\\Users\\talicni\\Desktop\\Git_ReposFIT\\Neko_ime\\ozbiljnaprica\\FIT PONG\\FIT PONG\\FIT PONG.csproj": {
+    "C:\\Users\\NedimKurtović\\Documents\\MOJ FAKULTET FIT\\5 SEMESTAR\\RS_1\\seminarskirad\\webappRepo\\webapp\\FIT PONG\\FIT PONG\\FIT PONG.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\talicni\\Desktop\\Git_ReposFIT\\Neko_ime\\ozbiljnaprica\\FIT PONG\\FIT PONG\\FIT PONG.csproj",
+        "projectUniqueName": "C:\\Users\\NedimKurtović\\Documents\\MOJ FAKULTET FIT\\5 SEMESTAR\\RS_1\\seminarskirad\\webappRepo\\webapp\\FIT PONG\\FIT PONG\\FIT PONG.csproj",
         "projectName": "FIT PONG",
-        "projectPath": "C:\\Users\\talicni\\Desktop\\Git_ReposFIT\\Neko_ime\\ozbiljnaprica\\FIT PONG\\FIT PONG\\FIT PONG.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\talicni\\Desktop\\Git_ReposFIT\\Neko_ime\\ozbiljnaprica\\FIT PONG\\FIT PONG\\obj\\",
+        "projectPath": "C:\\Users\\NedimKurtović\\Documents\\MOJ FAKULTET FIT\\5 SEMESTAR\\RS_1\\seminarskirad\\webappRepo\\webapp\\FIT PONG\\FIT PONG\\FIT PONG.csproj",
+        "packagesPath": "C:\\Users\\NedimKurtović\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\NedimKurtović\\Documents\\MOJ FAKULTET FIT\\5 SEMESTAR\\RS_1\\seminarskirad\\webappRepo\\webapp\\FIT PONG\\FIT PONG\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\NedimKurtović\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

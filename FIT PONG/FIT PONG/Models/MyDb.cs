@@ -45,10 +45,10 @@ namespace FIT_PONG.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string serverTala = "(local)\\MSSQLSERVER_OLAP";
-            //string serverNetza;
+            //string serverTala = "(local)\\MSSQLSERVER_OLAP";
+            string serverNetza = ".";
 
-            optionsBuilder.UseSqlServer(@" Server=" + serverTala + ";" +
+            optionsBuilder.UseSqlServer(@" Server=" + serverNetza + ";" +
                                           "Database=FIT_PONG_TESTNA;" +
                                           "Trusted_Connection=True;" +
                                           "MultipleActiveResultSets=True;");    
