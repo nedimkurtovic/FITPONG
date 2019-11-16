@@ -70,7 +70,7 @@ Thumbs.db
 #NuGet.exe
 _[Ss]cripts
 *.exe
-*.dll
+#*.dll
 #*.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
