@@ -1,0 +1,133 @@
+﻿@using FIT_PONG.Models;
+@using FIT_PONG.ViewModels;
+@{
+    ViewData["Title"] = "Edit";
+    var Takmicenje = (Takmicenje) ViewData["TakmicenjeKey"];
+    var kategorije = (List<ComboBoxVM>)ViewData["KategorijeKey"];
+    var sistemi = (List<ComboBoxVM>)ViewData["SistemiKey"];
+    var vrste = (List<ComboBoxVM>)ViewData["VrsteKey"];
+    var statusi = (List<ComboBoxVM>)ViewData["StatusiKey"];
+}
+@*(string _naziv,DateTime _pocetakprijava,DateTime _krajprijava,
+            int _minimalniELO,int _kategorijaID,int _sistemID,int _vrstaID,int _statusID, DateTime?
+    _pocetaktakmicenja = null)*@
+<h1>Edit</h1>
+<form action="/Takmicenje/Edit?id=@Takmicenje.ID" method="post">
+    <table>
+        <tr>
+            <td> <label for="_naziv">Naziv</label> </td>
+            <td>@Html.TextBox("_naziv", Takmicenje)</td>
+            <td>@Html.ValidationMessage("_naziv", "*")</td>
+        </tr>
+        <tr>
+            <td>Pocetak prijava</td>
+            <td><input type="date" name="_pocetakprijava" /></td>
+            <td>@Html.ValidationMessage("_pocetakprijava", "*")</td>
+        </tr>
+        <tr>
+            <td>Kraj prijava</td>
+            <td><input type="date" name="_krajprijava" value="" /></td>
+            <td>@Html.ValidationMessage("_krajprijava", "*")</td>
+
+        </tr>
+        <tr>
+            <td>Minimalni ELO</td>
+            <td><input type="text" name="_minimalniELO" value="" /></td>
+            <td>@Html.ValidationMessage("_minimalniELO", "*")</td>
+
+        </tr>
+        <tr>
+            <td>Kategorija</td>
+            <td>
+                <select name="_kategorijaID">
+                    <option>Odaberite kategoriju</option>
+                    @foreach (var x in kategorije)
+                    {
+                        if (x.ID == Takmicenje.KategorijaID)
+                        {
+                            <option value="@x.ID" selected>@x.Opis</option>
+                        }
+                        else
+                        {
+                            <option value="@x.ID">@x.Opis</option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Sistem</td>
+            <td>
+                <select name="_sistemID">
+                    <option>Odaberite sistem</option>
+                    @foreach (var x in sistemi)
+                    {
+                        if (x.ID == Takmicenje.SistemID)
+                        {
+                            <option value="@x.ID" selected>@x.Opis</option>
+                        }
+                        else
+                        {
+                            <option value="@x.ID">@x.Opis</option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Vrsta</td>
+            <td>
+                <select name="_vrstaID">
+                    <option>Odaberite vrstu</option>
+                    @foreach (var x in vrste)
+                    {
+                        if (x.ID == Takmicenje.VrstaID)
+                        {
+                            <option value="@x.ID" selected>@x.Opis</option>
+                        }
+                        else
+                        {
+                            <option value="@x.ID">@x.Opis</option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>
+                <select name="_statusID">
+                    <option>Odaberite status</option>
+                    @foreach (var x in statusi)
+                    {
+                        if (x.ID == Takmicenje.StatusID)
+                        {
+                            <option value="@x.ID" selected>@x.Opis</option>
+                        }
+                        else
+                        {
+                            <option value="@x.ID">@x.Opis</option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Datum pocetka</td>
+            <td><input type="date" name="_pocetaktakmicenja" value="@Takmicenje.DatumPocetka.GetValueOrDefault()" /></td>
+        </tr>
+        <tr>
+            <td>Datum pocetka</td>
+            <td><input type="date" name="_zavrsetakTakmicenja" value="@Takmicenje.DatumZavrsetka.GetValueOrDefault()" /></td>
+        </tr>
+        <tr>
+            <td>Broj rundi</td>
+            <td><input type="text" disabled value="@Takmicenje.BrojRundi"/></td>
+            <td>@Html.ValidationMessage("_brojrundi", "*")</td>
+
+        </tr>
+
+    </table>
+    <input type="submit" value="Spasi" />
+</form>
+
