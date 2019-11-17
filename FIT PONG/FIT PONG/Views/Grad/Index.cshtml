@@ -4,6 +4,15 @@
     var gradovi = (List<Grad>)(ViewData["gradoviKey"]);
 }
 
+@if (gradovi.Count <= 0)
+{
+    <h1>Trenutno nema dodanih gradova</h1>
+    <a href="/Grad/Dodaj" class="btn btn-outline-primary">Dodaj novi</a>
+}
+
+else
+{
+
 <h1>Lista gradova</h1>
 <table class="table table-info">
     <thead>
@@ -29,4 +38,5 @@
         }
     </tbody>
 </table>
-
+<a href="/Grad/Dodaj" class="btn btn-success">Dodaj novi</a>
+}

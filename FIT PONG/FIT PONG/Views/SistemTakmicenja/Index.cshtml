@@ -1,7 +1,42 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Prikazi";
+    var sistemi = (List<Sistem_Takmicenja>)(ViewData["sistemiKey"]);
 }
 
-<h1>Index</h1>
+@if (sistemi.Count <= 0)
+{
+    <h1>Trenutno nema dodanih sistema takmičenja</h1>
+    <a href="/SistemTakmicenja/Dodaj" class="btn btn-outline-primary">Dodaj novi</a>
+}
 
+else
+{
+
+    <h1>Sistemi takmičenja</h1>
+    <table class="table table-info">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Opis</th>
+                <th>Delete</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (sistemi != null)
+            {
+                @foreach (var item in sistemi)
+                {
+                    <tr>
+                        <td>@item.ID</td>
+                        <td>@item.Opis</td>
+                        <td><a href="/SistemTakmicenja/Obrisi?id=@item.ID" class="btn btn-danger">Obriši</a></td>
+                        <td><a asp-controller="SistemTakmicenja" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-info">Edituj</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <a href="/SistemTakmicenja/Dodaj" class="btn btn-success">Dodaj novi</a>
+}

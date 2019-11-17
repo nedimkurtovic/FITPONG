@@ -11,6 +11,11 @@ namespace FIT_PONG.Controllers
     {
         public IActionResult Index()
         {
+            MyDb db = new MyDb();
+
+            List<Grad> gradovi = db.Gradovi.ToList();
+            ViewData["gradoviKey"] = gradovi;
+            db.Dispose();
             return View();
         }
 
@@ -23,7 +28,7 @@ namespace FIT_PONG.Controllers
                 db.Gradovi.Add(grad);
                 db.SaveChanges();
                 db.Dispose();
-                return Redirect("/");
+                return Redirect("/Grad");
             }
             return View();
         }
@@ -34,15 +39,6 @@ namespace FIT_PONG.Controllers
             return View();
         }
 
-        public ActionResult Prikazi()
-        {
-            MyDb db = new MyDb();
-
-            List<Grad> gradovi = db.Gradovi.ToList();
-            ViewData["gradoviKey"] = gradovi;
-            db.Dispose();
-            return View();
-        }
 
         public ActionResult Obrisi(int gradID)
         {
@@ -55,7 +51,7 @@ namespace FIT_PONG.Controllers
             }
             db.Dispose();
             
-            return Redirect("/Grad/Prikazi");
+            return Redirect("/Grad");
         }
 
         [HttpGet]
@@ -65,7 +61,7 @@ namespace FIT_PONG.Controllers
             Grad grad = db.Gradovi.Find(gradID);
             if (grad == null)
             {
-                return Redirect("/Grad/Prikazi");
+                return Redirect("/Grad");
             }
             db.Dispose();
             return View(grad);
@@ -80,7 +76,7 @@ namespace FIT_PONG.Controllers
             {
                 g.Naziv = grad.Naziv;
                 db.SaveChanges();
-                return Redirect("/Grad/Prikazi");
+                return Redirect("/Grad");
             }
             
             db.Dispose();

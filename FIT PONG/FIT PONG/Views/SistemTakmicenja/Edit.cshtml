@@ -1,16 +1,16 @@
-﻿@model FIT_PONG.Models.Grad 
+﻿@model FIT_PONG.Models.Sistem_Takmicenja
 @{
     ViewData["Title"] = "DodajForma";
 }
 
-<h1>Edituj grad</h1>
+<h1>Edituj sistem takmičenja</h1>
 <form action="Edit" method="post">
     <table>
         <tr><td><input asp-for="ID" type="hidden" /></td></tr>
         <tr>
-            <td>Naziv grada</td>
-            <td><input asp-for="Naziv" class="input-group" autofocus/></td>
-            <td><span asp-validation-for="Naziv" class="text-danger"></span></td>
+            <td><label asp-for="Opis"></label></td>
+            <td><input asp-for="Opis" class="input-group" autofocus /></td>
+            <td><span asp-validation-for="Opis" class="text-danger"></span></td>
         </tr>
         <tr>
             <td><input type="submit" value="Edituj" class="btn btn-danger" /></td>

@@ -1,0 +1,20 @@
+﻿@model Sistem_Takmicenja
+@{
+    ViewData["Title"] = "DodajForma";
+}
+
+<h1>Dodaj novi sistem takmičenja</h1>
+<form action="/SistemTakmicenja/Dodaj" method="post" class="form-group">
+    <table>
+        <tr>
+            <td><label asp-for="Opis"></label></td>
+            <td><input asp-for="Opis" class="input-group" autofocus /></td>
+            <td><span asp-validation-for="Opis" class="text-danger"></span></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Dodaj" class="btn btn-success" /></td>
+        </tr>
+    </table>
+</form>
+
+
