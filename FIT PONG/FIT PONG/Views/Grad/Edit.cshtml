@@ -1,0 +1,20 @@
+﻿@model FIT_PONG.Models.Grad 
+@{
+    ViewData["Title"] = "DodajForma";
+}
+
+<h1>Edituj grad</h1>
+<form action="Edit" method="post">
+    <table>
+        <tr><td><input asp-for="ID" type="hidden" /></td></tr>
+        <tr>
+            <td>Naziv grada</td>
+            <td><input asp-for="Naziv" class="input-group" /></td>
+            <td><span asp-validation-for="Naziv" class="text-danger"></span></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Edituj" class="btn btn-danger" /></td>
+        </tr>
+    </table>
+</form>
+

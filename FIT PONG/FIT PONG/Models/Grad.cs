@@ -10,14 +10,14 @@ namespace FIT_PONG.Models
     {
         public int ID { get; set; }
         
-        [Required]
-        [RegularExpression(@"[a-zA-Z  -]*", ErrorMessage = "Polje smije sadržavati samo slova.")]
+        [Required(ErrorMessage ="Ovo polje je obavezno.")]
+        [RegularExpression(@"[a-zA-Z- ]*", ErrorMessage = "Polje smije sadržavati samo slova.")]
         [StringLength(40)]
         public string Naziv { get; set; }
 
         public Grad()
-        { 
-            Naziv = "NOT SET"; 
+        {
+            Naziv = "NOT SET";
         }
 
         public Grad(string naziv)

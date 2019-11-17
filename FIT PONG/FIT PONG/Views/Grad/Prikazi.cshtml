@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Prikazi";
+    var gradovi = (List<Grad>)(ViewData["gradoviKey"]);
+}
+
+<h1>Lista gradova</h1>
+<table class="table table-info">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Naziv</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (gradovi != null)
+        {
+            @foreach (var item in gradovi)
+            {
+                <tr>
+                    <td>@item.ID</td>
+                    <td>@item.Naziv</td>
+                    <td><a href="/Grad/Obrisi?gradID=@item.ID" class="btn btn-danger">Obriši</a></td>
+                    <td><a asp-controller="Grad" asp-action="Edit" asp-route-gradID="@item.ID" class="btn btn-info">Edituj</a></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+

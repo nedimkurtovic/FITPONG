@@ -1,0 +1,20 @@
+﻿@model Grad
+@{
+    ViewData["Title"] = "DodajForma";
+}
+
+<h1>Dodaj novi grad</h1>
+<form action="/Grad/Dodaj" method="post">
+    <table>
+        <tr>
+            <td>Naziv grada</td>
+            <td><input asp-for="Naziv" class="input-group" /></td>
+            <td><span asp-validation-for="Naziv" class="text-danger"></span></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="DODAJ" class="btn btn-success"/></td>
+        </tr>
+    </table>
+</form>
+
+
