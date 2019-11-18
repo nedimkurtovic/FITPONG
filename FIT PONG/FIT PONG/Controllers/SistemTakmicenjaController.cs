@@ -22,6 +22,9 @@ namespace FIT_PONG.Controllers
         [HttpPost]
         public ActionResult Dodaj(Sistem_Takmicenja st)
         {
+            if (DaLiPostoji(st.Opis))
+                return View("Greska");
+
             if (ModelState.IsValid)
             {
                 MyDb db = new MyDb();
@@ -70,6 +73,9 @@ namespace FIT_PONG.Controllers
         [HttpPost]
         public ActionResult Edit(int id, Sistem_Takmicenja st)
         {
+            if (DaLiPostoji(st.Opis))
+                return View("Greska");
+
             MyDb db = new MyDb();
             Sistem_Takmicenja sistem_takmicenja = db.SistemiTakmicenja.Find(id);
             if (sistem_takmicenja != null && ModelState.IsValid)
@@ -82,6 +88,22 @@ namespace FIT_PONG.Controllers
             db.Dispose();
 
             return View(sistem_takmicenja);
+        }
+
+        bool DaLiPostoji(string opis)
+        {
+            MyDb db = new MyDb();
+            List<Sistem_Takmicenja> sistemi= db.SistemiTakmicenja.ToList();
+            foreach (var item in sistemi)
+            {
+                if (item.Opis == opis)
+                {
+                    db.Dispose();
+                    return true;
+                }
+            }
+            db.Dispose();
+            return false;
         }
 
     }
