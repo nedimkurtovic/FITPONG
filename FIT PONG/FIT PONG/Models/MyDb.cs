@@ -53,7 +53,7 @@ namespace FIT_PONG.Models
                                           Trusted_Connection=False;
                                           MultipleActiveResultSets=True;
                                           User ID=fitpong;
-                                          Password=F!tP0ng_2019");    
+                                          Password=F!tP0ng_2019");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -144,7 +144,7 @@ namespace FIT_PONG.Controllers
                 db.Remove(obj);
                 db.SaveChanges();
                 db.Dispose();
-                return View("Index);
+                return View("Index");
             }
             catch (DbUpdateException err)
             {
