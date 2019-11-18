@@ -22,6 +22,9 @@ namespace FIT_PONG.Controllers
         [HttpPost]
         public ActionResult Dodaj(Grad grad)
         {
+            if (DaLiPostoji(grad.Naziv))
+                return View("Greska");
+
             if (ModelState.IsValid)
             {
                 MyDb db = new MyDb();
@@ -70,6 +73,9 @@ namespace FIT_PONG.Controllers
         [HttpPost]
         public ActionResult Edit(int ID, Grad grad)
         {
+            if (DaLiPostoji(grad.Naziv))
+                return View("Greska");
+
             MyDb db = new MyDb();
             Grad g = db.Gradovi.Find(ID);
             if (g != null && ModelState.IsValid)
@@ -82,6 +88,22 @@ namespace FIT_PONG.Controllers
             db.Dispose();
 
             return View(g);
+        }
+
+        bool DaLiPostoji(string naziv)
+        {
+            MyDb db = new MyDb();
+            List<Grad> gradovi = db.Gradovi.ToList();
+            foreach (var item in gradovi)
+            {
+                if (item.Naziv == naziv)
+                {
+                    db.Dispose();
+                    return true;
+                }
+            }
+            db.Dispose();
+            return false;
         }
 
     }
