@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FIT_PONG.Models
+namespace FIT_PONG.ViewModels.DashboardVMs
 {
-    public class Feed
+    public class FeedVM
     {
         public int ID { get; set; }
         public string Naziv { get; set; }
         public int TakmicenjeID { get; set; }
-        public Takmicenje Takmicenje { get; set; }
-        public DateTime DatumModifikacije{ get; set; }
     }
 }

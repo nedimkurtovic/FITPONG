@@ -36,6 +36,9 @@ namespace FIT_PONG.Models
         public int StatusID { get; set; }
         public DateTime? DatumPocetka { get; set; }
         public DateTime? DatumZavrsetka { get; set; }
+
+        public int FeedID { get; set; }
+        public Feed Feed{ get; set; }
         public void setAtribute(string _naziv, DateTime _pocetakprijava, DateTime _krajprijava,
             int _minimalniELO, int _kategorijaID, int _sistemID, int _vrstaID, int _statusID,
             DateTime? _pocetaktakmicenja, DateTime? _zavrsetakTakmicenja)
