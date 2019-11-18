@@ -2,129 +2,57 @@
 @using FIT_PONG.ViewModels;
 @{
     ViewData["Title"] = "Edit";
-    var Takmicenje = (Takmicenje) ViewData["TakmicenjeKey"];
-    var kategorije = (List<ComboBoxVM>)ViewData["KategorijeKey"];
-    var sistemi = (List<ComboBoxVM>)ViewData["SistemiKey"];
-    var vrste = (List<ComboBoxVM>)ViewData["VrsteKey"];
-    var statusi = (List<ComboBoxVM>)ViewData["StatusiKey"];
+    Takmicenje x = ViewBag.takmicenje;
+
 }
 @*(string _naziv,DateTime _pocetakprijava,DateTime _krajprijava,
             int _minimalniELO,int _kategorijaID,int _sistemID,int _vrstaID,int _statusID, DateTime?
     _pocetaktakmicenja = null)*@
 <h1>Edit</h1>
-<form action="/Takmicenje/Edit?id=@Takmicenje.ID" method="post">
+<form action="/Takmicenje/Edit/" method="post">
     <table>
+        @Html.Hidden("ID",x.ID)
         <tr>
-            <td> <label for="_naziv">Naziv</label> </td>
-            <td>@Html.TextBox("_naziv", Takmicenje)</td>
-            <td>@Html.ValidationMessage("_naziv", "*")</td>
+            <td>Naziv</td>
+            <td><input type="text" name="_naziv" value="@x.Naziv" /></td>
         </tr>
         <tr>
             <td>Pocetak prijava</td>
-            <td><input type="date" name="_pocetakprijava" /></td>
-            <td>@Html.ValidationMessage("_pocetakprijava", "*")</td>
+            <td><input type="date" name="_pocetakprijava" value="@x.RokPocetkaPrijave.ToString("yyyy-MM-dd")" /></td>
         </tr>
         <tr>
             <td>Kraj prijava</td>
-            <td><input type="date" name="_krajprijava" value="" /></td>
-            <td>@Html.ValidationMessage("_krajprijava", "*")</td>
-
+            <td><input type="date" name="_krajprijava" value="@x.RokZavrsetkaPrijave.ToString("yyyy-MM-dd")" /></td>
         </tr>
         <tr>
             <td>Minimalni ELO</td>
-            <td><input type="text" name="_minimalniELO" value="" /></td>
-            <td>@Html.ValidationMessage("_minimalniELO", "*")</td>
-
+            <td><input type="text" name="_minimalniELO" value="@x.MinimalniELO" /></td>
         </tr>
         <tr>
             <td>Kategorija</td>
-            <td>
-                <select name="_kategorijaID">
-                    <option>Odaberite kategoriju</option>
-                    @foreach (var x in kategorije)
-                    {
-                        if (x.ID == Takmicenje.KategorijaID)
-                        {
-                            <option value="@x.ID" selected>@x.Opis</option>
-                        }
-                        else
-                        {
-                            <option value="@x.ID">@x.Opis</option>
-                        }
-                    }
-                </select>
-            </td>
+            <td>@Html.DropDownList("_kategorijaID", new SelectList(ViewBag.kategorije, "ID", "Opis", x.Kategorija.Opis))</td>
         </tr>
         <tr>
             <td>Sistem</td>
-            <td>
-                <select name="_sistemID">
-                    <option>Odaberite sistem</option>
-                    @foreach (var x in sistemi)
-                    {
-                        if (x.ID == Takmicenje.SistemID)
-                        {
-                            <option value="@x.ID" selected>@x.Opis</option>
-                        }
-                        else
-                        {
-                            <option value="@x.ID">@x.Opis</option>
-                        }
-                    }
-                </select>
-            </td>
+            @*/ <td>@Html.DropDownList("_sistemID", new SelectList(ViewBag.sistemi, "ID", "Opis"), x.Sistem.Opis)</td>/*@
+        <td><input type="text" disabled value="@x.Sistem.Opis" /></td>
+            @Html.Hidden("_sistemID",x.Sistem.ID)
         </tr>
         <tr>
             <td>Vrsta</td>
-            <td>
-                <select name="_vrstaID">
-                    <option>Odaberite vrstu</option>
-                    @foreach (var x in vrste)
-                    {
-                        if (x.ID == Takmicenje.VrstaID)
-                        {
-                            <option value="@x.ID" selected>@x.Opis</option>
-                        }
-                        else
-                        {
-                            <option value="@x.ID">@x.Opis</option>
-                        }
-                    }
-                </select>
-            </td>
+            <td>@Html.DropDownList("_vrstaID", new SelectList(ViewBag.vrste, "ID", "Opis", x.Vrsta.Naziv))</td>
         </tr>
         <tr>
             <td>Status</td>
-            <td>
-                <select name="_statusID">
-                    <option>Odaberite status</option>
-                    @foreach (var x in statusi)
-                    {
-                        if (x.ID == Takmicenje.StatusID)
-                        {
-                            <option value="@x.ID" selected>@x.Opis</option>
-                        }
-                        else
-                        {
-                            <option value="@x.ID">@x.Opis</option>
-                        }
-                    }
-                </select>
-            </td>
+            <td>@Html.DropDownList("_statusID", new SelectList(ViewBag.statusi, "ID", "Opis", x.Status.Opis))</td>
         </tr>
         <tr>
             <td>Datum pocetka</td>
-            <td><input type="date" name="_pocetaktakmicenja" value="@Takmicenje.DatumPocetka.GetValueOrDefault()" /></td>
+            <td><input type="date" name="_pocetaktakmicenja" value="@x.DatumPocetka.GetValueOrDefault().ToString("yyyy-MM-dd")" /></td>
         </tr>
         <tr>
-            <td>Datum pocetka</td>
-            <td><input type="date" name="_zavrsetakTakmicenja" value="@Takmicenje.DatumZavrsetka.GetValueOrDefault()" /></td>
-        </tr>
-        <tr>
-            <td>Broj rundi</td>
-            <td><input type="text" disabled value="@Takmicenje.BrojRundi"/></td>
-            <td>@Html.ValidationMessage("_brojrundi", "*")</td>
-
+            <td>Datum zavrsetka</td>
+            <td><input type="date" name="_zavrsetakTakmicenja" value="@x.DatumZavrsetka.GetValueOrDefault().ToString("yyyy-MM-dd")" /></td>
         </tr>
 
     </table>

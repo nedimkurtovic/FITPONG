@@ -12,8 +12,6 @@ namespace FIT_PONG.Models
         public int ID { get; set; }
         [Required, StringLength(50)]
         public string Naziv { get; set; }
-        public DateTime? DatumPocetka { get; set; }
-        public DateTime? DatumZavrsetka { get; set; }
         public DateTime RokPocetkaPrijave { get; set; }
         public DateTime RokZavrsetkaPrijave { get; set; }
         public DateTime DatumKreiranja { get; set; }
@@ -36,13 +34,15 @@ namespace FIT_PONG.Models
 
         public Status_Takmicenja Status { get; set; }
         public int StatusID { get; set; }
+        public DateTime? DatumPocetka { get; set; }
+        public DateTime? DatumZavrsetka { get; set; }
         public void setAtribute(string _naziv, DateTime _pocetakprijava, DateTime _krajprijava,
             int _minimalniELO, int _kategorijaID, int _sistemID, int _vrstaID, int _statusID,
-            DateTime? _pocetaktakmicenja, DateTime? _zavrsetakTakmicenja = null)
+            DateTime? _pocetaktakmicenja, DateTime? _zavrsetakTakmicenja)
         {
             Naziv = _naziv;
-            DatumPocetka = _pocetaktakmicenja;
-            DatumZavrsetka = _zavrsetakTakmicenja;
+            DatumPocetka = _pocetaktakmicenja.GetValueOrDefault();
+            DatumZavrsetka = _zavrsetakTakmicenja.GetValueOrDefault();
             RokPocetkaPrijave = _pocetakprijava;
             RokZavrsetkaPrijave = _krajprijava;
             MinimalniELO = _minimalniELO;
@@ -55,9 +55,8 @@ namespace FIT_PONG.Models
         }
         public Takmicenje(string _naziv, DateTime _pocetakprijava, DateTime _krajprijava,
             int _minimalniELO, int _kategorijaID, int _sistemID, int _vrstaID, int _statusID,
-            DateTime _pocetaktakmicenja,DateTime? _zavrsetakTakmicenja = null)
+            DateTime? _pocetaktakmicenja=null,DateTime? _zavrsetakTakmicenja=null)
         {
-
             setAtribute(_naziv, _pocetakprijava, _krajprijava, _minimalniELO, _kategorijaID, _sistemID, _vrstaID
                 , _statusID, _pocetaktakmicenja, _zavrsetakTakmicenja);
         }

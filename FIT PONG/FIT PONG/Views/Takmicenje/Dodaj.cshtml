@@ -1,29 +1,25 @@
 ﻿@using FIT_PONG.ViewModels;
 @{
     ViewData["Title"] = "Dodaj";
-    var kategorije = (List<ComboBoxVM>)ViewData["KategorijeKey"];
-    var sistemi = (List<ComboBoxVM>)ViewData["SistemiKey"];
-    var vrste = (List<ComboBoxVM>)ViewData["VrsteKey"];
-    var statusi = (List<ComboBoxVM>)ViewData["StatusiKey"];
 }
 @*(string _naziv,DateTime _pocetakprijava,DateTime _krajprijava,
-            int _minimalniELO,int _kategorijaID,int _sistemID,int _vrstaID,int _statusID, DateTime? 
+            int _minimalniELO,int _kategorijaID,int _sistemID,int _vrstaID,int _statusID, DateTime?
     _pocetaktakmicenja = null)*@
-    <style>
-        tr td{
-            margin-right:25px;
-        }
-    </style>
+<style>
+    tr td {
+        margin-right: 25px;
+    }
+</style>
 <h1>Dodaj novo takmicenje</h1>
 <form action="/Takmicenje/Snimi" method="post">
     <table>
         <tr>
-            <td >Naziv</td>
+            <td>Naziv</td>
             <td><input type="text" name="_naziv" /></td>
         </tr>
         <tr>
-            <td >Pocetak prijava</td>
-            <td><input type="date" name="_pocetakprijava"/></td>
+            <td>Pocetak prijava</td>
+            <td><input type="date" name="_pocetakprijava" /></td>
         </tr>
         <tr>
             <td>Kraj prijava</td>
@@ -35,57 +31,24 @@
         </tr>
         <tr>
             <td>Kategorija</td>
-            <td>
-                <select name="_kategorijaID">
-                    <option>Odaberite kategoriju</option>
-                    @foreach (var x in kategorije)
-                    {
-                        <option value="@x.ID">@x.Opis</option>
-                    }
-                </select>
-            </td>
+            <td>@Html.DropDownList("_kategorijaID", new SelectList(ViewBag.kategorije, "ID", "Opis"), "Odaberite kategoriju")</td>
         </tr>
         <tr>
             <td>Sistem</td>
-            <td>
-                <select name="_sistemID">
-                    <option>Odaberite sistem</option>
-                    @foreach (var x in sistemi)
-                    {
-                        <option value="@x.ID">@x.Opis</option>
-                    }
-                </select>
-            </td>
+            <td>@Html.DropDownList("_sistemID", new SelectList(ViewBag.sistemi, "ID", "Opis"), "Odaberite sistem")</td>
         </tr>
         <tr>
             <td>Vrsta</td>
-            <td>
-                <select name="_vrstaID">
-                    <option>Odaberite vrstu</option>
-                    @foreach (var x in vrste)
-                    {
-                        <option value="@x.ID">@x.Opis</option>
-                    }
-                </select>
-            </td>
+            <td>@Html.DropDownList("_vrstaID", new SelectList(ViewBag.vrste, "ID", "Opis"), "Odaberite vrstu")</td>
         </tr>
         <tr>
             <td>Status</td>
-            <td>
-                <select name="_statusID">
-                    <option>Odaberite status</option>
-                    @foreach (var x in statusi)
-                    {
-                        <option value="@x.ID">@x.Opis</option>
-                    }
-                </select>
-            </td>
+            <td>@Html.DropDownList("_statusID", new SelectList(ViewBag.statusi, "ID", "Opis"), "Odaberite status")</td>
         </tr>
         <tr>
             <td>Datum pocetka</td>
-            <td><input type="date" name="_pocetaktakmicenja" value="" /></td>
+            <td><input type="date" name="_pocetaktakmicenja" /></td>
         </tr>
-
     </table>
     <input type="submit" value="Dodaj" />
 </form>

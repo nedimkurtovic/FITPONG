@@ -23,23 +23,24 @@ namespace FIT_PONG.Controllers
         public IActionResult Dodaj()
         {
             MyDb db = new MyDb();
-            List<ComboBoxVM> kategorije = db.Kategorije.Select(s=>new ComboBoxVM {ID=s.ID,Opis=s.Opis }).ToList();
-            List<ComboBoxVM> sistemi = db.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-            List<ComboBoxVM> vrste = db.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
-            List<ComboBoxVM> statusi = db.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-            ViewData["KategorijeKey"] = kategorije;
-            ViewData["SistemiKey"] = sistemi;
-            ViewData["VrsteKey"] = vrste;
-            ViewData["StatusiKey"] = statusi;
+            ViewBag.kategorije = db.Kategorije.Select(s=>new ComboBoxVM {ID=s.ID,Opis=s.Opis }).ToList();
+            ViewBag.sistemi = db.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+            ViewBag.vrste = db.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
+            ViewBag.statusi = db.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+
             return View();
         }
+        [HttpPost]
         public IActionResult Snimi(string _naziv,DateTime _pocetakprijava,DateTime _krajprijava,
-            int _minimalniELO,int _kategorijaID,int _sistemID,int _vrstaID,int _statusID, DateTime? _pocetaktakmicenja = null)
+                                   int _minimalniELO,int _kategorijaID,int _sistemID,
+                                   int _vrstaID,int _statusID, DateTime? _pocetaktakmicenja = null)
+
         {
+
             Takmicenje novo = new Takmicenje(_naziv,_pocetakprijava,_krajprijava,_minimalniELO,_kategorijaID,
-                _sistemID,_vrstaID,_statusID,_pocetaktakmicenja.GetValueOrDefault(DateTime.Parse("1 Jan 1900")));
-            if(ModelState.IsValid)//ako ima problema s bindanjem javit ce to ovdje i nece proci u dodavanje za provjeru koristi anotacije na modelu
-            {
+                _sistemID,_vrstaID,_statusID,_pocetaktakmicenja);
+  
+            try { 
                 MyDb db = new MyDb();
                 db.Takmicenja.Add(novo);
                 db.SaveChanges();
@@ -49,10 +50,19 @@ namespace FIT_PONG.Controllers
                 //ovako
                 return Redirect("/Takmicenje/Prikaz/?id=" + novo.ID);
             }
+            catch(DbUpdateException err)
+            {
+                ModelState.AddModelError("", "Doslo je do greške. " + "Pokušajte opet ");
+            }
             return Redirect("/Takmicenje/Neuspjeh");
         }
-        public IActionResult Prikaz(int id)
+        public IActionResult Prikaz(int? id)
         {
+            if(id == null)
+            {
+                return View("/Takmicenje/Neuspjeh");
+            }
+            //potreban query za broj rundi,u bracketima se nalazi takmicenjeID ,bar bi trebalo opotrebna migracija
             MyDb db = new MyDb();
             Takmicenje obj = db.Takmicenja.Include(tak => tak.Kategorija).Include(tak => tak.Sistem)
                 .Include(tak => tak.Vrsta).Include(tak => tak.Status).SingleOrDefault(y=> y.ID == id);
@@ -71,39 +81,77 @@ namespace FIT_PONG.Controllers
                 .Include(tak => tak.Vrsta).Include(tak => tak.Status).SingleOrDefault(y => y.ID == id);
             if (obj != null)
             {
-                //SPAGHETTII CODE NE VALja
-                //mora biti neki drugi nacin ovo je katastrofa,ili barem izdvojit u zasebun funkciju pa skontat TODO!!!
-                List<ComboBoxVM> kategorije = db.Kategorije.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-                List<ComboBoxVM> sistemi = db.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-                List<ComboBoxVM> vrste = db.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
-                List<ComboBoxVM> statusi = db.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-                ViewData["KategorijeKey"] = kategorije;
-                ViewData["SistemiKey"] = sistemi;
-                ViewData["VrsteKey"] = vrste;
-                ViewData["StatusiKey"] = statusi;
+                ViewBag.kategorije = db.Kategorije.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+                ViewBag.sistemi = db.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+                ViewBag.vrste = db.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
+                ViewBag.statusi = db.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+                ViewBag.takmicenje = obj;
                 return View();
             }
             return Redirect("/Takmicenje/Neuspjeh");
         }
+        [HttpPost]
         public IActionResult Edit(int id, string _naziv, DateTime _pocetakprijava, DateTime _krajprijava,
             int _minimalniELO, int _kategorijaID, int _sistemID, int _vrstaID, int _statusID,
-           DateTime? _pocetaktakmicenja = null, DateTime ? _zavrsetakTakmicenja=null)
+           DateTime? _pocetaktakmicenja = null, DateTime? _zavrsetakTakmicenja = null)
         {
-            if(ModelState.IsValid)
+            MyDb db = new MyDb();
+            Takmicenje obj = db.Takmicenja.Find(id);
+            if (obj != null) 
+            {
+                try {
+                    obj.setAtribute(_naziv, _pocetakprijava, _krajprijava, _minimalniELO, _kategorijaID,
+                    _sistemID, _vrstaID, _statusID, _zavrsetakTakmicenja.GetValueOrDefault(),
+                    _pocetaktakmicenja.GetValueOrDefault());
+                    db.Takmicenja.Update(obj);
+                    db.SaveChanges();
+                    db.Dispose();
+                    return Redirect("/Takmicenje/Prikaz/?id=" + id);
+                }
+                catch (DbUpdateException err)
+                {
+                    ModelState.AddModelError("", "Doslo je do greške. " + "Pokušajte opet ");
+                }
+            }
+
+            return Redirect("/Takmicenje/Neuspjeh");
+        }
+        public IActionResult Obrisi(int? id)
+        {
+            if (id == null)
+            {
+                return View("/Takmicenje/Neuspjeh");
+            }
+            else
             {
                 MyDb db = new MyDb();
                 Takmicenje obj = db.Takmicenja.Find(id);
                 if (obj != null)
                 {
-                    obj.setAtribute(_naziv, _pocetakprijava, _krajprijava, _minimalniELO, _kategorijaID,
-                    _sistemID, _vrstaID, _statusID, _zavrsetakTakmicenja.GetValueOrDefault(),
-                    _pocetaktakmicenja.GetValueOrDefault(DateTime.Parse("1 Jan 1900")));
-                    db.SaveChanges();
-                    db.Dispose();
-                    return Redirect("/Takmicenje/Prikaz/?id=" + id);
+                    ViewBag.takmicenje = obj;
+                    return View();
                 }
             }
             return Redirect("/Takmicenje/Neuspjeh");
+        }
+        [HttpPost]
+        public IActionResult PotvrdaBrisanja(int ID)
+        {
+            try
+            {
+                MyDb db = new MyDb();
+                Takmicenje obj = db.Takmicenja.Find(ID);
+                db.Remove(obj);
+                db.SaveChanges();
+                db.Dispose();
+                return View("Index);
+            }
+            catch (DbUpdateException err)
+            {
+                ModelState.AddModelError("", "Doslo je do greške. " + "Pokušajte opet ");
+
+            }
+            return View("/Takmicenje/Neuspjeh");
         }
         public IActionResult Uspjeh()
         {

@@ -27,8 +27,8 @@ namespace FIT_PONG.ViewModels
         {
             ID = obj.ID;
             Naziv = obj.Naziv;
-            DatumPocetka = obj.DatumPocetka.GetValueOrDefault(DateTime.Parse("1 Jan 1900"));
-            DatumZavrsetka = obj.DatumZavrsetka.GetValueOrDefault(DateTime.Parse("1 Jan 1900"));
+            DatumPocetka = obj.DatumPocetka.GetValueOrDefault();
+            DatumZavrsetka = obj.DatumZavrsetka.GetValueOrDefault();
             DatumPocetkaPrijava = obj.RokPocetkaPrijave;
             DatumZavrsetkaPrijava = obj.RokZavrsetkaPrijave;
             DatumKreiranja = obj.DatumKreiranja;
