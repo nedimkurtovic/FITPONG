@@ -1,0 +1,61 @@
+﻿@using FIT_PONG.Models;
+@using FIT_PONG.ViewModels;
+@{
+    ViewData["Title"] = "Edit";
+    Takmicenje x = ViewBag.takmicenje;
+
+}
+@*(string _naziv,DateTime _pocetakprijava,DateTime _krajprijava,
+            int _minimalniELO,int _kategorijaID,int _sistemID,int _vrstaID,int _statusID, DateTime?
+    _pocetaktakmicenja = null)*@
+<h1>Edit</h1>
+<form action="/Takmicenje/Edit/" method="post">
+    <table>
+        @Html.Hidden("ID",x.ID)
+        <tr>
+            <td>Naziv</td>
+            <td><input type="text" name="_naziv" value="@x.Naziv" /></td>
+        </tr>
+        <tr>
+            <td>Pocetak prijava</td>
+            <td><input type="date" name="_pocetakprijava" value="@x.RokPocetkaPrijave.ToString("yyyy-MM-dd")" /></td>
+        </tr>
+        <tr>
+            <td>Kraj prijava</td>
+            <td><input type="date" name="_krajprijava" value="@x.RokZavrsetkaPrijave.ToString("yyyy-MM-dd")" /></td>
+        </tr>
+        <tr>
+            <td>Minimalni ELO</td>
+            <td><input type="text" name="_minimalniELO" value="@x.MinimalniELO" /></td>
+        </tr>
+        <tr>
+            <td>Kategorija</td>
+            <td>@Html.DropDownList("_kategorijaID", new SelectList(ViewBag.kategorije, "ID", "Opis", x.Kategorija.Opis))</td>
+        </tr>
+        <tr>
+            <td>Sistem</td>
+            @*/ <td>@Html.DropDownList("_sistemID", new SelectList(ViewBag.sistemi, "ID", "Opis"), x.Sistem.Opis)</td>/*@
+        <td><input type="text" disabled value="@x.Sistem.Opis" /></td>
+            @Html.Hidden("_sistemID",x.Sistem.ID)
+        </tr>
+        <tr>
+            <td>Vrsta</td>
+            <td>@Html.DropDownList("_vrstaID", new SelectList(ViewBag.vrste, "ID", "Opis", x.Vrsta.Naziv))</td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>@Html.DropDownList("_statusID", new SelectList(ViewBag.statusi, "ID", "Opis", x.Status.Opis))</td>
+        </tr>
+        <tr>
+            <td>Datum pocetka</td>
+            <td><input type="date" name="_pocetaktakmicenja" value="@x.DatumPocetka.GetValueOrDefault().ToString("yyyy-MM-dd")" /></td>
+        </tr>
+        <tr>
+            <td>Datum zavrsetka</td>
+            <td><input type="date" name="_zavrsetakTakmicenja" value="@x.DatumZavrsetka.GetValueOrDefault().ToString("yyyy-MM-dd")" /></td>
+        </tr>
+
+    </table>
+    <input type="submit" value="Spasi" />
+</form>
+
