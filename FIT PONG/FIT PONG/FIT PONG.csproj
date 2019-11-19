@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20191119151848_TakmicenjeFeed.cs" />
+    <Compile Remove="Migrations\20191119151848_TakmicenjeFeed.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\fitpong.jpg" />
   </ItemGroup>
 

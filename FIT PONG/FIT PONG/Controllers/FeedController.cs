@@ -12,6 +12,17 @@ namespace FIT_PONG.Controllers
 {
     public class FeedController : Controller
     {
+        /*
+         TODOs::
+         1.Implementirati migraciju da takmicenje ima svoj feed napomena :
+         ili omoguciti takmicenju da nema feed tj da je feedid nullable pa onda kad kretor takmicenja zeli
+         on moze buttonom doda novi feed sto ne znam koliko ima smisla jednostavnije bi bilo da se feed automatski kreira
+         prilikom kreiranja takmicenja (za to trebam nauciti tehniku kako da kontroler pozove drugi kontroler 
+         i da mu proslijedi nesto,konkretno u ovom slucaju ja bih zelio da kontroler Takmicenje prilikom akcije
+         dodaj pozove akciju dodaj od feed kontrolera pri cemu ce mu proslijediti nazivfeeda sto moze biti neko 
+         automatksi generisano ime npr imetakmicenja+Feed pri tome akcija prima post metodom parametar createfeedvm
+
+         */
         public IActionResult Index()
         {
             MyDb db = new MyDb();
@@ -29,7 +40,8 @@ namespace FIT_PONG.Controllers
         {
             if(PostojiIsti(novi.Naziv))
             {
-                return View();
+                
+                return View("Postoji");
             }
             if(ModelState.IsValid)
             {
@@ -83,7 +95,7 @@ namespace FIT_PONG.Controllers
         {
             if(PostojiIsti(novi.Naziv))
             {
-                return View("Neuspjeh");
+                return View("Postoji");
             }
 
             if(ModelState.IsValid)
@@ -95,7 +107,6 @@ namespace FIT_PONG.Controllers
                 db.Update(obj);
                 db.SaveChanges();
                 db.Dispose();
-                //ovdje ce naravno preusmjerit na detalje TODO,prikazati objave itd..
                 return Redirect("/Feed/Prikaz/"+obj.ID);
             }
             return View("Neuspjeh");
@@ -113,7 +124,7 @@ namespace FIT_PONG.Controllers
         private bool PostojiIsti(string naziv)
         {
             MyDb db = new MyDb();
-            if(db.Feeds.Where(s=> s.Naziv == naziv).Count() > 1)
+            if(db.Feeds.Where(s=> s.Naziv == naziv).Count() > 0)
             {
                 db.Dispose();
                 return true;
@@ -151,6 +162,10 @@ namespace FIT_PONG.Controllers
             return View();
         }
         public IActionResult Neuspjeh()
+        {
+            return View();
+        }
+        public IActionResult Postoji()
         {
             return View();
         }

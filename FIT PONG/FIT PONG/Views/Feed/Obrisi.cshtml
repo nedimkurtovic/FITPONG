@@ -8,9 +8,10 @@
 
 <form action="/Feed/PotvrdaBrisanja" method="post">
     <p>Naziv</p>
-    <input type="text" disabled value="@fid.naziv"/>
+    <input type="text" disabled value="@fid.naziv" />
     @Html.Hidden("ID", fid.ID)
-    <input type="submit" value="DA" />
-    <input type="button" value="NE" onclick="window.location.href='/Feed/Index'" />
+    <input type="submit" class="btn btn-outline-danger" value="DA" />
+    <a href="/Feed" class="btn btn-outline-info">NE</a>
+
 </form>
 
