@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using FIT_PONG.ViewModels.TakmicenjeVMs;
 
 namespace FIT_PONG.Models
 {
@@ -59,6 +60,21 @@ namespace FIT_PONG.Models
         {
             setAtribute(_naziv, _pocetakprijava, _krajprijava, _minimalniELO, _kategorijaID, _sistemID, _vrstaID
                 , _statusID, _pocetaktakmicenja, _zavrsetakTakmicenja);
+        }
+        public Takmicenje(CreateTakmicenjeVM obj)
+        {
+            Naziv = obj.Naziv;
+            DatumPocetka = obj.DatumPocetka ?? null;
+            DatumZavrsetka = obj.DatumZavrsetka ?? null;
+            RokPocetkaPrijave = obj.RokPocetkaPrijave;
+            RokZavrsetkaPrijave = obj.RokZavrsetkaPrijave;
+            MinimalniELO = obj.MinimalniELO;
+            KategorijaID = obj.KategorijaID;
+            SistemID = obj.SistemID;
+            VrstaID = obj.VrstaID;
+            StatusID = obj.StatusID;
+            DatumKreiranja = DateTime.Now;
+            BrojRundi = 0;
         }
         public Takmicenje()
         {

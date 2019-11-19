@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FIT_PONG.Models;
 using Microsoft.AspNetCore.Mvc;
 using FIT_PONG.ViewModels;
+using FIT_PONG.ViewModels.TakmicenjeVMs;
 using Microsoft.EntityFrameworkCore;
 
 namespace FIT_PONG.Controllers
@@ -20,6 +21,33 @@ namespace FIT_PONG.Controllers
             ViewData["TakmicenjaKey"] = takmicenja;
             return View();
         }
+        [HttpPost]
+        public IActionResult Dodaj(CreateTakmicenjeVM objekat)
+        {
+            if(ModelState.IsValid && !PostojiTakmicenje(objekat.Naziv))
+            {
+                try
+                {
+                    Takmicenje novo = new Takmicenje(objekat);
+                    MyDb db = new MyDb();
+                    db.Add(novo);
+                    db.SaveChanges();
+                    db.Dispose();
+                    return Redirect("/Takmicenje/Prikaz/" + novo.ID);
+                }
+                catch(DbUpdateException er)
+                {
+                    ModelState.AddModelError("", "Doslo je do greške. " + "Pokušajte opet ");
+                }
+            }
+            MyDb db1 = new MyDb();
+            ViewBag.kategorije = db1.Kategorije.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+            ViewBag.sistemi = db1.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+            ViewBag.vrste = db1.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
+            ViewBag.statusi = db1.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+            db1.Dispose();
+            return View(objekat);
+        }
         public IActionResult Dodaj()
         {
             MyDb db = new MyDb();
@@ -27,35 +55,10 @@ namespace FIT_PONG.Controllers
             ViewBag.sistemi = db.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
             ViewBag.vrste = db.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
             ViewBag.statusi = db.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-
+            db.Dispose();
             return View();
         }
-        [HttpPost]
-        public IActionResult Snimi(string _naziv,DateTime _pocetakprijava,DateTime _krajprijava,
-                                   int _minimalniELO,int _kategorijaID,int _sistemID,
-                                   int _vrstaID,int _statusID, DateTime? _pocetaktakmicenja = null)
-
-        {
-
-            Takmicenje novo = new Takmicenje(_naziv,_pocetakprijava,_krajprijava,_minimalniELO,_kategorijaID,
-                _sistemID,_vrstaID,_statusID,_pocetaktakmicenja);
-  
-            try { 
-                MyDb db = new MyDb();
-                db.Takmicenja.Add(novo);
-                db.SaveChanges();
-                //int id = db.Takmicenja.Last().ID;
-                db.Dispose();
-                //realno ovdje cu vratiti prikaz pojedinacnog takmicenja pomocu akcije prikaz/{id} ali privremeno moze
-                //ovako
-                return Redirect("/Takmicenje/Prikaz/?id=" + novo.ID);
-            }
-            catch(DbUpdateException err)
-            {
-                ModelState.AddModelError("", "Doslo je do greške. " + "Pokušajte opet ");
-            }
-            return Redirect("/Takmicenje/Neuspjeh");
-        }
+      
         public IActionResult Prikaz(int? id)
         {
             if(id == null)
@@ -144,7 +147,7 @@ namespace FIT_PONG.Controllers
                 db.Remove(obj);
                 db.SaveChanges();
                 db.Dispose();
-                return View("Index);
+                return View("Index");
             }
             catch (DbUpdateException err)
             {
@@ -152,6 +155,13 @@ namespace FIT_PONG.Controllers
 
             }
             return View("/Takmicenje/Neuspjeh");
+        }
+        public bool PostojiTakmicenje(string naziv)
+        {
+            MyDb db = new MyDb();
+            if (db.Takmicenja.Where(s => s.Naziv == naziv).Count() > 0)
+                return true;
+            return false;
         }
         public IActionResult Uspjeh()
         {
@@ -161,6 +171,9 @@ namespace FIT_PONG.Controllers
         {
             return View();
         }
-        
+        public IActionResult PostojiTakmicenje()
+        {
+            return View();
+        }
     }
 }
