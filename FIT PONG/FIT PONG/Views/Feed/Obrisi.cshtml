@@ -1,0 +1,16 @@
+﻿@using FIT_PONG.ViewModels.FeedVMs
+@{
+    ViewData["Title"] = "Obrisi";
+    DisplayFeedVM fid = ViewBag.feed;
+}
+
+<h1>Da li sigurno zelite obrisati :</h1>
+
+<form action="/Feed/PotvrdaBrisanja" method="post">
+    <p>Naziv</p>
+    <input type="text" disabled value="@fid.naziv"/>
+    @Html.Hidden("ID", fid.ID)
+    <input type="submit" value="DA" />
+    <input type="button" value="NE" onclick="window.location.href='/Feed/Index'" />
+</form>
+

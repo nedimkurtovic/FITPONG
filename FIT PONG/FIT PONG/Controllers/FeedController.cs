@@ -56,6 +56,28 @@ namespace FIT_PONG.Controllers
             }).ToList();
             return View();
         }
+        public IActionResult Prikaz(int id)
+        {
+            MyDb db = new MyDb();
+            Feed x = db.Feeds.Find(id);
+            if(x != null)
+            {
+                DisplayFeedVM obj = new DisplayFeedVM
+                {
+                    ID = x.ID,
+                    naziv = x.Naziv,
+                    DatumModifikacije = x.DatumModifikacije
+                };
+                obj.Objave = (from o in db.Objave
+                              join fo in db.FeedsObjave
+                              on o.ID equals fo.ObjavaID
+                              where fo.FeedID == x.ID
+                              select fo.Objava).ToList();
+                ViewBag.fid = obj;
+                return View();
+            }
+            return Redirect("/Feed/Neuspjeh");
+        }
         [HttpPost]
         public IActionResult Edit(Feed novi)
         {
@@ -74,7 +96,7 @@ namespace FIT_PONG.Controllers
                 db.SaveChanges();
                 db.Dispose();
                 //ovdje ce naravno preusmjerit na detalje TODO,prikazati objave itd..
-                return Redirect("/Feed/Index");
+                return Redirect("/Feed/Prikaz/"+obj.ID);
             }
             return View("Neuspjeh");
         }
@@ -98,6 +120,31 @@ namespace FIT_PONG.Controllers
             }
             db.Dispose();
             return false;
+        }
+        public IActionResult Obrisi(int id)
+        {
+            MyDb db = new MyDb();
+            Feed obj = db.Feeds.Find(id);
+            if(obj != null)
+            {
+                DisplayFeedVM prikaz = new DisplayFeedVM { ID = obj.ID, naziv = obj.Naziv };
+                ViewBag.feed = prikaz;
+                return View();
+            }
+            return Redirect("/Feed/Neuspjeh");
+        }
+        public IActionResult PotvrdaBrisanja(int id)
+        {
+            MyDb db = new MyDb();
+            Feed obj = db.Feeds.Find(id);
+            if(obj != null)
+            {
+                db.Remove(obj);
+                db.SaveChanges();
+                db.Dispose();
+                return Redirect("Index");
+            }
+            return Redirect("Neuspjeh");
         }
         public IActionResult Uspjeh()
         {
