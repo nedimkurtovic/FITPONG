@@ -1,0 +1,78 @@
+﻿@using FIT_PONG.ViewModels.FeedVMs;
+@{
+    ViewData["Title"] = "Index";
+    var sve = (List<DisplayFeedVM>)ViewBag.feeds;
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+
+
+    .css-table {
+        display: table;
+        border-collapse: collapse;
+        box-sizing: border-box;
+        border-top: 1px solid #dee2e6;
+        margin-bottom: 1rem;
+        width: 100%;
+        overflow: scroll;
+    }
+
+    .css-table-header {
+        display: table-header-group;
+        font-weight: bold;
+        background-color: rgb(191, 191, 191);
+    }
+
+    .css-table-body {
+        display: table-row-group;
+    }
+
+    .css-table-row {
+        display: table-row;
+    }
+
+        .css-table-row:hover {
+            background-color: lightgray;
+            cursor: pointer;
+        }
+
+        .css-table-header div,
+        .css-table-row div {
+            display: table-cell;
+            padding: 0.75rem;
+            border-top: 1px solid #dee2e6;
+        }
+
+    .css-table-header div {
+        text-align: center;
+        border: 1px solid rgb(255, 255, 255);
+    }
+</style>
+<h1>Takmicenja</h1>
+<br />
+<a asp-controller="Feed" asp-action="Dodaj">Dodaj</a>
+@if (sve.Count() == 0)
+{
+    <p>Nema trenutno pohranjenih feedova</p>
+}
+else
+{
+    <div class="css-table">
+
+        <div class="css-table-row">
+            <div class="css-table-header">ID</div>
+            <div class="css-table-header">Naziv</div>
+            <div class="css-table-header">Datum modifikacije</div>
+        </div>
+        @foreach (var x in sve)
+        {
+            <div class="css-table-row" onclick="window.location.href='/Feed/Prikaz?id=@x.ID'">
+                <div>@x.ID</div>
+                <div>@x.naziv</div>
+                <div>@x.DatumModifikacije</div>
+            </div>
+
+        }
+    </div>
+}

@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace FIT_PONG.ViewModels.FeedVMs
 {
-    public class CreateFeedVM
+    public class DisplayFeedVM
     {
         public int ID { get; set; }
-        public string Naziv { get; set; }
+        public string naziv { get; set; }
+        public DateTime DatumModifikacije{ get; set; }
     }
 }
