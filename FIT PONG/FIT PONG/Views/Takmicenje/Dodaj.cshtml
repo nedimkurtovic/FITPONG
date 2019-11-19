@@ -1,4 +1,4 @@
-﻿@using FIT_PONG.ViewModels;
+﻿@model FIT_PONG.ViewModels.TakmicenjeVMs.CreateTakmicenjeVM;
 @{
     ViewData["Title"] = "Dodaj";
 }
@@ -11,45 +11,63 @@
     }
 </style>
 <h1>Dodaj novo takmicenje</h1>
-<form action="/Takmicenje/Snimi" method="post">
+<form asp-action="Dodaj" method="post">
     <table>
         <tr>
             <td>Naziv</td>
-            <td><input type="text" name="_naziv" /></td>
+            <td>@Html.EditorFor(mod=>mod.Naziv)</td>
+            <td>@Html.ValidationMessageFor(s=> s.Naziv,"",new { @class = "text-danger" })</td>
         </tr>
         <tr>
             <td>Pocetak prijava</td>
-            <td><input type="date" name="_pocetakprijava" /></td>
+            <td><input type="date" asp-for="RokPocetkaPrijave" /></td>
+            <td>@Html.ValidationMessageFor(s => s.RokPocetkaPrijave, "", new { @class = "text-danger" })</td>
+
         </tr>
         <tr>
             <td>Kraj prijava</td>
-            <td><input type="date" name="_krajprijava" value="" /></td>
+            <td><input type="date" asp-for="RokZavrsetkaPrijave" /></td>
+            <td>@Html.ValidationMessageFor(s => s.RokZavrsetkaPrijave, "", new { @class = "text-danger" })</td>
+
         </tr>
         <tr>
             <td>Minimalni ELO</td>
-            <td><input type="text" name="_minimalniELO" value="" /></td>
+            <td><input type="text" asp-for="MinimalniELO" /></td>
+            <td>@Html.ValidationMessageFor(s => s.MinimalniELO, "", new { @class = "text-danger" })</td>
+
         </tr>
         <tr>
             <td>Kategorija</td>
-            <td>@Html.DropDownList("_kategorijaID", new SelectList(ViewBag.kategorije, "ID", "Opis"), "Odaberite kategoriju")</td>
+            <td>@Html.DropDownListFor(n => n.KategorijaID, new SelectList(ViewBag.kategorije, "ID", "Opis"), "Odaberite kategoriju")</td>
+            <td>@Html.ValidationMessageFor(s => s.KategorijaID, "", new { @class = "text-danger" })</td>
+
         </tr>
         <tr>
             <td>Sistem</td>
-            <td>@Html.DropDownList("_sistemID", new SelectList(ViewBag.sistemi, "ID", "Opis"), "Odaberite sistem")</td>
+            <td>@Html.DropDownListFor(n => n.SistemID, new SelectList(ViewBag.sistemi, "ID", "Opis"), "Odaberite sistem")</td>
+            <td>@Html.ValidationMessageFor(s => s.SistemID, "", new { @class = "text-danger" })</td>
+
         </tr>
         <tr>
             <td>Vrsta</td>
-            <td>@Html.DropDownList("_vrstaID", new SelectList(ViewBag.vrste, "ID", "Opis"), "Odaberite vrstu")</td>
+            <td>@Html.DropDownListFor(n => n.VrstaID, new SelectList(ViewBag.vrste, "ID", "Opis"), "Odaberite vrstu")</td>
+            <td>@Html.ValidationMessageFor(s => s.VrstaID, "", new { @class = "text-danger" })</td>
+
         </tr>
         <tr>
             <td>Status</td>
-            <td>@Html.DropDownList("_statusID", new SelectList(ViewBag.statusi, "ID", "Opis"), "Odaberite status")</td>
+            <td>@Html.DropDownListFor(n => n.StatusID, new SelectList(ViewBag.statusi, "ID", "Opis"), "Odaberite status")</td>
+            <td>@Html.ValidationMessageFor(s => s.StatusID, "", new { @class = "text-danger" })</td>
+
         </tr>
         <tr>
             <td>Datum pocetka</td>
-            <td><input type="date" name="_pocetaktakmicenja" /></td>
+            <td><input type="date" asp-for="DatumPocetka" /></td>
+            <td>@Html.ValidationMessageFor(s => s.DatumPocetka, "", new { @class = "text-danger" })</td>
+
         </tr>
     </table>
     <input type="submit" value="Dodaj" />
 </form>
+
 
