@@ -12,6 +12,7 @@ namespace FIT_PONG.Controllers
 {
     public class TakmicenjeController : Controller
     {
+        //HITNO NAC SOLUCIJU ZA VIEWBAGOVE PREVISE NEPOTREBNOG KODA
         public IActionResult Index()
         {
             MyDb db = new MyDb();
@@ -80,44 +81,62 @@ namespace FIT_PONG.Controllers
         public IActionResult Edit(int id)
         {
             MyDb db = new MyDb();
-            Takmicenje obj = db.Takmicenja.Include(tak => tak.Kategorija).Include(tak => tak.Sistem)
-                .Include(tak => tak.Vrsta).Include(tak => tak.Status).SingleOrDefault(y => y.ID == id);
-            if (obj != null)
+            Takmicenje obj = db.Takmicenja.Find(id);
+            if(obj != null)
             {
+                EditTakmicenjeVM ob1 = new EditTakmicenjeVM(obj);
                 ViewBag.kategorije = db.Kategorije.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
                 ViewBag.sistemi = db.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
                 ViewBag.vrste = db.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
                 ViewBag.statusi = db.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-                ViewBag.takmicenje = obj;
-                return View();
+                return View(ob1);
             }
             return Redirect("/Takmicenje/Neuspjeh");
         }
         [HttpPost]
-        public IActionResult Edit(int id, string _naziv, DateTime _pocetakprijava, DateTime _krajprijava,
-            int _minimalniELO, int _kategorijaID, int _sistemID, int _vrstaID, int _statusID,
-           DateTime? _pocetaktakmicenja = null, DateTime? _zavrsetakTakmicenja = null)
+        public IActionResult Edit(EditTakmicenjeVM objekat)
         {
-            MyDb db = new MyDb();
-            Takmicenje obj = db.Takmicenja.Find(id);
-            if (obj != null) 
+            //treba skontat provjeru za editovanje imena,da nije duplikat tj da u tom slucaju nema vise od jednog imena 
+            //takvog u bazi ako nisi mijenjao ime takmicenja npr
+            if(ModelState.IsValid)
             {
-                try {
-                    obj.setAtribute(_naziv, _pocetakprijava, _krajprijava, _minimalniELO, _kategorijaID,
-                    _sistemID, _vrstaID, _statusID, _zavrsetakTakmicenja.GetValueOrDefault(),
-                    _pocetaktakmicenja.GetValueOrDefault());
-                    db.Takmicenja.Update(obj);
-                    db.SaveChanges();
-                    db.Dispose();
-                    return Redirect("/Takmicenje/Prikaz/?id=" + id);
-                }
-                catch (DbUpdateException err)
+                if(objekat.RokZavrsetkaPrijave.Date.CompareTo(objekat.RokPocetkaPrijave.Date) < 0)
                 {
-                    ModelState.AddModelError("", "Doslo je do greške. " + "Pokušajte opet ");
+                    return Redirect("/Takmicenje/Neuspjeh");
+                }
+                MyDb db = new MyDb();
+                Takmicenje obj = db.Takmicenja.Find(objekat.ID);
+                if(obj!=null)
+                {
+                    try
+                    {
+                        obj.Naziv = objekat.Naziv;
+                        obj.DatumPocetka = objekat.DatumPocetka ?? null;
+                        obj.DatumZavrsetka = objekat.DatumZavrsetka ?? null;
+                        obj.RokPocetkaPrijave = objekat.RokPocetkaPrijave;
+                        obj.RokZavrsetkaPrijave = objekat.RokZavrsetkaPrijave;
+                        obj.MinimalniELO = objekat.MinimalniELO;
+                        obj.KategorijaID = objekat.KategorijaID;
+                        obj.VrstaID = objekat.VrstaID;
+                        obj.StatusID = objekat.StatusID;
+                        db.Update(obj);
+                        db.SaveChanges();
+                        db.Dispose();
+                        return Redirect("/Takmicenje/Prikaz/" + obj.ID);
+                     }
+                    catch(DbUpdateException er)
+                    {
+
+                    }
                 }
             }
-
-            return Redirect("/Takmicenje/Neuspjeh");
+            MyDb db1 = new MyDb();
+            ViewBag.kategorije = db1.Kategorije.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+            ViewBag.sistemi = db1.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+            ViewBag.vrste = db1.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
+            ViewBag.statusi = db1.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+            db1.Dispose();
+            return View(objekat);
         }
         public IActionResult Obrisi(int? id)
         {
@@ -147,7 +166,7 @@ namespace FIT_PONG.Controllers
                 db.Remove(obj);
                 db.SaveChanges();
                 db.Dispose();
-                return View("Index");
+                return Redirect("/Takmicenje/Index");
             }
             catch (DbUpdateException err)
             {

@@ -31,14 +31,18 @@ namespace FIT_PONG.ViewModels.TakmicenjeVMs
         {
             ID = obj.ID;
             Naziv = obj.Naziv;
-            DatumPocetka = obj.DatumPocetka.GetValueOrDefault();
-            DatumZavrsetka = obj.DatumZavrsetka.GetValueOrDefault();
+            DatumPocetka = obj.DatumPocetka ?? null;
+            DatumZavrsetka = obj.DatumZavrsetka ?? null;
             RokPocetkaPrijave = obj.RokPocetkaPrijave;
             RokZavrsetkaPrijave = obj.RokZavrsetkaPrijave;
             MinimalniELO = obj.MinimalniELO;
-            KategorijaID = obj.Kategorija.ID;
-            VrstaID = obj.Vrsta.ID;
-            StatusID = obj.Status.ID;
+            KategorijaID = obj.KategorijaID;
+            VrstaID = obj.VrstaID;
+            StatusID = obj.StatusID;
+        }
+        public EditTakmicenjeVM()
+        {
+
         }
     }
 }
