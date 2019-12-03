@@ -31,27 +31,45 @@ namespace FIT_PONG.Controllers
             }
             return Redirect("/Objava/Neuspjeh");
         }
-        public IActionResult Dodaj()
+        public IActionResult Dodaj(int ID)
         {
-            return View();
+            return View(new ObjavaUnosVM {FeedID = ID });
         }
         [HttpPost]
         public IActionResult Dodaj(ObjavaUnosVM obj)
         {
             if (ModelState.IsValid)
             {
-                Objava nova = new Objava
-                {
-                    Naziv = obj.Naziv,
-                    Content = obj.Content,
-                    DatumKreiranja = DateTime.Now,
-                    DatumIzmjene = DateTime.Now
-                };
                 MyDb db = new MyDb();
-                db.Objave.Add(nova);
-                db.SaveChanges();
-                db.Dispose();
-                return Redirect("/Objava/Prikaz/" + nova.ID);
+                Feed FidObjekat = db.Feeds.Find(obj.FeedID);//mora pripadati objava nekom fidu inace nista
+                if (FidObjekat != null)
+                {
+                    try
+                    {
+                        Objava nova = new Objava
+                        {
+                            Naziv = obj.Naziv,
+                            Content = obj.Content,
+                            DatumKreiranja = DateTime.Now,
+                            DatumIzmjene = DateTime.Now
+                        };
+                        db.Objave.Add(nova);
+                        db.SaveChanges();
+                        FeedObjava novaFidObjava = new FeedObjava
+                        {
+                            FeedID = FidObjekat.ID,
+                            ObjavaID = nova.ID
+                        };
+                        db.FeedsObjave.Add(novaFidObjava);
+                        db.SaveChanges();
+                        db.Dispose();
+                        return Redirect("/Feed/Prikaz/" + FidObjekat.ID);
+                    }
+                    catch(DbUpdateException er)
+                    {
+                        ModelState.AddModelError("","PRoblem u kreiranju");
+                    }
+                }
             }
 
             return View(obj);

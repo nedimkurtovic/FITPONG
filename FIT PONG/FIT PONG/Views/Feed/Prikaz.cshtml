@@ -5,7 +5,8 @@
 }
 
 <h1>@fid.naziv</h1>
-
+<a asp-controller="Objava" asp-action="Dodaj" asp-route-id="@fid.ID" class="btn btn-outline-primary">Dodaj objavu</a>
+<br /><br />
 @if (fid.Objave.Count() == 0)
 {
     <p>Trenutno nema objava dodajte nekad novu</p>
@@ -15,14 +16,28 @@ else
     <table>
         @foreach (var x in fid.Objave)
         {
-            <tr>
+
+            <tr>   
                 <td>
+                    <table>
+                        <tr>
+                            <td><a asp-controller="Objava" asp-action="Prikaz" asp-route-id="@x.ID" >@x.Naziv</a></td>
+                            <td class="small">@x.DatumKreiranja</td>
+                            <td class="small">Napisao/la : </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="border-bottom:1px solid">
                     @x.Content
                 </td>
             </tr>
+            
         }
     </table>
 }
+<br /><br />
 <input type="button" value="Edit" onclick="window.location.href='/Feed/Edit/@fid.ID'" />
 <input type="button" value="Obrisi" onclick="window.location.href='/Feed/Obrisi/@fid.ID'"  />
 
