@@ -85,8 +85,10 @@ namespace FIT_PONG.Controllers
             {
                 EditTakmicenjeVM ob1 = new EditTakmicenjeVM(obj);
                 LoadViewBag();
+                db.Dispose();
                 return View(ob1);
             }
+            db.Dispose();
             return Redirect("/Takmicenje/Neuspjeh");
         }
         [HttpPost]
