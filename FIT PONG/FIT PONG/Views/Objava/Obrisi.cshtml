@@ -1,0 +1,9 @@
+﻿@model FIT_PONG.ViewModels.ObjavaVMS.ObjavaPrikazVM
+@{
+    ViewData["Title"] = "Obrisi";
+}
+
+<h1>Da li sigurno zelite obrisati @Model.Naziv ?</h1>
+<h2>@Model.Content</h2>
+<a asp-action="PotvrdaBrisanja" asp-route-id="@Model.ID" class="btn btn-danger">DA</a>
+<a asp-action="Prikaz" asp-route-id="@Model.ID" class="btn btn-light">NE</a>
