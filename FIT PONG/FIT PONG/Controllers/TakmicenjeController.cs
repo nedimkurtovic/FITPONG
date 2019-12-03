@@ -41,25 +41,24 @@ namespace FIT_PONG.Controllers
                     ModelState.AddModelError("", "Doslo je do greške. " + "Pokušajte opet ");
                 }
             }
+            LoadViewBag();
+            return View(objekat);
+        }
+        public IActionResult Dodaj()
+        {
+            LoadViewBag();
+            return View();
+        }
+        public void LoadViewBag()
+        {
             MyDb db1 = new MyDb();
             ViewBag.kategorije = db1.Kategorije.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
             ViewBag.sistemi = db1.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
             ViewBag.vrste = db1.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
             ViewBag.statusi = db1.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
             db1.Dispose();
-            return View(objekat);
         }
-        public IActionResult Dodaj()
-        {
-            MyDb db = new MyDb();
-            ViewBag.kategorije = db.Kategorije.Select(s=>new ComboBoxVM {ID=s.ID,Opis=s.Opis }).ToList();
-            ViewBag.sistemi = db.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-            ViewBag.vrste = db.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
-            ViewBag.statusi = db.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-            db.Dispose();
-            return View();
-        }
-      
+
         public IActionResult Prikaz(int? id)
         {
             if(id == null)
@@ -85,10 +84,7 @@ namespace FIT_PONG.Controllers
             if(obj != null)
             {
                 EditTakmicenjeVM ob1 = new EditTakmicenjeVM(obj);
-                ViewBag.kategorije = db.Kategorije.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-                ViewBag.sistemi = db.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-                ViewBag.vrste = db.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
-                ViewBag.statusi = db.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+                LoadViewBag();
                 return View(ob1);
             }
             return Redirect("/Takmicenje/Neuspjeh");
@@ -130,12 +126,7 @@ namespace FIT_PONG.Controllers
                     }
                 }
             }
-            MyDb db1 = new MyDb();
-            ViewBag.kategorije = db1.Kategorije.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-            ViewBag.sistemi = db1.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-            ViewBag.vrste = db1.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
-            ViewBag.statusi = db1.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-            db1.Dispose();
+            LoadViewBag();
             return View(objekat);
         }
         public IActionResult Obrisi(int? id)
