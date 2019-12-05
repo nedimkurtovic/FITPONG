@@ -13,5 +13,6 @@ namespace FIT_PONG.ViewModels.ObjavaVMS
         public string Naziv { get; set; }
         [Required(ErrorMessage = "Ovo polje je obavezno.")]
         public string Content { get; set; }
+        public int FeedID { get; set; }
     }
 }
