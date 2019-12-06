@@ -11,12 +11,17 @@ namespace FIT_PONG.Controllers
 {
     public class ObjavaController : Controller
     {
-
+        //readonly je nesto slicno constu ali nije ni blizu,const se moze samo pri deklaraciji incijalizovat dok se readonly
+        //varijabla moze incijalizovati samo u konstruktoru i nigdje vise
+        private readonly MyDb db;
+        public ObjavaController(MyDb instanca)
+        {
+            db = instanca;
+        }
         public IActionResult Prikaz(int ? id)
         {
             if (id == null)
                 return Redirect("/Objava/Neuspjeh");
-            MyDb db = new MyDb();
             Objava obj = db.Objave.Find(id);
             if(obj != null)
             {
@@ -29,10 +34,8 @@ namespace FIT_PONG.Controllers
                     DatumKreiranja = obj.DatumKreiranja,
                     FeedID = db.FeedsObjave.Where(x => x.ObjavaID == obj.ID).Select(s => s.FeedID).SingleOrDefault()
                 };
-                db.Dispose();
                 return View(novi);
             }
-            db.Dispose();
             return Redirect("/Objava/Neuspjeh");
         }
         public IActionResult Dodaj(int ID)
@@ -44,7 +47,6 @@ namespace FIT_PONG.Controllers
         {
             if (ModelState.IsValid)
             {
-                MyDb db = new MyDb();
                 Feed FidObjekat = db.Feeds.Find(obj.FeedID);//mora pripadati objava nekom fidu inace nista
                 if (FidObjekat != null)
                 {
@@ -66,12 +68,10 @@ namespace FIT_PONG.Controllers
                         };
                         db.FeedsObjave.Add(novaFidObjava);
                         db.SaveChanges();
-                        db.Dispose();
                         return Redirect("/Feed/Prikaz/" + FidObjekat.ID);
                     }
                     catch(DbUpdateException er)
                     {
-                        db.Dispose();
                         ModelState.AddModelError("","PRoblem u kreiranju");
                     }
                 }
@@ -84,7 +84,6 @@ namespace FIT_PONG.Controllers
         {
             if(ModelState.IsValid)
             {
-                MyDb db = new MyDb();
                 Objava obj = db.Objave.Find(objekat.ID);
                 if(obj != null)
                 {
@@ -95,12 +94,10 @@ namespace FIT_PONG.Controllers
                         obj.DatumIzmjene = DateTime.Now;
                         db.Update(obj);//navodno ovo updateuje citav zapis i sporije je,ima kao funkcija changetracker ili nesto tako ona mijenja samo promijenjene vrijednosti
                         db.SaveChanges();
-                        db.Dispose();
                         return Redirect("/Objava/Prikaz/" + obj.ID);
                     }
                     catch(DbUpdateException er)
                     {
-                        db.Dispose();
                         ModelState.AddModelError("", "Greska prilikom updatea provjerite info" + er.Message);
                     }
                 }
@@ -110,9 +107,7 @@ namespace FIT_PONG.Controllers
 
         public IActionResult Edit(int id)
         {
-            MyDb db = new MyDb();
             Objava obj = db.Objave.Find(id);
-            db.Dispose();
             if(obj != null)
             {
                 ObjavaUnosVM objVM = new ObjavaUnosVM
@@ -131,7 +126,6 @@ namespace FIT_PONG.Controllers
             {
                 return Redirect("Neuspjeh");
             }
-            MyDb db = new MyDb();
             Objava obj = db.Objave.Find(id);
             if(obj != null)
             {
@@ -150,7 +144,6 @@ namespace FIT_PONG.Controllers
         }
         public IActionResult PotvrdaBrisanja(int id)
         {
-            MyDb db = new MyDb();
             Objava obj = db.Objave.Find(id);
             if(obj != null)
             {
@@ -161,15 +154,12 @@ namespace FIT_PONG.Controllers
                         db.FeedsObjave.Remove(FidObj);
                     db.Objave.Remove(obj);
                     db.SaveChanges();
-                    db.Dispose();
                     return Redirect("/Objava/Uspjeh");
                 }
                 catch(DbUpdateException er)
                 {
-                    db.Dispose();
                 }
             }
-            db.Dispose();
             return Redirect("/Objava/Neuspjeh");
         }
         public IActionResult Neuspjeh()

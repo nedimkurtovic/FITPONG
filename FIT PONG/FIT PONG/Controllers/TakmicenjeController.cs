@@ -12,10 +12,16 @@ namespace FIT_PONG.Controllers
 {
     public class TakmicenjeController : Controller
     {
-        //HITNO NAC SOLUCIJU ZA VIEWBAGOVE PREVISE NEPOTREBNOG KODA
+        //TODOS
+        /*Implementirati dependent dropdownliste sto se tice kategorije takmicenja i vrste takmicenja,ako se odabere mix
+         Implementirati za datume,ne moze takmicenje zavrsiti prije pocetka.......*/
+        private readonly MyDb db;
+        public TakmicenjeController(MyDb instanca)
+        {
+            db = instanca;
+        }
         public IActionResult Index()
         {
-            MyDb db = new MyDb();
             List<TakmicenjeVM> takmicenja = db.Takmicenja.Include(tak=>tak.Kategorija).Include(tak=>tak.Sistem)
                 .Include(tak=>tak.Vrsta).Include(tak=>tak.Status).Select(s => new TakmicenjeVM
             (s, db.Prijave.Select(f => f.TakmicenjeID == s.ID).Count())).ToList();
@@ -30,10 +36,8 @@ namespace FIT_PONG.Controllers
                 try
                 {
                     Takmicenje novo = new Takmicenje(objekat);
-                    MyDb db = new MyDb();
                     db.Add(novo);
                     db.SaveChanges();
-                    db.Dispose();
                     return Redirect("/Takmicenje/Prikaz/" + novo.ID);
                 }
                 catch(DbUpdateException er)
@@ -51,12 +55,10 @@ namespace FIT_PONG.Controllers
         }
         public void LoadViewBag()
         {
-            MyDb db1 = new MyDb();
-            ViewBag.kategorije = db1.Kategorije.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-            ViewBag.sistemi = db1.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-            ViewBag.vrste = db1.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
-            ViewBag.statusi = db1.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
-            db1.Dispose();
+            ViewBag.kategorije = db.Kategorije.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+            ViewBag.sistemi = db.SistemiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
+            ViewBag.vrste = db.VrsteTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Naziv }).ToList();
+            ViewBag.statusi = db.StatusiTakmicenja.Select(s => new ComboBoxVM { ID = s.ID, Opis = s.Opis }).ToList();
         }
 
         public IActionResult Prikaz(int? id)
@@ -66,7 +68,6 @@ namespace FIT_PONG.Controllers
                 return View("/Takmicenje/Neuspjeh");
             }
             //potreban query za broj rundi,u bracketima se nalazi takmicenjeID ,bar bi trebalo opotrebna migracija
-            MyDb db = new MyDb();
             Takmicenje obj = db.Takmicenja.Include(tak => tak.Kategorija).Include(tak => tak.Sistem)
                 .Include(tak => tak.Vrsta).Include(tak => tak.Status).SingleOrDefault(y=> y.ID == id);
             if (obj != null)
@@ -79,16 +80,13 @@ namespace FIT_PONG.Controllers
         }
         public IActionResult Edit(int id)
         {
-            MyDb db = new MyDb();
             Takmicenje obj = db.Takmicenja.Find(id);
             if(obj != null)
             {
                 EditTakmicenjeVM ob1 = new EditTakmicenjeVM(obj);
                 LoadViewBag();
-                db.Dispose();
                 return View(ob1);
             }
-            db.Dispose();
             return Redirect("/Takmicenje/Neuspjeh");
         }
         [HttpPost]
@@ -102,7 +100,6 @@ namespace FIT_PONG.Controllers
                 {
                     return Redirect("/Takmicenje/Neuspjeh");
                 }
-                MyDb db = new MyDb();
                 Takmicenje obj = db.Takmicenja.Find(objekat.ID);
                 if(obj!=null)
                 {
@@ -119,7 +116,6 @@ namespace FIT_PONG.Controllers
                         obj.StatusID = objekat.StatusID;
                         db.Update(obj);
                         db.SaveChanges();
-                        db.Dispose();
                         return Redirect("/Takmicenje/Prikaz/" + obj.ID);
                      }
                     catch(DbUpdateException er)

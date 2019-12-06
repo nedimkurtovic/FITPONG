@@ -43,6 +43,7 @@ namespace FIT_PONG.Models
         public DbSet<FeedObjava> FeedsObjave { get; set; }
 
 
+        public MyDb() { }
         //ostaje pitanje za razmotrit kako ce se ovo ponasat sa identitycontextom jer cemo morat mijenjat ono sto nasljedjuje
         //nas kontekst(taj konteskt dodaje one tabele i to),vjerujem da i on nasljedjuje context
         //obicni samo ne znam kako ce se konkretno ponasati ovo base(opcije) da li ce identitycontext znat to proslijedit??
