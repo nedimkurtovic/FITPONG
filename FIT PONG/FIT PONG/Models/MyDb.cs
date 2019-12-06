@@ -51,6 +51,7 @@ namespace FIT_PONG.Models
         {
             //Ova funkcija sad postaje prazna jer cemo injectat u konstruktor kreirane MyDb options
         }
+        public MyDb() { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

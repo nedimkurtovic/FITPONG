@@ -23,7 +23,7 @@ namespace FIT_PONG.Controllers
         public IActionResult Index()
         {
             List<TakmicenjeVM> takmicenja = db.Takmicenja.Include(tak=>tak.Kategorija).Include(tak=>tak.Sistem)
-                .Include(tak=>tak.Vrsta).Include(tak=>tak.Status).Select(s => new TakmicenjeVM
+                .Include(tak=>tak.Vrsta).Include(tak=>tak.Status).Include(tak=>tak.Feed).Select(s => new TakmicenjeVM
             (s, db.Prijave.Select(f => f.TakmicenjeID == s.ID).Count())).ToList();
             ViewData["TakmicenjaKey"] = takmicenja;
             return View();
@@ -33,16 +33,31 @@ namespace FIT_PONG.Controllers
         {
             if(ModelState.IsValid && !PostojiTakmicenje(objekat.Naziv))
             {
-                try
+                using (var transakcija = db.Database.BeginTransaction())//sigurnost u opasnim situacijama 
                 {
-                    Takmicenje novo = new Takmicenje(objekat);
-                    db.Add(novo);
-                    db.SaveChanges();
-                    return Redirect("/Takmicenje/Prikaz/" + novo.ID);
-                }
-                catch(DbUpdateException er)
-                {
-                    ModelState.AddModelError("", "Doslo je do greške. " + "Pokušajte opet ");
+                    try
+                    {
+                        Takmicenje novo = new Takmicenje(objekat);
+                        Feed TakmicenjeFeed = new Feed
+                        {
+                            Naziv = novo.Naziv + " feed",
+                            DatumModifikacije = DateTime.Now
+                        };
+                        db.Feeds.Add(TakmicenjeFeed);
+                        db.SaveChanges();
+                        novo.FeedID = TakmicenjeFeed.ID;
+
+                        db.Add(novo);
+                        db.SaveChanges();
+
+                        transakcija.Commit();
+                        return Redirect("/Takmicenje/Prikaz/" + novo.ID);
+                    }
+                    catch (DbUpdateException er)
+                    {
+                        transakcija.Rollback();
+                        ModelState.AddModelError("", "Doslo je do greške prilikom spašavanja u bazu");
+                    }
                 }
             }
             LoadViewBag();
@@ -69,15 +84,15 @@ namespace FIT_PONG.Controllers
             }
             //potreban query za broj rundi,u bracketima se nalazi takmicenjeID ,bar bi trebalo opotrebna migracija
             Takmicenje obj = db.Takmicenja.Include(tak => tak.Kategorija).Include(tak => tak.Sistem)
-                .Include(tak => tak.Vrsta).Include(tak => tak.Status).SingleOrDefault(y=> y.ID == id);
+                .Include(tak => tak.Vrsta).Include(tak => tak.Status).Include(tak=>tak.Feed).SingleOrDefault(y=> y.ID == id);
             if (obj != null)
             {
                 TakmicenjeVM takmicenje = new TakmicenjeVM(obj);
-                ViewData["takmicenjeKey"] = takmicenje;
-                return View();
+                return View(takmicenje);
             }
             return Redirect("/Takmicenje/Neuspjeh");
         }
+
         public IActionResult Edit(int id)
         {
             Takmicenje obj = db.Takmicenja.Find(id);
@@ -135,7 +150,6 @@ namespace FIT_PONG.Controllers
             }
             else
             {
-                MyDb db = new MyDb();
                 Takmicenje obj = db.Takmicenja.Find(id);
                 if (obj != null)
                 {
@@ -150,11 +164,10 @@ namespace FIT_PONG.Controllers
         {
             try
             {
-                MyDb db = new MyDb();
-                Takmicenje obj = db.Takmicenja.Find(ID);
-                db.Remove(obj);
+                Takmicenje obj = db.Takmicenja.Include(x => x.Feed).Where(c => c.ID == ID).SingleOrDefault();
+                db.Feeds.Remove(obj.Feed);
+                db.Takmicenja.Remove(obj);
                 db.SaveChanges();
-                db.Dispose();
                 return Redirect("/Takmicenje/Index");
             }
             catch (DbUpdateException err)
@@ -166,7 +179,6 @@ namespace FIT_PONG.Controllers
         }
         public bool PostojiTakmicenje(string naziv)
         {
-            MyDb db = new MyDb();
             if (db.Takmicenja.Where(s => s.Naziv == naziv).Count() > 0)
                 return true;
             return false;

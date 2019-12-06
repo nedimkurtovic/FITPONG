@@ -8,6 +8,10 @@
   <ItemGroup>
     <Compile Remove="Migrations\20191119151848_TakmicenjeFeed.cs" />
     <Compile Remove="Migrations\20191119151848_TakmicenjeFeed.Designer.cs" />
+    <Compile Remove="Migrations\20191206125946_TakmicenjeFeedovi.cs" />
+    <Compile Remove="Migrations\20191206125946_TakmicenjeFeedovi.Designer.cs" />
+    <Compile Remove="Migrations\20191206130624_NullableFeedID.cs" />
+    <Compile Remove="Migrations\20191206130624_NullableFeedID.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

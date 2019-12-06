@@ -1,49 +1,45 @@
-﻿@using FIT_PONG.ViewModels;
+﻿@model FIT_PONG.ViewModels.TakmicenjeVMs.TakmicenjeVM;
 @{
     ViewData["Title"] = "Prikaz";
-    TakmicenjeVM tak = (TakmicenjeVM)ViewData["takmicenjeKey"];
 }
 
-<h1>@tak.Naziv</h1>
+<h1>@Model.Naziv</h1>
 <table>
     <tr>
-        <td>Naziv</td>
-        <td>@tak.Naziv </td>
-    </tr>
-    <tr>
         <td>Pocetak prijava</td>
-        <td>@tak.DatumPocetkaPrijava.ToString()</td>
+        <td>@Model.DatumPocetkaPrijava.ToString()</td>
     </tr>
     <tr>
         <td>Kraj prijava</td>
-        <td>@tak.DatumZavrsetkaPrijava.ToString()</td>
+        <td>@Model.DatumZavrsetkaPrijava.ToString()</td>
     </tr>
     <tr>
         <td>Minimalni ELO</td>
-        <td>@tak.MinimalniELO</td>
+        <td>@Model.MinimalniELO</td>
     </tr>
     <tr>
         <td>Kategorija</td>
-        <td>@tak.Kategorija</td>
+        <td>@Model.Kategorija</td>
     </tr>
     <tr>
         <td>Sistem</td>
-        <td>@tak.Sistem</td>
+        <td>@Model.Sistem</td>
     </tr>
     <tr>
         <td>Vrsta</td>
-        <td>@tak.Vrsta</td>
+        <td>@Model.Vrsta</td>
     </tr>
     <tr>
         <td>Status</td>
-        <td>@tak.Status</td>
+        <td>@Model.Status</td>
     </tr>
     <tr>
         <td>Datum pocetka</td>
-        <td>@tak.DatumPocetkaPrijava.ToString()</td>
+        <td>@Model.DatumPocetkaPrijava.ToString()</td>
     </tr>
-    </table>
+</table>
+<a asp-controller="Takmicenje" asp-action="Edit" asp-route-id="@Model.ID" class="btn-info">Edit</a>
+<a asp-controller="Takmicenje" asp-action="Obrisi" asp-route-id="@Model.ID" class="btn-outline-danger">Obrisi</a>
+<button onclick="window.location.href='/Takmicenje/Edit?id=@Model.ID'">EDIT</button>
+<button onclick="window.location.href='/Takmicenje/Obrisi?id=@Model.ID'">OBRISI</button>
 
-    <button onclick="window.location.href='/Takmicenje/Edit?id=@tak.ID'">EDIT</button>
-    <button onclick="window.location.href='/Takmicenje/Obrisi?id=@tak.ID'" >OBRISI</button>
-    <p>samo kreator smije dirati ove batne,nemojte vi ostali</p>

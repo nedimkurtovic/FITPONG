@@ -2,16 +2,7 @@
 @{
     ViewData["Title"] = "Edit";
 }
-@* ID = obj.ID;
-    Naziv = obj.Naziv;
-    DatumPocetka = obj.DatumPocetka.GetValueOrDefault();
-    DatumZavrsetka = obj.DatumZavrsetka.GetValueOrDefault();
-    RokPocetkaPrijave = obj.RokPocetkaPrijave;
-    RokZavrsetkaPrijave = obj.RokZavrsetkaPrijave;
-    MinimalniELO = obj.MinimalniELO;
-    KategorijaID = obj.KategorijaID;
-    VrstaID = obj.VrstaID;
-    StatusID = obj.StatusID;*@
+
 <form asp-action="Edit" method="post">
     <table>
         @Html.HiddenFor(x => x.ID)

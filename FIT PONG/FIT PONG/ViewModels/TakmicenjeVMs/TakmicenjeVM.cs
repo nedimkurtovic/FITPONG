@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FIT_PONG.ViewModels
-{
+namespace FIT_PONG.ViewModels.TakmicenjeVMs 
+{ 
     public class TakmicenjeVM
     {
         public int ID { get; set; }
@@ -22,6 +22,7 @@ namespace FIT_PONG.ViewModels
         public string Vrsta{ get; set; }
         public string Status { get; set; }
         public int BrojPrijavljenih { get; set; }
+        public int FeedID { get; set; }
 
         public TakmicenjeVM(Takmicenje obj, int brojPrijavljenih = 0)
         {
@@ -39,6 +40,7 @@ namespace FIT_PONG.ViewModels
             Vrsta = obj.Vrsta.Naziv;
             Status = obj.Status.Opis;
             BrojPrijavljenih = brojPrijavljenih;
+            FeedID = obj.FeedID;
         }
     }
 }
