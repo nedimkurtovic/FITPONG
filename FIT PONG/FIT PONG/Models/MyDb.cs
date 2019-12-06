@@ -48,12 +48,16 @@ namespace FIT_PONG.Models
             //string serverTala = "(local)\\MSSQLSERVER_OLAP";
             //string serverNetza = ".";
 
-            optionsBuilder.UseSqlServer(@"Server=app.fit.ba,1431; 
-                                          Database=FIT_PONG;
-                                          Trusted_Connection=False;
-                                          MultipleActiveResultSets=True;
-                                          User ID=fitpong;
-                                          Password=F!tP0ng_2019");
+            //optionsBuilder.UseSqlServer(@"Server=app.fit.ba,1431; 
+            //                              Database=FIT_PONG;
+            //                              Trusted_Connection=False;
+            //                              MultipleActiveResultSets=True;
+            //                              User ID=fitpong;
+            //                              Password=F!tP0ng_2019");
+            optionsBuilder.UseSqlServer(@"Server=.; 
+                                          Database=FIT_PONG_TESTNA;
+                                          Trusted_Connection=True;
+                                          MultipleActiveResultSets=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
