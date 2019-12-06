@@ -38,8 +38,7 @@
         <td>@Model.DatumPocetkaPrijava.ToString()</td>
     </tr>
 </table>
-<a asp-controller="Takmicenje" asp-action="Edit" asp-route-id="@Model.ID" class="btn-info">Edit</a>
-<a asp-controller="Takmicenje" asp-action="Obrisi" asp-route-id="@Model.ID" class="btn-outline-danger">Obrisi</a>
-<button onclick="window.location.href='/Takmicenje/Edit?id=@Model.ID'">EDIT</button>
-<button onclick="window.location.href='/Takmicenje/Obrisi?id=@Model.ID'">OBRISI</button>
+<a asp-controller="Takmicenje" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a>
+<a asp-controller="Takmicenje" asp-action="Obrisi" asp-route-id="@Model.ID" class="btn btn-outline-danger">Obrisi</a>
+
 
