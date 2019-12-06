@@ -42,8 +42,7 @@ namespace FIT_PONG.Models
         public DbSet<Feed> Feeds { get; set; }
         public DbSet<FeedObjava> FeedsObjave { get; set; }
 
-        public MyDb() { }
-        public MyDb(DbContextOptions<MyDb> opcije) : base(opcije) { }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //string serverTala = "(local)\\MSSQLSERVER_OLAP";
@@ -55,10 +54,10 @@ namespace FIT_PONG.Models
             //                              MultipleActiveResultSets=True;
             //                              User ID=fitpong;
             //                              Password=F!tP0ng_2019");
-            //optionsBuilder.UseSqlServer(@"Server=.; 
-            //                              Database=FIT_PONG_TESTNA;
-            //                              Trusted_Connection=True;
-            //                              MultipleActiveResultSets=True;");
+            optionsBuilder.UseSqlServer(@"Server=.; 
+                                          Database=FIT_PONG_TESTNA;
+                                          Trusted_Connection=True;
+                                          MultipleActiveResultSets=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
