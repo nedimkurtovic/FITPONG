@@ -12,5 +12,7 @@ namespace FIT_PONG.ViewModels.ObjavaVMS
         public string Content { get; set; }
         public DateTime DatumKreiranja { get; set; }
         public DateTime DatumIzmjene { get; set; }
+        public int FeedID { get; set; }
+
     }
 }

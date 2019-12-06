@@ -11,6 +11,7 @@ namespace FIT_PONG.Controllers
 {
     public class ObjavaController : Controller
     {
+
         public IActionResult Prikaz(int ? id)
         {
             if (id == null)
@@ -25,10 +26,13 @@ namespace FIT_PONG.Controllers
                     Naziv = obj.Naziv,
                     Content = obj.Content,
                     DatumIzmjene = obj.DatumIzmjene,
-                    DatumKreiranja = obj.DatumKreiranja
+                    DatumKreiranja = obj.DatumKreiranja,
+                    FeedID = db.FeedsObjave.Where(x => x.ObjavaID == obj.ID).Select(s => s.FeedID).SingleOrDefault()
                 };
+                db.Dispose();
                 return View(novi);
             }
+            db.Dispose();
             return Redirect("/Objava/Neuspjeh");
         }
         public IActionResult Dodaj(int ID)
@@ -67,11 +71,12 @@ namespace FIT_PONG.Controllers
                     }
                     catch(DbUpdateException er)
                     {
+                        db.Dispose();
                         ModelState.AddModelError("","PRoblem u kreiranju");
                     }
                 }
             }
-
+            
             return View(obj);
         }
         [HttpPost]
@@ -88,12 +93,14 @@ namespace FIT_PONG.Controllers
                         obj.Content = objekat.Content;
                         obj.Naziv = objekat.Naziv;
                         obj.DatumIzmjene = DateTime.Now;
-                        db.Update(obj);
+                        db.Update(obj);//navodno ovo updateuje citav zapis i sporije je,ima kao funkcija changetracker ili nesto tako ona mijenja samo promijenjene vrijednosti
                         db.SaveChanges();
+                        db.Dispose();
                         return Redirect("/Objava/Prikaz/" + obj.ID);
                     }
                     catch(DbUpdateException er)
                     {
+                        db.Dispose();
                         ModelState.AddModelError("", "Greska prilikom updatea provjerite info" + er.Message);
                     }
                 }
@@ -159,6 +166,7 @@ namespace FIT_PONG.Controllers
                 }
                 catch(DbUpdateException er)
                 {
+                    db.Dispose();
                 }
             }
             db.Dispose();
