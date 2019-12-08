@@ -121,39 +121,55 @@ namespace FIT_PONG.Controllers
         [HttpPost]
         public IActionResult Edit(EditTakmicenjeVM objekat)
         {
-            //treba skontat provjeru za editovanje imena,da nije duplikat tj da u tom slucaju nema vise od jednog imena 
-            //takvog u bazi ako nisi mijenjao ime takmicenja npr
             if(ModelState.IsValid)
             {
-                if (objekat.RokZavrsetkaPrijave.Date.CompareTo(objekat.RokPocetkaPrijave.Date) < 0)
-                {
-                    
-                }
-                else
+                if (TakmicenjaViseOd(objekat.Naziv,objekat.ID))
+                    ModelState.AddModelError(nameof(objekat.Naziv), "Vec postoji takmicenje u bazi");
+                if (objekat.RokZavrsetkaPrijave.CompareTo(objekat.RokPocetkaPrijave) < 0)
+                    ModelState.AddModelError(nameof(objekat.RokZavrsetkaPrijave), "Datum zavrsetka prijava ne moze biti prije pocetka");
+                if (objekat.DatumPocetka != null && objekat.DatumPocetka < objekat.RokZavrsetkaPrijave)
+                    ModelState.AddModelError(nameof(objekat.DatumPocetka), "Datum pocetka ne moze biti prije zavrsetka prijava");
+                if (objekat.DatumPocetka != null && objekat.DatumZavrsetka != null && objekat.DatumZavrsetka < objekat.DatumPocetka)
+                    ModelState.AddModelError(nameof(objekat.DatumZavrsetka), "Datum pocetka takmicenja ne moze biti prije zavrsetka");
+                if (ModelState.ErrorCount == 0)
                 {
                     Takmicenje obj = db.Takmicenja.Find(objekat.ID);
                     if (obj != null)
                     {
-                        try
+                        using (var transakcija = db.Database.BeginTransaction())
                         {
-                            obj.Naziv = objekat.Naziv;
-                            obj.DatumPocetka = objekat.DatumPocetka ?? null;
-                            obj.DatumZavrsetka = objekat.DatumZavrsetka ?? null;
-                            obj.RokPocetkaPrijave = objekat.RokPocetkaPrijave;
-                            obj.RokZavrsetkaPrijave = objekat.RokZavrsetkaPrijave;
-                            obj.MinimalniELO = objekat.MinimalniELO;
-                            obj.KategorijaID = objekat.KategorijaID;
-                            obj.VrstaID = objekat.VrstaID;
-                            obj.StatusID = objekat.StatusID;
-                            db.Update(obj);
-                            db.SaveChanges();
-                            return Redirect("/Takmicenje/Prikaz/" + obj.ID);
-                        }
-                        catch (DbUpdateException er)
-                        {
+                            try
+                            {
+                                obj.Naziv = objekat.Naziv;
+                                obj.DatumPocetka = objekat.DatumPocetka ?? null;
+                                obj.DatumZavrsetka = objekat.DatumZavrsetka ?? null;
+                                obj.RokPocetkaPrijave = objekat.RokPocetkaPrijave;
+                                obj.RokZavrsetkaPrijave = objekat.RokZavrsetkaPrijave;
+                                obj.MinimalniELO = objekat.MinimalniELO;
+                                obj.KategorijaID = objekat.KategorijaID;
+                                obj.VrstaID = objekat.VrstaID;
+                                obj.StatusID = objekat.StatusID;
+                                db.Update(obj);
+                                db.SaveChanges();
+
+                                //smells fishy here,mada se teoretski ne bi trebalo desiti da ne postoji fid za dato takmicenje 
+                                //ali nesto smells fishy,ja bravo : ako se desi da se obrisao fid iz nekog razloga u bazi nakon kreiranja takmicenja
+                                //mozda bi bilo pametno provjeriti ovdje da li je null mada imam transakciju da me iscupa iz problema
+                                Feed FidObjekat = db.Feeds.Find(obj.FeedID);
+                                FidObjekat.Naziv = obj.Naziv + " feed";
+                                FidObjekat.DatumModifikacije = DateTime.Now;
+                                db.Update(FidObjekat);
+                                db.SaveChanges();
+
+                                transakcija.Commit();
+                                return Redirect("/Takmicenje/Prikaz/" + obj.ID);
+                            }
+                            catch (DbUpdateException er)
+                            {
+                                transakcija.Rollback();
+                            }
 
                         }
-
                     }
                 }
             }
@@ -190,10 +206,15 @@ namespace FIT_PONG.Controllers
             }
             catch (DbUpdateException err)
             {
-                ModelState.AddModelError("", "Doslo je do greške. " + "Pokušajte opet ");
-
+                
             }
             return View("/Takmicenje/Neuspjeh");
+        }
+        public bool TakmicenjaViseOd(string naziv,int ID)
+        {
+            if (db.Takmicenja.Where(s => s.Naziv == naziv && s.ID != ID).Count() > 0)
+                return true;
+            return false;
         }
         public bool PostojiTakmicenje(string naziv)
         {
@@ -206,18 +227,6 @@ namespace FIT_PONG.Controllers
             return View();
         }
         public IActionResult Neuspjeh()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult DatumPrije(DateTime zavrsetak,DateTime pocetak)
-        {
-            if (zavrsetak.CompareTo(pocetak) < 0)
-                return Json($"Datum zavrsetka mora biti nakon pocetka");
-            return Json(true);
-        }
-
-        public IActionResult PostojiTakmicenje()
         {
             return View();
         }
