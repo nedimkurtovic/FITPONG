@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FIT_PONG.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using FIT_PONG.Models;
 using FIT_PONG.ViewModels;
 using FIT_PONG.ViewModels.TakmicenjeVMs;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FIT_PONG.Controllers
 {
@@ -14,7 +13,13 @@ namespace FIT_PONG.Controllers
     {
         //TODOS
         /*Implementirati dependent dropdownliste sto se tice kategorije takmicenja i vrste takmicenja,ako se odabere mix
-         Implementirati za datume,ne moze takmicenje zavrsiti prije pocetka.......*/
+         Implementirati za datume,ne moze takmicenje zavrsiti prije pocetka.......
+         Pocetak takmicenja ne moze biti prije zavrsetka roka prijava
+         
+           Konkretan problem za validacijsku poruku : Posto je koristen html helper on dodaje defaultnu vrijednost ali 
+         nema mogucnost da je disablea tj da primora korisnika da submitta npr kategoriju ili sistem i onda sta se desava 
+         kad korisnik submitta npr Odaberite Kategoriju to se ovdje binda kao "" i iz nekog razloga ne dopusta mmoju errormessage :(
+         isto vrijedi i za datepicker,potrebno naci soluciju hint(nullable sve)*/
         private readonly MyDb db;
         public TakmicenjeController(MyDb instanca)
         {
@@ -31,32 +36,41 @@ namespace FIT_PONG.Controllers
         [HttpPost]
         public IActionResult Dodaj(CreateTakmicenjeVM objekat)
         {
-            if(ModelState.IsValid && !PostojiTakmicenje(objekat.Naziv))
+            if(ModelState.IsValid)
             {
-                using (var transakcija = db.Database.BeginTransaction())//sigurnost u opasnim situacijama 
+                if (PostojiTakmicenje(objekat.Naziv))
+                    ModelState.AddModelError("", "Vec postoji takmicenje u bazi");
+                if (objekat.RokZavrsetkaPrijave.CompareTo(objekat.RokPocetkaPrijave) < 0)
+                    ModelState.AddModelError(nameof(objekat.RokZavrsetkaPrijave), "Datum zavrsetka prijava ne moze biti prije pocetka");
+                if (objekat.DatumPocetka != null && objekat.DatumPocetka < objekat.RokZavrsetkaPrijave)
+                    ModelState.AddModelError(nameof(objekat.DatumPocetka), "Datum pocetka ne moze biti prije zavrsetka prijava");
+                if(ModelState.ErrorCount == 0)
                 {
-                    try
+                    using (var transakcija = db.Database.BeginTransaction())//sigurnost u opasnim situacijama 
                     {
-                        Takmicenje novo = new Takmicenje(objekat);
-                        Feed TakmicenjeFeed = new Feed
+                        try
                         {
-                            Naziv = novo.Naziv + " feed",
-                            DatumModifikacije = DateTime.Now
-                        };
-                        db.Feeds.Add(TakmicenjeFeed);
-                        db.SaveChanges();
-                        novo.FeedID = TakmicenjeFeed.ID;
+                            Takmicenje novo = new Takmicenje(objekat);
+                            Feed TakmicenjeFeed = new Feed
+                            {
+                                Naziv = novo.Naziv + " feed",
+                                DatumModifikacije = DateTime.Now
+                            };
+                            db.Feeds.Add(TakmicenjeFeed);
+                            db.SaveChanges();
+                            novo.FeedID = TakmicenjeFeed.ID;
 
-                        db.Add(novo);
-                        db.SaveChanges();
+                            db.Add(novo);
+                            db.SaveChanges();
 
-                        transakcija.Commit();
-                        return Redirect("/Takmicenje/Prikaz/" + novo.ID);
-                    }
-                    catch (DbUpdateException er)
-                    {
-                        transakcija.Rollback();
-                        ModelState.AddModelError("", "Doslo je do greške prilikom spašavanja u bazu");
+                            transakcija.Commit();
+                            return Redirect("/Takmicenje/Prikaz/" + novo.ID);
+                        }
+                        catch (DbUpdateException er)
+                        {
+                            transakcija.Rollback();
+                            ModelState.AddModelError("", "Doslo je do greške prilikom spašavanja u bazu");
+                        }
                     }
                 }
             }
@@ -111,30 +125,34 @@ namespace FIT_PONG.Controllers
             //takvog u bazi ako nisi mijenjao ime takmicenja npr
             if(ModelState.IsValid)
             {
-                if(objekat.RokZavrsetkaPrijave.Date.CompareTo(objekat.RokPocetkaPrijave.Date) < 0)
+                if (objekat.RokZavrsetkaPrijave.Date.CompareTo(objekat.RokPocetkaPrijave.Date) < 0)
                 {
-                    return Redirect("/Takmicenje/Neuspjeh");
+                    
                 }
-                Takmicenje obj = db.Takmicenja.Find(objekat.ID);
-                if(obj!=null)
+                else
                 {
-                    try
+                    Takmicenje obj = db.Takmicenja.Find(objekat.ID);
+                    if (obj != null)
                     {
-                        obj.Naziv = objekat.Naziv;
-                        obj.DatumPocetka = objekat.DatumPocetka ?? null;
-                        obj.DatumZavrsetka = objekat.DatumZavrsetka ?? null;
-                        obj.RokPocetkaPrijave = objekat.RokPocetkaPrijave;
-                        obj.RokZavrsetkaPrijave = objekat.RokZavrsetkaPrijave;
-                        obj.MinimalniELO = objekat.MinimalniELO;
-                        obj.KategorijaID = objekat.KategorijaID;
-                        obj.VrstaID = objekat.VrstaID;
-                        obj.StatusID = objekat.StatusID;
-                        db.Update(obj);
-                        db.SaveChanges();
-                        return Redirect("/Takmicenje/Prikaz/" + obj.ID);
-                     }
-                    catch(DbUpdateException er)
-                    {
+                        try
+                        {
+                            obj.Naziv = objekat.Naziv;
+                            obj.DatumPocetka = objekat.DatumPocetka ?? null;
+                            obj.DatumZavrsetka = objekat.DatumZavrsetka ?? null;
+                            obj.RokPocetkaPrijave = objekat.RokPocetkaPrijave;
+                            obj.RokZavrsetkaPrijave = objekat.RokZavrsetkaPrijave;
+                            obj.MinimalniELO = objekat.MinimalniELO;
+                            obj.KategorijaID = objekat.KategorijaID;
+                            obj.VrstaID = objekat.VrstaID;
+                            obj.StatusID = objekat.StatusID;
+                            db.Update(obj);
+                            db.SaveChanges();
+                            return Redirect("/Takmicenje/Prikaz/" + obj.ID);
+                        }
+                        catch (DbUpdateException er)
+                        {
+
+                        }
 
                     }
                 }
@@ -191,6 +209,14 @@ namespace FIT_PONG.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult DatumPrije(DateTime zavrsetak,DateTime pocetak)
+        {
+            if (zavrsetak.CompareTo(pocetak) < 0)
+                return Json($"Datum zavrsetka mora biti nakon pocetka");
+            return Json(true);
+        }
+
         public IActionResult PostojiTakmicenje()
         {
             return View();
