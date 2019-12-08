@@ -187,7 +187,11 @@ namespace FIT_PONG.Controllers
                 Takmicenje obj = db.Takmicenja.Find(id);
                 if (obj != null)
                 {
-                    TakmicenjeVM takmicenjeobj = new TakmicenjeVM(obj);
+                    TakmicenjeVM takmicenjeobj = new TakmicenjeVM
+                    {
+                        ID = obj.ID,
+                        Naziv = obj.Naziv
+                    };
                     return View(takmicenjeobj);
                 }
             }

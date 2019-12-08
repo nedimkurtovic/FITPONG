@@ -42,5 +42,6 @@ namespace FIT_PONG.ViewModels.TakmicenjeVMs
             BrojPrijavljenih = brojPrijavljenih;
             FeedID = obj.FeedID;
         }
+        public TakmicenjeVM() { }
     }
 }
