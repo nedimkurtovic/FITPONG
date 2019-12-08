@@ -15,17 +15,19 @@ namespace FIT_PONG.Controllers
         /*
          TODOs::
          1.Implementirati migraciju da takmicenje ima svoj feed napomena :
-         ili omoguciti takmicenju da nema feed tj da je feedid nullable pa onda kad kretor takmicenja zeli
-         on moze buttonom doda novi feed sto ne znam koliko ima smisla jednostavnije bi bilo da se feed automatski kreira
-         prilikom kreiranja takmicenja (za to trebam nauciti tehniku kako da kontroler pozove drugi kontroler 
-         i da mu proslijedi nesto,konkretno u ovom slucaju ja bih zelio da kontroler Takmicenje prilikom akcije
-         dodaj pozove akciju dodaj od feed kontrolera pri cemu ce mu proslijediti nazivfeeda sto moze biti neko 
-         automatksi generisano ime npr imetakmicenja+Feed pri tome akcija prima post metodom parametar createfeedvm
+         feed se automatski kreira
+         prilikom kreiranja takmicenja,ne mora se pozivati akcija drugog kontrolera,dovoljno je napraviti feed objekat unutar
+         prilikom kreiranja takmicenja
 
          */
+
+        private readonly MyDb db;
+        public FeedController(MyDb instanca)
+        {
+            db = instanca;
+        }
         public IActionResult Index()
         {
-            MyDb db = new MyDb();
             List < DisplayFeedVM > feeds = db.Feeds.Select(s => new DisplayFeedVM
             {
                 ID = s.ID,
@@ -40,7 +42,6 @@ namespace FIT_PONG.Controllers
         {
             if(PostojiIsti(novi.Naziv))
             {
-                
                 return View("Postoji");
             }
             if(ModelState.IsValid)
@@ -50,17 +51,14 @@ namespace FIT_PONG.Controllers
                     Naziv = novi.Naziv,
                     DatumModifikacije = DateTime.Now
                 };
-                MyDb db = new MyDb();
                 db.Feeds.Add(obj);
                 db.SaveChanges();
-                db.Dispose();
                 return Redirect("/Feed/Index");
             }
             return View(novi);
         }
         public IActionResult Dodaj()
         {
-            MyDb db = new MyDb();
             ViewBag.takmicenja = db.Takmicenja.Select(s=> new ComboBoxVM
             {
                 ID= s.ID,
@@ -70,7 +68,6 @@ namespace FIT_PONG.Controllers
         }
         public IActionResult Prikaz(int id)
         {
-            MyDb db = new MyDb();
             Feed x = db.Feeds.Find(id);
             if(x != null)
             {
@@ -100,20 +97,17 @@ namespace FIT_PONG.Controllers
 
             if(ModelState.IsValid)
             {
-                MyDb db = new MyDb();
                 Feed obj = db.Feeds.Find(novi.ID);
                 obj.Naziv = novi.Naziv;
                 obj.DatumModifikacije = DateTime.Now;
                 db.Update(obj);
                 db.SaveChanges();
-                db.Dispose();
                 return Redirect("/Feed/Prikaz/"+obj.ID);
             }
             return View("Neuspjeh");
         }
         public IActionResult Edit(int id)
         {
-            MyDb db = new MyDb();
             Feed obj = db.Feeds.Find(id);
             if(obj != null)
             {
@@ -123,18 +117,14 @@ namespace FIT_PONG.Controllers
         }
         private bool PostojiIsti(string naziv)
         {
-            MyDb db = new MyDb();
             if(db.Feeds.Where(s=> s.Naziv == naziv).Count() > 0)
             {
-                db.Dispose();
                 return true;
             }
-            db.Dispose();
             return false;
         }
         public IActionResult Obrisi(int id)
         {
-            MyDb db = new MyDb();
             Feed obj = db.Feeds.Find(id);
             if(obj != null)
             {
@@ -146,13 +136,11 @@ namespace FIT_PONG.Controllers
         }
         public IActionResult PotvrdaBrisanja(int id)
         {
-            MyDb db = new MyDb();
             Feed obj = db.Feeds.Find(id);
             if(obj != null)
             {
                 db.Remove(obj);
                 db.SaveChanges();
-                db.Dispose();
                 return Redirect("Index");
             }
             return Redirect("Neuspjeh");

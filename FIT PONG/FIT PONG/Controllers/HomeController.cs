@@ -11,6 +11,8 @@ namespace FIT_PONG.Controllers
 {
     public class HomeController : Controller
     {
+        /*ovdje ce se na pocetku prikazivati main dashboard,zadnje informacije ili whatever dakle trebat ce i ovdje 
+         bazu omoguciti*/
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)

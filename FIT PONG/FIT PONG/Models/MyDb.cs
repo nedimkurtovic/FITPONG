@@ -43,17 +43,13 @@ namespace FIT_PONG.Models
         public DbSet<FeedObjava> FeedsObjave { get; set; }
 
 
+        //ostaje pitanje za razmotrit kako ce se ovo ponasat sa identitycontextom jer cemo morat mijenjat ono sto nasljedjuje
+        //nas kontekst(taj konteskt dodaje one tabele i to),vjerujem da i on nasljedjuje context
+        //obicni samo ne znam kako ce se konkretno ponasati ovo base(opcije) da li ce identitycontext znat to proslijedit??
+        public MyDb(DbContextOptions<MyDb> opcije) : base(opcije) { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //string serverTala = "(local)\\MSSQLSERVER_OLAP";
-            //string serverNetza = ".";
-
-            optionsBuilder.UseSqlServer(@"Server=app.fit.ba,1431; 
-                                          Database=FIT_PONG;
-                                          Trusted_Connection=False;
-                                          MultipleActiveResultSets=True;
-                                          User ID=fitpong;
-                                          Password=F!tP0ng_2019");
+            //Ova funkcija sad postaje prazna jer cemo injectat u konstruktor kreirane MyDb options
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -12,11 +12,12 @@
 </style>
 <h1>Dodaj novo takmicenje</h1>
 <form asp-action="Dodaj" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <table>
         <tr>
             <td>Naziv</td>
-            <td>@Html.EditorFor(mod=>mod.Naziv)</td>
-            <td>@Html.ValidationMessageFor(s=> s.Naziv,"",new { @class = "text-danger" })</td>
+            <td>@Html.EditorFor(mod => mod.Naziv)</td>
+            <td>@Html.ValidationMessageFor(s => s.Naziv, "", new { @class = "text-danger" })</td>
         </tr>
         <tr>
             <td>Pocetak prijava</td>
