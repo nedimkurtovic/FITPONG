@@ -187,8 +187,8 @@ namespace FIT_PONG.Controllers
                 Takmicenje obj = db.Takmicenja.Find(id);
                 if (obj != null)
                 {
-                    ViewBag.takmicenje = obj;
-                    return View();
+                    TakmicenjeVM takmicenjeobj = new TakmicenjeVM(obj);
+                    return View(takmicenjeobj);
                 }
             }
             return Redirect("/Takmicenje/Neuspjeh");
@@ -196,6 +196,10 @@ namespace FIT_PONG.Controllers
         [HttpPost]
         public IActionResult PotvrdaBrisanja(int ID)
         {
+            //mozda se okrenut na talicev princip tj da ne budu 2 zahtjeva na bazu nego samo alert izbacit 
+            //preko js : da li ste sigurni u operaciju,mada nece se svaki dan brisati takmicenje ne vjerujem da ce veliki load
+            //biti na bazi,ali u svakom slucaju najmanji problem je skratit jednu funkciju i ubacit alert,ovaj princip je
+            //svakako medju prvim koji sam naucio,ne znaci da je ispravan
             try
             {
                 Takmicenje obj = db.Takmicenja.Include(x => x.Feed).Where(c => c.ID == ID).SingleOrDefault();
