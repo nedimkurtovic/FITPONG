@@ -9,13 +9,17 @@ namespace FIT_PONG.Controllers
 {
     public class SistemTakmicenjaController : Controller
     {
+        private readonly MyDb db;
+
+        public SistemTakmicenjaController(MyDb context)
+        {
+            db = context;
+        }
+
         public IActionResult Index()
         {
-            MyDb db = new MyDb();
-
             List<Sistem_Takmicenja> sistemi = db.SistemiTakmicenja.ToList();
             ViewData["sistemiKey"] = sistemi;
-            db.Dispose();
             return View();
         }
 
@@ -27,10 +31,8 @@ namespace FIT_PONG.Controllers
 
             if (ModelState.IsValid)
             {
-                MyDb db = new MyDb();
                 db.SistemiTakmicenja.Add(st);
                 db.SaveChanges();
-                db.Dispose();
                 return Redirect("/SistemTakmicenja");
             }
             return View();
@@ -42,17 +44,14 @@ namespace FIT_PONG.Controllers
             return View();
         }
 
-
         public ActionResult Obrisi(int id)
         {
-            MyDb db = new MyDb();
             Sistem_Takmicenja st = db.SistemiTakmicenja.Find(id);
             if (st != null)
             {
                 db.Remove(st);
                 db.SaveChanges();
             }
-            db.Dispose();
 
             return Redirect("/SistemTakmicenja");
         }
@@ -60,13 +59,10 @@ namespace FIT_PONG.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            MyDb db = new MyDb();
-            Sistem_Takmicenja st= db.SistemiTakmicenja.Find(id);
+            Sistem_Takmicenja st = db.SistemiTakmicenja.Find(id);
             if (st == null)
-            {
                 return Redirect("/SistemTakmicenja");
-            }
-            db.Dispose();
+
             return View(st);
         }
 
@@ -76,33 +72,25 @@ namespace FIT_PONG.Controllers
             if (DaLiPostoji(st.Opis))
                 return View("Greska");
 
-            MyDb db = new MyDb();
             Sistem_Takmicenja sistem_takmicenja = db.SistemiTakmicenja.Find(id);
             if (sistem_takmicenja != null && ModelState.IsValid)
             {
-                sistem_takmicenja.Opis= st.Opis;
+                sistem_takmicenja.Opis = st.Opis;
                 db.SaveChanges();
                 return Redirect("/SistemTakmicenja");
             }
-
-            db.Dispose();
 
             return View(sistem_takmicenja);
         }
 
         bool DaLiPostoji(string opis)
         {
-            MyDb db = new MyDb();
-            List<Sistem_Takmicenja> sistemi= db.SistemiTakmicenja.ToList();
+            List<Sistem_Takmicenja> sistemi = db.SistemiTakmicenja.ToList();
             foreach (var item in sistemi)
             {
                 if (item.Opis == opis)
-                {
-                    db.Dispose();
                     return true;
-                }
             }
-            db.Dispose();
             return false;
         }
 

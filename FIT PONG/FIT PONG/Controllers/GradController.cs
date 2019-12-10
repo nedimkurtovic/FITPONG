@@ -9,13 +9,17 @@ namespace FIT_PONG.Controllers
 {
     public class GradController : Controller
     {
+        private readonly MyDb db;
+
+        public GradController(MyDb context)
+        {
+            db = context;
+        }
+
         public IActionResult Index()
         {
-            MyDb db = new MyDb();
-
             List<Grad> gradovi = db.Gradovi.ToList();
             ViewData["gradoviKey"] = gradovi;
-            db.Dispose();
             return View();
         }
 
@@ -27,10 +31,8 @@ namespace FIT_PONG.Controllers
 
             if (ModelState.IsValid)
             {
-                MyDb db = new MyDb();
                 db.Gradovi.Add(grad);
                 db.SaveChanges();
-                db.Dispose();
                 return Redirect("/Grad");
             }
             return View();
@@ -42,17 +44,14 @@ namespace FIT_PONG.Controllers
             return View();
         }
 
-
         public ActionResult Obrisi(int gradID)
         {
-            MyDb db = new MyDb();
             Grad grad=db.Gradovi.Find(gradID);
             if (grad != null)
             {
                 db.Remove(grad);
                 db.SaveChanges();
             }
-            db.Dispose();
             
             return Redirect("/Grad");
         }
@@ -60,13 +59,11 @@ namespace FIT_PONG.Controllers
         [HttpGet]
         public ActionResult Edit(int gradID)
         {
-            MyDb db = new MyDb();
             Grad grad = db.Gradovi.Find(gradID);
             if (grad == null)
             {
                 return Redirect("/Grad");
             }
-            db.Dispose();
             return View(grad);
         }
 
@@ -76,7 +73,6 @@ namespace FIT_PONG.Controllers
             if (DaLiPostoji(grad.Naziv))
                 return View("Greska");
 
-            MyDb db = new MyDb();
             Grad g = db.Gradovi.Find(ID);
             if (g != null && ModelState.IsValid)
             {
@@ -85,24 +81,18 @@ namespace FIT_PONG.Controllers
                 return Redirect("/Grad");
             }
             
-            db.Dispose();
-
             return View(g);
         }
 
         bool DaLiPostoji(string naziv)
         {
-            MyDb db = new MyDb();
             List<Grad> gradovi = db.Gradovi.ToList();
             foreach (var item in gradovi)
             {
                 if (item.Naziv == naziv)
-                {
-                    db.Dispose();
                     return true;
-                }
             }
-            db.Dispose();
+            
             return false;
         }
 
