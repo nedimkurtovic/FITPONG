@@ -1,15 +1,14 @@
-﻿
+﻿@model FIT_PONG.ViewModels.TakmicenjeVMs.TakmicenjeVM;
 @{
     ViewData["Title"] = "Obrisi";
-    Takmicenje x = ViewBag.takmicenje;
 }
 
 <form action="/Takmicenje/PotvrdaBrisanja" method="post">
     <h1>Da li ste sigurni da zelite obrisati :</h1>
-    <h2>@x.Naziv takmicenje</h2>
+    <h2>@Model.Naziv takmicenje</h2>
     <br />
     <br />
-    @Html.Hidden("ID", x.ID)
-    <input type="submit" value="DA" />
-    <input type="button" value="NE" onclick="window.location.href='/Takmicenje'"/>
+    @Html.HiddenFor(s=> s.ID)
+    <input type="submit" class="btn btn-outline-danger" value="DA" />
+    <a asp-controller="Takmicenje" class="btn btn-outline-primary">NE</a>
 </form>

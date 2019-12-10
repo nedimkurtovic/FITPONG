@@ -21,13 +21,13 @@
         </tr>
         <tr>
             <td>Pocetak prijava</td>
-            <td><input type="date" asp-for="RokPocetkaPrijave" /></td>
+            <td><input type="datetime-local" asp-for="RokPocetkaPrijave" /></td>
             <td>@Html.ValidationMessageFor(s => s.RokPocetkaPrijave, "", new { @class = "text-danger" })</td>
 
         </tr>
         <tr>
             <td>Kraj prijava</td>
-            <td><input type="date" asp-for="RokZavrsetkaPrijave" /></td>
+            <td><input type="datetime-local" asp-for="RokZavrsetkaPrijave" /></td>
             <td>@Html.ValidationMessageFor(s => s.RokZavrsetkaPrijave, "", new { @class = "text-danger" })</td>
 
         </tr>
@@ -63,7 +63,7 @@
         </tr>
         <tr>
             <td>Datum pocetka</td>
-            <td><input type="date" asp-for="DatumPocetka" /></td>
+            <td><input type="datetime-local" asp-for="DatumPocetka" /></td>
             <td>@Html.ValidationMessageFor(s => s.DatumPocetka, "", new { @class = "text-danger" })</td>
 
         </tr>

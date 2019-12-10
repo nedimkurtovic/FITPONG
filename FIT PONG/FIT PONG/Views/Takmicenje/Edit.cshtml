@@ -2,16 +2,7 @@
 @{
     ViewData["Title"] = "Edit";
 }
-@* ID = obj.ID;
-    Naziv = obj.Naziv;
-    DatumPocetka = obj.DatumPocetka.GetValueOrDefault();
-    DatumZavrsetka = obj.DatumZavrsetka.GetValueOrDefault();
-    RokPocetkaPrijave = obj.RokPocetkaPrijave;
-    RokZavrsetkaPrijave = obj.RokZavrsetkaPrijave;
-    MinimalniELO = obj.MinimalniELO;
-    KategorijaID = obj.KategorijaID;
-    VrstaID = obj.VrstaID;
-    StatusID = obj.StatusID;*@
+
 <form asp-action="Edit" method="post">
     <table>
         @Html.HiddenFor(x => x.ID)
@@ -22,12 +13,12 @@
         </tr>
         <tr>
             <td>Pocetak prijava</td>
-            <td><input type="date" asp-for="RokPocetkaPrijave" /></td>
+            <td><input type="datetime-local" asp-for="RokPocetkaPrijave" /></td>
             <td>@Html.ValidationMessageFor(s => s.RokPocetkaPrijave, "", new { @class = "text-danger" })</td>
         </tr>
         <tr>
             <td>Kraj prijava</td>
-            <td><input type="date" asp-for="RokZavrsetkaPrijave" /></td>
+            <td><input type="datetime-local" asp-for="RokZavrsetkaPrijave" /></td>
             <td>@Html.ValidationMessageFor(s => s.RokZavrsetkaPrijave, "", new { @class = "text-danger" })</td>
 
         </tr>
@@ -58,12 +49,12 @@
         </tr>
         <tr>
             <td>Datum pocetka</td>
-            <td><input type="date" asp-for="DatumPocetka" /></td>
+            <td><input type="datetime-local" asp-for="DatumPocetka" /></td>
             <td>@Html.ValidationMessageFor(s => s.DatumPocetka, "", new { @class = "text-danger" })</td>
         </tr>
         <tr>
             <td>Datum zavrsetka</td>
-            <td><input type="date" asp-for="DatumZavrsetka" /></td>
+            <td><input type="datetime-local" asp-for="DatumZavrsetka" /></td>
             <td>@Html.ValidationMessageFor(s => s.DatumZavrsetka, "", new { @class = "text-danger" })</td>
         </tr>
     </table>
