@@ -12,6 +12,12 @@
     <Compile Remove="Migrations\20191206125946_TakmicenjeFeedovi.Designer.cs" />
     <Compile Remove="Migrations\20191206130624_NullableFeedID.cs" />
     <Compile Remove="Migrations\20191206130624_NullableFeedID.Designer.cs" />
+    <Compile Remove="Migrations\20191210221716_ProbaMigracija.cs" />
+    <Compile Remove="Migrations\20191210221716_ProbaMigracija.Designer.cs" />
+    <Compile Remove="Migrations\20191211083639_IgracTabelaTPT.cs" />
+    <Compile Remove="Migrations\20191211083639_IgracTabelaTPT.Designer.cs" />
+    <Compile Remove="Migrations\20191211085141_IgracTabelaTPT.cs" />
+    <Compile Remove="Migrations\20191211085141_IgracTabelaTPT.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
