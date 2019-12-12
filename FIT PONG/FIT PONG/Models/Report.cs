@@ -12,5 +12,6 @@ namespace FIT_PONG.Models
         public DateTime DatumKreiranja { get; set; }
         public string Sadrzaj { get; set; }
         public string Email { get; set; }
+        public List<Attachment> Prilozi{ get; set; }
     }
 }
