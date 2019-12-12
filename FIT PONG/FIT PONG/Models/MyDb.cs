@@ -8,6 +8,7 @@ namespace FIT_PONG.Models
 {
     public class MyDb:DbContext
     {
+        public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Bracket> Brackets { get; set; }
         public DbSet<Igrac_Utakmica> IgraciUtakmice { get; set; }
         public DbSet<Kategorija> Kategorije { get; set; }
