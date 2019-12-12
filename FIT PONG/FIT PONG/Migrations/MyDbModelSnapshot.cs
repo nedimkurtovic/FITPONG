@@ -366,7 +366,7 @@ namespace FIT_PONG.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Opis")
+                    b.Property<string>("Naslov")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sadrzaj")

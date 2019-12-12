@@ -16,11 +16,20 @@ namespace FIT_PONG.Migrations
                 table: "Reports");
 
             migrationBuilder.DropColumn(
+                name: "Opis",
+                table: "Reports");
+
+            migrationBuilder.DropColumn(
                 name: "UserID",
                 table: "Reports");
 
             migrationBuilder.AddColumn<string>(
                 name: "Email",
+                table: "Reports",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Naslov",
                 table: "Reports",
                 nullable: true);
 
@@ -59,6 +68,16 @@ namespace FIT_PONG.Migrations
             migrationBuilder.DropColumn(
                 name: "Email",
                 table: "Reports");
+
+            migrationBuilder.DropColumn(
+                name: "Naslov",
+                table: "Reports");
+
+            migrationBuilder.AddColumn<string>(
+                name: "Opis",
+                table: "Reports",
+                type: "nvarchar(max)",
+                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "UserID",

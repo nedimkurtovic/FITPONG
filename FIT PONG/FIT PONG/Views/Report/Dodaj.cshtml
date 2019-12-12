@@ -1,0 +1,52 @@
+﻿@model FIT_PONG.ViewModels.ReportVMs.ReportUniversalVM
+@{
+    ViewData["Title"] = "Dodaj";
+}
+
+<form asp-controller="Report" asp-action="Dodaj" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <table>
+        <tr>
+            <td>@Html.LabelFor(x => x.Naslov)</td>
+            <td>@Html.EditorFor(x => x.Naslov)</td>
+            <td>@Html.ValidationMessageFor(x => x.Naslov, "", new { @class = "text-danger" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.Email)</td>
+            <td>@Html.EditorFor(x => x.Email)</td>
+            <td>@Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.Sadrzaj)</td>
+            <td>@Html.TextAreaFor(x => x.Sadrzaj)</td>
+            <td>@Html.ValidationMessageFor(x => x.Sadrzaj, "", new { @class = "text-danger" })</td>
+        </tr>
+        <tr>
+            <td>Prilozi</td>
+            <td>
+                <div class="custom-file">
+                    <input asp-for="Prilozi" multiple class="form-control custom-file-input" />
+                    <label asp-for="Prilozi" class="custom-file-label">Odaberite slike</label>
+                </div>
+            </td>
+            <td>@Html.ValidationMessageFor(x => x.Prilozi, "", new { @class = "text-danger" })</td>
+        </tr>
+    </table>
+    <input type="submit" value="Posalji" />
+</form>
+@section Scripts{ 
+    <script>
+        $(document).ready(function () {
+            $(".custom-file-input").on("change", function () {
+                var SadrzajUnosa = $(this).next(".custom-file-label");
+                var stringFin = "";
+                var fajlovi = $(this)[0].files;
+                for (var i = 0; i <fajlovi.length; i++) {
+                    stringFin += "\""+ fajlovi[i].name + "\" ";
+                }
+                SadrzajUnosa.html(stringFin);
+            })
+        })
+    </script>
+}
+

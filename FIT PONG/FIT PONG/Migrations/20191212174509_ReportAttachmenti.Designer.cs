@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FIT_PONG.Migrations
 {
     [DbContext(typeof(MyDb))]
-    [Migration("20191212160335_ReportAttachmenti")]
+    [Migration("20191212174509_ReportAttachmenti")]
     partial class ReportAttachmenti
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -368,7 +368,7 @@ namespace FIT_PONG.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Opis")
+                    b.Property<string>("Naslov")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sadrzaj")

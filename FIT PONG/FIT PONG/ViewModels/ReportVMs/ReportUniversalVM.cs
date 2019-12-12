@@ -9,7 +9,7 @@ namespace FIT_PONG.ViewModels.ReportVMs
 {
     public class ReportUniversalVM
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
 
         [Required(ErrorMessage="Ovo polje je obavezno")]
         public string Naslov { get; set; }
