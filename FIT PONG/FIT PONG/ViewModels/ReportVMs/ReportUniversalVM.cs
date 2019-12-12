@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,7 +14,6 @@ namespace FIT_PONG.ViewModels.ReportVMs
         [Required(ErrorMessage="Ovo polje je obavezno")]
         public string Naslov { get; set; }
 
-        [Required(ErrorMessage = "Ovo polje je obavezno")]
         public DateTime? DatumKreiranja { get; set; }
 
         [Required(ErrorMessage = "Ovo polje je obavezno")]
@@ -22,6 +22,8 @@ namespace FIT_PONG.ViewModels.ReportVMs
         [RegularExpression(@"\w+\.\w+@edu\.fit\.ba", ErrorMessage = "Email mora biti u formatu ime.prezime@edu.fit.ba")]
         [Required(ErrorMessage = "Ovo polje je obavezno")]
         public string Email { get; set; }
+
+        public List<IFormFile> Prilozi { get; set; }
 
     }
 }
