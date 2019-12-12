@@ -1,0 +1,75 @@
+﻿@model List<FIT_PONG.ViewModels.IgracVMs.IgracVM>
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    tr {
+        background-color: lightseagreen;
+    }
+
+    img {
+        width: 100% !important;
+    }
+
+    a.btn.btn-secondary:hover {
+        color: white !important;
+        width: 100% !important;
+    }
+
+    p {
+        font-weight: bold;
+        color: white;
+    }
+
+    .imageThumbnail {
+        height: 200px;
+        width: auto;
+    }
+</style>
+<form action="/Igrac/Index" method="post">
+    <b>Search By: </b>
+    <input type="radio" value="PrikaznoIme" name="searchBy" checked="checked" /><text>Prikazno ime</text>
+    <input type="radio" value="JacaRuka" name="searchBy" /><text>Jača ruka</text>
+    <br /><br />
+    <input name="search" type="text" class="form-control form-control-sm mr-3 w-75 awesomplete" placeholder="Search..." aria-label="search" style="width:500px !important;height:40px; display:inline-block;" data-list="#mylist">
+    <input type="submit" class="btn btn-dark" value="Search" style="display:inline-block;height:40px !important;" />
+    <br /><br />
+    <b>Sort By: </b>
+    <input type="radio" value="PrikaznoIme" name="orderBy" checked="checked"/><text>Prikazno ime</text>
+    <input type="radio" value="EloRaiting" name="orderBy"/><text>ELO raiting</text>
+    <input type="radio" value="BrojPosjetaNaProfil" name="orderBy" /><text>Broj posjeta na profil</text>
+</form><br />
+
+@if (Model.Count() == 0)
+{
+    <br />
+    <br />
+    <h2>Nema igrača koji zadovoljavaju traženi kriterij.</h2>
+    <a href="/Igrac/Index" class="btn btn-outline-secondary">Prikaži sve</a>
+}
+
+<div class="card-deck">
+    @foreach (var item in Model)
+
+    {
+        <div class="card m-3" style="min-width:15rem;max-width:22%;">
+        <div class="card-header text-center" style="font-weight:bold">@item.ELO</div>
+            <div class="card-body text-center">
+                <img class="card-img-top imageThumbnail" src="@item.ProfileImagePath" asp-append-version="true" />
+            </div>
+
+            <div class="card-footer text-center">
+                <a asp-controller="Igrac" asp-action="PrikazProfila" asp-route-id="@item.ID" class="btn btn-secondary" style="width:100%;color:black;font-weight:bold;">@item.PrikaznoIme</a>
+            </div>
+        </div>
+    }
+</div>
+
+<ul id='mylist'>
+    <li hidden>desna</li>
+    <li hidden>lijeva</li>
+    @foreach (var item in Model)
+    {
+        <li hidden>@item.PrikaznoIme</li>
+    }
+</ul>

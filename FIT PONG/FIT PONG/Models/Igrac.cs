@@ -24,6 +24,8 @@ namespace FIT_PONG.Models
         public double Visina { get; set; }
         public int BrojPosjetaNaProfil { get; set; }
         public string ProfileImagePath { get; set; }
+        [RegularExpression(@"^[0-9]+$")]
+        public int ELO { get; set; }
 
 
         public Igrac()
@@ -32,7 +34,7 @@ namespace FIT_PONG.Models
             JacaRuka = "NOT SET";
             Visina = -1;
             BrojPosjetaNaProfil = -1;
-
+            ELO = 1000;
         }
 
 
