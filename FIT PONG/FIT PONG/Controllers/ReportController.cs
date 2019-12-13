@@ -28,7 +28,7 @@ namespace FIT_PONG.Controllers
         }
         
         [HttpPost]
-        public IActionResult Dodaj(ReportUniversalVM ReportObj)
+        public IActionResult Dodaj(CreateReportVM ReportObj)
         {
             if(ModelState.IsValid)
             {
@@ -110,6 +110,21 @@ namespace FIT_PONG.Controllers
             if (!prilozi[0].ContentType.Contains("image"))
                 return false;
             return true;
+        }
+
+        public IActionResult Prikaz(int ? id)
+        {
+            if (id == null)
+                return RedirectToAction("Neuspjeh");
+
+            Report model = db.Reports.Include(x => x.Prilozi).SingleOrDefault(c=> c.ID == id);
+            if (model != null)
+                return View(model);
+            return RedirectToAction("Neuspjeh");
+        }
+        public IActionResult Neuspjeh()
+        {
+            return View();
         }
     }
 }
