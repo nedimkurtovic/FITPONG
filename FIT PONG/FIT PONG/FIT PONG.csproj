@@ -18,6 +18,10 @@
     <Compile Remove="Migrations\20191211083639_IgracTabelaTPT.Designer.cs" />
     <Compile Remove="Migrations\20191211085141_IgracTabelaTPT.cs" />
     <Compile Remove="Migrations\20191211085141_IgracTabelaTPT.Designer.cs" />
+    <Compile Remove="Migrations\20191212160335_ReportAttachmenti.cs" />
+    <Compile Remove="Migrations\20191212160335_ReportAttachmenti.Designer.cs" />
+    <Compile Remove="Migrations\20191213174914_Talatest.cs" />
+    <Compile Remove="Migrations\20191213174914_Talatest.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

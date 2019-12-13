@@ -1,0 +1,45 @@
+﻿@model FIT_PONG.Models.Report
+@{
+    ViewData["Title"] = "Prikaz";
+}
+    <style>
+        .slike{
+            height:200px;
+            width:auto;
+        }
+        textarea{
+            height:150px;
+            width:300px;
+        }
+    </style>
+<table>
+    <tr>
+        <td>@Html.DisplayNameFor(x => x.ID)</td>
+        <td>@Html.DisplayFor(x => x.ID)</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(x => x.Naslov)</td>
+        <td>@Html.DisplayFor(x => x.Naslov)</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(x => x.Email)</td>
+        <td>@Html.DisplayFor(x => x.Email)</td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(x => x.Sadrzaj)</td>
+        <td><textarea>@Model.Sadrzaj</textarea></td>
+    </tr>
+    <tr>
+        <td>@Html.DisplayNameFor(x => x.DatumKreiranja)</td>
+        <td>@Html.DisplayFor(x => x.DatumKreiranja)</td>
+    </tr>
+</table>
+<h2>Prilozi</h2>
+<div class="card-deck">
+    @foreach (Attachment x in Model.Prilozi)
+    {
+        <div class="card m-3" style="min-width:18rem; max-width:30%;">
+            <img src="@x.Path" alt="Greska prilikom dobavljanja" class="slike" asp-append-version="true"/>
+        </div>
+    }
+</div>
