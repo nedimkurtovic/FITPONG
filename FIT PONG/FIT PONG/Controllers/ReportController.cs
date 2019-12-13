@@ -75,7 +75,7 @@ namespace FIT_PONG.Controllers
                                 Attachment Attachmentnovi = new Attachment
                                 {
                                     DatumUnosa = DateTime.Now,
-                                    Path = PathSpremanja
+                                    Path = "~/reports/"+ImeFajla
                                 };
                                 db.Attachments.Add(Attachmentnovi);
                                 db.SaveChanges();

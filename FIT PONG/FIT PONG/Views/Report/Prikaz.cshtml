@@ -7,6 +7,10 @@
             height:200px;
             width:auto;
         }
+        textarea{
+            height:150px;
+            width:300px;
+        }
     </style>
 <table>
     <tr>
@@ -34,10 +38,8 @@
 <div class="card-deck">
     @foreach (Attachment x in Model.Prilozi)
     {
-
-        string putanja = "~/reports/" + x.Path.Substring((x.Path.LastIndexOf("\\")) + 1);
         <div class="card m-3" style="min-width:18rem; max-width:30%;">
-            <img src="@putanja" alt="Greska prilikom dobavljanja" class="slike" asp-append-version="true"/>
+            <img src="@x.Path" alt="Greska prilikom dobavljanja" class="slike" asp-append-version="true"/>
         </div>
     }
 </div>
