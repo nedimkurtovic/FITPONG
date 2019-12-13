@@ -53,37 +53,39 @@ namespace FIT_PONG.Controllers
                             };
                             db.Reports.Add(noviReport);
                             db.SaveChanges();
-                            foreach (IFormFile x in ReportObj.Prilozi)
+                            if (ReportObj.Prilozi != null)
                             {
-                                /*
-                                dakle nakon kracih probavanja ustanovljeno je da c# ima problema sqa brisanjem fajlova,neki govore da je do 
-                                garbage collectora neki da je do samog procesa dodavanja problem(ostavi fajl otvorenim ili nesto) bilo kako bilo 
-                                Konkretno gdje je ovdje problem : Dakle u slucaju da je korisnik dodao novi report i slike su sve prosla validacija,
-                                i dodaju se slike u bazu a i pisu u reports folder i nekim cudom nakon npr prve slike pukne ili iz nekog razloga ne moze
-                                dodati u bazu attachment,nije problem postoji nas catch blok koji kaze transakcija.Rollback i svi sretni mi vratimo usera
-                                opet na dodavanje novog reporta zamolimo da ponovi unos i to je to,however,
-                                svi fajlovi koje je korisnik dodao ostaju u nasem folderu kako trenutno stvari stoje,i to je taj mali problem sto ce se pojaviti
-                                junk vrijednosti vremenom
-                                 */
-
-                                 //ova linija koda ce kreirati reports folder u wwwroot folderu gdje god da je hostana app,u slucaju da vec postoji folder
-                                 //samo ce vratiti informacije o njemu 
-                                Directory.CreateDirectory(Path.Combine(_host.WebRootPath, "reports").ToString());
-                                string ImeFajla = Guid.NewGuid().ToString() + "_" + x.FileName;
-                                string PathSpremanja = Path.Combine(_host.WebRootPath, "reports", ImeFajla);
-                                x.CopyTo(new FileStream(PathSpremanja, FileMode.Create));
-                                Attachment Attachmentnovi = new Attachment
+                                foreach (IFormFile x in ReportObj.Prilozi)
                                 {
-                                    DatumUnosa = DateTime.Now,
-                                    Path = "~/reports/"+ImeFajla
-                                };
-                                db.Attachments.Add(Attachmentnovi);
-                                db.SaveChanges();
-                                noviReport.Prilozi.Add(Attachmentnovi);
-                                db.SaveChanges();
-                                
-                            }
+                                    /*
+                                    dakle nakon kracih probavanja ustanovljeno je da c# ima problema sqa brisanjem fajlova,neki govore da je do 
+                                    garbage collectora neki da je do samog procesa dodavanja problem(ostavi fajl otvorenim ili nesto) bilo kako bilo 
+                                    Konkretno gdje je ovdje problem : Dakle u slucaju da je korisnik dodao novi report i slike su sve prosla validacija,
+                                    i dodaju se slike u bazu a i pisu u reports folder i nekim cudom nakon npr prve slike pukne ili iz nekog razloga ne moze
+                                    dodati u bazu attachment,nije problem postoji nas catch blok koji kaze transakcija.Rollback i svi sretni mi vratimo usera
+                                    opet na dodavanje novog reporta zamolimo da ponovi unos i to je to,however,
+                                    svi fajlovi koje je korisnik dodao ostaju u nasem folderu kako trenutno stvari stoje,i to je taj mali problem sto ce se pojaviti
+                                    junk vrijednosti vremenom
+                                     */
 
+                                    //ova linija koda ce kreirati reports folder u wwwroot folderu gdje god da je hostana app,u slucaju da vec postoji folder
+                                    //samo ce vratiti informacije o njemu 
+                                    Directory.CreateDirectory(Path.Combine(_host.WebRootPath, "reports").ToString());
+                                    string ImeFajla = Guid.NewGuid().ToString() + "_" + x.FileName;
+                                    string PathSpremanja = Path.Combine(_host.WebRootPath, "reports", ImeFajla);
+                                    x.CopyTo(new FileStream(PathSpremanja, FileMode.Create));
+                                    Attachment Attachmentnovi = new Attachment
+                                    {
+                                        DatumUnosa = DateTime.Now,
+                                        Path = "~/reports/" + ImeFajla
+                                    };
+                                    db.Attachments.Add(Attachmentnovi);
+                                    db.SaveChanges();
+                                    noviReport.Prilozi.Add(Attachmentnovi);
+                                    db.SaveChanges();
+
+                                }
+                            }
                             transakcija.Commit();
                             return Redirect("/Home/Index");
                         }
@@ -99,7 +101,7 @@ namespace FIT_PONG.Controllers
         }
         public bool SamoSlike(List<IFormFile> prilozi)
         {
-            if (prilozi.Count() > 0)
+            if (prilozi != null)
             {
                 foreach (IFormFile x in prilozi)
                 {
@@ -107,8 +109,6 @@ namespace FIT_PONG.Controllers
                         return false;
                 }
             }
-            if (!prilozi[0].ContentType.Contains("image"))
-                return false;
             return true;
         }
 
