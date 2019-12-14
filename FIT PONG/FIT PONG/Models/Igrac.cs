@@ -20,8 +20,8 @@ namespace FIT_PONG.Models
         [StringLength(8)]
         public string JacaRuka { get; set; }
 
-        [Range(1,250)]
-        public double Visina { get; set; }
+        [Range(0,300)]
+        public double? Visina { get; set; }
         public int BrojPosjetaNaProfil { get; set; }
         public string ProfileImagePath { get; set; }
         [RegularExpression(@"^[0-9]+$")]

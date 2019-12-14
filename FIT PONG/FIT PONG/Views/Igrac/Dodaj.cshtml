@@ -1,0 +1,55 @@
+﻿@model  FIT_PONG.ViewModels.IgracVMs.IgracDodajVM
+@{
+    ViewData["Title"] = "Dodaj";
+}
+
+
+
+<h1>Unos podataka</h1><br /><br />
+<form action="/Igrac/Dodaj" method="post" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td><h6>Prikazno ime</h6></td>
+            <td><input asp-for="PrikaznoIme" class="input-group" autofocus /></td>
+            <td><span asp-validation-for="PrikaznoIme" class="text-danger"></span></td>
+        </tr>
+        <tr>
+            <td><h6>Jača ruka</h6></td>
+            <td>
+                <select asp-for="JacaRuka" class="form-control input-group">
+                    <option value=' ' disabled selected style="text-align:center">---Izaberi---</option>";
+                    <option>desna</option>
+                    <option>lijeva</option>
+                </select>
+            </td>
+            <td><span asp-validation-for="JacaRuka" class="text-danger"></span></td>
+        </tr>
+        <tr>
+            <td><h6>Visina(cm)</h6></td>
+            <td><input asp-for="Visina" class="input-group"/></td>
+            <td><span asp-validation-for="Visina" class="text-danger"></span></td>
+        </tr>
+        <tr>
+            <td><h6>Slika profila</h6></td>
+            <td class="custom-file"><input asp-for="Slika" class="form-group custom-file-input"/>
+            <label class="custom-file-label">Izaberi sliku</label></td>
+            <td><span asp-validation-for="Slika" class="text-danger"></span></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Dodaj" class="btn btn-success"/></td>
+        </tr>
+
+    </table>
+</form>
+
+@section Scripts{ 
+<script>
+    $(document).ready(function () {
+        $('.custom-file-input').on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).next('.custom-file-label').html(fileName);
+        });
+    });
+</script>
+}
+

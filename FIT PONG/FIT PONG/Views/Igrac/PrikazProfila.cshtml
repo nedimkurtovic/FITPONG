@@ -1,13 +1,15 @@
 ﻿@model FIT_PONG.ViewModels.IgracVMs.IgracVM
 @{
     ViewData["Title"] = "PrikazProfila";
+    var visina = Model.Visina != null ? Model.Visina.ToString() + " cm" : "Nije postavljeno";
+    var jacaRuka = Model.JacaRuka ?? "Nije postavljeno";
 }
 
 <img src="@Model.ProfileImagePath" style="width:50px;height:50px;border:1px solid black;float:left;margin:10px;"/>
 <h1 style="float:left;margin:10px;">@Model.PrikaznoIme</h1>
 <div class="card border-info" style="clear:both;margin:10px;width:500px;padding:10px;">
-    <h3>Visina: @Model.Visina cm</h3>
-    <h3>Jača ruka: @Model.JacaRuka</h3>
+    <h3>Visina: @visina</h3>
+    <h3>Jača ruka: @jacaRuka</h3>
     <h3>Broj posjeta na profil: @Model.BrojPosjetaNaProfil</h3>
     <h3>ELO: @Model.ELO</h3>
 </div>
