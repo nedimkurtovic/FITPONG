@@ -17,7 +17,6 @@ namespace FIT_PONG.Controllers
         private readonly MyDb db;
         private readonly IWebHostEnvironment _host;
 
-
         public IgracController(MyDb context, IWebHostEnvironment host)
         {
             db = context;
@@ -120,6 +119,49 @@ namespace FIT_PONG.Controllers
         public IActionResult Dodaj()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult EditPodatke(int igracID)
+        {
+            Igrac igrac = db.Igraci.Find(igracID);
+
+            if (igrac == null)
+            {
+                return View("Greska");
+            }
+            IgracEditPodatkeVM obj = new IgracEditPodatkeVM
+            {
+                ID = igrac.ID,
+                JacaRuka = igrac.JacaRuka,
+                PrikaznoIme = igrac.PrikaznoIme,
+                Visina = igrac.Visina,
+                ProfileImagePath=igrac.ProfileImagePath
+            };
+            return View(obj);
+        }
+
+        [HttpPost]
+        public IActionResult EditPodatke(IgracEditPodatkeVM obj)
+        {
+            Igrac igrac = db.Igraci.Find(obj.ID);
+            
+            if (igrac!=null && ModelState.IsValid)
+            {
+                if (obj.PrikaznoIme!=igrac.PrikaznoIme && !JeLiUnique(obj.PrikaznoIme))
+                {
+                    ModelState.AddModelError(nameof(obj.PrikaznoIme), "Prikazno ime je zauzeto.");
+                    return View(obj);
+                }
+
+                igrac.JacaRuka = obj.JacaRuka;
+                igrac.Visina= obj.Visina;
+                igrac.PrikaznoIme = obj.PrikaznoIme;
+                db.SaveChanges();
+
+                return Redirect("/Igrac/PrikazProfila/" + igrac.ID);
+            }
+            return View(obj);
         }
 
 

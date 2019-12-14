@@ -15,6 +15,7 @@ namespace FIT_PONG.Models
         public User User { get; set; }
 
         [StringLength(50)]
+        [Required(ErrorMessage ="Ovo je obavezno polje.")]
         public string PrikaznoIme { get; set; }
 
         [StringLength(8)]
@@ -26,7 +27,6 @@ namespace FIT_PONG.Models
         public string ProfileImagePath { get; set; }
         [RegularExpression(@"^[0-9]+$")]
         public int ELO { get; set; }
-
 
         public Igrac()
         {
