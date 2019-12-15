@@ -4,7 +4,7 @@
 }
 
 <h1>Edituj profil</h1><br />
-<img src="@Model.ProfileImagePath" style="width:100px;height:100px;border:1px solid black;float:left;margin-right:20px;" />
+<img src=@Url.Content(Model.ProfileImagePath) style="width:100px;height:100px;border:1px solid black;float:left;margin-right:20px;" />
 <form asp-controller="Igrac" asp-action="EditPodatke" method="post">
     <table>
         <tr><td><input asp-for="ID" type="hidden"/></td></tr>
@@ -33,7 +33,7 @@
        
     <tr>
         <td><input type="submit" value="Spremi izmjene" class="btn btn-primary"/></td>    
-        <td><a href="/Igrac/PrikazProfila/@Model.ID" class="btn btn-danger">Odbaci izmjene</a></td>
+        <td><a href="/Igrac/PrikazProfila/@Model.ID" class="btn btn-danger" onclick="return confirm('Da li ste sigurni da želite otkazati sve promjene?')">Odbaci izmjene</a></td>
     </tr>
     </table>
     

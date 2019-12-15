@@ -1,0 +1,49 @@
+﻿@model FIT_PONG.ViewModels.IgracVMs.IgracEditSlikuVM
+@{
+    ViewData["Title"] = "EditSliku";
+}
+<style>
+    .btn{
+        margin-top:10px;
+    }
+</style>
+
+<h1>Izaberi novu sliku</h1>
+
+<form asp-controller="Igrac" asp-action="EditSliku" method="post" enctype="multipart/form-data">
+    <table>
+        <tr><td><input asp-for="ID" type="hidden" /></td></tr>
+        <tr><td><input asp-for="ExistingProfileImagePath" type="hidden" /></td></tr>
+        <tr><td><input asp-for="BrojPosjetaNaProfil" type="hidden" /></td></tr>
+        <tr><td><input asp-for="JacaRuka" type="hidden" /></td></tr>
+        <tr><td><input asp-for="PrikaznoIme" type="hidden" /></td></tr>
+        <tr><td><input asp-for="Visina" type="hidden" /></td></tr>
+        <tr>
+            <td><h6>Slika profila</h6></td>
+            <td class="custom-file">
+                <input asp-for="Slika" class="form-group custom-file-input" />
+                <label class="custom-file-label">Izaberi sliku</label>
+            </td>
+            <td><span asp-validation-for="Slika" class="text-danger"></span></td>
+        </tr>
+        <tr>
+            <td><input type="submit" class="btn btn-primary" value="Spremi" /></td>
+            <td><a href="/Igrac/PrikazProfila/@Model.ID" class="btn btn-danger" onclick="return confirm('Jeste li sigurni da želite odustati?')">Odustani</a></td>
+        </tr>
+    </table>
+</form>
+
+    @section Scripts{
+        <script>
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).next('.custom-file-label').html(fileName);
+                });
+            });
+
+            $.alerts.okButton = ' Yes ';
+            $.alerts.cancelButton = ' No ';
+        </script>
+    }
+

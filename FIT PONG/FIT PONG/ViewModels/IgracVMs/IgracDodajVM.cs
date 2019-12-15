@@ -9,7 +9,6 @@ namespace FIT_PONG.ViewModels.IgracVMs
 {
     public class IgracDodajVM
     {
-        public int ID { get; set; }
         [StringLength(50, ErrorMessage = "Prikazno ime ne smije biti duže od 50 karaktera.")]
         [RegularExpression(@"[^@]*",ErrorMessage = "Prikazno ime ne smije sadržavati karakter @")]
         [Required(ErrorMessage ="Prikazno ime je obavezno.")]

@@ -3,10 +3,30 @@
     ViewData["Title"] = "PrikazProfila";
     var visina = Model.Visina != null ? Model.Visina.ToString() + " cm" : "Nije postavljeno";
     var jacaRuka = Model.JacaRuka ?? "Nije postavljeno";
+    var poruka = Model.ProfileImagePath == "/profile_picture_default.png" ? "Ne možete ukloniti default-nu sliku profila." :
+        "Da li ste sigurni da želite obrisati sliku profila?";
+    ;
 }
+<style>
+    
+    img {
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        float: left;
+        margin: 10px;
+    }
 
-<img src="@Model.ProfileImagePath" style="width:50px;height:50px;border:1px solid black;float:left;margin:10px;" />
-<h1 style="float:left;margin:10px;">@Model.PrikaznoIme</h1>
+    .btn {
+        margin: 5px;
+    }
+
+</style>
+<img src=@Url.Content(Model.ProfileImagePath) asp-append-version="true" alt="Slika nije ispravno učitana."/>
+<h1 style="margin:10px;">@Model.PrikaznoIme</h1>
+<a asp-controller="Igrac" asp-action="EditSliku" asp-route-igracID="@Model.ID" class="btn btn-outline-primary">Promijeni sliku</a><br />
+<a href="/Igrac/UkloniSliku?igracID=@Model.ID" class="btn btn-outline-danger" onclick="return confirm('@poruka')">Ukloni sliku</a>
+
 <div class="card border-info" style="clear:both;margin:10px;width:500px;padding:10px;">
     <h3>Visina: @visina</h3>
     <h3>Jača ruka: @jacaRuka</h3>

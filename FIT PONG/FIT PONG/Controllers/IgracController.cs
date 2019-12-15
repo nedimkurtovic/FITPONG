@@ -25,6 +25,8 @@ namespace FIT_PONG.Controllers
 
         public IActionResult Index(string searchBy, string search, string orderBy)
         {
+            if (search == null)
+                ViewData["prazno"] = "nema igraca";
             if (searchBy == "JacaRuka")
             {
                 List<IgracVM> igraci = db.Igraci.Select(x => new IgracVM
@@ -95,10 +97,7 @@ namespace FIT_PONG.Controllers
                     }
                     else
                     {
-                        Directory.CreateDirectory(Path.Combine(_host.WebRootPath, "igraci").ToString());
-                        string ImeFajla = Guid.NewGuid().ToString() + "_" + igrac.PrikaznoIme + igrac.Slika.FileName.Substring(igrac.Slika.FileName.IndexOf("."));
-                        string PathSpremanja= Path.Combine(_host.WebRootPath, "igraci", ImeFajla);
-                        igrac.Slika.CopyTo(new FileStream(PathSpremanja, FileMode.Create));
+                        string ImeFajla = ProcesSpremanjaSlike(igrac);
                         novi.ProfileImagePath = "~/igraci/"+ImeFajla;
                     }
                 }
@@ -157,6 +156,7 @@ namespace FIT_PONG.Controllers
                 igrac.JacaRuka = obj.JacaRuka;
                 igrac.Visina= obj.Visina;
                 igrac.PrikaznoIme = obj.PrikaznoIme;
+                db.Update(igrac);
                 db.SaveChanges();
 
                 return Redirect("/Igrac/PrikazProfila/" + igrac.ID);
@@ -164,6 +164,95 @@ namespace FIT_PONG.Controllers
             return View(obj);
         }
 
+        public IActionResult UkloniSliku(int igracID)
+        {
+            Igrac obj = db.Igraci.Find(igracID);
+            if (obj == null)
+            {
+                return View("Greska");
+            }
+            if (obj.ProfileImagePath != "/profile_picture_default.png")
+            {
+                ProcesBrisanjaSlike(obj.ProfileImagePath);
+                obj.ProfileImagePath = "/profile_picture_default.png";
+                db.SaveChanges();
+            }
+            return Redirect("/Igrac/PrikazProfila/" + igracID);
+
+        }
+
+        [HttpGet]
+        public IActionResult EditSliku(int igracID)
+        {
+            Igrac igrac = db.Igraci.Find(igracID);
+
+            if (igrac == null)
+                return View("Greska");
+            
+            IgracEditSlikuVM obj = new IgracEditSlikuVM
+            {
+                ID = igracID,
+                ExistingProfileImagePath=igrac.ProfileImagePath,
+                JacaRuka=igrac.JacaRuka,
+                BrojPosjetaNaProfil=igrac.BrojPosjetaNaProfil,
+                ELO=igrac.ELO,
+                PrikaznoIme=igrac.PrikaznoIme,
+                Visina=igrac.Visina
+            };
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        public IActionResult EditSliku(IgracEditSlikuVM obj)
+        {
+            Igrac igrac = db.Igraci.Find(obj.ID);
+            if (igrac != null)
+            {
+                if (obj.Slika != null)
+                {
+                    if (!obj.Slika.ContentType.Contains("image"))
+                    {
+                        ModelState.AddModelError(nameof(obj.Slika), "Mozete uploadat samo sliku.");
+                        return View(obj);
+                    }
+                    else
+                    {
+                        if (obj.ExistingProfileImagePath != null && obj.ExistingProfileImagePath!="/profile_picture_default.png")
+                            ProcesBrisanjaSlike(obj.ExistingProfileImagePath);
+                        igrac.ProfileImagePath= "~/igraci/" + ProcesSpremanjaSlike(obj);
+                    }
+                }
+                
+                db.Update(igrac);
+                db.SaveChanges();
+                return Redirect("/Igrac/PrikazProfila/" + obj.ID);
+            }
+            return View("Greska");
+
+        }
+
+        private string ProcesSpremanjaSlike(IgracDodajVM obj)
+        {
+            string ImeFajla = null;
+            if (obj != null)
+            {
+                Directory.CreateDirectory(Path.Combine(_host.WebRootPath, "igraci").ToString());
+                ImeFajla = Guid.NewGuid().ToString() + "_" + obj.PrikaznoIme + obj.Slika.FileName.Substring(obj.Slika.FileName.IndexOf("."));
+                string PathSpremanja = Path.Combine(_host.WebRootPath, "igraci", ImeFajla);
+                using (var fileStream = new FileStream(PathSpremanja, FileMode.Create)) 
+                {
+                    obj.Slika.CopyTo(fileStream);
+                }
+            }
+            return ImeFajla;
+        }
+
+        private void ProcesBrisanjaSlike(string putanja)
+        {
+            string filePutanja = Path.Combine(_host.WebRootPath, putanja.Substring(putanja.IndexOf("/") + 1));
+            System.IO.File.Delete(filePutanja);
+        } 
 
         private List<IgracVM> Sort(List<IgracVM> igraci, string sortBy)
         {
