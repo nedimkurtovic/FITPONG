@@ -1,0 +1,40 @@
+﻿@model FIT_PONG.ViewModels.IgracVMs.IgracEditPodatkeVM
+@{
+    ViewData["Title"] = "EditPodatke";
+}
+
+<h1>Edituj profil</h1><br />
+<img src="@Model.ProfileImagePath" style="width:100px;height:100px;border:1px solid black;float:left;margin-right:20px;" />
+<form asp-controller="Igrac" asp-action="EditPodatke" method="post">
+    <table>
+        <tr><td><input asp-for="ID" type="hidden"/></td></tr>
+        <tr>
+            <td><h6>Prikazno ime</h6></td>
+            <td><input asp-for="PrikaznoIme" class="input-group" autofocus /></td>
+            <td><span asp-validation-for="PrikaznoIme" class="text-danger"></span></td>
+        </tr>
+        <tr>
+            <td><h6>Jača ruka</h6></td>
+            <td>
+                <select asp-for="JacaRuka" class="form-control input-group">
+                    <option value=' ' disabled selected style="text-align:center">---Izaberi---</option>";
+                    <option>desna</option>
+                    <option>lijeva</option>
+                </select>
+            </td>
+            <td><span asp-validation-for="JacaRuka" class="text-danger"></span></td>
+        </tr>
+        <tr>
+            <td><h6>Visina(cm)</h6></td>
+            <td><input asp-for="Visina" class="input-group" /></td>
+            <td><span asp-validation-for="Visina" class="text-danger"></span></td>
+        </tr>
+        <tr><td><input asp-for="ProfileImagePath" type="hidden"/></td></tr>
+       
+    <tr>
+        <td><input type="submit" value="Spremi izmjene" class="btn btn-primary"/></td>    
+        <td><a href="/Igrac/PrikazProfila/@Model.ID" class="btn btn-danger">Odbaci izmjene</a></td>
+    </tr>
+    </table>
+    
+</form>

@@ -33,7 +33,7 @@ namespace FIT_PONG
             //morao bi koristit ovu alternativnu varijatnu //Configuration["KonekcijskiStringovi:Netza"]
             //konkretno ovaj DI kontenjer services se brine oko kreiranja servisa i disposeanja istih zavisno od njihovog vremena
             //trajanja,postoje scoped transient i singleton
-            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Netza")));
+            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
