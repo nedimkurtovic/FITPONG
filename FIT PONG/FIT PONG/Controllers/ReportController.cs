@@ -40,6 +40,7 @@ namespace FIT_PONG.Controllers
                 {
                     using (var transakcija = db.Database.BeginTransaction())
                     {
+                        List<string> zluNetrebalo = new List<string>();
                         try
                         {
                             //otkriti nacin slanja mejla administratoru ako uspjesno prodje report
@@ -57,23 +58,13 @@ namespace FIT_PONG.Controllers
                             {
                                 foreach (IFormFile x in ReportObj.Prilozi)
                                 {
-                                    /*
-                                    dakle nakon kracih probavanja ustanovljeno je da c# ima problema sqa brisanjem fajlova,neki govore da je do 
-                                    garbage collectora neki da je do samog procesa dodavanja problem(ostavi fajl otvorenim ili nesto) bilo kako bilo 
-                                    Konkretno gdje je ovdje problem : Dakle u slucaju da je korisnik dodao novi report i slike su sve prosla validacija,
-                                    i dodaju se slike u bazu a i pisu u reports folder i nekim cudom nakon npr prve slike pukne ili iz nekog razloga ne moze
-                                    dodati u bazu attachment,nije problem postoji nas catch blok koji kaze transakcija.Rollback i svi sretni mi vratimo usera
-                                    opet na dodavanje novog reporta zamolimo da ponovi unos i to je to,however,
-                                    svi fajlovi koje je korisnik dodao ostaju u nasem folderu kako trenutno stvari stoje,i to je taj mali problem sto ce se pojaviti
-                                    junk vrijednosti vremenom
-                                     */
 
-                                    //ova linija koda ce kreirati reports folder u wwwroot folderu gdje god da je hostana app,u slucaju da vec postoji folder
-                                    //samo ce vratiti informacije o njemu 
                                     Directory.CreateDirectory(Path.Combine(_host.WebRootPath, "reports").ToString());
                                     string ImeFajla = Guid.NewGuid().ToString() + "_" + x.FileName;
                                     string PathSpremanja = Path.Combine(_host.WebRootPath, "reports", ImeFajla);
-                                    x.CopyTo(new FileStream(PathSpremanja, FileMode.Create));
+                                    using(var strim = new FileStream(PathSpremanja, FileMode.Create))
+                                        x.CopyTo(strim);
+                                    zluNetrebalo.Add(PathSpremanja);
                                     Attachment Attachmentnovi = new Attachment
                                     {
                                         DatumUnosa = DateTime.Now,
@@ -92,6 +83,11 @@ namespace FIT_PONG.Controllers
                         catch(DbUpdateException err)
                         {
                             transakcija.Rollback();
+                            foreach(string x in zluNetrebalo)
+                            {
+                                if (System.IO.File.Exists(x))
+                                    System.IO.File.Delete(x);
+                            }
                             ModelState.AddModelError("", "Nesto je krenulo po zlu prilikom spasavanja u bazu,ponovite unos");
                         }
                     }
