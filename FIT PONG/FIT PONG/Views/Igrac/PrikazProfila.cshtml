@@ -21,23 +21,24 @@
         margin: 5px;
     }
 
-    
+
 
     #statistika {
         float: right;
         display: inline;
-        font-family:Consolas;
-        width:400px;
-        top:100px;
-        right:100px;
-        position:absolute;
-        background-color:darkslategrey;
+        font-family: Consolas;
+        width: 400px;
+        top: 100px;
+        right: 100px;
+        position: absolute;
+        background-color: darkslategrey;
     }
-
-   
 </style>
 <img src=@Url.Content(Model.ProfileImagePath) asp-append-version="true" alt="Slika nije ispravno učitana." />
-<h1 style="margin:10px;display:inline;">@Model.PrikaznoIme</h1><br />
+<h1 style="margin:10px;display:inline;">@Model.PrikaznoIme</h1>
+@*Ovo je samo privremeno dok se ne rijesi microsoft identity, jer je postivalacID u ovom trenutku hard-kodiran parametar*@
+<a href="/Igrac/PostujIgraca?postivalacID=60&postovaniID=@Model.ID" class="btn btn-outline-secondary" style="display:inline;margin-left:200px;">Poštuj igrača: @Model.BrojPostovanja</a>    
+<br />
 <a asp-controller="Igrac" asp-action="EditSliku" asp-route-igracID="@Model.ID" class="btn btn-outline-primary">Promijeni sliku</a>
 <br />
 <a href="/Igrac/UkloniSliku?igracID=@Model.ID" class="btn btn-outline-danger" onclick="return confirm('@poruka')">Ukloni sliku</a>
@@ -78,12 +79,12 @@
         </div>
     </div>
 }
-    <div class="card border-info" style="margin-top:80px;margin-left:10px;width:500px;padding:10px;">
-        <h3>Visina: @visina</h3>
-        <h3>Jača ruka: @jacaRuka</h3>
-        <h3>Broj posjeta na profil: @Model.BrojPosjetaNaProfil</h3>
-        <h3>ELO: @Model.ELO</h3>
-    </div>
+<div class="card border-info" style="margin-top:80px;margin-left:10px;width:500px;padding:10px;">
+    <h3>Visina: @visina</h3>
+    <h3>Jača ruka: @jacaRuka</h3>
+    <h3>Broj posjeta na profil: @Model.BrojPosjetaNaProfil</h3>
+    <h3>ELO: @Model.ELO</h3>
+</div>
 
 <a href="/Igrac/Index" class="btn btn-outline-secondary" style="margin:10px;">Back</a>
 <a asp-controller="Igrac" asp-action="EditPodatke" asp-route-igracID="@Model.ID" class="btn btn-outline-primary" style="margin:10px;">Edituj profil</a>

@@ -65,9 +65,9 @@ namespace FIT_PONG.Controllers
             Igrac objIgrac = db.Igraci.SingleOrDefault(x => x.ID == id);
             if (objIgrac == null)
                 return View("Greska");
-
             IgracVM igrac = new IgracVM(objIgrac);
             igrac.statistika = db.Statistike.Where(s => s.IgracID == id && s.AkademskaGodina==DateTime.Now.Year).SingleOrDefault();
+            igrac.BrojPostovanja=db.Postovanja.Count(p => p.PostovaniID == id);
             return View(igrac);
         }
         
@@ -247,6 +247,18 @@ namespace FIT_PONG.Controllers
             return View();
         }
 
+        public IActionResult PostujIgraca(int postivalacID, int postovaniID)
+        {
+            Igrac igrac2 = db.Igraci.Find(postivalacID);
+            Igrac igrac1 = db.Igraci.Find(postovaniID);
+            if (igrac1 == null || igrac2 == null)
+                return View("Greska");
+            Postovanje novo = new Postovanje(postivalacID, postovaniID);
+            db.Add(novo);
+            db.SaveChanges();
+            return Redirect("/Igrac/PrikazProfila/" + postovaniID);
+
+        }
         private string ProcesSpremanjaSlike(IgracDodajVM obj)
         {
             string ImeFajla = null;
