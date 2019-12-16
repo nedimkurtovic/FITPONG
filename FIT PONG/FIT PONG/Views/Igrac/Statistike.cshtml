@@ -1,0 +1,98 @@
+﻿@using FIT_PONG.Models
+@{
+    ViewData["Title"] = "Statistike";
+    var statistike = (List<Statistika>)(ViewBag.statistike);
+    var igrac = ViewBag.igrac as string;
+}
+
+<style>
+    #tabela {
+        width: 500px;
+        float: left;
+    }
+
+    #prikaz {
+        float: right;
+        font-family:Consolas;
+        width:400px;
+    }
+
+    #btn:hover{
+        color: white !important;
+    }
+   
+    
+</style>
+<div>
+    <h1>Statistike za igrača @igrac</h1>
+    <table id="tabela" class="table table-primary">
+        <thead>
+            <tr>
+                <th>Akademska godina</th>
+                <th>Naziv</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Statistika item in statistike)
+            {
+                <tr>
+                    <td>@item.AkademskaGodina</td>
+                    <td><a id="btn" class="btn btn-outline-dark" onclick='PrikaziStatistiku(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(item) as String));'>Statistika - @item.AkademskaGodina</a></td>
+                </tr>
+            }
+        </tbody>
+                <tr>
+                    <td>
+                        <a href="/Igrac/PrikazProfila/@statistike[0].IgracID" class="btn btn-outline-primary">Back</a>
+                    </td>
+                </tr>
+    </table>
+    <div id="prikaz">
+        <table class="table table-dark">
+            <thead><tr><th> <h2>Statistika za <span id="naslov">@statistike[0].AkademskaGodina</span>. godinu</h2></th></tr></thead>
+            <tbody>
+                <tr>
+                    <td>Broj odigranih mečeva:</td>
+                    <td id="brOdigMec">@statistike[0].BrojOdigranihMeceva</td>
+                </tr>
+                <tr>
+                    <td>Broj single pobjeda:</td>
+                    <td id="brSingl">@statistike[0].BrojSinglePobjeda</td>
+                </tr>
+                <tr>
+                    <td>Broj osvojenih turnira:</td>
+                    <td id="brOsvTurn">@statistike[0].BrojOsvojenihTurnira</td>
+                </tr>
+                <tr>
+                    <td>Broj osvojenih liga:</td>
+                    <td id="brOsvLiga">@statistike[0].BrojOsvojenihLiga</td>
+                </tr>
+                <tr>
+                    <td>Najveći pobjednički niz:</td>
+                    <td id="najvPobNiz">@statistike[0].NajveciPobjednickiNiz</td>
+                </tr>
+                <tr>
+                    <td>Broj timskih pobjeda:</td>
+                    <td id="brTimPob">@statistike[0].BrojTimskihPobjeda</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+        function PrikaziStatistiku(obj) {
+            document.getElementById("naslov").innerHTML = obj.AkademskaGodina;
+            document.getElementById("brOdigMec").innerHTML = obj.BrojOdigranihMeceva;
+            document.getElementById("brSingl").innerHTML = obj.BrojSinglePobjeda;
+            document.getElementById("brOsvTurn").innerHTML = obj.BrojOsvojenihTurnira;
+            document.getElementById("brOsvLiga").innerHTML = obj.BrojOsvojenihLiga;
+            document.getElementById("najvPobNiz").innerHTML = obj.NajveciPobjednickiNiz;
+            document.getElementById("brTimPob").innerHTML = obj.BrojTimskihPobjeda;
+        }
+    </script>
+}
+
+

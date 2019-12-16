@@ -8,7 +8,7 @@
     ;
 }
 <style>
-    
+
     img {
         width: 200px;
         height: 200px;
@@ -21,18 +21,70 @@
         margin: 5px;
     }
 
-</style>
-<img src=@Url.Content(Model.ProfileImagePath) asp-append-version="true" alt="Slika nije ispravno učitana."/>
-<h1 style="margin:10px;">@Model.PrikaznoIme</h1>
-<a asp-controller="Igrac" asp-action="EditSliku" asp-route-igracID="@Model.ID" class="btn btn-outline-primary">Promijeni sliku</a><br />
-<a href="/Igrac/UkloniSliku?igracID=@Model.ID" class="btn btn-outline-danger" onclick="return confirm('@poruka')">Ukloni sliku</a>
+    
 
-<div class="card border-info" style="clear:both;margin:10px;width:500px;padding:10px;">
-    <h3>Visina: @visina</h3>
-    <h3>Jača ruka: @jacaRuka</h3>
-    <h3>Broj posjeta na profil: @Model.BrojPosjetaNaProfil</h3>
-    <h3>ELO: @Model.ELO</h3>
-</div>
+    #statistika {
+        float: right;
+        display: inline;
+        font-family:Consolas;
+        width:400px;
+        top:100px;
+        right:100px;
+        position:absolute;
+        background-color:darkslategrey;
+    }
+
+   
+</style>
+<img src=@Url.Content(Model.ProfileImagePath) asp-append-version="true" alt="Slika nije ispravno učitana." />
+<h1 style="margin:10px;display:inline;">@Model.PrikaznoIme</h1><br />
+<a asp-controller="Igrac" asp-action="EditSliku" asp-route-igracID="@Model.ID" class="btn btn-outline-primary">Promijeni sliku</a>
+<br />
+<a href="/Igrac/UkloniSliku?igracID=@Model.ID" class="btn btn-outline-danger" onclick="return confirm('@poruka')">Ukloni sliku</a>
+@if (Model.statistika != null)
+{
+    <div id="statistika" class="card">
+        <table class="table table-dark">
+            <thead><tr><th> <h2>Statistika za @Model.statistika.AkademskaGodina. godinu</h2></th></tr></thead>
+            <tbody>
+                <tr>
+                    <td>Broj odigranih mečeva:</td>
+                    <td>@Model.statistika.BrojOdigranihMeceva</td>
+                </tr>
+                <tr>
+                    <td>Broj single pobjeda:</td>
+                    <td>@Model.statistika.BrojSinglePobjeda</td>
+                </tr>
+                <tr>
+                    <td>Broj osvojenih turnira:</td>
+                    <td>@Model.statistika.BrojOsvojenihTurnira</td>
+                </tr>
+                <tr>
+                    <td>Broj osvojenih liga:</td>
+                    <td>@Model.statistika.BrojOsvojenihTurnira</td>
+                </tr>
+                <tr>
+                    <td>Najveći pobjednički niz:</td>
+                    <td>@Model.statistika.BrojOsvojenihTurnira</td>
+                </tr>
+                <tr>
+                    <td>Broj timskih pobjeda:</td>
+                    <td>@Model.statistika.BrojOsvojenihTurnira</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="buttoni">
+            <a asp-controller="Igrac" asp-action="Statistike" asp-route-igracID="@Model.ID" class="btn btn-outline-light">Pogledaj ostale statistike</a>
+        </div>
+    </div>
+}
+    <div class="card border-info" style="margin-top:80px;margin-left:10px;width:500px;padding:10px;">
+        <h3>Visina: @visina</h3>
+        <h3>Jača ruka: @jacaRuka</h3>
+        <h3>Broj posjeta na profil: @Model.BrojPosjetaNaProfil</h3>
+        <h3>ELO: @Model.ELO</h3>
+    </div>
+
 <a href="/Igrac/Index" class="btn btn-outline-secondary" style="margin:10px;">Back</a>
 <a asp-controller="Igrac" asp-action="EditPodatke" asp-route-igracID="@Model.ID" class="btn btn-outline-primary" style="margin:10px;">Edituj profil</a>
 

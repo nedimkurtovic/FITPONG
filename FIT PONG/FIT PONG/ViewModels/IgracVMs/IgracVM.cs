@@ -20,6 +20,7 @@ namespace FIT_PONG.ViewModels.IgracVMs
         public string ProfileImagePath { get; set; }
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "ELO raiting smije sadržavati samo slova.")]
         public int ELO { get; set; }
+        public Statistika statistika{ get; set; }
         public IgracVM(Igrac obj)
         {
             ID = obj.ID;

@@ -67,6 +67,7 @@ namespace FIT_PONG.Controllers
                 return View("Greska");
 
             IgracVM igrac = new IgracVM(objIgrac);
+            igrac.statistika = db.Statistike.Where(s => s.IgracID == id && s.AkademskaGodina==DateTime.Now.Year).SingleOrDefault();
             return View(igrac);
         }
         
@@ -90,6 +91,8 @@ namespace FIT_PONG.Controllers
                     PrikaznoIme = igrac.PrikaznoIme,
                     Visina = igrac.Visina
                 };
+                Statistika statistika = new Statistika(novi.ID);
+
                 if (igrac.Slika!=null){
                     if (!igrac.Slika.ContentType.Contains("image"))
                     {
@@ -106,6 +109,7 @@ namespace FIT_PONG.Controllers
                     novi.ProfileImagePath = "/profile_picture_default.png";
                 }
                 db.Add(novi);
+                db.Add(statistika);
                 db.SaveChanges();
                 return Redirect("/Igrac/PrikazProfila/"+novi.ID);
             }
@@ -230,6 +234,17 @@ namespace FIT_PONG.Controllers
             }
             return View("Greska");
 
+        }
+
+        public IActionResult Statistike(int igracID)
+        {
+            List<Statistika> stats = db.Statistike.Where(s => s.IgracID == igracID).OrderByDescending(s => s.AkademskaGodina).ToList();
+            ViewBag.statistike = stats;
+            Igrac i = db.Igraci.Find(igracID);
+            if (i == null)
+                return View("Greska");
+            ViewBag.igrac = i.PrikaznoIme;
+            return View();
         }
 
         private string ProcesSpremanjaSlike(IgracDodajVM obj)
