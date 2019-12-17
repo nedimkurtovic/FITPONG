@@ -15,7 +15,7 @@
         border-top: 1px solid #dee2e6;
         margin-bottom: 1rem;
         width: 100%;
-        overflow:scroll;
+        overflow: scroll;
     }
 
     .css-table-header {
@@ -30,11 +30,15 @@
 
     .css-table-row {
         display: table-row;
+        text-decoration: none;
+        color: black;
     }
 
         .css-table-row:hover {
             background-color: lightgray;
             cursor: pointer;
+        text-decoration: none;
+
         }
 
         .css-table-header div,
@@ -73,18 +77,17 @@ else
         </div>
         @foreach (var x in sve)
         {
-            <div class="css-table-row" onclick="window.location.href='/Takmicenje/Prikaz?id=@x.ID'">
-                <div>@x.ID</div>
-                <div>@x.Naziv</div>
-                <div>@x.MinimalniELO</div>
-                <div>@x.Kategorija</div>
-                <div>@x.Sistem</div>
-                <div>@x.Vrsta</div>
-                <div>@x.DatumZavrsetkaPrijava.ToLongDateString()</div>
-                <div>@x.BrojPrijavljenih</div>
-                <div>@x.Status</div>
-            </div>
-
+    <a class="css-table-row" href="/Takmicenje/Prikaz?id=@x.ID">
+        <div>@x.ID</div>
+        <div>@x.Naziv</div>
+        <div>@x.MinimalniELO</div>
+        <div>@x.Kategorija</div>
+        <div>@x.Sistem</div>
+        <div>@x.Vrsta</div>
+        <div>@x.DatumZavrsetkaPrijava.ToLongDateString()</div>
+        <div>@x.BrojPrijavljenih</div>
+        <div>@x.Status</div>
+    </a>
         }
     </div>
 }

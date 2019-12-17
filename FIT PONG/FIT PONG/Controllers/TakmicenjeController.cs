@@ -2,6 +2,7 @@
 using FIT_PONG.ViewModels;
 using FIT_PONG.ViewModels.TakmicenjeVMs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -27,16 +28,16 @@ namespace FIT_PONG.Controllers
         }
         public IActionResult Index()
         {
-            List<TakmicenjeVM> takmicenja = db.Takmicenja.Include(tak=>tak.Kategorija).Include(tak=>tak.Sistem)
-                .Include(tak=>tak.Vrsta).Include(tak=>tak.Status).Include(tak=>tak.Feed).Select(s => new TakmicenjeVM
-            (s, db.Prijave.Select(f => f.TakmicenjeID == s.ID).Count())).ToList();
+            List<TakmicenjeVM> takmicenja = db.Takmicenja.Include(tak => tak.Kategorija).Include(tak => tak.Sistem)
+                .Include(tak => tak.Vrsta).Include(tak => tak.Status).Include(tak => tak.Feed).Select(s => new TakmicenjeVM
+                  (s, db.Prijave.Select(f => f.TakmicenjeID == s.ID).Count())).ToList();
             ViewData["TakmicenjaKey"] = takmicenja;
             return View();
         }
         [HttpPost]
         public IActionResult Dodaj(CreateTakmicenjeVM objekat)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (PostojiTakmicenje(objekat.Naziv))
                     ModelState.AddModelError("", "Vec postoji takmicenje u bazi");
@@ -44,7 +45,7 @@ namespace FIT_PONG.Controllers
                     ModelState.AddModelError(nameof(objekat.RokZavrsetkaPrijave), "Datum zavrsetka prijava ne moze biti prije pocetka");
                 if (objekat.DatumPocetka != null && objekat.DatumPocetka < objekat.RokZavrsetkaPrijave)
                     ModelState.AddModelError(nameof(objekat.DatumPocetka), "Datum pocetka ne moze biti prije zavrsetka prijava");
-                if(ModelState.ErrorCount == 0)
+                if (ModelState.ErrorCount == 0)
                 {
                     using (var transakcija = db.Database.BeginTransaction())//sigurnost u opasnim situacijama 
                     {
@@ -92,13 +93,13 @@ namespace FIT_PONG.Controllers
 
         public IActionResult Prikaz(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return View("/Takmicenje/Neuspjeh");
             }
             //potreban query za broj rundi,u bracketima se nalazi takmicenjeID ,bar bi trebalo opotrebna migracija
             Takmicenje obj = db.Takmicenja.Include(tak => tak.Kategorija).Include(tak => tak.Sistem)
-                .Include(tak => tak.Vrsta).Include(tak => tak.Status).Include(tak=>tak.Feed).SingleOrDefault(y=> y.ID == id);
+                .Include(tak => tak.Vrsta).Include(tak => tak.Status).Include(tak => tak.Feed).SingleOrDefault(y => y.ID == id);
             if (obj != null)
             {
                 TakmicenjeVM takmicenje = new TakmicenjeVM(obj);
@@ -110,7 +111,7 @@ namespace FIT_PONG.Controllers
         public IActionResult Edit(int id)
         {
             Takmicenje obj = db.Takmicenja.Find(id);
-            if(obj != null)
+            if (obj != null)
             {
                 EditTakmicenjeVM ob1 = new EditTakmicenjeVM(obj);
                 LoadViewBag();
@@ -121,9 +122,9 @@ namespace FIT_PONG.Controllers
         [HttpPost]
         public IActionResult Edit(EditTakmicenjeVM objekat)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if (TakmicenjaViseOd(objekat.Naziv,objekat.ID))
+                if (TakmicenjaViseOd(objekat.Naziv, objekat.ID))
                     ModelState.AddModelError(nameof(objekat.Naziv), "Vec postoji takmicenje u bazi");
                 if (objekat.RokZavrsetkaPrijave.CompareTo(objekat.RokPocetkaPrijave) < 0)
                     ModelState.AddModelError(nameof(objekat.RokZavrsetkaPrijave), "Datum zavrsetka prijava ne moze biti prije pocetka");
@@ -214,11 +215,11 @@ namespace FIT_PONG.Controllers
             }
             catch (DbUpdateException err)
             {
-                
+
             }
             return View("/Takmicenje/Neuspjeh");
         }
-        public bool TakmicenjaViseOd(string naziv,int ID)
+        public bool TakmicenjaViseOd(string naziv, int ID)
         {
             if (db.Takmicenja.Where(s => s.Naziv == naziv && s.ID != ID).Count() > 0)
                 return true;
@@ -237,6 +238,109 @@ namespace FIT_PONG.Controllers
         public IActionResult Neuspjeh()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Prijava(TakmicenjePrijavaVM prijava)
+        {
+
+            if (ModelState.IsValid)
+            {
+                if (prijava.Naziv == null && prijava.isTim)
+                    ModelState.AddModelError(nameof(prijava.Naziv), "Polje naziv je obavezno.");
+                if (prijava.Igrac1ID == prijava.Igrac2ID)
+                    ModelState.AddModelError("igraci", "Ne možete dodati istog igrača kao saigrača.");
+                if (ModelState.ErrorCount == 0)
+                {
+                    Prijava nova = new Prijava
+                    {
+                        DatumPrijave = DateTime.Now,
+                        TakmicenjeID = prijava.takmicenjeID,
+                        isTim = prijava.isTim,
+                        Naziv = prijava.Naziv
+                    };
+                    nova.StanjePrijave = new Stanje_Prijave(nova.ID);
+                    if (!prijava.isTim)
+                        nova.Naziv = db.Igraci.Find(prijava.Igrac1ID).PrikaznoIme;
+                    
+                    if (PostojiLiPrijava(nova.Naziv, prijava.takmicenjeID))
+                    {
+                        ModelState.AddModelError("test", "Ime je zauzeto.");
+                        LoadViewBagPrijava(prijava.takmicenjeID);
+                        return View(prijava);
+                    }
+
+                    db.Add(nova);
+                    db.SaveChanges();
+                    KreirajPrijavuIgrac(prijava, nova.ID);
+
+                    return Redirect("/Takmicenje/UspjesnaPrijava");
+                }
+            }
+            LoadViewBagPrijava(prijava.takmicenjeID);
+
+            return View(prijava);
+        }
+
+        public IActionResult UspjesnaPrijava()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Prijava(int takmID)
+        {
+            Takmicenje takm = db.Takmicenja.Where(t => t.ID == takmID).Include(t => t.Vrsta).SingleOrDefault();
+            if (takm == null)
+                return View("Neuspjeh");
+            TakmicenjePrijavaVM tp = new TakmicenjePrijavaVM
+            {
+                takmicenjeID = takmID,
+                isTim = true
+            };
+
+            if (takm.Vrsta.Naziv == "Single")
+                tp.isTim = false;
+
+            ViewBag.igraci = db.Igraci.Where(i => i.ELO >= takm.MinimalniELO).Select(i => new ComboBoxVM { ID = i.ID, Opis = i.PrikaznoIme }).ToList();
+
+            return View(tp);
+        }
+
+        private void LoadViewBagPrijava(int id)
+        {
+            Takmicenje t = db.Takmicenja.Find(id);
+            ViewBag.igraci = db.Igraci.Where(i => i.ELO >= t.MinimalniELO).Select(i => new ComboBoxVM { ID = i.ID, Opis = i.PrikaznoIme }).ToList();
+        }
+
+        private void KreirajPrijavuIgrac(TakmicenjePrijavaVM prijava, int id)
+        {
+
+            Prijava_igrac prijava_Igrac1 = new Prijava_igrac
+            {
+                IgracID = prijava.Igrac1ID,
+                PrijavaID = id
+            };
+
+            db.Add(prijava_Igrac1);
+
+            if (prijava.isTim)
+            {
+                Prijava_igrac prijava_Igrac2 = new Prijava_igrac
+                {
+                    IgracID = prijava.Igrac2ID,
+                    PrijavaID = id
+                };
+                db.Add(prijava_Igrac2);
+            }
+            db.SaveChanges();
+        }
+        private bool PostojiLiPrijava(string naziv, int id)
+        {
+            Prijava prijava = db.Prijave.Where(p => p.TakmicenjeID == id && p.Naziv == naziv).SingleOrDefault();
+            if (prijava != null)
+                return true;
+            return false;
         }
     }
 }

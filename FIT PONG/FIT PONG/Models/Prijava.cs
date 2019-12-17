@@ -13,6 +13,7 @@ namespace FIT_PONG.Models
         public DateTime DatumPrijave{ get; set; }
         public bool isTim { get; set; }
         [StringLength(50)]
+        [Required(ErrorMessage = "Ovo je obavezno polje.")]
         public string Naziv { get; set; }
 
         //public int StanjePrijaveID { get; set; }

@@ -25,5 +25,11 @@ namespace FIT_PONG.Models
 
         public int PrijavaID { get; set; }
         public Prijava Prijava{ get; set; }
+
+        public Stanje_Prijave(int prijavaID)
+        {
+            ID = prijavaID;
+            BrojOdigranihMeceva = BrojPobjeda = BrojIzgubljenih = BrojBodova = 0;
+        }
     }
 }

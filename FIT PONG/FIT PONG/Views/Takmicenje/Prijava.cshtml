@@ -1,0 +1,43 @@
+﻿@model FIT_PONG.ViewModels.TakmicenjeVMs.TakmicenjePrijavaVM
+@{
+    ViewData["Title"] = "Prijava";
+}
+
+<h1>Prijavi se na takmičenje</h1>
+
+<form action="/Takmicenje/Prijava" method="post">
+    <table class="table">
+        <tr>
+            <td>@Html.Label("Vaše prikazno ime: ")</td>
+            <td>@Html.DropDownListFor(x => x.Igrac1ID, new SelectList(ViewBag.igraci, "ID", "Opis"), "Izaberi")</td>
+            <td>@Html.ValidationMessageFor(x => x.Igrac1ID,"", new { @class = "text-danger" })</td>
+        </tr>
+        @if (Model.isTim)
+        {
+            <tr>
+                <td>@Html.Label("Izaberite saigrača:")</td>
+                <td>@Html.DropDownListFor(x => x.Igrac2ID, new SelectList(ViewBag.igraci, "ID", "Opis"), "Izaberi")</td>
+                <td>@Html.ValidationMessage("igraci", new { @class = "text-danger" })</td>
+            </tr>
+
+            <tr>
+                <td>@Html.Label("Naziv tima: ")</td>
+                <td>@Html.TextBoxFor(x => x.Naziv)</td>
+                <td>@Html.ValidationMessageFor(x => x.Naziv,"", new { @class = "text-danger" })</td>
+            </tr>
+
+        }
+        @Html.HiddenFor(x => x.takmicenjeID)
+        @Html.HiddenFor(x => x.isTim)
+        <tr>
+            <td>
+                <input type="submit" value="Prijavi" class="btn btn-primary" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.ValidationMessage("test",new { @class = "text-danger" })
+            </td>
+        </tr>
+    </table>
+</form>
