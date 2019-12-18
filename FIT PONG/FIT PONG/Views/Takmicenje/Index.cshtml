@@ -84,7 +84,7 @@ else
         <div>@x.Kategorija</div>
         <div>@x.Sistem</div>
         <div>@x.Vrsta</div>
-        <div>@x.DatumZavrsetkaPrijava.ToLongDateString()</div>
+        <div>@x.DatumZavrsetkaPrijava.GetValueOrDefault().ToLongDateString()</div>
         <div>@x.BrojPrijavljenih</div>
         <div>@x.Status</div>
     </a>

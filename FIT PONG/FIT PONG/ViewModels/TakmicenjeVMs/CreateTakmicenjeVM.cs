@@ -15,19 +15,20 @@ namespace FIT_PONG.ViewModels.TakmicenjeVMs
         [Required, StringLength(50)]
         public string Naziv { get; set; }
         [DisplayName("Pocetak prijava")]
-        public DateTime RokPocetkaPrijave { get; set; }
+        public DateTime? RokPocetkaPrijave { get; set; }
         [DisplayName("Zavrsetak prijava")]
         //ne smije biti manji od pocetka prijave
-        public DateTime RokZavrsetkaPrijave { get; set; }
+        public DateTime? RokZavrsetkaPrijave { get; set; }
 
         [RegularExpression(@"^[0-9]+$")]
-        public int MinimalniELO { get; set; }
-
+        public int? MinimalniELO { get; set; }
+        public bool Seeded { get; set; }
         public int KategorijaID { get; set; }
         public int SistemID { get; set; }
         public int VrstaID { get; set; }
         public int StatusID { get; set; }
-
+        public bool RucniOdabir { get; set; }
+        public string RucnoOdabraniIgraci { get; set; }
         public DateTime? DatumPocetka { get; set; }
         //ne smije biti manji od datuma pocetka
         public DateTime? DatumZavrsetka { get; set; }

@@ -6,10 +6,67 @@
             int _minimalniELO,int _kategorijaID,int _sistemID,int _vrstaID,int _statusID, DateTime?
     _pocetaktakmicenja = null)*@
 <style>
+
     tr td {
-        margin-right: 25px;
+        /*margin-right: 25px;*/
+        width: 50%;
     }
+
+    .Default {
+        display: none;
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+    }
+
+    .Toggle {
+        display: table-row-group;
+        opacity: 1;
+        max-height: 100px; /* little bit of a magic number :( */
+        overflow: visible;
+    }
+
+    h3 {
+        color: #8f8f8f;
+    }
+
+    .-sew-list-container {
+        position: absolute;
+        background: white;
+        border: 1px solid #DDD;
+        border-radius: 3px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        min-width: 180px;
+    }
+
+    .-sew-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-height: 100px;
+        overflow: scroll;
+    }
+
+    .-sew-list-item {
+        display: block;
+        padding: 5px 10px;
+        border-bottom: 1px solid #DDD;
+        cursor: pointer;
+    }
+
+
+        .-sew-list-item small {
+            color: #afafaf;
+        }
+
+        .-sew-list-item.selected {
+            color: white;
+            background: #4183C4;
+            text-decoration: none;
+        }
 </style>
+<link href="~/css/jquery.mentionsInput.css" rel="stylesheet" />
+
 <h1>Dodaj novo takmicenje</h1>
 <form asp-action="Dodaj" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -20,22 +77,40 @@
             <td>@Html.ValidationMessageFor(s => s.Naziv, "", new { @class = "text-danger" })</td>
         </tr>
         <tr>
-            <td>Pocetak prijava</td>
-            <td><input type="datetime-local" asp-for="RokPocetkaPrijave" /></td>
-            <td>@Html.ValidationMessageFor(s => s.RokPocetkaPrijave, "", new { @class = "text-danger" })</td>
+            <td>Rucni unos prijava (u suprotnom definisite registracije)</td>
+            <td><input id="checkRucni" asp-for="RucniOdabir" /></td>
+
 
         </tr>
-        <tr>
-            <td>Kraj prijava</td>
-            <td><input type="datetime-local" asp-for="RokZavrsetkaPrijave" /></td>
-            <td>@Html.ValidationMessageFor(s => s.RokZavrsetkaPrijave, "", new { @class = "text-danger" })</td>
+        <tbody id="registracije">
+            <tr class="RegistracijeRed">
+                <td>Pocetak prijava</td>
+                <td><input type="datetime-local" asp-for="RokPocetkaPrijave" /></td>
+                <td>@Html.ValidationMessageFor(s => s.RokPocetkaPrijave, "", new { @class = "text-danger" })</td>
 
-        </tr>
-        <tr>
-            <td>Minimalni ELO</td>
-            <td><input type="text" asp-for="MinimalniELO" /></td>
-            <td>@Html.ValidationMessageFor(s => s.MinimalniELO, "", new { @class = "text-danger" })</td>
+            </tr>
+            <tr class="RegistracijeRed">
+                <td>Kraj prijava</td>
+                <td><input type="datetime-local" asp-for="RokZavrsetkaPrijave" /></td>
+                <td>@Html.ValidationMessageFor(s => s.RokZavrsetkaPrijave, "", new { @class = "text-danger" })</td>
 
+            </tr>
+            <tr class="RegistracijeRed">
+                <td>Minimalni ELO</td>
+                <td><input type="text" asp-for="MinimalniELO" /></td>
+                <td>@Html.ValidationMessageFor(s => s.MinimalniELO, "", new { @class = "text-danger" })</td>
+            </tr>
+        </tbody>
+        <tbody id="RucniIgraciRed" class="Default">
+            <tr>
+                <td>Korisnicka imena igraca (format : @@KorisnickoIme razmak)</td>
+                <td><textarea asp-for="RucnoOdabraniIgraci"></textarea></td>
+                <td>@Html.ValidationMessageFor(s => s.RucnoOdabraniIgraci, "", new { @class = "text-danger" })</td>
+            </tr>
+        </tbody>
+        <tr>
+            <td>Rasporedi igrace na osnovu elo? (prazno oznacava random)</td>
+            <td><input asp-for="Seeded" /></td>
         </tr>
         <tr>
             <td>Kategorija</td>
@@ -72,3 +147,31 @@
 </form>
 
 
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            if ($('#checkRucni').is(":checked")) {
+                $('#RucniIgraciRed').addClass("Toggle");
+                $('#registracije').addClass("Default");
+                $('#VrstaID option[value="2"]').prop("disabled", true);
+                $('#VrstaID option[value="1"]').prop("selected", true);
+            }
+            $('#checkRucni').change(function () {
+                if ($(this).is(":checked")) {
+                    $('#RucniIgraciRed').addClass("Toggle");
+                    $('#registracije').addClass("Default");
+                    $('#VrstaID option[value="2"]').prop("disabled", true);
+                    $('#VrstaID option[value="1"]').prop("selected", true);
+                } else {
+                    $('#RucniIgraciRed').removeClass("Toggle");
+                    $('#registracije').removeClass("Default");
+                    $('#VrstaID option[value="2"]').prop("disabled", false);
+
+                }
+            });
+
+        })
+
+    </script>
+}

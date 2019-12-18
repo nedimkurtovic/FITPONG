@@ -11,36 +11,39 @@
             <td>@Html.EditorFor(mod => mod.Naziv)</td>
             <td>@Html.ValidationMessageFor(s => s.Naziv, "", new { @class = "text-danger" })</td>
         </tr>
-        <tr>
-            <td>Pocetak prijava</td>
-            <td><input type="datetime-local" asp-for="RokPocetkaPrijave" /></td>
-            <td>@Html.ValidationMessageFor(s => s.RokPocetkaPrijave, "", new { @class = "text-danger" })</td>
-        </tr>
-        <tr>
-            <td>Kraj prijava</td>
-            <td><input type="datetime-local" asp-for="RokZavrsetkaPrijave" /></td>
-            <td>@Html.ValidationMessageFor(s => s.RokZavrsetkaPrijave, "", new { @class = "text-danger" })</td>
+        @if (Model.RokPocetkaPrijave != null) /*ako si rucno unosio ljude nemas ti sta ovo mijenjat*/
+        {
+            <tr>
+                <td>Pocetak prijava</td>
+                <td><input type="datetime-local" asp-for="RokPocetkaPrijave" /></td>
+                <td>@Html.ValidationMessageFor(s => s.RokPocetkaPrijave, "", new { @class = "text-danger" })</td>
+            </tr>
+            <tr>
+                <td>Kraj prijava</td>
+                <td><input type="datetime-local" asp-for="RokZavrsetkaPrijave" /></td>
+                <td>@Html.ValidationMessageFor(s => s.RokZavrsetkaPrijave, "", new { @class = "text-danger" })</td>
 
-        </tr>
-        <tr>
-            <td>Minimalni ELO</td>
-            <td><input type="text" asp-for="MinimalniELO" /></td>
-            <td>@Html.ValidationMessageFor(s => s.MinimalniELO, "", new { @class = "text-danger" })</td>
+            </tr>
+            <tr>
+                <td>Minimalni ELO</td>
+                <td><input type="text" asp-for="MinimalniELO" /></td>
+                <td>@Html.ValidationMessageFor(s => s.MinimalniELO, "", new { @class = "text-danger" })</td>
 
-        </tr>
-        <tr>
-            <td>Kategorija</td>
-            <td>@Html.DropDownListFor(n => n.KategorijaID, new SelectList(ViewBag.kategorije, "ID", "Opis"), "Odaberite kategoriju")</td>
-            <td>@Html.ValidationMessageFor(s => s.KategorijaID, "", new { @class = "text-danger" })</td>
+            </tr>
+            <tr>
+                <td>Kategorija</td>
+                <td>@Html.DropDownListFor(n => n.KategorijaID, new SelectList(ViewBag.kategorije, "ID", "Opis"), "Odaberite kategoriju")</td>
+                <td>@Html.ValidationMessageFor(s => s.KategorijaID, "", new { @class = "text-danger" })</td>
 
-        </tr>
+            </tr>
 
-        <tr>
-            <td>Vrsta</td>
-            <td>@Html.DropDownListFor(n => n.VrstaID, new SelectList(ViewBag.vrste, "ID", "Opis"), "Odaberite vrstu")</td>
-            <td>@Html.ValidationMessageFor(s => s.VrstaID, "", new { @class = "text-danger" })</td>
+            <tr>
+                <td>Vrsta</td>
+                <td>@Html.DropDownListFor(n => n.VrstaID, new SelectList(ViewBag.vrste, "ID", "Opis"), "Odaberite vrstu")</td>
+                <td>@Html.ValidationMessageFor(s => s.VrstaID, "", new { @class = "text-danger" })</td>
 
-        </tr>
+            </tr>
+        }
         <tr>
             <td>Status</td>
             <td>@Html.DropDownListFor(n => n.StatusID, new SelectList(ViewBag.statusi, "ID", "Opis"), "Odaberite status")</td>

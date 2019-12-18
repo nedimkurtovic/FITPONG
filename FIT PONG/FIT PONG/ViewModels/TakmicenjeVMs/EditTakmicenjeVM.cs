@@ -11,10 +11,10 @@ namespace FIT_PONG.ViewModels.TakmicenjeVMs
         public int ID { get; set; }
 
         public string Naziv { get; set; }
-        public DateTime RokPocetkaPrijave { get; set; }
-        public DateTime RokZavrsetkaPrijave { get; set; }
+        public DateTime? RokPocetkaPrijave { get; set; }
+        public DateTime? RokZavrsetkaPrijave { get; set; }
 
-        public int MinimalniELO { get; set; }
+        public int? MinimalniELO { get; set; }
 
         public Kategorija Kategorija { get; set; }
         public int KategorijaID { get; set; }
@@ -26,6 +26,7 @@ namespace FIT_PONG.ViewModels.TakmicenjeVMs
         public int StatusID { get; set; }
         public DateTime? DatumPocetka { get; set; }
         public DateTime? DatumZavrsetka { get; set; }
+
 
         public EditTakmicenjeVM(Takmicenje obj)
         {

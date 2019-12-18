@@ -5,18 +5,21 @@
 
 <h1>@Model.Naziv</h1>
 <table>
-    <tr>
-        <td>Pocetak prijava</td>
-        <td>@Model.DatumPocetkaPrijava.ToString()</td>
-    </tr>
-    <tr>
-        <td>Kraj prijava</td>
-        <td>@Model.DatumZavrsetkaPrijava.ToString()</td>
-    </tr>
-    <tr>
-        <td>Minimalni ELO</td>
-        <td>@Model.MinimalniELO</td>
-    </tr>
+    @if (Model.DatumPocetkaPrijava != null)/*nije dobra praksa if-ovi u viewu ali eto*/
+    {
+        <tr>
+            <td>Pocetak prijava</td>
+            <td>@Model.DatumPocetkaPrijava.ToString()</td>
+        </tr>
+        <tr>
+            <td>Kraj prijava</td>
+            <td>@Model.DatumZavrsetkaPrijava.ToString()</td>
+        </tr>
+        <tr>
+            <td>Minimalni ELO</td>
+            <td>@Model.MinimalniELO</td>
+        </tr>
+    }
     <tr>
         <td>Kategorija</td>
         <td>@Model.Kategorija</td>
@@ -35,7 +38,11 @@
     </tr>
     <tr>
         <td>Datum pocetka</td>
-        <td>@Model.DatumPocetkaPrijava.ToString()</td>
+        <td>@Model.DatumPocetka.ToString()</td>
+    </tr>
+    <tr>
+        <td>Datum zavrsetka</td>
+        <td>@Model.DatumZavrsetka.ToString()</td>
     </tr>
 </table>
 <a asp-controller="Takmicenje" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a>

@@ -13,8 +13,8 @@ namespace FIT_PONG.Models
         public int ID { get; set; }
         [Required, StringLength(50)]
         public string Naziv { get; set; }
-        public DateTime RokPocetkaPrijave { get; set; }
-        public DateTime RokZavrsetkaPrijave { get; set; }
+        public DateTime? RokPocetkaPrijave { get; set; }
+        public DateTime? RokZavrsetkaPrijave { get; set; }
         public DateTime DatumKreiranja { get; set; }
 
 
@@ -76,12 +76,13 @@ namespace FIT_PONG.Models
             DatumZavrsetka = obj.DatumZavrsetka ?? null;
             RokPocetkaPrijave = obj.RokPocetkaPrijave;
             RokZavrsetkaPrijave = obj.RokZavrsetkaPrijave;
-            MinimalniELO = obj.MinimalniELO;
+            MinimalniELO = obj.MinimalniELO ?? 0;
             KategorijaID = obj.KategorijaID;
             SistemID = obj.SistemID;
             VrstaID = obj.VrstaID;
             StatusID = obj.StatusID;
             DatumKreiranja = DateTime.Now;
+            Seeded = obj.Seeded;
             BrojRundi = 0;
         }
         public Takmicenje()
