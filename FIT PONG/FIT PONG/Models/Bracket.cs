@@ -11,5 +11,10 @@ namespace FIT_PONG.Models
         public int ID { get; set; }
         [StringLength(40)]
         public string Naziv { get; set; }
+
+        public int TakmicenjeID { get; set; }
+        public Takmicenje Takmicenje { get; set; }
+
+        public List<Runda> Runde { get; set; }
     }
 }

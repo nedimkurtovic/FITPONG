@@ -22,6 +22,10 @@
     <Compile Remove="Migrations\20191212160335_ReportAttachmenti.Designer.cs" />
     <Compile Remove="Migrations\20191213174914_Talatest.cs" />
     <Compile Remove="Migrations\20191213174914_Talatest.Designer.cs" />
+    <Compile Remove="Migrations\20191218084251_BracketKaoListaUTakmicenju.cs" />
+    <Compile Remove="Migrations\20191218084251_BracketKaoListaUTakmicenju.Designer.cs" />
+    <Compile Remove="Migrations\20191218084421_RundeUnutarBracketaLista.cs" />
+    <Compile Remove="Migrations\20191218084421_RundeUnutarBracketaLista.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

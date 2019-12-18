@@ -16,5 +16,7 @@ namespace FIT_PONG.Models
 
         public Bracket Bracket { get; set; }
         public int BracketID { get; set; }
+
+        public List<Utakmica> Utakmice { get; set; }
     }
 }
