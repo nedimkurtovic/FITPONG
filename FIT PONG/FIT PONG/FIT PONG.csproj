@@ -28,6 +28,8 @@
     <Compile Remove="Migrations\20191218084421_RundeUnutarBracketaLista.Designer.cs" />
     <Compile Remove="Migrations\20191218084704_ListeUForeignKeyTabelama.cs" />
     <Compile Remove="Migrations\20191218084704_ListeUForeignKeyTabelama.Designer.cs" />
+    <Compile Remove="Migrations\20191218202819_TestiranjeNOvo.cs" />
+    <Compile Remove="Migrations\20191218202819_TestiranjeNOvo.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
