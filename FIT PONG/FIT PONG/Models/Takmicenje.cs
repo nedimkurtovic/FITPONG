@@ -23,6 +23,7 @@ namespace FIT_PONG.Models
 
         [RegularExpression(@"^[0-9]+$")]
         public int MinimalniELO { get; set; }
+        public bool Seeded { get; set; }
 
         public Kategorija Kategorija { get; set; }
         public int KategorijaID { get; set; }
@@ -42,6 +43,7 @@ namespace FIT_PONG.Models
         public int FeedID { get; set; }
 
         public List<Bracket> Bracketi { get; set; }
+        public List<Prijava> Prijave { get; set; }
 
         public void setAtribute(string _naziv, DateTime _pocetakprijava, DateTime _krajprijava,
             int _minimalniELO, int _kategorijaID, int _sistemID, int _vrstaID, int _statusID,

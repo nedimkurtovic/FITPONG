@@ -26,6 +26,8 @@
     <Compile Remove="Migrations\20191218084251_BracketKaoListaUTakmicenju.Designer.cs" />
     <Compile Remove="Migrations\20191218084421_RundeUnutarBracketaLista.cs" />
     <Compile Remove="Migrations\20191218084421_RundeUnutarBracketaLista.Designer.cs" />
+    <Compile Remove="Migrations\20191218084704_ListeUForeignKeyTabelama.cs" />
+    <Compile Remove="Migrations\20191218084704_ListeUForeignKeyTabelama.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
