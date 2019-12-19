@@ -88,25 +88,34 @@
     <h3>ELO: @Model.ELO</h3>
 </div>
 <button id="btn" class="btn btn-outline-info" style="margin:10px;" onclick="PrikaziPrijave()">Moje prijave</button>
-<table id="tbl" class="table table-primary" style="width:400px; margin:10px;">
-    <thead>
-        <tr>
-            <th>Naziv takmičenja</th>
-            <th>Naziv tima</th>
-            <th>Otkaži</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.listaPrijava)
-        {
-        <tr>
-            <td>@item.Takmicenje.Naziv</td>
-            <td>@item.Naziv</td>
-            <td><a asp-controller="Takmicenje" asp-action="Otkazi" asp-route-prijavaID="@item.ID" class="btn btn-danger" style="cursor:pointer;" onclick="return confirm('Jeste li sigurni da želite otkazati prijavu?')">Otkaži</a></td>
-        </tr>
-        }
-    </tbody>
-</table>
+
+    <table id="tbl" class="table table-primary" style="width:400px; margin:10px;">
+        <thead>
+            <tr>
+                <th>Naziv takmičenja</th>
+                <th>Naziv tima</th>
+                <th>Otkaži</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.listaPrijava != null && Model.listaPrijava.Count>0)
+            {
+                @foreach (var item in Model.listaPrijava)
+                {
+                    <tr>
+                        <td>@item.Takmicenje.Naziv</td>
+                        <td>@item.Naziv</td>
+                        <td><a asp-controller="Takmicenje" asp-action="Otkazi" asp-route-prijavaID="@item.ID" class="btn btn-danger" style="cursor:pointer;" onclick="return confirm('Jeste li sigurni da želite otkazati prijavu?')">Otkaži</a></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="3"><h3>Niste prijavljeni ni na jedno takmičenje.</h3></td></tr>
+
+            }
+        </tbody>
+    </table>
 
 <a href="/Igrac/Index" class="btn btn-outline-secondary" style="margin:10px;">Back</a>
 <a asp-controller="Igrac" asp-action="EditPodatke" asp-route-igracID="@Model.ID" class="btn btn-outline-primary" style="margin:10px;">Edituj profil</a>
