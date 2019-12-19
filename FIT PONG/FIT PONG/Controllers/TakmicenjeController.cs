@@ -372,8 +372,7 @@ namespace FIT_PONG.Controllers
                         LoadViewBagPrijava(prijava.takmicenjeID);
                         return View(prijava);
                     }
-
-                    db.Add(nova);
+                    db.Takmicenja.Find(prijava.takmicenjeID).Prijave.Add(nova);
                     db.SaveChanges();
                     KreirajPrijavuIgrac(prijava, nova.ID);
 
@@ -410,6 +409,27 @@ namespace FIT_PONG.Controllers
             return View(tp);
         }
 
+        public IActionResult Otkazi(int prijavaID)
+        {
+            Prijava p = db.Prijave.Find(prijavaID);
+            if (p != null)
+            {
+                Stanje_Prijave sp = db.StanjaPrijave.Where(x => x.PrijavaID == prijavaID).SingleOrDefault();
+                if (sp != null)
+                    db.Remove(sp);
+                List<Prijava_igrac> pi = db.PrijaveIgraci.Where(x => x.PrijavaID == prijavaID).ToList();
+                if (pi!=null && pi.Count > 1)
+                {
+                    db.Remove(pi[1]);
+                }
+                 db.Remove(pi[0]);
+
+                db.Remove(p);
+                db.SaveChanges();
+                return View("OtkazivanjePrijave");
+            }
+            return View("Neuspjeh");
+        }
         private void LoadViewBagPrijava(int id)
         {
             Takmicenje t = db.Takmicenja.Find(id);

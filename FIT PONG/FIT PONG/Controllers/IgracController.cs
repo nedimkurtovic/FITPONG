@@ -68,6 +68,17 @@ namespace FIT_PONG.Controllers
             IgracVM igrac = new IgracVM(objIgrac);
             igrac.statistika = db.Statistike.Where(s => s.IgracID == id && s.AkademskaGodina==DateTime.Now.Year).SingleOrDefault();
             igrac.BrojPostovanja=db.Postovanja.Count(p => p.PostovaniID == id);
+            igrac.listaPrijava = (from pi in db.PrijaveIgraci
+                                  join pr in db.Prijave on pi.PrijavaID equals pr.ID
+                                  where pi.IgracID == id && pr.Takmicenje.RokZavrsetkaPrijave>=DateTime.Now
+                                  select new Prijava
+                                  {
+                                      ID=pr.ID,
+                                      Naziv=pr.Naziv,
+                                      Takmicenje=pr.Takmicenje
+                                  }).ToList();
+            
+
             return View(igrac);
         }
         
