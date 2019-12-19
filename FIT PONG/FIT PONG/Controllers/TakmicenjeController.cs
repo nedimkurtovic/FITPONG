@@ -222,7 +222,7 @@ namespace FIT_PONG.Controllers
             return Redirect("/Takmicenje/Neuspjeh");
         }
         [HttpPost]
-        public IActionResult Edit(EditTakmicenjeVM objekat)
+        public IActionResult Edit(EditTakmicenjeVM objekat)//dodatiiii kod.....za rucni unos
         {
             if (ModelState.IsValid)
             {

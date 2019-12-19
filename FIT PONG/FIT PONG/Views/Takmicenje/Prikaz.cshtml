@@ -47,7 +47,7 @@
 </table>
 <a asp-controller="Takmicenje" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a>
 <a asp-controller="Takmicenje" asp-action="Obrisi" asp-route-id="@Model.ID" class="btn btn-outline-danger">Obrisi</a>
-@if (Model.Status == "Prijave u toku")
+@if (Model.DatumPocetkaPrijava != null && Model.Status == "Prijave u toku")
 {
     <a asp-controller="Takmicenje" asp-action="Prijava" asp-route-takmID="@Model.ID" class="btn btn-outline-primary">Prijavi se</a>
 }
