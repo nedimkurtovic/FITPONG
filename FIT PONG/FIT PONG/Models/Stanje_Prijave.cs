@@ -28,7 +28,7 @@ namespace FIT_PONG.Models
 
         public Stanje_Prijave(int prijavaID)
         {
-            ID = prijavaID;
+            PrijavaID = prijavaID;
             BrojOdigranihMeceva = BrojPobjeda = BrojIzgubljenih = BrojBodova = 0;
         }
     }
