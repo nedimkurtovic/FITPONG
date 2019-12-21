@@ -120,6 +120,7 @@
 <a href="/Igrac/Index" class="btn btn-outline-secondary" style="margin:10px;">Back</a>
 <a asp-controller="Igrac" asp-action="EditPodatke" asp-route-igracID="@Model.ID" class="btn btn-outline-primary" style="margin:10px;">Edituj profil</a>
 
+@section Scripts{ 
 <script>
     function PrikaziPrijave() {
         var tbl = document.getElementById("tbl").style;
@@ -129,3 +130,4 @@
             tbl.display = "block";
     }
 </script>
+}

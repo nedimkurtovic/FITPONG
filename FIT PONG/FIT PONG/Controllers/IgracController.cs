@@ -340,7 +340,7 @@ namespace FIT_PONG.Controllers
                 DatumRodjenja = DateTime.Now,
                 Email = $"ime{BROJAC}.prezime{BROJAC}@edu.fit.ba",
                 LoginID = l.ID,
-                GradID = 20
+                GradID = 21
             };
             db.Add(u);
             db.SaveChanges();

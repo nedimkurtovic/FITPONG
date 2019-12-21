@@ -3,8 +3,15 @@
     ViewData["Title"] = "Prikaz";
 }
 
+<style>
+    #btns{
+        float:left;
+        width:800px;
+    }
+</style>
+
 <h1>@Model.Naziv</h1>
-<table>
+<table style="float:left;width:600px;">
     @if (Model.DatumPocetkaPrijava != null)/*nije dobra praksa if-ovi u viewu ali eto*/
     {
         <tr>
@@ -45,15 +52,56 @@
         <td>@Model.DatumZavrsetka.ToString()</td>
     </tr>
 </table>
-<a asp-controller="Takmicenje" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a>
-<a asp-controller="Takmicenje" asp-action="Obrisi" asp-route-id="@Model.ID" class="btn btn-outline-danger">Obrisi</a>
-@if (Model.DatumPocetkaPrijava != null && Model.Status == "Prijave u toku")
-{
-    <a asp-controller="Takmicenje" asp-action="Prijava" asp-route-takmID="@Model.ID" class="btn btn-outline-primary">Prijavi se</a>
-}
-else
-{
-    <button class="btn btn-outline-secondary" disabled>Završene prijave</button>
-}
+<table class="table table-bordered" style="width:500px;float:right;">
+    <thead>
+        <tr>
+            <th>Prijava ID</th>
+            <th>Naziv tima</th>
+            <th>Blokiraj</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Prijave)
+        {
+        <tr>
+            <td>@item.ID</td>
+            <td>@item.Naziv</td>
+            <td><a href="/Takmicenje/BlokirajPrijavu?prijavaID=@item.ID&nazivTima=@item.Naziv" id="blok-@item.ID" class="btn btn-outline-danger" onclick="return confirm('Da li ste sigurni da želite blokirati prijavu?')">Blokiraj</a></td>
+        </tr>
+        }
+    </tbody>
+</table>
 
+<div id="btns">
+    <a asp-controller="Takmicenje" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a>
+    <a asp-controller="Takmicenje" asp-action="Obrisi" asp-route-id="@Model.ID" class="btn btn-outline-danger">Obrisi</a>
+    @if (Model.DatumPocetkaPrijava != null && Model.Status == "Prijave u toku")
+    {
+        <a asp-controller="Takmicenje" asp-action="Prijava" asp-route-takmID="@Model.ID" class="btn btn-outline-primary">Prijavi se</a>
+    }
+    else
+    {
+        <button class="btn btn-outline-secondary" disabled>Završene prijave</button>
+    }
+</div>
 
+@*section Scripts{ 
+
+<script>
+    function Akcija(obj) {
+        var btn = document.getElementById(obj);
+        var strNaziv = obj.substring(0, obj.indexOf("-"));
+        if (strNaziv == "blok") {
+            document.getElementById("accept-" + obj.substring(obj.indexOf("-") + 1, obj.length)).disabled = false;
+            btn.disabled = true;
+        }
+        else {
+            document.getElementById("blok-" + obj.substring(obj.indexOf("-") + 1, obj.length)).disabled = false;
+            btn.disabled = true;
+
+        }
+    }
+
+</script>
+
+}*@
