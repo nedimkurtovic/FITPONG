@@ -547,7 +547,7 @@ namespace FIT_PONG.Controllers
                 .Include(tak=> tak.Prijave).SingleOrDefault(y => y.ID == ID);
             if (_takmicenje != null && !_takmicenje.Inicirano)
             {
-                if(_takmicenje.RokPocetkaPrijave != null && _takmicenje.RokZavrsetkaPrijave < DateTime.Now)
+                if(_takmicenje.RokPocetkaPrijave != null && _takmicenje.RokZavrsetkaPrijave > DateTime.Now)
                     errors.Add("Rok registracija mora zavrsiti prije generisanja rasporeda");
                 if(_takmicenje.Prijave.Count() < 4)
                     errors.Add("Takmicenje mora imati barem 4 igraca, otvorite ponovo registracije");
