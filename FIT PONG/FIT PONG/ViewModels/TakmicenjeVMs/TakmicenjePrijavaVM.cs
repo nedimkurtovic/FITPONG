@@ -12,8 +12,8 @@ namespace FIT_PONG.ViewModels.TakmicenjeVMs
         [StringLength(50,ErrorMessage ="Naziv ne smije biti duži od 50 karaktera.")]
         //[Required(ErrorMessage ="Ovo je obavezno polje.")]
         public string Naziv { get; set; }
-        public int Igrac1ID { get; set; }
-        public int Igrac2ID { get; set; }
+        public int? Igrac1ID { get; set; }
+        public int? Igrac2ID { get; set; }
         public int takmicenjeID { get; set; }
     }
 }

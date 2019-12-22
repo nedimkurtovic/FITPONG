@@ -21,8 +21,6 @@
         margin: 5px;
     }
 
-
-
     #statistika {
         float: right;
         display: inline;
@@ -33,11 +31,15 @@
         position: absolute;
         background-color: darkslategrey;
     }
+
+    #tbl {
+        display: none;
+    }
 </style>
 <img src=@Url.Content(Model.ProfileImagePath) asp-append-version="true" alt="Slika nije ispravno učitana." />
 <h1 style="margin:10px;display:inline;">@Model.PrikaznoIme</h1>
 @*Ovo je samo privremeno dok se ne rijesi microsoft identity, jer je postivalacID u ovom trenutku hard-kodiran parametar*@
-<a href="/Igrac/PostujIgraca?postivalacID=60&postovaniID=@Model.ID" class="btn btn-outline-secondary" style="display:inline;margin-left:200px;">Poštuj igrača: @Model.BrojPostovanja</a>    
+<a href="/Igrac/PostujIgraca?postivalacID=60&postovaniID=@Model.ID" class="btn btn-outline-secondary" style="display:inline;margin-left:200px;">Poštuj igrača: @Model.BrojPostovanja</a>
 <br />
 <a asp-controller="Igrac" asp-action="EditSliku" asp-route-igracID="@Model.ID" class="btn btn-outline-primary">Promijeni sliku</a>
 <br />
@@ -85,9 +87,47 @@
     <h3>Broj posjeta na profil: @Model.BrojPosjetaNaProfil</h3>
     <h3>ELO: @Model.ELO</h3>
 </div>
+<button id="btn" class="btn btn-outline-info" style="margin:10px;" onclick="PrikaziPrijave()">Moje prijave</button>
+
+    <table id="tbl" class="table table-primary" style="width:400px; margin:10px;">
+        <thead>
+            <tr>
+                <th>Naziv takmičenja</th>
+                <th>Naziv tima</th>
+                <th>Otkaži</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.listaPrijava != null && Model.listaPrijava.Count>0)
+            {
+                @foreach (var item in Model.listaPrijava)
+                {
+                    <tr>
+                        <td>@item.Takmicenje.Naziv</td>
+                        <td>@item.Naziv</td>
+                        <td><a asp-controller="Takmicenje" asp-action="Otkazi" asp-route-prijavaID="@item.ID" class="btn btn-danger" style="cursor:pointer;" onclick="return confirm('Jeste li sigurni da želite otkazati prijavu?')">Otkaži</a></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="3"><h3>Niste prijavljeni ni na jedno takmičenje.</h3></td></tr>
+
+            }
+        </tbody>
+    </table>
 
 <a href="/Igrac/Index" class="btn btn-outline-secondary" style="margin:10px;">Back</a>
 <a asp-controller="Igrac" asp-action="EditPodatke" asp-route-igracID="@Model.ID" class="btn btn-outline-primary" style="margin:10px;">Edituj profil</a>
 
-
-
+@section Scripts{ 
+<script>
+    function PrikaziPrijave() {
+        var tbl = document.getElementById("tbl").style;
+        if (tbl.display == "block")
+            tbl.display = "none";
+        else
+            tbl.display = "block";
+    }
+</script>
+}

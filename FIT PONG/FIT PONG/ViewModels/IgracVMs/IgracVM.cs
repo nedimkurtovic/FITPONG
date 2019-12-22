@@ -22,6 +22,7 @@ namespace FIT_PONG.ViewModels.IgracVMs
         public int ELO { get; set; }
         public Statistika statistika{ get; set; }
         public int BrojPostovanja { get; set; }
+        public List<Prijava> listaPrijava{ get; set; }
         public IgracVM(Igrac obj)
         {
             ID = obj.ID;

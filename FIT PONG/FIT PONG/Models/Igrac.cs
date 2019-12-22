@@ -27,7 +27,10 @@ namespace FIT_PONG.Models
         public string ProfileImagePath { get; set; }
         [RegularExpression(@"^[0-9]+$")]
         public int ELO { get; set; }
-
+       
+        
+        
+        
         public Igrac()
         {
             PrikaznoIme = "NOT SET";

@@ -38,6 +38,8 @@
     <Compile Remove="Migrations\20191220121629_IgracUtakmiceNuliranje.Designer.cs" />
     <Compile Remove="Migrations\20191220122101_IgraciUtakmicePromjenaPKNuliranje.cs" />
     <Compile Remove="Migrations\20191220122101_IgraciUtakmicePromjenaPKNuliranje.Designer.cs" />
+    <Compile Remove="Migrations\20191219205430_blokiraniIgraci_u_Takmicenju.cs" />
+    <Compile Remove="Migrations\20191219205430_blokiraniIgraci_u_Takmicenju.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

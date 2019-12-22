@@ -43,7 +43,7 @@ namespace FIT_PONG.Models
         public int FeedID { get; set; }
 
         public List<Bracket> Bracketi { get; set; }
-        public List<Prijava> Prijave { get; set; }
+        public List<Prijava> Prijave { get; set; } = new List<Prijava>();
 
         public void setAtribute(string _naziv, DateTime _pocetakprijava, DateTime _krajprijava,
             int _minimalniELO, int _kategorijaID, int _sistemID, int _vrstaID, int _statusID,

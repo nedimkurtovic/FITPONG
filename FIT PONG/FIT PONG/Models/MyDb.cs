@@ -42,6 +42,8 @@ namespace FIT_PONG.Models
         public DbSet<Objava> Objave { get; set; }
         public DbSet<Feed> Feeds { get; set; }
         public DbSet<FeedObjava> FeedsObjave { get; set; }
+        public DbSet<BlokLista> BlokListe { get; set; }
+
 
 
         //ostaje pitanje za razmotrit kako ce se ovo ponasat sa identitycontextom jer cemo morat mijenjat ono sto nasljedjuje
@@ -71,6 +73,8 @@ namespace FIT_PONG.Models
             modelBuilder.Entity<UserUloga>()
              .HasKey(uu => new { uu.UserID, uu.UlogaID});
 
+            modelBuilder.Entity<BlokLista>()
+             .HasKey(bl => new { bl.IgracID, bl.TakmicenjeID});
 
 
         }
