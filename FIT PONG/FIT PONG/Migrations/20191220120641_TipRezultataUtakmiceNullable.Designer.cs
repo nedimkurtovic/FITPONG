@@ -4,14 +4,16 @@ using FIT_PONG.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FIT_PONG.Migrations
 {
     [DbContext(typeof(MyDb))]
-    partial class MyDbModelSnapshot : ModelSnapshot
+    [Migration("20191220120641_TipRezultataUtakmiceNullable")]
+    partial class TipRezultataUtakmiceNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,29 +155,25 @@ namespace FIT_PONG.Migrations
 
             modelBuilder.Entity("FIT_PONG.Models.Igrac_Utakmica", b =>
                 {
-                    b.Property<int>("IgID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("IgracID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OsvojeniSetovi")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PristupniElo")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TipRezultataID")
+                    b.Property<int>("IgracID")
                         .HasColumnType("int");
 
                     b.Property<int>("UtakmicaID")
                         .HasColumnType("int");
 
-                    b.HasKey("IgID");
+                    b.Property<int>("ID")
+                        .HasColumnType("int");
 
-                    b.HasIndex("IgracID");
+                    b.Property<int>("OsvojeniSetovi")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PristupniElo")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TipRezultataID")
+                        .HasColumnType("int");
+
+                    b.HasKey("IgracID", "UtakmicaID");
 
                     b.HasIndex("TipRezultataID");
 
@@ -552,9 +550,6 @@ namespace FIT_PONG.Migrations
                     b.Property<int>("FeedID")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Inicirano")
-                        .HasColumnType("bit");
-
                     b.Property<int>("KategorijaID")
                         .HasColumnType("int");
 
@@ -857,7 +852,9 @@ namespace FIT_PONG.Migrations
                 {
                     b.HasOne("FIT_PONG.Models.Igrac", "Igrac")
                         .WithMany()
-                        .HasForeignKey("IgracID");
+                        .HasForeignKey("IgracID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FIT_PONG.Models.Tip_Rezultata", "TipRezultata")
                         .WithMany()

@@ -68,9 +68,6 @@ namespace FIT_PONG.Models
             modelBuilder.Entity<UserKonverzacija>()
              .HasKey(uk => new { uk.UserID, uk.KonverzacijaID});
 
-            modelBuilder.Entity<Igrac_Utakmica>()
-             .HasKey(iu => new { iu.IgracID, iu.UtakmicaID});
-
             modelBuilder.Entity<UserUloga>()
              .HasKey(uu => new { uu.UserID, uu.UlogaID});
 

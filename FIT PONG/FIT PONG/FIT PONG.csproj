@@ -30,6 +30,14 @@
     <Compile Remove="Migrations\20191218084704_ListeUForeignKeyTabelama.Designer.cs" />
     <Compile Remove="Migrations\20191218202819_TestiranjeNOvo.cs" />
     <Compile Remove="Migrations\20191218202819_TestiranjeNOvo.Designer.cs" />
+    <Compile Remove="Migrations\20191220121140_IgracUtakmicaPreostaloNuliranje.cs" />
+    <Compile Remove="Migrations\20191220121140_IgracUtakmicaPreostaloNuliranje.Designer.cs" />
+    <Compile Remove="Migrations\20191220121438_IgracUtakmicaNuliranje.cs" />
+    <Compile Remove="Migrations\20191220121438_IgracUtakmicaNuliranje.Designer.cs" />
+    <Compile Remove="Migrations\20191220121629_IgracUtakmiceNuliranje.cs" />
+    <Compile Remove="Migrations\20191220121629_IgracUtakmiceNuliranje.Designer.cs" />
+    <Compile Remove="Migrations\20191220122101_IgraciUtakmicePromjenaPKNuliranje.cs" />
+    <Compile Remove="Migrations\20191220122101_IgraciUtakmicePromjenaPKNuliranje.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

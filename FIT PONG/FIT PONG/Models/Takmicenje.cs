@@ -24,7 +24,7 @@ namespace FIT_PONG.Models
         [RegularExpression(@"^[0-9]+$")]
         public int MinimalniELO { get; set; }
         public bool Seeded { get; set; }
-
+        public bool Inicirano { get; set; }
         public Kategorija Kategorija { get; set; }
         public int KategorijaID { get; set; }
 
@@ -84,10 +84,14 @@ namespace FIT_PONG.Models
             DatumKreiranja = DateTime.Now;
             Seeded = obj.Seeded;
             BrojRundi = 0;
+            Bracketi = new List<Bracket>();
+            Prijave = new List<Prijava>();
+            Inicirano = false;
         }
         public Takmicenje()
         {
-
+            Bracketi = new List<Bracket>();
+            Prijave = new List<Prijava>();
         }
     }
 }

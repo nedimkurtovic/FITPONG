@@ -4,14 +4,16 @@ using FIT_PONG.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FIT_PONG.Migrations
 {
     [DbContext(typeof(MyDb))]
-    partial class MyDbModelSnapshot : ModelSnapshot
+    [Migration("20191220123132_IgracUtakmicaPKPromjenaNuliranje")]
+    partial class IgracUtakmicaPKPromjenaNuliranje
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -551,9 +553,6 @@ namespace FIT_PONG.Migrations
 
                     b.Property<int>("FeedID")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Inicirano")
-                        .HasColumnType("bit");
 
                     b.Property<int>("KategorijaID")
                         .HasColumnType("int");
