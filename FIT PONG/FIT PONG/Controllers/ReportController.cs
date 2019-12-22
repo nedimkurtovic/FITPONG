@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace FIT_PONG.Controllers
 {
@@ -78,6 +80,14 @@ namespace FIT_PONG.Controllers
                                 }
                             }
                             transakcija.Commit();
+                            try
+                            {
+                                PosaljiMejl(noviReport);
+                            }
+                            catch(Exception err)
+                            {
+
+                            }
                             return Redirect("/Home/Index");
                         }
                         catch(DbUpdateException err)
@@ -94,6 +104,26 @@ namespace FIT_PONG.Controllers
                 }
             }
             return View(ReportObj);
+        }
+        public void PosaljiMejl(Report novi)
+        {
+            var Poruka = new MimeMessage();
+            Poruka.From.Add(new MailboxAddress("fitpongtest@gmail.com"));
+            Poruka.To.Add(new MailboxAddress("nedim.kurtovic@edu.fit.ba"));
+            Poruka.To.Add(new MailboxAddress("aldin.talic@edu.fit.ba"));
+            Poruka.Subject = novi.Naslov;
+            Poruka.Body = new TextPart("html")
+            {
+                Text = "Poruka dolazi od " + novi.Email + "<br>" +
+                "Sadrzaj poruke : " + novi.Sadrzaj
+            };
+            using(var client = new SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587);
+                client.Authenticate("fitpongtest@gmail.com", "F!tP0ng_2019!");
+                client.Send(Poruka);
+                client.Disconnect(false);
+            }
         }
         public bool SamoSlike(List<IFormFile> prilozi)
         {
