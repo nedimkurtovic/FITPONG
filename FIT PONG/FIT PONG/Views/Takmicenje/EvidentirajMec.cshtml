@@ -24,20 +24,16 @@
                 var x = JSON.parse(data);
                 var tabela = document.getElementById("mecevi");
                 var br = 1;
-                var temp =@brojRundi;
-                if (temp % 2 != 0)
-                    temp++;
+
                 for (var i = 0; i < x.length; i++) {
-                    if ((i % (temp / 2)) == 0) {
-                        var trRunda = document.createElement("tr");
-                        var tdRunda = document.createElement("td");
-                        tdRunda.colSpan = "5";
-                        var h2 = document.createElement("h2");
-                        h2.innerHTML = "Runda " + br++;
-                        tdRunda.appendChild(h2);
-                        trRunda.appendChild(tdRunda);
-                        tabela.appendChild(trRunda);
-                    }
+                    var trRunda = document.createElement("tr");
+                    var tdRunda = document.createElement("td");
+                    tdRunda.colSpan = "5";
+                    var h2 = document.createElement("h2");
+                    h2.innerHTML = "Runda " + br++;
+                    tdRunda.appendChild(h2);
+                    trRunda.appendChild(tdRunda);
+                    tabela.appendChild(trRunda);
                     var tr = document.createElement("tr");
                     var td1 = document.createElement("td");
                     td1.innerHTML = x[i].Item1;
