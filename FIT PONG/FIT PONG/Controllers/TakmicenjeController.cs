@@ -39,6 +39,55 @@ namespace FIT_PONG.Controllers
             ViewData["TakmicenjaKey"] = takmicenja;
             return View();
         }
+
+        public IActionResult Detalji(int? id)
+        {
+            if (id == null)
+            {
+                return View("/Takmicenje/Neuspjeh");
+            }
+            //potreban query za broj rundi,u bracketima se nalazi takmicenjeID ,bar bi trebalo opotrebna migracija
+            TakmicenjeVM obj = GetTakmicenjeVM(id);
+            if (obj != null)
+                return View(obj);
+
+            return Redirect("/Takmicenje/Neuspjeh");
+        }
+
+        public IActionResult RezultatiSingleDouble(int? id)
+        {
+            if (db.Takmicenja.Where(x => x.ID == id).SingleOrDefault() != null)
+            {
+                ViewBag.id = id;
+                return View();
+            }
+            return View("Neuspjeh");
+        }
+
+        public IActionResult RezultatiRoundRobin(int? id)
+        {
+            TakmicenjeVM obj = GetTakmicenjeVM(id);
+
+            if (obj != null)
+            {
+                ViewBag.id = id;
+                ViewBag.brojRundi = obj.Bracketi[0].Runde.Count();
+                return View();
+            }
+            return View("Neuspjeh");
+        }
+
+        public IActionResult EvidentirajMec(int? id)
+        {
+            TakmicenjeVM obj = GetTakmicenjeVM(id);
+            ViewBag.id = id;
+            ViewBag.brojRundi = obj.Bracketi[0].Runde.Count();
+
+
+            return View();
+        }
+
+
         [HttpPost]
         public IActionResult Dodaj(CreateTakmicenjeVM objekat)
         {
@@ -216,13 +265,10 @@ namespace FIT_PONG.Controllers
                 return View("/Takmicenje/Neuspjeh");
             }
             //potreban query za broj rundi,u bracketima se nalazi takmicenjeID ,bar bi trebalo opotrebna migracija
-            Takmicenje obj = db.Takmicenja.Include(tak => tak.Kategorija).Include(tak => tak.Sistem)
-                .Include(tak => tak.Vrsta).Include(tak => tak.Status).Include(tak => tak.Feed).Include(tak => tak.Prijave).SingleOrDefault(y => y.ID == id);
+            TakmicenjeVM obj = GetTakmicenjeVM(id);
             if (obj != null)
-            {
-                TakmicenjeVM takmicenje = new TakmicenjeVM(obj);
-                return View(takmicenje);
-            }
+                return View(obj);
+            
             return Redirect("/Takmicenje/Neuspjeh");
         }
 
@@ -372,6 +418,7 @@ namespace FIT_PONG.Controllers
 
                 if (prijava.Igrac1ID == null)
                     ModelState.AddModelError(nameof(prijava.Igrac1ID), "Polje igrač1 je obavezno.");
+              
                 if (prijava.isTim)
                 {
                     Prijava_igrac pi2 = db.PrijaveIgraci.Where(p => p.Prijava.TakmicenjeID == prijava.takmicenjeID && p.IgracID == prijava.Igrac2ID).SingleOrDefault();
@@ -578,6 +625,34 @@ namespace FIT_PONG.Controllers
             }
             errors.Add("Takmicenje ne postoji ili je vec inicirano");
             return View("Neuspjeh", errors);
+        }
+
+        public TakmicenjeVM GetTakmicenjeVM(int? id)
+        {
+
+            //potreban query za broj rundi,u bracketima se nalazi takmicenjeID ,bar bi trebalo opotrebna migracija
+            //Takmicenje obj = db.Takmicenja.Include(tak => tak.Kategorija)
+            //                              .Include(tak => tak.Sistem)
+            //                              .Include(tak => tak.Vrsta)
+            //                              .Include(tak => tak.Status)
+            //                              .Include(tak => tak.Feed)
+            //                              .Include(tak => tak.Prijave)
+            //                              .SingleOrDefault(y => y.ID == id);
+            Takmicenje obj = db.Takmicenja.Include(tak => tak.Kategorija).
+                Include(tak => tak.Sistem)
+                .Include(tak => tak.Vrsta)
+                .Include(tak => tak.Status)
+                .Include(tak => tak.Feed)
+                .Include(tak => tak.Prijave)
+                .Include(x => x.Bracketi)
+                .ThenInclude(x => x.Runde)
+                .ThenInclude(x => x.Utakmice)
+                .ThenInclude(x => x.UcescaNaUtakmici)
+                .ThenInclude(x => x.Igrac)
+                .SingleOrDefault(y => y.ID == id);
+            if (obj != null)
+                return new TakmicenjeVM(obj);
+            return null;
         }
 
     }

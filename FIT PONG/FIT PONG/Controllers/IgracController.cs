@@ -305,7 +305,7 @@ namespace FIT_PONG.Controllers
                 default:
                     return igraci;
             }
-
+           
         }
         private bool JeLiUnique(string username)
         {
@@ -340,7 +340,7 @@ namespace FIT_PONG.Controllers
                 DatumRodjenja = DateTime.Now,
                 Email = $"ime{BROJAC}.prezime{BROJAC}@edu.fit.ba",
                 LoginID = l.ID,
-                GradID = 21
+                GradID = 20
             };
             db.Add(u);
             db.SaveChanges();

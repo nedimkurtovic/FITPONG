@@ -4,105 +4,118 @@
 }
 
 <style>
-    #btns{
-        float:left;
-        width:800px;
+
+    /* Style the tab */
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+        /* Style the buttons that are used to open the tab content */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #ddd;
+            }
+
+            /* Create an active/current tablink class */
+            .tab button.active {
+                background-color: #ccc;
+            }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+        overflow:auto;
     }
 </style>
 
 <h1>@Model.Naziv</h1>
-<table style="float:left;width:600px;">
-    @if (Model.DatumPocetkaPrijava != null)/*nije dobra praksa if-ovi u viewu ali eto*/
-    {
-        <tr>
-            <td>Pocetak prijava</td>
-            <td>@Model.DatumPocetkaPrijava.ToString()</td>
-        </tr>
-        <tr>
-            <td>Kraj prijava</td>
-            <td>@Model.DatumZavrsetkaPrijava.ToString()</td>
-        </tr>
-        <tr>
-            <td>Minimalni ELO</td>
-            <td>@Model.MinimalniELO</td>
-        </tr>
-    }
-    <tr>
-        <td>Kategorija</td>
-        <td>@Model.Kategorija</td>
-    </tr>
-    <tr>
-        <td>Sistem</td>
-        <td>@Model.Sistem</td>
-    </tr>
-    <tr>
-        <td>Vrsta</td>
-        <td>@Model.Vrsta</td>
-    </tr>
-    <tr>
-        <td>Status</td>
-        <td>@Model.Status</td>
-    </tr>
-    <tr>
-        <td>Datum pocetka</td>
-        <td>@Model.DatumPocetka.ToString()</td>
-    </tr>
-    <tr>
-        <td>Datum zavrsetka</td>
-        <td>@Model.DatumZavrsetka.ToString()</td>
-    </tr>
-</table>
-<table class="table table-bordered" style="width:500px;float:right;">
-    <thead>
-        <tr>
-            <th>Prijava ID</th>
-            <th>Naziv tima</th>
-            <th>Blokiraj</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Prijave)
-        {
-        <tr>
-            <td>@item.ID</td>
-            <td>@item.Naziv</td>
-            <td><a href="/Takmicenje/BlokirajPrijavu?prijavaID=@item.ID&nazivTima=@item.Naziv" id="blok-@item.ID" class="btn btn-outline-danger" onclick="return confirm('Da li ste sigurni da želite blokirati prijavu?')">Blokiraj</a></td>
-        </tr>
-        }
-    </tbody>
-</table>
-
-<div id="btns">
-    <a asp-controller="Takmicenje" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a>
-    <a asp-controller="Takmicenje" asp-action="Obrisi" asp-route-id="@Model.ID" class="btn btn-outline-danger">Obrisi</a>
-    @if (Model.DatumPocetkaPrijava != null && Model.DatumZavrsetkaPrijava > DateTime.Now)
-    {
-        <a asp-controller="Takmicenje" asp-action="Prijava" asp-route-takmID="@Model.ID" class="btn btn-outline-primary">Prijavi se</a>
-    }
-    else
-    {
-        <button class="btn btn-outline-secondary" disabled>Završene prijave</button>
-        <a class="btn btn-outline-primary" asp-controller="Takmicenje" asp-action="Init" asp-route-id="@Model.ID">Generisi raspored</a>
-    }
+<div class="tab">
+    <button class="tablinks active" onclick="openTab(event, 'Detalji')">Detalji</button>
+    <button class="tablinks" onclick="openTab(event, 'Rezultati')">Rezultati</button>
+    <button class="tablinks" onclick="openTab(event, 'EvidentirajMec')">Evidentiraj meč</button>
 </div>
 
-@*section Scripts{ 
+<!-- Tab content -->
+<div id="Detalji" class="tabcontent">
+</div>
 
-<script>
-    function Akcija(obj) {
-        var btn = document.getElementById(obj);
-        var strNaziv = obj.substring(0, obj.indexOf("-"));
-        if (strNaziv == "blok") {
-            document.getElementById("accept-" + obj.substring(obj.indexOf("-") + 1, obj.length)).disabled = false;
-            btn.disabled = true;
+<div id="Rezultati" class="tabcontent">
+</div>
+
+<div id="EvidentirajMec" class="tabcontent">
+</div>
+
+
+@section Scripts{
+
+    <script>
+        function openTab(evt, tabName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+
+            var myUrl = "RezultatiSingleDouble";
+            if ("@Model.Sistem" == "Round robin")
+                myUrl = "RezultatiRoundRobin";
+            if (tabName == "EvidentirajMec")
+                myUrl = tabName;
+            if (tabName == "Detalji")
+                myUrl = tabName;
+
+            //treba izmijeniti url tako da odgovara i akciji evidentiraj mec.... neki univerzalan nacin
+            $.ajax({
+                async: false,
+                url: "/Takmicenje/"+myUrl+"/"+@Model.ID,
+                type: "Get",
+                success: function (data) {
+                 $("#"+tabName).html(data);
+                }
+
+                
+            });
+
         }
-        else {
-            document.getElementById("blok-" + obj.substring(obj.indexOf("-") + 1, obj.length)).disabled = false;
-            btn.disabled = true;
+        $(document).ready(function () {
+            $.ajax({
+                async: false,
+                url: "/Takmicenje/Detalji/"+@Model.ID,
+                type: "Get",
+                success: function (data) {
+                    $("#Detalji").html(data);
+                    $("#Detalji").css("display", "block");
+                }
+            });
+        });
+    </script>
 
-        }
-    }
-
-</script>
-
-}*@
+}

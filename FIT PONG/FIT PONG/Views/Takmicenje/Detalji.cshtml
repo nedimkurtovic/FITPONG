@@ -1,0 +1,88 @@
+﻿@model FIT_PONG.ViewModels.TakmicenjeVMs.TakmicenjeVM
+@{
+    Layout = null;
+}
+
+<style>
+    #btns {
+        width:500px;
+        display:inline-block;
+    }
+</style>
+<table style="float:left;width:300px;">
+    @if (Model.DatumPocetkaPrijava != null)/*nije dobra praksa if-ovi u viewu ali eto*/
+    {
+        <tr>
+            <td>Pocetak prijava</td>
+            <td>@Model.DatumPocetkaPrijava.ToString()</td>
+        </tr>
+        <tr>
+            <td>Kraj prijava</td>
+            <td>@Model.DatumZavrsetkaPrijava.ToString()</td>
+        </tr>
+        <tr>
+            <td>Minimalni ELO</td>
+            <td>@Model.MinimalniELO</td>
+        </tr>
+    }
+    <tr>
+        <td>Kategorija</td>
+        <td>@Model.Kategorija</td>
+    </tr>
+    <tr>
+        <td>Sistem</td>
+        <td>@Model.Sistem</td>
+    </tr>
+    <tr>
+        <td>Vrsta</td>
+        <td>@Model.Vrsta</td>
+    </tr>
+    <tr>
+        <td>Status</td>
+        <td>@Model.Status</td>
+    </tr>
+    <tr>
+        <td>Datum pocetka</td>
+        <td>@Model.DatumPocetka.ToString()</td>
+    </tr>
+    <tr>
+        <td>Datum zavrsetka</td>
+        <td>@Model.DatumZavrsetka.ToString()</td>
+    </tr>
+</table>
+<table class="table table-bordered" style="width:400px;float:right;">
+    <thead>
+        <tr>
+            <th>Prijava ID</th>
+            <th>Naziv tima</th>
+            <th>Blokiraj</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Prijave)
+        {
+            <tr>
+                <td>@item.ID</td>
+                <td>@item.Naziv</td>
+                <td><a href="/Takmicenje/BlokirajPrijavu?prijavaID=@item.ID&nazivTima=@item.Naziv" id="blok-@item.ID" class="btn btn-outline-danger" onclick="return confirm('Da li ste sigurni da želite blokirati prijavu?')">Blokiraj</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div id="btns">
+    <a asp-controller="Takmicenje" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a>
+    <a asp-controller="Takmicenje" asp-action="Obrisi" asp-route-id="@Model.ID" class="btn btn-outline-danger">Obrisi</a>
+    @if (Model.DatumPocetkaPrijava != null && Model.DatumZavrsetkaPrijava > DateTime.Now)
+    {
+        <a asp-controller="Takmicenje" asp-action="Prijava" asp-route-takmID="@Model.ID" class="btn btn-outline-primary">Prijavi se</a>
+    }
+    else
+    {
+        <button class="btn btn-outline-secondary" disabled>Završene prijave</button>
+        <a class="btn btn-outline-primary" asp-controller="Takmicenje" asp-action="Init" asp-route-id="@Model.ID">Generisi raspored</a>
+    }
+</div>
+<div style="clear:both;">
+
+</div>
+
