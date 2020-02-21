@@ -25,6 +25,7 @@ namespace FIT_PONG.ViewModels.TakmicenjeVMs
         public int BrojPrijavljenih { get; set; }
         public int FeedID { get; set; }
         public List<Prijava> Prijave { get; set; }
+        public List<Bracket> Bracketi { get; set; }
 
         public TakmicenjeVM(Takmicenje obj, int brojPrijavljenih = 0)
         {
@@ -45,6 +46,7 @@ namespace FIT_PONG.ViewModels.TakmicenjeVMs
             BrojPrijavljenih = brojPrijavljenih;
             FeedID = obj.FeedID;
             Prijave = obj.Prijave;
+            Bracketi= obj.Bracketi;
         }
         public TakmicenjeVM() { }
     }

@@ -322,7 +322,7 @@ namespace FIT_PONG.Controllers
                 default:
                     return igraci;
             }
-
+           
         }
         private bool JeLiUnique(string username)
         {
@@ -344,6 +344,7 @@ namespace FIT_PONG.Controllers
         //jer igrac preuzima id od usera, a u user posjeduje loginID, tako da je to dvoje neophodno
         //ovo je naravno samo privremeno, dok se ne rijesi microsoft identity
         //samo je tu zbog testiranja funkcionalnosti
+<<<<<<< HEAD
         //private int KreirajLoginIUsera()
         //{
         //    Login l = new Login
@@ -368,6 +369,32 @@ namespace FIT_PONG.Controllers
         //    BROJAC++;
         //    return u.ID;
         //}
+=======
+        private int KreirajLoginIUsera()
+        {
+            Login l = new Login
+            {
+                Username = "Username " + BROJAC,
+                PasswordHash = "PasswordHash " + BROJAC,
+                PasswordSalt = "PasswordSalt " + BROJAC
+            };
+            db.Add(l);
+            db.SaveChanges();
+            User u = new User
+            {
+                Ime = "Ime - " + BROJAC,
+                Prezime = "Prezime " + BROJAC,
+                DatumRodjenja = DateTime.Now,
+                Email = $"ime{BROJAC}.prezime{BROJAC}@edu.fit.ba",
+                LoginID = l.ID,
+                GradID = 20
+            };
+            db.Add(u);
+            db.SaveChanges();
+            BROJAC++;
+            return u.ID;
+        }
+>>>>>>> cf5f58fca17d2752ef12b335b36e57c5558d8548
 
     }
 }

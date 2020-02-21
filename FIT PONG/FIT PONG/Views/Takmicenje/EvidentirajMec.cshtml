@@ -1,0 +1,72 @@
+﻿
+@{
+    Layout = null;
+    var id = ViewBag.id;
+    var brojRundi = ViewBag.brojRundi;
+
+}
+
+<style>
+    td{
+        text-align:center;
+    }
+</style>
+<table id="mecevi" class="table table-bordered">
+</table>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            async: false,
+            url: "https://localhost:44322/FitApi/GetUtakmiceEvidencija/@id",
+            type: "Get",
+            success: function (data) {
+                var x = JSON.parse(data);
+                var tabela = document.getElementById("mecevi");
+                var br = 1;
+
+                for (var i = 0; i < x.length; i++) {
+                    var trRunda = document.createElement("tr");
+                    var tdRunda = document.createElement("td");
+                    tdRunda.colSpan = "5";
+                    var h2 = document.createElement("h2");
+                    h2.innerHTML = "Runda " + br++;
+                    tdRunda.appendChild(h2);
+                    trRunda.appendChild(tdRunda);
+                    tabela.appendChild(trRunda);
+                    var tr = document.createElement("tr");
+                    var td1 = document.createElement("td");
+                    td1.innerHTML = x[i].Item1;
+                    tr.appendChild(td1);
+
+                    if (x[i].Item1 == null || x[i].Item4 == null) {
+                        var tdSlobodan = document.createElement("td");
+                        tdSlobodan.innerHTML = "Slobodno kolo";
+                        tdSlobodan.colSpan = "4";
+                        tdSlobodan.bgColor = "yellow";
+                        tr.appendChild(tdSlobodan);
+                    }
+                    else {
+                        var td2 = document.createElement("td");
+                        td2.innerHTML = x[i].Item2;
+                        var td3 = document.createElement("td");
+                        td3.innerHTML = x[i].Item3;
+                        var td4 = document.createElement("td");
+                        td4.innerHTML = x[i].Item4;
+                        tr.appendChild(td2);
+                        tr.appendChild(td3);
+                        tr.appendChild(td4);
+                        var td5 = document.createElement("td");
+                        var a = document.createElement("a");
+                        a.href = "#";
+                        a.classList = "btn btn-outline-primary";
+                        a.innerHTML = "Evidentiraj meč";
+                        td5.appendChild(a);
+                        tr.appendChild(td5);
+                    }
+                    tabela.appendChild(tr);
+                }
+            }
+        });
+        });
+</script>

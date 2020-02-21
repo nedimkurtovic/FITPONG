@@ -83,6 +83,13 @@ namespace FIT_PONG
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "defaultWebApi",
+                    pattern: "{controller}/{id?}");
+            });
         }
     }
 }

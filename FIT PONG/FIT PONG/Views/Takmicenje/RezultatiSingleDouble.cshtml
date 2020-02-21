@@ -1,0 +1,85 @@
+﻿
+@{
+    Layout = null;
+    var id = ViewBag.id;
+}
+
+<div class="turnir">
+
+
+</div>
+<script>
+    $(document).ready(function () {
+        var autoCompleteData = {
+            teams: [], results: []
+        };
+        $.ajax({
+            async: false,
+            url: "https://localhost:44322/FitApi/Get/@id",
+            type: "Get",
+            success: function (data) {
+                var x = JSON.parse(data);
+                var tempPolovine = (x.length + 1) / 2;
+                br = -1;
+                for (var i = 0; i < x.length + 1; i++) {
+                    if (i < ((x.length + 1) / 2))
+                        autoCompleteData.teams.push([x[i].Item1, x[i].Item4]);
+
+                    if (i == 0 || i == temp) {
+                        autoCompleteData.results.push([]);
+                        temp = (x.length + 1) - (tempPolovine);
+                        tempPolovine /= 2;
+
+                        br++;
+                    }
+                    autoCompleteData.results[br].push([x[i].Item2, x[i].Item3]);
+
+                }
+
+            }
+        });
+            autoCompleteData.results[br-1].push([2, 0]);
+            /* If you call doneCb([value], true), the next edit will be automatically
+               activated. This works only in the first round. */
+            function acEditFn(container, data, doneCb) {
+                var input = $('<input type="text">');
+                input.val(data);
+                input.autocomplete({ source: acData });
+                input.blur(function () { doneCb(input.val()) });
+                input.keyup(function (e) { if ((e.keyCode || e.which) === 13) input.blur() });
+                container.html(input);
+                input.focus();
+            }
+
+            function acRenderFn(container, data, score, state) {
+                switch (state) {
+                    case 'empty-bye':
+                        container.append('BYE');
+                        return;
+                    case 'empty-tbd':
+                        container.append('TBD');
+                        return;
+
+                    case 'entry-no-score':
+                    case 'entry-default-win':
+                    case 'entry-complete':
+                        var fields = data;
+                        container.append(fields);
+                        return;
+                }
+            };
+
+            $(function () {
+                var container = $('.turnir')
+                container.bracket({
+                    init: autoCompleteData,
+                    decorator: { edit: acEditFn, render: acRenderFn }
+                });
+            });
+
+
+        });
+
+
+
+</script>
