@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,9 +11,9 @@ namespace FIT_PONG.Models
     public class Igrac
     {
         [Key()]
-        [ForeignKey(nameof(User))]
+        [ForeignKey(nameof(IdentityUser<int>))]
         public int ID { get; set; }
-        public User User { get; set; }
+        public IdentityUser<int> User { get; set; }
 
         [StringLength(50)]
         [Required(ErrorMessage ="Ovo je obavezno polje.")]
@@ -27,10 +28,12 @@ namespace FIT_PONG.Models
         public string ProfileImagePath { get; set; }
         [RegularExpression(@"^[0-9]+$")]
         public int ELO { get; set; }
-       
-        
-        
-        
+
+        public int? GradID { get; set; }
+        public Grad Grad { get; set; }
+
+        public char Spol { get; set; }
+
         public Igrac()
         {
             PrikaznoIme = "NOT SET";

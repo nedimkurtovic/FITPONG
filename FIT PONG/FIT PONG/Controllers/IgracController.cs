@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using FIT_PONG.Models;
 using FIT_PONG.ViewModels.IgracVMs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FIT_PONG.Controllers
 {
@@ -83,19 +85,22 @@ namespace FIT_PONG.Controllers
         }
         
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult Dodaj(IgracDodajVM igrac)
         {
             if (ModelState.IsValid)
             {
+                if (igrac.ID == null || igrac.Token == "")
+                    return RedirectToAction("Neuspjeh", new { poruka = "Igrac se moze kreirati samo prilikom potvrde mejla" });
                 if (igrac.PrikaznoIme!=null && !JeLiUnique(igrac.PrikaznoIme))
                 {
                     ModelState.AddModelError(nameof(igrac.PrikaznoIme), "Prikazno ime je zauzeto.");
                     return View(igrac);
                 }
-                int id=KreirajLoginIUsera();
+                //int id=KreirajLoginIUsera();
                 Igrac novi = new Igrac
                 {
-                    ID = id,
+                    ID = igrac.ID.GetValueOrDefault(),
                     BrojPosjetaNaProfil = 0,
                     ELO = 1000,
                     JacaRuka = igrac.JacaRuka,
@@ -119,10 +124,18 @@ namespace FIT_PONG.Controllers
                 {
                     novi.ProfileImagePath = "/profile_picture_default.png";
                 }
-                db.Add(novi);
-                db.Add(statistika);
+                var user = db.Users.Where(x => x.Id == novi.ID).AsNoTracking().FirstOrDefault();
+                db.Entry(user).State = EntityState.Detached;
+
+                db.Igraci.Add(novi);
+                db.Statistike.Add(statistika);
                 db.SaveChanges();
-                return Redirect("/Igrac/PrikazProfila/"+novi.ID);
+                db.ChangeTracker.Entries().ToList(); // visak samo zbog testiranja stavljeno
+                return RedirectToAction("PotvrdiMail", "Account", new
+                {
+                    userid = novi.ID.ToString(),
+                    token = igrac.Token
+                });
             }
 
             return View(igrac);
@@ -130,8 +143,12 @@ namespace FIT_PONG.Controllers
         }
 
         [HttpGet]
-        public IActionResult Dodaj()
+        [AllowAnonymous]
+        public IActionResult Dodaj(int id, string token)
         {
+            //nedostaje input za grad i spol
+            ViewBag.id = id;
+            ViewBag.token = token;
             return View();
         }
 
@@ -317,36 +334,40 @@ namespace FIT_PONG.Controllers
             }
             return true;
         }
-
+        public IActionResult Neuspjeh(string poruka)
+        {
+            ViewBag.poruka = poruka;
+            return View();
+        }
 
         //funkcija sluzi za generisanje usera i logina koji su potrebni da bi se kreirao igrac,
         //jer igrac preuzima id od usera, a u user posjeduje loginID, tako da je to dvoje neophodno
         //ovo je naravno samo privremeno, dok se ne rijesi microsoft identity
         //samo je tu zbog testiranja funkcionalnosti
-        private int KreirajLoginIUsera()
-        {
-            Login l = new Login
-            {
-                Username = "Username " + BROJAC,
-                PasswordHash = "PasswordHash " + BROJAC,
-                PasswordSalt = "PasswordSalt " + BROJAC
-            };
-            db.Add(l);
-            db.SaveChanges();
-            User u = new User
-            {
-                Ime = "Ime - " + BROJAC,
-                Prezime = "Prezime " + BROJAC,
-                DatumRodjenja = DateTime.Now,
-                Email = $"ime{BROJAC}.prezime{BROJAC}@edu.fit.ba",
-                LoginID = l.ID,
-                GradID = 21
-            };
-            db.Add(u);
-            db.SaveChanges();
-            BROJAC++;
-            return u.ID;
-        }
+        //private int KreirajLoginIUsera()
+        //{
+        //    Login l = new Login
+        //    {
+        //        Username = "Username " + BROJAC,
+        //        PasswordHash = "PasswordHash " + BROJAC,
+        //        PasswordSalt = "PasswordSalt " + BROJAC
+        //    };
+        //    db.Add(l);
+        //    db.SaveChanges();
+        //    User u = new User
+        //    {
+        //        Ime = "Ime - " + BROJAC,
+        //        Prezime = "Prezime " + BROJAC,
+        //        DatumRodjenja = DateTime.Now,
+        //        Email = $"ime{BROJAC}.prezime{BROJAC}@edu.fit.ba",
+        //        LoginID = l.ID,
+        //        GradID = 21
+        //    };
+        //    db.Add(u);
+        //    db.SaveChanges();
+        //    BROJAC++;
+        //    return u.ID;
+        //}
 
     }
 }

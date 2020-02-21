@@ -40,6 +40,8 @@
     <Compile Remove="Migrations\20191220122101_IgraciUtakmicePromjenaPKNuliranje.Designer.cs" />
     <Compile Remove="Migrations\20191219205430_blokiraniIgraci_u_Takmicenju.cs" />
     <Compile Remove="Migrations\20191219205430_blokiraniIgraci_u_Takmicenju.Designer.cs" />
+    <Compile Remove="Migrations\20200221165323_AddingIdentity.cs" />
+    <Compile Remove="Migrations\20200221165323_AddingIdentity.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +50,7 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="2.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
@@ -55,6 +58,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
   </ItemGroup>

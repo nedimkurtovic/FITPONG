@@ -1,12 +1,16 @@
 ﻿@model  FIT_PONG.ViewModels.IgracVMs.IgracDodajVM
 @{
     ViewData["Title"] = "Dodaj";
+    var id = (int) ViewBag.id;
+    var token = (string) ViewBag.token;
 }
 
 
 
 <h1>Unos podataka</h1><br /><br />
 <form action="/Igrac/Dodaj" method="post" enctype="multipart/form-data">
+    <input asp-for="ID" value="@id" type="hidden" />
+    <input asp- asp-for="Token" value="@token" type="hidden" />
     <table>
         <tr>
             <td><h6>Prikazno ime</h6></td>

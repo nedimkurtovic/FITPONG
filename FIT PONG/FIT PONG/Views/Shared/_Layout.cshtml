@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser<int>> signinMenadjer;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,7 +7,7 @@
     <title>@ViewData["Title"] - FIT PONG</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.css" /> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.js" async></script>
 </head>
 <body>
@@ -19,8 +20,8 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-collapse collapse d-sm-inline-flex ">
+                    <ul class="navbar-nav ml-auto flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -31,28 +32,42 @@
                             <a class="nav-link text-light" asp-area="" asp-controller="Takmicenje" asp-action="Index">Takmičenja</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Grad" asp-action="Index">Gradovi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="SistemTakmicenja" asp-action="Index">Sistemi takmičenja</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Feed" asp-action="Index">Feeds</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Igrac" asp-action="Index">Igrači</a>
                         </li>
-                        <li class="nav-item">
-                            <form class="navbar-form navbar-left" role="search">
-                                <span class="form-group">
-                                    <input type="text" name="search" class="form-control awesomplete" placeholder="Search here...">
-                                </span>
-                            </form>
-                        </li>
+
                         @*OVO JE SAMO PRIVREMENO DOK SE NE RIJESI MICROSOFT IDENTITY, SLUZI SAMO ZA PROVJERU DODAVANJA I OSTALIH TESTIRANJA*@
-                        <li class="nav-item" style="position:absolute; right:20px;">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Igrac" asp-action="Dodaj">Registruj se</a>
-                        </li>
+                        @*<li class="nav-item" style="position:absolute; right:20px;">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Igrac" asp-action="Dodaj">Registruj se</a>
+                            </li>*@
+                    </ul>
+                    <ul class="navbar-nav mr-auto flex-grow-1">
+                        @if (signinMenadjer.IsSignedIn(User))
+                        {
+
+                            <li class="nav-item">
+                                <form asp-action="Logout" asp-controller="Account" method="post">
+                                    <button type="submit" class="nav-link btn btn-link py-0 ">
+                                        Logout @User.Identity.Name
+                                    </button>
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-action="Index" class="nav-link" asp-controller="Chat">Chat</a>
+                            </li>
+                            <li class="nav-item">
+                                <form class="navbar-form navbar-left" role="search">
+                                    <span class="form-group">
+                                        <input type="text" name="search" class="form-control awesomplete" placeholder="Search here...">
+                                    </span>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+
+                            <li class="nav-item"><a class="nav-link" asp-action="Registracija" asp-controller="Account">Registruj</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-action="Login" asp-controller="Account">Login</a></li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -62,6 +77,7 @@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
+
         </main>
     </div>
 

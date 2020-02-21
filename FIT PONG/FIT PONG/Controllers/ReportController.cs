@@ -11,6 +11,7 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using MailKit.Net.Smtp;
 using MimeKit;
+using FIT_PONG.Models.BL;
 
 namespace FIT_PONG.Controllers
 {
@@ -19,10 +20,14 @@ namespace FIT_PONG.Controllers
         private readonly MyDb db;
         private readonly IWebHostEnvironment _host;
 
-        public ReportController(MyDb instanca,IWebHostEnvironment _webhost)
+        public iEmailServis emailServis { get; }
+
+        public ReportController(MyDb instanca,IWebHostEnvironment _webhost,
+            iEmailServis imejlovi)
         {
             db = instanca;
             _host = _webhost;
+            emailServis = imejlovi;
         }
         public IActionResult Dodaj()
         {
@@ -82,7 +87,7 @@ namespace FIT_PONG.Controllers
                             transakcija.Commit();
                             try
                             {
-                                PosaljiMejl(noviReport);
+                               emailServis.PosaljiMejlReport(noviReport);
                             }
                             catch(Exception err)
                             {
@@ -105,26 +110,26 @@ namespace FIT_PONG.Controllers
             }
             return View(ReportObj);
         }
-        public void PosaljiMejl(Report novi)
-        {
-            var Poruka = new MimeMessage();
-            Poruka.From.Add(new MailboxAddress("fitpongtest@gmail.com"));
-            Poruka.To.Add(new MailboxAddress("nedim.kurtovic@edu.fit.ba"));
-            Poruka.To.Add(new MailboxAddress("aldin.talic@edu.fit.ba"));
-            Poruka.Subject = novi.Naslov;
-            Poruka.Body = new TextPart("html")
-            {
-                Text = "Poruka dolazi od " + novi.Email + "<br>" +
-                "Sadrzaj poruke : " + novi.Sadrzaj
-            };
-            using(var client = new SmtpClient())
-            {
-                client.Connect("smtp.gmail.com", 587);
-                client.Authenticate("fitpongtest@gmail.com", "F!tP0ng_2019!");
-                client.Send(Poruka);
-                client.Disconnect(false);
-            }
-        }
+        //public void PosaljiMejl(Report novi)
+        //{
+        //    var Poruka = new MimeMessage();
+        //    Poruka.From.Add(new MailboxAddress("fitpongtest@gmail.com"));
+        //    Poruka.To.Add(new MailboxAddress("nedim.kurtovic@edu.fit.ba"));
+        //    //Poruka.To.Add(new MailboxAddress("aldin.talic@edu.fit.ba"));
+        //    Poruka.Subject = novi.Naslov;
+        //    Poruka.Body = new TextPart("html")
+        //    {
+        //        Text = "Poruka dolazi od " + novi.Email + "<br>" +
+        //        "Sadrzaj poruke : " + novi.Sadrzaj
+        //    };
+        //    using(var client = new SmtpClient())
+        //    {
+        //        client.Connect("smtp.gmail.com", 587);
+        //        client.Authenticate("fitpongtest@gmail.com", "F!tP0ng_2019!");
+        //        client.Send(Poruka);
+        //        client.Disconnect(false);
+        //    }
+        //}
         public bool SamoSlike(List<IFormFile> prilozi)
         {
             if (prilozi != null)

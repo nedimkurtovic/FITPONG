@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FIT_PONG.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FIT_PONG.Controllers
 {
@@ -19,7 +20,7 @@ namespace FIT_PONG.Controllers
         {
             _logger = logger;
         }
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();

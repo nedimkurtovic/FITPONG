@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FIT_PONG.Models
 {
-    public class MyDb:DbContext
+    public class MyDb:IdentityDbContext<IdentityUser<int>,IdentityRole<int>,int>
     {
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Bracket> Brackets { get; set; }
@@ -27,18 +29,18 @@ namespace FIT_PONG.Models
         public DbSet<Grad> Gradovi { get; set; }
         public DbSet<Igrac> Igraci { get; set; }
         public DbSet<Konverzacija> Konverzacije { get; set; }
-        public DbSet<Login> Logins { get; set; }
-        public DbSet<Permisija> Permisije { get; set; }
+        //public DbSet<Login> Logins { get; set; }
+        //public DbSet<Permisija> Permisije { get; set; }
         public DbSet<Poruka> Poruke { get; set; }
         public DbSet<Postovanje> Postovanja { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Statistika> Statistike { get; set; }
         public DbSet<TipStatusaPoruke> TipoviStatusaPoruke { get; set; }
-        public DbSet<Uloga> Uloge { get; set; }
-        public DbSet<UlogaPermisija> UlogePermisije { get; set; }
-        public DbSet<User> Useri { get; set; }
+        //public DbSet<Uloga> Uloge { get; set; }
+         //public DbSet<UlogaPermisija> UlogePermisije { get; set; }
+        //public DbSet<User> Useri { get; set; }
         public DbSet<UserKonverzacija> UseriKonverzacije { get; set; }
-        public DbSet<UserUloga> UseriUloge { get; set; }
+        //public DbSet<UserUloga> UseriUloge { get; set; }
         public DbSet<Objava> Objave { get; set; }
         public DbSet<Feed> Feeds { get; set; }
         public DbSet<FeedObjava> FeedsObjave { get; set; }
@@ -58,24 +60,28 @@ namespace FIT_PONG.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Postovanje>()
                 .HasKey(pp => new { pp.PostivalacID, pp.PostovaniID });
 
             modelBuilder.Entity<Prijava_igrac>()
              .HasKey(pi => new { pi.IgracID, pi.PrijavaID});
 
-            modelBuilder.Entity<UlogaPermisija>()
-             .HasKey(up => new { up.UlogaID, up.PermisijaID});
+            //modelBuilder.Entity<UlogaPermisija>()
+            // .HasKey(up => new { up.UlogaID, up.PermisijaID});
 
             modelBuilder.Entity<UserKonverzacija>()
              .HasKey(uk => new { uk.UserID, uk.KonverzacijaID});
 
-            modelBuilder.Entity<UserUloga>()
-             .HasKey(uu => new { uu.UserID, uu.UlogaID});
+            //modelBuilder.Entity<UserUloga>()
+            // .HasKey(uu => new { uu.UserID, uu.UlogaID});
 
             modelBuilder.Entity<BlokLista>()
              .HasKey(bl => new { bl.IgracID, bl.TakmicenjeID});
 
+            modelBuilder.Entity<Igrac>()
+                .HasOne(x => x.User).WithOne().HasForeignKey<Igrac>(x => x.ID);
 
         }
 

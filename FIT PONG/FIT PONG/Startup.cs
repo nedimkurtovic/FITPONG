@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using FIT_PONG.Models;
 using FIT_PONG.Models.BL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +29,12 @@ namespace FIT_PONG
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(opcije => {
+                var policijarukeuvis = new AuthorizationPolicyBuilder()
+                                    .RequireAuthenticatedUser()
+                                    .Build();
+                opcije.Filters.Add(new AuthorizeFilter(policijarukeuvis));
+            });
             //ovdje registrujemo dbkontekst(ovo je varijanta bez UoW/Repozitorij patterna odnosno bez ikakvih interfejsa
             //u zavisnosti od baze koju zelis koristiti samo mijenjas string ovdje
             //ova funkcija getconnectionstring je kratica za Configuration["ConnectionStrings:imestringa"] samo sto 
@@ -35,7 +43,17 @@ namespace FIT_PONG
             //konkretno ovaj DI kontenjer services se brine oko kreiranja servisa i disposeanja istih zavisno od njihovog vremena
             //trajanja,postoje scoped transient i singleton
             services.AddScoped<InitTakmicenja>();
-            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Netza")));
+            services.AddScoped<iEmailServis, FITPONGGmail>();
+            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
+            services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(opcije =>
+            {
+                opcije.Password.RequiredLength = 6;
+                opcije.Password.RequireUppercase = false;
+                opcije.Password.RequireDigit = false;
+                opcije.SignIn.RequireConfirmedEmail = true;
+            })
+                .AddEntityFrameworkStores<MyDb>()
+                .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +74,7 @@ namespace FIT_PONG
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
