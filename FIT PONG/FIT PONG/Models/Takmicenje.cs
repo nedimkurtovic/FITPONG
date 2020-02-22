@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using FIT_PONG.ViewModels.TakmicenjeVMs;
@@ -28,6 +29,9 @@ namespace FIT_PONG.Models
         public Kategorija Kategorija { get; set; }
         public int KategorijaID { get; set; }
 
+        [ForeignKey(nameof(Igrac))]
+        public int KreatorID { get; set; }
+        public Igrac Kreator{ get; set; }
         public Sistem_Takmicenja Sistem { get; set; }
         public int SistemID { get; set; }
 

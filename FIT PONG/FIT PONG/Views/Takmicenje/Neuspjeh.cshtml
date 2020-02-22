@@ -1,6 +1,7 @@
 ﻿@model List<string>
 @{
     ViewData["Title"] = "Neuspjeh";
+    var poruka = (string)ViewBag.poruka;
 }
 @{
     if (Model != null && Model.Count > 0)
@@ -9,13 +10,19 @@
         foreach (string i in Model)
         {
             <h2 class="text-danger">@(brojac++). @i</h2>
-
         }
     }
     else
     {
+        if (poruka != null)
+        {
+           <h1>@poruka</h1>
+        }
+        else
+        {
         <h1>Nesto je krenulo po zlu</h1>
-    }
-}
+            }
 
+        }
+    }
 

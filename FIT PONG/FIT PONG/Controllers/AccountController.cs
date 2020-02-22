@@ -59,9 +59,9 @@ namespace FIT_PONG.Controllers
                     //await SignIn.SignInAsync(novi, false);
                     //return RedirectToAction("Index", "Home");
 
-                    var tokenko = await UserM.GenerateEmailConfirmationTokenAsync(novi);
-                    string url = Url.Action("PotvrdiMail", "Account", new { userid = novi.Id, token = tokenko }, Request.Scheme);
-                    EmailServis.PosaljiKonfirmacijskiMejl(url, novi.Email);
+                    //var tokenko = await UserM.GenerateEmailConfirmationTokenAsync(novi);
+                    //string url = Url.Action("PotvrdiMail", "Account", new { userid = novi.Id, token = tokenko }, Request.Scheme);
+                    //EmailServis.PosaljiKonfirmacijskiMejl(url, novi.Email);
                     return RedirectToAction("UspjesnaRegistracija");
                 }
                 else

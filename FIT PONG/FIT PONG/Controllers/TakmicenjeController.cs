@@ -2,6 +2,7 @@
 using FIT_PONG.Models.BL;
 using FIT_PONG.ViewModels;
 using FIT_PONG.ViewModels.TakmicenjeVMs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -132,6 +133,8 @@ namespace FIT_PONG.Controllers
                         try
                         {
                             Takmicenje novo = new Takmicenje(objekat);
+                            var idUser = db.Users.Where(x => x.UserName == HttpContext.User.Identity.Name).FirstOrDefault();
+                            novo.KreatorID = idUser.Id;
                             Feed TakmicenjeFeed = new Feed
                             {
                                 Naziv = novo.Naziv + " feed",
@@ -275,6 +278,9 @@ namespace FIT_PONG.Controllers
         public IActionResult Edit(int id)
         {
             Takmicenje obj = db.Takmicenja.Find(id);
+            var idUser = db.Users.Where(x => x.UserName == HttpContext.User.Identity.Name).FirstOrDefault();
+            if (obj.KreatorID != idUser.Id)
+                return VratiNijeAutorizovan();
             if (obj != null)
             {
                 EditTakmicenjeVM ob1 = new EditTakmicenjeVM(obj);
@@ -343,6 +349,11 @@ namespace FIT_PONG.Controllers
             LoadViewBag();
             return View(objekat);
         }
+        public IActionResult VratiNijeAutorizovan()
+        {
+            ViewBag.poruka = "Niste autorizovani za takvu radnju";
+            return View("Neuspjeh");
+        }
         public IActionResult Obrisi(int? id)
         {
             if (id == null)
@@ -352,6 +363,9 @@ namespace FIT_PONG.Controllers
             else
             {
                 Takmicenje obj = db.Takmicenja.Find(id);
+                var idUser = db.Users.Where(x => x.UserName == HttpContext.User.Identity.Name).FirstOrDefault();
+                if (obj.KreatorID != idUser.Id)
+                    return VratiNijeAutorizovan();
                 if (obj != null)
                 {
                     TakmicenjeVM takmicenjeobj = new TakmicenjeVM
@@ -599,6 +613,9 @@ namespace FIT_PONG.Controllers
                 .Include(tak => tak.Feed)
                 .Include(tak => tak.Bracketi)
                 .Include(tak => tak.Prijave).SingleOrDefault(y => y.ID == ID);
+            var idUser = db.Users.Where(x => x.UserName == HttpContext.User.Identity.Name).FirstOrDefault();
+            if (_takmicenje.KreatorID != idUser.Id)
+                return VratiNijeAutorizovan();
             if (_takmicenje != null && !_takmicenje.Inicirano)
             {
                 if (_takmicenje.RokPocetkaPrijave != null && _takmicenje.RokZavrsetkaPrijave > DateTime.Now)
