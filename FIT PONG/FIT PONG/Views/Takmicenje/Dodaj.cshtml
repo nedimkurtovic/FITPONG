@@ -73,8 +73,10 @@
     <table>
         <tr>
             <td>Naziv</td>
-            <td>@Html.EditorFor(mod => mod.Naziv)</td>
-            <td>@Html.ValidationMessageFor(s => s.Naziv, "", new { @class = "text-danger" })</td>
+            <td>
+                @Html.EditorFor(mod => mod.Naziv)
+                <span> @Html.ValidationMessageFor(s => s.Naziv, "", new { @class = "text-danger" })</span>
+            </td>
         </tr>
         <tr>
             <td>Rucni unos prijava (u suprotnom definisite registracije)</td>
@@ -85,27 +87,35 @@
         <tbody id="registracije">
             <tr class="RegistracijeRed">
                 <td>Pocetak prijava</td>
-                <td><input type="datetime-local" asp-for="RokPocetkaPrijave" /></td>
-                <td>@Html.ValidationMessageFor(s => s.RokPocetkaPrijave, "", new { @class = "text-danger" })</td>
+                <td>
+                    <input type="datetime-local" asp-for="RokPocetkaPrijave" />
+                    <span> @Html.ValidationMessageFor(s => s.RokPocetkaPrijave, "", new { @class = "text-danger" })</span>
+                </td>
 
             </tr>
             <tr class="RegistracijeRed">
                 <td>Kraj prijava</td>
-                <td><input type="datetime-local" asp-for="RokZavrsetkaPrijave" /></td>
-                <td>@Html.ValidationMessageFor(s => s.RokZavrsetkaPrijave, "", new { @class = "text-danger" })</td>
+                <td>
+                    <input type="datetime-local" asp-for="RokZavrsetkaPrijave" />
+                    <span> @Html.ValidationMessageFor(s => s.RokZavrsetkaPrijave, "", new { @class = "text-danger" })</span>
+                </td>
 
             </tr>
             <tr class="RegistracijeRed">
                 <td>Minimalni ELO</td>
-                <td><input type="text" asp-for="MinimalniELO" /></td>
-                <td>@Html.ValidationMessageFor(s => s.MinimalniELO, "", new { @class = "text-danger" })</td>
+                <td>
+                    <input type="text" asp-for="MinimalniELO" />
+                    <span>@Html.ValidationMessageFor(s => s.MinimalniELO, "", new { @class = "text-danger" })</span>
+                </td>
             </tr>
         </tbody>
         <tbody id="RucniIgraciRed" class="Default">
             <tr>
                 <td>Korisnicka imena igraca (format : @@KorisnickoIme razmak)</td>
-                <td><textarea asp-for="RucnoOdabraniIgraci"></textarea></td>
-                <td>@Html.ValidationMessageFor(s => s.RucnoOdabraniIgraci, "", new { @class = "text-danger" })</td>
+                <td>
+                    <textarea asp-for="RucnoOdabraniIgraci"></textarea>
+                    <span>@Html.ValidationMessageFor(s => s.RucnoOdabraniIgraci, "", new { @class = "text-danger" })</span>
+                </td>
             </tr>
         </tbody>
         <tr>
@@ -114,32 +124,42 @@
         </tr>
         <tr>
             <td>Kategorija</td>
-            <td>@Html.DropDownListFor(n => n.KategorijaID, new SelectList(ViewBag.kategorije, "ID", "Opis"), "Odaberite kategoriju")</td>
-            <td>@Html.ValidationMessageFor(s => s.KategorijaID, "", new { @class = "text-danger" })</td>
+            <td>
+                @Html.DropDownListFor(n => n.KategorijaID, new SelectList(ViewBag.kategorije, "ID", "Opis"), "Odaberite kategoriju")
+                <span>@Html.ValidationMessageFor(s => s.KategorijaID, "", new { @class = "text-danger" })</span>
+            </td>
 
         </tr>
         <tr>
             <td>Sistem</td>
-            <td>@Html.DropDownListFor(n => n.SistemID, new SelectList(ViewBag.sistemi, "ID", "Opis"), "Odaberite sistem")</td>
-            <td>@Html.ValidationMessageFor(s => s.SistemID, "", new { @class = "text-danger" })</td>
+            <td>
+                @Html.DropDownListFor(n => n.SistemID, new SelectList(ViewBag.sistemi, "ID", "Opis"), "Odaberite sistem")
+                <span>@Html.ValidationMessageFor(s => s.SistemID, "", new { @class = "text-danger" })</span>
+            </td>
 
         </tr>
         <tr>
             <td>Vrsta</td>
-            <td>@Html.DropDownListFor(n => n.VrstaID, new SelectList(ViewBag.vrste, "ID", "Opis"), "Odaberite vrstu")</td>
-            <td>@Html.ValidationMessageFor(s => s.VrstaID, "", new { @class = "text-danger" })</td>
+            <td>
+                @Html.DropDownListFor(n => n.VrstaID, new SelectList(ViewBag.vrste, "ID", "Opis"), "Odaberite vrstu")
+                <span>@Html.ValidationMessageFor(s => s.VrstaID, "", new { @class = "text-danger" })</span>
+            </td>
 
         </tr>
         <tr>
             <td>Status</td>
-            <td>@Html.DropDownListFor(n => n.StatusID, new SelectList(ViewBag.statusi, "ID", "Opis"), "Odaberite status")</td>
-            <td>@Html.ValidationMessageFor(s => s.StatusID, "", new { @class = "text-danger" })</td>
+            <td>
+                @Html.DropDownListFor(n => n.StatusID, new SelectList(ViewBag.statusi, "ID", "Opis"), "Odaberite status")
+                <span> @Html.ValidationMessageFor(s => s.StatusID, "", new { @class = "text-danger" })</span>
+            </td>
 
         </tr>
         <tr>
             <td>Datum pocetka</td>
-            <td><input type="datetime-local" asp-for="DatumPocetka" /></td>
-            <td>@Html.ValidationMessageFor(s => s.DatumPocetka, "", new { @class = "text-danger" })</td>
+            <td>
+                <input type="datetime-local" asp-for="DatumPocetka" />
+                <span>@Html.ValidationMessageFor(s => s.DatumPocetka, "", new { @class = "text-danger" })</span>
+            </td>
 
         </tr>
     </table>
