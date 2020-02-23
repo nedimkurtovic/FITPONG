@@ -1,8 +1,19 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<style>
+    #lampica {
+        width: 150px;
+        height: 150px;
+    }
+</style>
+
+<img id="lampica" src="~/lampice/lampicaoff2.jpg" alt="alttext" />
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script src="~/lampice/lampice.js"></script>

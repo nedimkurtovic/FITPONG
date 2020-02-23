@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FIT_PONG.Hubs;
 using FIT_PONG.Models;
 using FIT_PONG.Models.BL;
 using Microsoft.AspNetCore.Authorization;
@@ -54,6 +55,7 @@ namespace FIT_PONG
             })
                 .AddEntityFrameworkStores<MyDb>()
                 .AddDefaultTokenProviders();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +82,7 @@ namespace FIT_PONG
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<LampicaHub>("/lampica");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
