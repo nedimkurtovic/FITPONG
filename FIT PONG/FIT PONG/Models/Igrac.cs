@@ -32,6 +32,7 @@ namespace FIT_PONG.Models
         public int? GradID { get; set; }
         public Grad Grad { get; set; }
 
+        public bool TwoFactorEnabled { get; set; }
         public char Spol { get; set; }
 
         public Igrac()

@@ -20,6 +20,8 @@ namespace FIT_PONG.ViewModels.IgracVMs
         public string ProfileImagePath { get; set; }
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "ELO raiting smije sadržavati samo slova.")]
         public int ELO { get; set; }
+        public char Spol { get; set; }
+        public string Grad { get; set; }
         public Statistika statistika{ get; set; }
         public int BrojPostovanja { get; set; }
         public List<Prijava> listaPrijava{ get; set; }
@@ -32,6 +34,8 @@ namespace FIT_PONG.ViewModels.IgracVMs
             BrojPosjetaNaProfil = obj.BrojPosjetaNaProfil;
             ProfileImagePath = obj.ProfileImagePath;
             ELO = obj.ELO;
+            Spol = obj.Spol;
+            Grad = obj.Grad!=null?obj.Grad.Naziv:"nije postavljeno";
         }
         public IgracVM(){ }
 

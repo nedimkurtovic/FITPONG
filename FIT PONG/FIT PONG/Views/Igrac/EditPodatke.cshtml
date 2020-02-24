@@ -1,13 +1,15 @@
 ﻿@model FIT_PONG.ViewModels.IgracVMs.IgracEditPodatkeVM
 @{
     ViewData["Title"] = "EditPodatke";
+    var gradovi=ViewBag.gradovi as List<SelectListItem>;
 }
 
-<h1>Edituj profil</h1><br />
+<h1>Edituj profil</h1>
+<br />
 <img src=@Url.Content(Model.ProfileImagePath) style="width:100px;height:100px;border:1px solid black;float:left;margin-right:20px;" />
 <form asp-controller="Igrac" asp-action="EditPodatke" method="post">
     <table>
-        <tr><td><input asp-for="ID" type="hidden"/></td></tr>
+        <tr><td><input asp-for="ID" type="hidden" /></td></tr>
         <tr>
             <td><h6>Prikazno ime</h6></td>
             <td><input asp-for="PrikaznoIme" class="input-group" autofocus /></td>
@@ -29,12 +31,30 @@
             <td><input asp-for="Visina" class="input-group" /></td>
             <td><span asp-validation-for="Visina" class="text-danger"></span></td>
         </tr>
-        <tr><td><input asp-for="ProfileImagePath" type="hidden"/></td></tr>
-       
-    <tr>
-        <td><input type="submit" value="Spremi izmjene" class="btn btn-primary"/></td>    
-        <td><a href="/Igrac/PrikazProfila/@Model.ID" class="btn btn-danger" onclick="return confirm('Da li ste sigurni da želite otkazati sve promjene?')">Odbaci izmjene</a></td>
-    </tr>
+        <tr>
+            <td><h6>Grad</h6></td>
+            <td>@Html.DropDownListFor(x => x.GradId, gradovi, "Izaberite grad")</td>
+        </tr>
+        <tr><td><input asp-for="ProfileImagePath" type="hidden" /></td></tr>
+
+        <tr>
+            <td><input type="submit" value="Spremi izmjene" class="btn btn-primary" /></td>
+            <td><a href="/Igrac/PrikazProfila/@Model.ID" class="btn btn-danger" onclick="return confirm('Da li ste sigurni da želite otkazati sve promjene?')">Odbaci izmjene</a></td>
+        </tr>
     </table>
     
 </form>
+<br />
+<div>
+    <h3>Autentifikacija u 2 koraka</h3>
+    @if (Model.TwoFactorEnabled)
+    {
+        <a href="#" class="btn btn-outline-danger disabled">Uključi</a>
+        <a href="/Account/IskljuciAutentifikaciju" class="btn btn-outline-primary">Isključi</a>
+    }
+    else
+    {
+        <a href="/Account/UkljuciAutentifikaciju" class="btn btn-outline-primary">Uključi</a>
+        <a href="#" class="btn btn-outline-danger disabled">Isključi</a>
+      }
+</div>

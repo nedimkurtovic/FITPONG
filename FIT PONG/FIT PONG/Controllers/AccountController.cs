@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Google.Authenticator;
+using System.Text;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FIT_PONG.Controllers
 {
@@ -59,9 +62,9 @@ namespace FIT_PONG.Controllers
                     //await SignIn.SignInAsync(novi, false);
                     //return RedirectToAction("Index", "Home");
 
-                    //var tokenko = await UserM.GenerateEmailConfirmationTokenAsync(novi);
-                    //string url = Url.Action("PotvrdiMail", "Account", new { userid = novi.Id, token = tokenko }, Request.Scheme);
-                    //EmailServis.PosaljiKonfirmacijskiMejl(url, novi.Email);
+                    var tokenko = await UserM.GenerateEmailConfirmationTokenAsync(novi);
+                    string url = Url.Action("PotvrdiMail", "Account", new { userid = novi.Id, token = tokenko }, Request.Scheme);
+                    EmailServis.PosaljiKonfirmacijskiMejl(url, novi.Email);
                     return RedirectToAction("UspjesnaRegistracija");
                 }
                 else
@@ -123,8 +126,24 @@ namespace FIT_PONG.Controllers
             {
                 var korisnik = await UserM.FindByEmailAsync(obj.UserName);
                 var rezultat = await SignIn.PasswordSignInAsync(obj.UserName,obj.Password,obj.RememberMe,false);
-                if(rezultat.Succeeded)
+                var Igrac = db.Igraci.Find(korisnik.Id);
+
+                if (rezultat.IsLockedOut)
                 {
+                    TimeSpan t = (korisnik.LockoutEnd - DateTime.Now) ?? default(TimeSpan);
+                    ModelState.AddModelError("Lockout", "Vaš profil je zaključan još " + t.Minutes + " minuta i " + t.Seconds + " sekundi.");
+                }
+                else if (rezultat.Succeeded)
+                {
+                    if (Igrac.TwoFactorEnabled)
+                    {
+                        await SignIn.SignOutAsync();
+
+                        TempData["username"] = obj.UserName;
+                        TempData["password"] = obj.Password;
+                        TempData["rememberMe"] = obj.RememberMe;
+                        return RedirectToAction("ProvjeriAutentifikaciju");
+                    }
                     return RedirectToAction("Index", "Home");
                 }
                 else if(await SignIn.UserManager.CheckPasswordAsync(korisnik,obj.Password))
@@ -208,6 +227,209 @@ namespace FIT_PONG.Controllers
             ViewBag.email = obj.email;
             ViewBag.token = obj.token;
             return View(obj);
+        }
+
+
+        [AllowAnonymous]
+        public ActionResult ProvjeriAutentifikaciju()
+        {
+            if (TempData["username"].ToString() != null)
+            {
+                TempData.Keep("username");
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> ProvjeriAutentifikaciju(AutentifikacijaVM model)
+        {
+            var korisnik = await UserM.FindByEmailAsync(TempData["username"].ToString());
+            TempData.Keep("username");
+            TwoFactorAuthenticator tfa = new TwoFactorAuthenticator();
+            string userUniqueKey = GetUserUniqueKey(korisnik);
+            var token = model.Code;
+            bool isValid = tfa.ValidateTwoFactorPIN(userUniqueKey, token);
+            if (LockoutCheck(korisnik))
+            {
+                TimeSpan t = (korisnik.LockoutEnd - DateTime.Now)??default(TimeSpan);
+                ModelState.AddModelError("Lockout", "Vaš profil je zaključan još " + t.Minutes + " minuta i "+t.Seconds +" sekundi.");
+                return View(model);
+            }
+            else
+            {
+                if (TempData["code"] != null)
+                {
+                    if (TempData["code"].ToString() == token)
+                    {
+                        isValid = true;
+                        TempData["code"] = null;
+                    }
+                    else
+                        TempData.Keep("code");
+                }
+
+                if (isValid)
+                {
+                    await SignIn.PasswordSignInAsync(TempData["username"].ToString(), TempData["password"].ToString(),
+                            Convert.ToBoolean(TempData["rememberMe"]), false);
+                    TempData["code"] = null;
+
+                    return Redirect("/Igrac/PrikazProfila/" + korisnik.Id);
+                }
+                else
+                {
+                    ModelState.AddModelError("Code", "Neispravan kod");
+                    return View(model);
+                }
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UkljuciAutentifikaciju()
+        {
+            var korisnik = await UserM.FindByEmailAsync(User.Identity.Name);
+            Igrac i = db.Igraci.Find(korisnik.Id);
+
+            if (!i.TwoFactorEnabled)
+            {
+                TwoFactorAuthenticator tfa = new TwoFactorAuthenticator();
+                byte[] byteUniqueKey = Encoding.ASCII.GetBytes(GetUserUniqueKey(korisnik));
+                var setupInfo = tfa.GenerateSetupCode("FIT PONG", User.Identity.Name, byteUniqueKey, 2);
+                ViewBag.qrcode = setupInfo.QrCodeSetupImageUrl;
+                return View();
+            }
+
+            return Redirect("/Igrac/PrikazProfila/" + i.ID);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UkljuciAutentifikaciju(AutentifikacijaVM model)
+        {
+            if (User.Identity.Name != null)
+            {
+                var korisnik = await UserM.FindByEmailAsync(User.Identity.Name);
+                TwoFactorAuthenticator tfa = new TwoFactorAuthenticator();
+                string userUniqueKey = GetUserUniqueKey(korisnik);
+
+                if (LockoutCheck(korisnik))
+                {
+                    TimeSpan t = (korisnik.LockoutEnd - DateTime.Now) ?? default(TimeSpan);
+                    ModelState.AddModelError("Lockout", "Vaš profil je zaključan još " + t.Minutes + " minuta i " + t.Seconds + " sekundi.");
+                    return View();
+                }
+                else
+                {
+                    if (tfa.ValidateTwoFactorPIN(userUniqueKey, model.Code))
+                    {
+                        Igrac i = db.Igraci.Find(korisnik.Id);
+                        i.TwoFactorEnabled = true;
+                        db.Update(i);
+                        db.SaveChanges();
+                        return Redirect("/Igrac/PrikazProfila/" + i.ID);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Code", "Neispravan kod");
+                        return View();
+                    }
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> IskljuciAutentifikaciju()
+        {
+            var korisnik = await UserM.FindByEmailAsync(User.Identity.Name);
+            Igrac i = db.Igraci.Find(korisnik.Id);
+
+            if (i.TwoFactorEnabled)
+                return View();
+
+            return Redirect("/Igrac/PrikazProfila/" + i.ID);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> IskljuciAutentifikaciju(AutentifikacijaVM model)
+        {
+            if (User.Identity.Name != null)
+            {
+                var korisnik = await UserM.FindByEmailAsync(User.Identity.Name);
+                string userUniqueKey = GetUserUniqueKey(korisnik);
+                TwoFactorAuthenticator tfa = new TwoFactorAuthenticator();
+                if (LockoutCheck(korisnik))
+                {
+                    TimeSpan t = (korisnik.LockoutEnd - DateTime.Now) ?? default(TimeSpan);
+                    ModelState.AddModelError("Lockout", "Vaš profil je zaključan još " + t.Minutes + " minuta i " + t.Seconds + " sekundi.");
+                    return View();
+                }
+                else
+                {
+                    if (tfa.ValidateTwoFactorPIN(userUniqueKey, model.Code))
+                    {
+                        Igrac i = db.Igraci.Find(korisnik.Id);
+                        i.TwoFactorEnabled = false;
+                        db.Update(i);
+                        db.SaveChanges();
+                        return Redirect("/Igrac/PrikazProfila/" + i.ID);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Code", "Neispravan kod");
+                        return View();
+                    }
+                }
+            }
+            return RedirectToAction("Login");
+        }
+
+        [AllowAnonymous]
+        public IActionResult PosaljiMail()
+        {
+            Random rand = new Random();
+            var code = rand.Next(9999999);
+            EmailServis.PosaljiTwoFactorCode(code, TempData["username"].ToString());
+            TempData.Keep("username");
+            TempData["code"] = code;
+            return Redirect("ProvjeriAutentifikaciju");
+        }
+
+        private string GetUserUniqueKey(IdentityUser<int> korisnik)
+        {
+            string key = korisnik.SecurityStamp.Substring(5, 10);
+            string useruniquekey = korisnik.Email + key;
+            return useruniquekey;
+        }
+
+        private bool LockoutCheck(IdentityUser<int> korisnik)
+        {
+            if (korisnik.LockoutEnd == null)
+                return false;
+            if (korisnik.LockoutEnd < DateTime.Now)
+            {
+                if (korisnik.AccessFailedCount < 2)
+                {
+                    korisnik.AccessFailedCount++;
+                    db.Update(korisnik);
+                    db.SaveChanges();
+                    return false;
+                }
+                korisnik.LockoutEnd = DateTime.Now.AddMinutes(1);
+                korisnik.AccessFailedCount = 0;
+                db.Update(korisnik);
+                db.SaveChanges();
+                return true;
+            }
+            return true;
         }
     }
 }

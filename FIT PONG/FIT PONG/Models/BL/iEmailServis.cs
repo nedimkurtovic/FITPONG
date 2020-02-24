@@ -10,5 +10,6 @@ namespace FIT_PONG.Models.BL
         public void PosaljiMejlReport(Report novi);
         public void PosaljiKonfirmacijskiMejl(string linkzaklik, string email);
         public void PosaljiResetPassword(string linkzaklik, string email);
+        void PosaljiTwoFactorCode(int code, string email);
     }
 }

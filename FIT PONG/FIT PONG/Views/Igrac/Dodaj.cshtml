@@ -3,6 +3,7 @@
     ViewData["Title"] = "Dodaj";
     var id = (int) ViewBag.id;
     var token = (string) ViewBag.token;
+    var gradovi=ViewBag.gradovi as List<SelectListItem>;
 }
 
 
@@ -38,6 +39,19 @@
             <td class="custom-file"><input asp-for="Slika" class="form-group custom-file-input"/>
             <label class="custom-file-label">Izaberi sliku</label></td>
             <td><span asp-validation-for="Slika" class="text-danger"></span></td>
+        </tr>
+        <tr>
+            <td><h6>Grad</h6></td>
+            <td>@Html.DropDownListFor(x => x.GradId, gradovi, "Izaberite grad")</td>
+        </tr>
+        <tr>
+            <td><h6>Spol</h6></td>
+            <td>
+                <input type="radio" asp-for="Spol" value="M">
+                <label for="musko">Muško</label>
+                <input type="radio" asp-for="Spol" value="Ž">
+                <label for="zensko">Žensko</label>
+            </td>
         </tr>
         <tr>
             <td><input type="submit" value="Dodaj" class="btn btn-success"/></td>
