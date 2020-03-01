@@ -1,7 +1,7 @@
 ﻿@using FIT_PONG.ViewModels.TakmicenjeVMs;
+@model List<TakmicenjeVM>
 @{
     ViewData["Title"] = "Index";
-    var sve = (List<TakmicenjeVM>)ViewData["TakmicenjaKey"];
 }
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -37,8 +37,7 @@
         .css-table-row:hover {
             background-color: lightgray;
             cursor: pointer;
-        text-decoration: none;
-
+            text-decoration: none;
         }
 
         .css-table-header div,
@@ -56,7 +55,7 @@
 <h1>Takmicenja</h1>
 <br />
 <a asp-controller="Takmicenje" asp-action="Dodaj">Dodaj</a>
-@if (sve.Count() == 0)
+@if (Model.Count() == 0)
 {
     <p>Nema trenutno pohranjenih takmicenja</p>
 }
@@ -75,19 +74,19 @@ else
             <div class="css-table-header">Broj prijavljenih</div>
             <div class="css-table-header">Status</div>
         </div>
-        @foreach (var x in sve)
+        @foreach (var x in Model)
         {
-    <a class="css-table-row" href="/Takmicenje/Prikaz?id=@x.ID">
-        <div>@x.ID</div>
-        <div>@x.Naziv</div>
-        <div>@x.MinimalniELO</div>
-        <div>@x.Kategorija</div>
-        <div>@x.Sistem</div>
-        <div>@x.Vrsta</div>
-        <div>@x.DatumZavrsetkaPrijava.GetValueOrDefault().ToLongDateString()</div>
-        <div>@x.BrojPrijavljenih</div>
-        <div>@x.Status</div>
-    </a>
+            <a class="css-table-row" href="/Takmicenje/Prikaz?id=@x.ID">
+                <div>@x.ID</div>
+                <div>@x.Naziv</div>
+                <div>@x.MinimalniELO</div>
+                <div>@x.Kategorija</div>
+                <div>@x.Sistem</div>
+                <div>@x.Vrsta</div>
+                <div>@x.DatumZavrsetkaPrijava.GetValueOrDefault().ToLongDateString()</div>
+                <div>@x.BrojPrijavljenih</div>
+                <div>@x.Status</div>
+            </a>
         }
     </div>
 }

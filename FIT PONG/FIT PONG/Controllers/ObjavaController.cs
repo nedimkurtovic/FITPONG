@@ -72,7 +72,7 @@ namespace FIT_PONG.Controllers
                     }
                     catch(DbUpdateException er)
                     {
-                        ModelState.AddModelError("","PRoblem u kreiranju");
+                        ModelState.AddModelError("","Problem u kreiranju");
                     }
                 }
             }
@@ -92,7 +92,7 @@ namespace FIT_PONG.Controllers
                         obj.Content = objekat.Content;
                         obj.Naziv = objekat.Naziv;
                         obj.DatumIzmjene = DateTime.Now;
-                        db.Update(obj);//navodno ovo updateuje citav zapis i sporije je,ima kao funkcija changetracker ili nesto tako ona mijenja samo promijenjene vrijednosti
+                        db.Update(obj);
                         db.SaveChanges();
                         return Redirect("/Objava/Prikaz/" + obj.ID);
                     }

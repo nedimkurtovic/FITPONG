@@ -37,8 +37,7 @@ namespace FIT_PONG.Controllers
                   (s, 0)).ToList();
             foreach (TakmicenjeVM i in takmicenja)
                 i.BrojPrijavljenih = db.Prijave.Where(s => s.TakmicenjeID == i.ID).Count();
-            ViewData["TakmicenjaKey"] = takmicenja;
-            return View();
+            return View(takmicenja);
         }
 
         public IActionResult Detalji(int? id)
@@ -94,39 +93,12 @@ namespace FIT_PONG.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (PostojiTakmicenje(objekat.Naziv))
-                    ModelState.AddModelError("", "Vec postoji takmicenje u bazi");
-                if (!objekat.RucniOdabir)
-                {
-                    if (objekat.RokZavrsetkaPrijave != null && objekat.RokZavrsetkaPrijave != null &&
-                      objekat.RokZavrsetkaPrijave < objekat.RokPocetkaPrijave)
-                        ModelState.AddModelError(nameof(objekat.RokZavrsetkaPrijave), "Datum zavrsetka prijava ne moze biti prije pocetka");
-                    if (objekat.DatumPocetka != null && objekat.RokZavrsetkaPrijave != null && objekat.DatumPocetka < objekat.RokZavrsetkaPrijave)
-                        ModelState.AddModelError(nameof(objekat.DatumPocetka), "Datum pocetka ne moze biti prije zavrsetka prijava");
-                }
-                else
-                {
-                    //u slucaju da ljudi nisu dodali razmake ili ih je viska da ja popravim situaciju malo
-                    if (!objekat.RucnoOdabraniIgraci.EndsWith(" "))
-                        objekat.RucnoOdabraniIgraci += " ";
-                    if (objekat.RucnoOdabraniIgraci.StartsWith(" "))
-                        objekat.RucnoOdabraniIgraci = objekat.RucnoOdabraniIgraci.Substring(1);
-                    //za sad je hardkodirana vrsta,ovo ionako ne bi trebalo nikad biti true osim ako je neko zaobisao frontend
-                    if (objekat.VrstaID == 2 ||
-                        objekat.RucnoOdabraniIgraci == "" ||
-                        !ValidanUnosRegex(objekat.RucnoOdabraniIgraci) ||
-                        !ValidnaKorisnickaImena(objekat.RucnoOdabraniIgraci)
-                        )
-                    {
-                        ModelState.AddModelError("", "Molimo unesite ispravno imena igraca");
-                    }
-                    if (RucnaImenaSadrziDuplikate(objekat.RucnoOdabraniIgraci))
-                        ModelState.AddModelError("", "Nemojte dva puta istog igraca navoditi");
-                    if (BrojRucnoUnesenih(objekat.RucnoOdabraniIgraci) < 4)
-                        ModelState.AddModelError("", "Minimalno 4 igraca za takmicenje");
-                }
+                TakmicenjeValidator validator = new TakmicenjeValidator();
+                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaDodaj(objekat,
+                    db.Takmicenja.Select(x => x.Naziv).ToList(),
+                    db.Igraci.ToList());
 
-                if (ModelState.ErrorCount == 0)
+                if (listaerrora.Count() == 0)
                 {
                     using (var transakcija = db.Database.BeginTransaction())//sigurnost u opasnim situacijama 
                     {
@@ -150,7 +122,8 @@ namespace FIT_PONG.Controllers
                             //dobaviti igrace iz regexa
                             if (objekat.RucniOdabir)
                             {
-                                List<Igrac> svi = GetListaRucnihIgraca(objekat.RucnoOdabraniIgraci);
+                                validator._listaIgraca = db.Igraci.ToList();
+                                List<Igrac> svi = validator.GetListaRucnihIgraca(objekat.RucnoOdabraniIgraci);
                                 foreach (Igrac i in svi)
                                 {
                                     Prijava novaPrijava = new Prijava
@@ -184,70 +157,19 @@ namespace FIT_PONG.Controllers
                         }
                     }
                 }
+                else
+                {
+                    //ako je validator vratio errore ovdje cemo ih pametno stavit u modelstate kako bi se prikazali na viewu
+                    foreach ((string key, string err) i in listaerrora)
+                    {
+                        ModelState.AddModelError(i.key, i.err);
+                    }
+                }
             }
             LoadViewBag();
             return View(objekat);
         }
-        public bool ValidanUnosRegex(string ProslijedjenaImena)
-        {
-            //Regex pattern = new Regex("\\B@.[^@ ]+");
-            var match = Regex.Matches(ProslijedjenaImena, "\\B@.[^@ ]+ ");
-            int sumamatcheva = 0;
-            foreach (Match x in match)
-            {
-                if (x.Success)
-                    sumamatcheva += x.Length;
-            }
-            return sumamatcheva == ProslijedjenaImena.Count();
-        }
-        public int BrojRucnoUnesenih(string proslijedjenaImena)
-        {
-            var matches = Regex.Matches(proslijedjenaImena, "@(?<username>[^@ ]+)+ ");
-            int BrojKorisnika = 0;
-            foreach (Match x in matches)
-            {
-                if (x.Groups["username"].Success)
-                    BrojKorisnika++;
-            }
-            return BrojKorisnika;
-        }
-        public bool ValidnaKorisnickaImena(string proslijedjenaImena)
-        {
-            var matches = Regex.Matches(proslijedjenaImena, "@(?<username>[^@ ]+)+ ");
-            foreach (Match i in matches)
-            {
-                string KorisnickoIme = i.Groups["username"].Value;
-                if (db.Igraci.Where(x => x.PrikaznoIme == KorisnickoIme).Count() == 0)
-                    return false;
-            }
-            return true;
-        }
-        public bool RucnaImenaSadrziDuplikate(string ProslijedjenaImena)//ako je proslijedio 2 puta istog frajera
-        {
-            var matches = Regex.Matches(ProslijedjenaImena, "@(?<username>[^@ ]+)+ ");// rezultati su u prvoj grupi
-            List<string> svePrijave = new List<string>();
-            foreach (Match i in matches)
-            {
-                string KorisnickoIme = i.Groups["username"].Value;
-                if (svePrijave.Contains(KorisnickoIme))
-                    return true;
-                svePrijave.Add(KorisnickoIme);
-            }
-            return false;
-        }
-        public List<Igrac> GetListaRucnihIgraca(string ProslijedjenaImena)
-        {
-            //prvo ocistiti regex
-            var matches = Regex.Matches(ProslijedjenaImena, "@(?<username>[^@ ]+)+ ");// rezultati su u prvoj grupi
-            List<Igrac> svePrijave = new List<Igrac>();
-            foreach (Match i in matches)
-            {
-                string KorisnickoIme = i.Groups["username"].Value;
-                Igrac noviIgrac = db.Igraci.Where(x => x.PrikaznoIme == KorisnickoIme).FirstOrDefault();//korisnicka imena su unique
-                svePrijave.Add(noviIgrac);
-            }
-            return svePrijave;
-        }
+        
         public IActionResult Dodaj()
         {
             LoadViewBag();
@@ -294,16 +216,9 @@ namespace FIT_PONG.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (TakmicenjaViseOd(objekat.Naziv, objekat.ID))
-                    ModelState.AddModelError(nameof(objekat.Naziv), "Vec postoji takmicenje u bazi");
-                if (objekat.RokZavrsetkaPrijave != null && objekat.RokPocetkaPrijave != null &&
-                    objekat.RokZavrsetkaPrijave < objekat.RokPocetkaPrijave)
-                    ModelState.AddModelError(nameof(objekat.RokZavrsetkaPrijave), "Datum zavrsetka prijava ne moze biti prije pocetka");
-                if (objekat.DatumPocetka != null && objekat.RokZavrsetkaPrijave != null && objekat.DatumPocetka < objekat.RokZavrsetkaPrijave)
-                    ModelState.AddModelError(nameof(objekat.DatumPocetka), "Datum pocetka ne moze biti prije zavrsetka prijava");
-                if (objekat.DatumPocetka != null && objekat.DatumZavrsetka != null && objekat.DatumZavrsetka < objekat.DatumPocetka)
-                    ModelState.AddModelError(nameof(objekat.DatumZavrsetka), "Datum pocetka takmicenja ne moze biti prije zavrsetka");
-                if (ModelState.ErrorCount == 0)
+                TakmicenjeValidator validator = new TakmicenjeValidator();
+                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaEdit(objekat, db.Takmicenja.ToList());
+                if (listaerrora.Count() == 0)
                 {
                     Takmicenje obj = db.Takmicenja.Find(objekat.ID);
                     if (obj != null)
@@ -343,6 +258,14 @@ namespace FIT_PONG.Controllers
                             }
 
                         }
+                    }
+                }
+                else
+                {
+                    //ako je validator vratio errore ovdje cemo ih pametno stavit u modelstate kako bi se prikazali na viewu
+                    foreach ((string key, string err) i in listaerrora)
+                    {
+                        ModelState.AddModelError(i.key, i.err);
                     }
                 }
             }
@@ -399,12 +322,7 @@ namespace FIT_PONG.Controllers
             }
             return Redirect("/Takmicenje/Neuspjeh");
         }
-        public bool TakmicenjaViseOd(string naziv, int ID)
-        {
-            if (db.Takmicenja.Where(s => s.Naziv == naziv && s.ID != ID).Count() > 0)
-                return true;
-            return false;
-        }
+
         public bool PostojiTakmicenje(string naziv)
         {
             if (db.Takmicenja.Where(s => s.Naziv == naziv).Count() > 0)
