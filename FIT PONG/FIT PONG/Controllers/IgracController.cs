@@ -8,13 +8,13 @@ using FIT_PONG.ViewModels.IgracVMs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace FIT_PONG.Controllers
 {
     public class IgracController : Controller
     {
-        private static int BROJAC { get; set; } = 0; //sluzi samo pri generisanju imena usera i logina...
 
         private readonly MyDb db;
         private readonly IWebHostEnvironment _host;
@@ -64,7 +64,7 @@ namespace FIT_PONG.Controllers
 
         public IActionResult PrikazProfila(int id)
         {
-            Igrac objIgrac = db.Igraci.SingleOrDefault(x => x.ID == id);
+            Igrac objIgrac = db.Igraci.Include(d=>d.Grad).SingleOrDefault(x => x.ID == id);
             if (objIgrac == null)
                 return View("Greska");
             IgracVM igrac = new IgracVM(objIgrac);
@@ -79,7 +79,6 @@ namespace FIT_PONG.Controllers
                                       Naziv=pr.Naziv,
                                       Takmicenje=pr.Takmicenje
                                   }).ToList();
-            
 
             return View(igrac);
         }
@@ -105,7 +104,9 @@ namespace FIT_PONG.Controllers
                     ELO = 1000,
                     JacaRuka = igrac.JacaRuka,
                     PrikaznoIme = igrac.PrikaznoIme,
-                    Visina = igrac.Visina
+                    Visina = igrac.Visina,
+                    GradID=igrac.GradId,
+                    Spol=igrac.Spol 
                 };
                 Statistika statistika = new Statistika(novi.ID);
 
@@ -149,6 +150,7 @@ namespace FIT_PONG.Controllers
             //nedostaje input za grad i spol
             ViewBag.id = id;
             ViewBag.token = token;
+            GetGradove();
             return View();
         }
 
@@ -167,8 +169,11 @@ namespace FIT_PONG.Controllers
                 JacaRuka = igrac.JacaRuka,
                 PrikaznoIme = igrac.PrikaznoIme,
                 Visina = igrac.Visina,
-                ProfileImagePath=igrac.ProfileImagePath
+                ProfileImagePath=igrac.ProfileImagePath,
+                TwoFactorEnabled=igrac.TwoFactorEnabled,
+                GradId=igrac.GradID
             };
+            GetGradove();
             return View(obj);
         }
 
@@ -188,6 +193,8 @@ namespace FIT_PONG.Controllers
                 igrac.JacaRuka = obj.JacaRuka;
                 igrac.Visina= obj.Visina;
                 igrac.PrikaznoIme = obj.PrikaznoIme;
+                if (obj.GradId != 0)
+                    igrac.GradID = obj.GradId;
                 db.Update(igrac);
                 db.SaveChanges();
 
@@ -275,12 +282,19 @@ namespace FIT_PONG.Controllers
             return View();
         }
 
-        public IActionResult PostujIgraca(int postivalacID, int postovaniID)
+        public IActionResult PostujIgraca(int postovaniID)
         {
-            Igrac igrac2 = db.Igraci.Find(postivalacID);
+            Igrac igrac2 = db.Igraci.Include(d => d.User).Where(d => d.User.Email == User.Identity.Name).SingleOrDefault();
             Igrac igrac1 = db.Igraci.Find(postovaniID);
+            int postivalacID = igrac2.ID;
+            Postovanje postovanje = db.Postovanja.Where(d => d.PostivalacID == postivalacID && d.PostovaniID == postovaniID).SingleOrDefault();
             if (igrac1 == null || igrac2 == null)
                 return View("Greska");
+            else if (postovanje != null)
+            {
+                ViewBag.igrac = igrac1.PrikaznoIme;
+                return View("DuploPoštovanje");
+            }
             Postovanje novo = new Postovanje(postivalacID, postovaniID);
             db.Add(novo);
             db.SaveChanges();
@@ -338,6 +352,20 @@ namespace FIT_PONG.Controllers
         {
             ViewBag.poruka = poruka;
             return View();
+        }
+
+        private void GetGradove()
+        {
+            List<Grad> gradovi = db.Gradovi.ToList();
+            List<SelectListItem> gradoviCombo = new List<SelectListItem>();
+            foreach (var item in gradovi)
+            {
+                SelectListItem x = new SelectListItem();
+                x.Value = item.ID.ToString();
+                x.Text = item.Naziv;
+                gradoviCombo.Add(x);
+            }
+            ViewBag.gradovi = gradoviCombo;
         }
 
         //funkcija sluzi za generisanje usera i logina koji su potrebni da bi se kreirao igrac,

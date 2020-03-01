@@ -18,5 +18,7 @@ namespace FIT_PONG.ViewModels.IgracVMs
         [Range(0, 300,ErrorMessage ="Visina treba biti u rasponu 1-300.")]
         public double? Visina { get; set; }
         public string ProfileImagePath { get; set; }
+        public int? GradId { get; set; }
+        public bool TwoFactorEnabled { get; set; }
     }
 }

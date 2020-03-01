@@ -1,0 +1,44 @@
+﻿@model FIT_PONG.ViewModels.AccountVMs.AutentifikacijaVM
+@{
+    ViewData["Title"] = "Ukljuci autentifikaciju";
+}
+
+
+<body>
+    <h3>Kako bi koristili autentifikaciju pratite sljedeće korake:</h3><br />
+        <h4>1. Preuzmite Google autentifikator za <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en">Android</a> ili <a href="https://apps.apple.com/us/app/google-authenticator/id388497605">IOS.</a></h4>
+        <h4>
+           2. Skenirajte QR kod</h4>
+           
+            <div><img src="@ViewBag.qrcode" /></div>
+           
+        
+        <h4>
+            3. Nakon što ste skenirali QR kod, unesite šestocifreni kod iz vaše aplikacije u polje ispod.</h4><br />
+            <h5>Verifikacijski kod</h5>
+            <form action="/Account/UkljuciAutentifikaciju" method="post">
+                <input asp-for="Code" />
+                <input type="submit" class="btn btn-outline-info" value="Potvrdi" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </form>
+            @Html.ValidationMessage("Lockout")
+</body>
+@*<ul>
+    <li>Preuzmite Google autentifikator za <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en">Android</a> ili <a href="https://apps.apple.com/us/app/google-authenticator/id388497605">IOS.</a></li>
+    <li>
+        Skenirajte QR kod ili unesite sljedeći kod @ViewBag.code
+        <div>
+            <img src="@ViewBag.qrcode" />
+        </div>
+    </li>
+    <li>
+        Nakon što ste skenirali QR kod, unesite šestocifreni kod iz vaše aplikacije u polje ispod.
+        <h5>Verifikacijski kod</h5>
+        <form action="/Account/UkljuciAutentifikaciju" method="post">
+            <input asp-for="Code" />
+            <input type="submit" class="btn btn-outline-info" value="Potvrdi" />
+            <span asp-validation-for="Code" class="text-danger"></span>
+        </form>
+        @Html.ValidationMessage("Lockout")
+    </li>
+</ul>*@

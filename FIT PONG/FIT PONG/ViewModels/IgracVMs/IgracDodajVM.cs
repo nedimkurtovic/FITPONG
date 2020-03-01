@@ -23,6 +23,8 @@ namespace FIT_PONG.ViewModels.IgracVMs
         public IFormFile Slika { get; set; }
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "ELO raiting smije sadržavati samo broj.")]
         public int ELO { get; set; }
+        public int? GradId { get; set; }
+        public char Spol { get; set; }
 
     }
 }

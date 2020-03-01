@@ -57,5 +57,17 @@ namespace FIT_PONG.Models.BL
             };
             Sendaj(Poruka);
         }
+        public void PosaljiTwoFactorCode(int code, string email)
+        {
+            var Poruka = new MimeMessage();
+            Poruka.From.Add(new MailboxAddress("fitpongtest@gmail.com"));
+            Poruka.To.Add(new MailboxAddress(email));
+
+            Poruka.Body = new TextPart("html")
+            {
+                Text = "Ovo je kod za aktivaciju: " + code
+            };
+            Sendaj(Poruka);
+        }
     }
 }

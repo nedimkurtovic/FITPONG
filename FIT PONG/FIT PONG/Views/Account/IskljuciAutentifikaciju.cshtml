@@ -1,0 +1,17 @@
+﻿@model FIT_PONG.ViewModels.AccountVMs.AutentifikacijaVM
+@{
+    ViewData["Title"] = "Iskljuci autentifikaciju";
+}
+
+<h1>Isključi autentifikaciju</h1>
+
+<body>
+    <h3>Kako bi isključili autentifikaciju unesite kod sa vaše aplikacije za potvrdu:</h3>
+
+    <form action="/Account/IskljuciAutentifikaciju" method="post">
+        <input asp-for="Code" />
+        <input type="submit" class="btn btn-outline-info" value="Potvrdi" />
+        <span asp-validation-for="Code" class="text-danger"></span><br />
+        @Html.ValidationMessage("Lockout")
+    </form>
+</body>
