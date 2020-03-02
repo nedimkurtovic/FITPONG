@@ -130,7 +130,10 @@ namespace FIT_PONG.Controllers
 
             return jsonObj;
         }
-
+        public string GetIgrace()
+        {
+            return JsonConvert.SerializeObject(db.Igraci.Select(x => new { id = x.ID, name = x.PrikaznoIme, avatar = x.ProfileImagePath, type = "contact" }).ToList());
+        }
 
     }
 }

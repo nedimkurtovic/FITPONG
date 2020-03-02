@@ -5,8 +5,9 @@
 @*(string _naziv,DateTime _pocetakprijava,DateTime _krajprijava,
             int _minimalniELO,int _kategorijaID,int _sistemID,int _vrstaID,int _statusID, DateTime?
     _pocetaktakmicenja = null)*@
-<style>
 
+<link href="~/css/jquery.mentionsInput.css" rel="stylesheet" />
+<style>
     tr td {
         /*margin-right: 25px;*/
         width: 50%;
@@ -64,11 +65,8 @@
             background: #4183C4;
             text-decoration: none;
         }
-        span{
-            font-size:12px;
-        }
 </style>
-<link href="~/css/jquery.mentionsInput.css" rel="stylesheet" />
+
 
 <h1>Dodaj novo takmicenje</h1>
 <form asp-action="Dodaj" method="post">
@@ -116,7 +114,7 @@
             <tr>
                 <td>Korisnicka imena igraca (format : @@KorisnickoIme razmak)</td>
                 <td>
-                    <textarea asp-for="RucnoOdabraniIgraci"></textarea>
+                    <textarea id="zonaMentions" asp-for="RucnoOdabraniIgraci"></textarea>
                     <span>@Html.ValidationMessageFor(s => s.RucnoOdabraniIgraci, "", new { @class = "text-danger" })</span>
                 </td>
             </tr>
@@ -172,6 +170,10 @@
 
 @section Scripts
 {
+    <script src="~/lib/jqueryMentions/jquery.elastic.js"></script>
+    <script src="~/lib/jqueryMentions/jquery.events.input.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+    <script src="~/js/jquery.mentionsInput.js"></script>
     <script>
         $(document).ready(function () {
             if ($('#checkRucni').is(":checked")) {
@@ -193,8 +195,19 @@
 
                 }
             });
+            $(function () {
 
+                $('#zonaMentions').mentionsInput({
+                    onDataRequest: function (mode, query, callback) {
+                        $.getJSON('/FitApi/GetIgrace', function (responseData) {
+                            responseData = _.filter(responseData, function (item) { return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1 });
+                            callback.call(this, responseData);
+                        });
+                    }
+
+                });
+
+            });
         })
-
     </script>
 }

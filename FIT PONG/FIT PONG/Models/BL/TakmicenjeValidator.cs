@@ -20,7 +20,7 @@ namespace FIT_PONG.Models.BL
 
             List<(string key, string error)> listaErrora = new List<(string key, string error)>();
             if (PostojiTakmicenje(objekat.Naziv))
-                listaErrora.Add(("","Vec postoji takmicenje u bazi"));
+                listaErrora.Add(("", "Vec postoji takmicenje u bazi"));
             if (!objekat.RucniOdabir)
             {
                 if (objekat.RokZavrsetkaPrijave != null && objekat.RokZavrsetkaPrijave != null &&
@@ -32,23 +32,30 @@ namespace FIT_PONG.Models.BL
             else
             {
                 //u slucaju da ljudi nisu dodali razmake ili ih je viska da ja popravim situaciju malo
-                if (!objekat.RucnoOdabraniIgraci.EndsWith(" "))
-                    objekat.RucnoOdabraniIgraci += " ";
-                if (objekat.RucnoOdabraniIgraci.StartsWith(" "))
-                    objekat.RucnoOdabraniIgraci = objekat.RucnoOdabraniIgraci.Substring(1);
-                //za sad je hardkodirana vrsta(predstavlja uslov da ne mogu doubleovi u rucnom unosu),ovo ionako ne bi trebalo nikad biti true osim ako je neko zaobisao frontend
-                if (objekat.VrstaID == 2 ||
-                    objekat.RucnoOdabraniIgraci == "" ||
-                    !ValidanUnosRegex(objekat.RucnoOdabraniIgraci) ||
-                    !ValidnaKorisnickaImena(objekat.RucnoOdabraniIgraci)
-                    )
+                if (objekat.RucnoOdabraniIgraci != null && objekat.RucnoOdabraniIgraci != "")
+                {
+                    if (objekat.RucnoOdabraniIgraci.EndsWith(" "))
+                        objekat.RucnoOdabraniIgraci = objekat.RucnoOdabraniIgraci.Remove(objekat.RucnoOdabraniIgraci.Length - 1);
+                    if (objekat.RucnoOdabraniIgraci.StartsWith(" "))
+                        objekat.RucnoOdabraniIgraci = objekat.RucnoOdabraniIgraci.Substring(1);
+                    //za sad je hardkodirana vrsta(predstavlja uslov da ne mogu doubleovi u rucnom unosu),ovo ionako ne bi trebalo nikad biti true osim ako je neko zaobisao frontend
+                    if (objekat.VrstaID == 2 ||
+                        objekat.RucnoOdabraniIgraci == "" ||
+                        !ValidanUnosRegex(objekat.RucnoOdabraniIgraci) ||
+                        !ValidnaKorisnickaImena(objekat.RucnoOdabraniIgraci)
+                        )
+                    {
+                        listaErrora.Add(("", "Molimo unesite ispravno imena igraca"));
+                    }
+                    if (RucnaImenaSadrziDuplikate(objekat.RucnoOdabraniIgraci))
+                        listaErrora.Add(("", "Nemojte dva puta istog igraca navoditi"));
+                    if (BrojRucnoUnesenih(objekat.RucnoOdabraniIgraci) < 4)
+                        listaErrora.Add(("", "Minimalno 4 igraca za takmicenje"));
+                }
+                else
                 {
                     listaErrora.Add(("", "Molimo unesite ispravno imena igraca"));
                 }
-                if (RucnaImenaSadrziDuplikate(objekat.RucnoOdabraniIgraci))
-                    listaErrora.Add(("", "Nemojte dva puta istog igraca navoditi"));
-                if (BrojRucnoUnesenih(objekat.RucnoOdabraniIgraci) < 4)
-                    listaErrora.Add(("", "Minimalno 4 igraca za takmicenje"));
             }
             _listaTakmicenja = null;
             _listaIgraca = null;
@@ -63,18 +70,26 @@ namespace FIT_PONG.Models.BL
         private bool ValidanUnosRegex(string ProslijedjenaImena)
         {
             //Regex pattern = new Regex("\\B@.[^@ ]+");
-            var match = Regex.Matches(ProslijedjenaImena, "\\B@.[^@ ]+ ");
-            int sumamatcheva = 0;
+            var match = Regex.Matches(ProslijedjenaImena, "(?:^|\\s)(?<username>[^\\s]*)(?=\\s|$)");
+            int brojUkupnoMatcheva = match.Count();
+            if (brojUkupnoMatcheva == 0)
+                return false;
+
             foreach (Match x in match)
             {
                 if (x.Success)
-                    sumamatcheva += x.Length;
+                {
+                    if (x.Groups["username"].Length == 0)
+                        return false;
+                }
             }
-            return sumamatcheva == ProslijedjenaImena.Count();
+            return true;
+
+            //return sumamatcheva == ProslijedjenaImena.Count();
         }
         private bool ValidnaKorisnickaImena(string proslijedjenaImena)
         {
-            var matches = Regex.Matches(proslijedjenaImena, "@(?<username>[^@ ]+)+ ");
+            var matches = Regex.Matches(proslijedjenaImena, "(?:^|\\s)(?<username>[^\\s]*)(?=\\s|$)");
             foreach (Match i in matches)
             {
                 string KorisnickoIme = i.Groups["username"].Value;
@@ -85,7 +100,7 @@ namespace FIT_PONG.Models.BL
         }
         private bool RucnaImenaSadrziDuplikate(string ProslijedjenaImena)//ako je proslijedio 2 puta istog frajera
         {
-            var matches = Regex.Matches(ProslijedjenaImena, "@(?<username>[^@ ]+)+ ");// rezultati su u prvoj grupi
+            var matches = Regex.Matches(ProslijedjenaImena, "(?:^|\\s)(?<username>[^\\s]*)(?=\\s|$)");// rezultati su u prvoj grupi
             List<string> svePrijave = new List<string>();
             foreach (Match i in matches)
             {
@@ -98,7 +113,7 @@ namespace FIT_PONG.Models.BL
         }
         private int BrojRucnoUnesenih(string proslijedjenaImena)
         {
-            var matches = Regex.Matches(proslijedjenaImena, "@(?<username>[^@ ]+)+ ");
+            var matches = Regex.Matches(proslijedjenaImena, "(?:^|\\s)(?<username>[^\\s]*)(?=\\s|$)");
             int BrojKorisnika = 0;
             foreach (Match x in matches)
             {
@@ -111,7 +126,7 @@ namespace FIT_PONG.Models.BL
         public List<Igrac> GetListaRucnihIgraca(string ProslijedjenaImena)
         {
             //prvo ocistiti regex
-            var matches = Regex.Matches(ProslijedjenaImena, "@(?<username>[^@ ]+)+ ");// rezultati su u prvoj grupi
+            var matches = Regex.Matches(ProslijedjenaImena, "(?:^|\\s)(?<username>[^\\s]*)(?=\\s|$)");// rezultati su u prvoj grupi
             List<Igrac> svePrijave = new List<Igrac>();
             foreach (Match i in matches)
             {
@@ -121,7 +136,7 @@ namespace FIT_PONG.Models.BL
             }
             return svePrijave;
         }
-        public bool TakmicenjaViseOd(string naziv, int ID , List<Takmicenje> listaTakmicenja)
+        public bool TakmicenjaViseOd(string naziv, int ID, List<Takmicenje> listaTakmicenja)
         {
             if (listaTakmicenja.Where(s => s.Naziv == naziv && s.ID != ID).Count() > 0)
                 return true;
