@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ReflectionIT.Mvc.Paging;
 
 namespace FIT_PONG
 {
@@ -56,6 +57,12 @@ namespace FIT_PONG
                 .AddEntityFrameworkStores<MyDb>()
                 .AddDefaultTokenProviders();
             services.AddSignalR();
+            services.AddPaging(x =>
+            {
+                x.ViewName = "Bootstrap4";
+                x.HtmlIndicatorDown = " <span>&darr;</span>";
+                x.HtmlIndicatorUp= " <span>&uarr;</span>";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

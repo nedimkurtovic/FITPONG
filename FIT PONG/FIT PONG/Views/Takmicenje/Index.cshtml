@@ -1,5 +1,8 @@
 ﻿@using FIT_PONG.ViewModels.TakmicenjeVMs;
-@model List<TakmicenjeVM>
+@using ReflectionIT.Mvc;
+@using ReflectionIT.Mvc.Paging;
+@addTagHelper *, ReflectionIT.Mvc.Paging
+@model PagingList<TakmicenjeVM>
 @{
     ViewData["Title"] = "Index";
 }
@@ -54,25 +57,28 @@
 </style>
 <h1>Takmicenja</h1>
 <br />
-<a asp-controller="Takmicenje" asp-action="Dodaj">Dodaj</a>
+<a class="btn btn-success" asp-controller="Takmicenje" asp-action="Dodaj">Dodaj</a>
+<hr />
 @if (Model.Count() == 0)
 {
     <p>Nema trenutno pohranjenih takmicenja</p>
 }
 else
 {
+    <nav aria-label="Takmicenja">
+        @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+    </nav>
     <div class="css-table">
-
         <div class="css-table-row">
-            <div class="css-table-header">ID</div>
-            <div class="css-table-header">Naziv</div>
-            <div class="css-table-header">Minimalni ELO</div>
-            <div class="css-table-header">Kategorija</div>
-            <div class="css-table-header">Sistem</div>
-            <div class="css-table-header">Vrsta</div>
-            <div class="css-table-header">Prijave do:</div>
-            <div class="css-table-header">Broj prijavljenih</div>
-            <div class="css-table-header">Status</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.ID)</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Naziv)</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.MinimalniELO)</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Kategorija)</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Sistem)</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Vrsta)</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.DatumZavrsetkaPrijava)</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.BrojPrijavljenih)</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Status)</div>
         </div>
         @foreach (var x in Model)
         {
@@ -89,4 +95,7 @@ else
             </a>
         }
     </div>
+    <nav>
+        <vc:pager paging-list="@Model" />
+    </nav>
 }

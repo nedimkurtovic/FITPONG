@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace FIT_PONG.Controllers
             db = instanca;
             inicijalizator = instancaInita;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, string sortExpression="ID")
         {
             List<TakmicenjeVM> takmicenja = db.Takmicenja
                 .Include(tak => tak.Kategorija)
@@ -37,7 +38,10 @@ namespace FIT_PONG.Controllers
                   (s, 0)).ToList();
             foreach (TakmicenjeVM i in takmicenja)
                 i.BrojPrijavljenih = db.Prijave.Where(s => s.TakmicenjeID == i.ID).Count();
-            return View(takmicenja);
+            var qry = takmicenja.OrderByDescending(x=>x.DatumKreiranja).ToList();
+            var takmicenja1 = PagingList.Create(qry, 2, page, sortExpression, "ID");
+
+            return View(takmicenja1);
         }
 
         public IActionResult Detalji(int? id)
