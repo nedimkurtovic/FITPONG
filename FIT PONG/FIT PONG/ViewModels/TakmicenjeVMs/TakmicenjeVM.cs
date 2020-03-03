@@ -24,6 +24,7 @@ namespace FIT_PONG.ViewModels.TakmicenjeVMs
         public string Status { get; set; }
         public int BrojPrijavljenih { get; set; }
         public int FeedID { get; set; }
+        public bool? Inicirano { get; set; }
         public List<Prijava> Prijave { get; set; }
         public List<Bracket> Bracketi { get; set; }
 
@@ -47,6 +48,7 @@ namespace FIT_PONG.ViewModels.TakmicenjeVMs
             FeedID = obj.FeedID;
             Prijave = obj.Prijave;
             Bracketi= obj.Bracketi;
+            Inicirano = obj.Inicirano;
         }
         public TakmicenjeVM() { }
     }

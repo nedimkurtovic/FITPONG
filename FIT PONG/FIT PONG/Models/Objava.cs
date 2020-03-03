@@ -12,6 +12,5 @@ namespace FIT_PONG.Models
         public string Content { get; set; }
         public DateTime DatumKreiranja { get; set; }
         public DateTime DatumIzmjene { get; set; }
-
     }
 }

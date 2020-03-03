@@ -21,7 +21,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-outline-info">Edit</a>
-    <a asp-action="Obrisi" asp-route-id="@Model.ID" class="btn btn-outline-danger">Obrisi</a>
-    <a asp-controller="Feed" asp-action="Prikaz" asp-route-id="@Model.FeedID" class="btn btn-outline-success">Nazad na feed</a>
+    <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Edit/@Model.ID" class="btn btn-outline-info">Edit</a>
+    <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Obrisi/@Model.ID" class="btn btn-outline-danger">Obrisi</a>
+    <a ajax-poziv="da" ajax-rezultat="Feed" href="/Feed/Prikaz/@Model.FeedID" class="btn btn-outline-success">Nazad na feed</a>
 </div>

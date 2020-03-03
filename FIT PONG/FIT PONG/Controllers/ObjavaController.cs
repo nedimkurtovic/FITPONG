@@ -34,13 +34,14 @@ namespace FIT_PONG.Controllers
                     DatumKreiranja = obj.DatumKreiranja,
                     FeedID = db.FeedsObjave.Where(x => x.ObjavaID == obj.ID).Select(s => s.FeedID).SingleOrDefault()
                 };
-                return View(novi);
+
+                return PartialView(novi);
             }
             return Redirect("/Objava/Neuspjeh");
         }
         public IActionResult Dodaj(int ID)
         {
-            return View(new ObjavaUnosVM {FeedID = ID });
+            return PartialView(new ObjavaUnosVM {FeedID = ID });
         }
         [HttpPost]
         public IActionResult Dodaj(ObjavaUnosVM obj)
@@ -105,6 +106,7 @@ namespace FIT_PONG.Controllers
             return View(objekat);
         }
 
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             Objava obj = db.Objave.Find(id);
@@ -116,7 +118,7 @@ namespace FIT_PONG.Controllers
                     Content = obj.Content,
                     Naziv = obj.Naziv
                 };
-                return View(objVM);
+                return PartialView(objVM);
             }
             return Redirect("Neuspjeh");
         }
@@ -137,7 +139,7 @@ namespace FIT_PONG.Controllers
                     DatumIzmjene = obj.DatumIzmjene,
                     DatumKreiranja = obj.DatumKreiranja
                 };
-                return View(objekat);
+                return PartialView(objekat);
             }
             return Redirect("Neuspjeh");
 
@@ -164,11 +166,11 @@ namespace FIT_PONG.Controllers
         }
         public IActionResult Neuspjeh()
         {
-            return View();
+            return PartialView();
         }
         public IActionResult Uspjeh()
         {
-            return View();
+            return PartialView();
         }
     }
 }

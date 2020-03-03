@@ -25,7 +25,7 @@ namespace FIT_PONG.Controllers
             db = instanca;
             inicijalizator = instancaInita;
         }
-        public IActionResult Index(int page = 1, string sortExpression="ID")
+        public IActionResult Index(int page = 1, string sortExpression= "-DatumKreiranja")
         {
             List<TakmicenjeVM> takmicenja = db.Takmicenja
                 .Include(tak => tak.Kategorija)
@@ -38,8 +38,8 @@ namespace FIT_PONG.Controllers
                   (s, 0)).ToList();
             foreach (TakmicenjeVM i in takmicenja)
                 i.BrojPrijavljenih = db.Prijave.Where(s => s.TakmicenjeID == i.ID).Count();
-            var qry = takmicenja.OrderByDescending(x=>x.DatumKreiranja).ToList();
-            var takmicenja1 = PagingList.Create(qry, 2, page, sortExpression, "ID");
+            var qry = takmicenja.OrderByDescending(X=>X.ID).ToList();
+            var takmicenja1 = PagingList.Create(qry, 10, page, sortExpression, "ID");
 
             return View(takmicenja1);
         }
@@ -552,7 +552,7 @@ namespace FIT_PONG.Controllers
                         {
                             inicijalizator.GenerisiRaspored(_takmicenje);
                             transakcija.Commit();
-                            return Redirect("/Takmicenje/Index");
+                            return RedirectToAction("Prikaz",new { id=_takmicenje.ID});
                         }
                         catch (Exception err)
                         {
@@ -565,7 +565,13 @@ namespace FIT_PONG.Controllers
             errors.Add("Takmicenje ne postoji ili je vec inicirano");
             return View("Neuspjeh", errors);
         }
-
+        public IActionResult PrikaziFeed(int ID)
+        {
+            Takmicenje takm = db.Takmicenja.AsNoTracking().Include(x => x.Feed).Where(x=>x.ID==ID).FirstOrDefault();
+            if (takm != null)
+                return RedirectToAction("Prikaz", "Feed", new { id = takm.FeedID });
+            return PartialView("Neuspjeh");
+        }
         public TakmicenjeVM GetTakmicenjeVM(int? id)
         {
 

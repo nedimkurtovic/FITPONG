@@ -79,6 +79,9 @@
     else
     {
         <button class="btn btn-outline-secondary" disabled>Završene prijave</button>
+    }
+    @if(!Model.Inicirano.GetValueOrDefault())
+    {
         <a class="btn btn-outline-primary" asp-controller="Takmicenje" asp-action="Init" asp-route-id="@Model.ID">Generisi raspored</a>
     }
 </div>

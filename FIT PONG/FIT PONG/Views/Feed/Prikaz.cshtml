@@ -1,29 +1,57 @@
 ﻿@using FIT_PONG.ViewModels.FeedVMs
+@using ReflectionIT.Mvc
+@using ReflectionIT.Mvc.Paging;
+@addTagHelper *, ReflectionIT.Mvc.Paging
+@model DisplayFeedVM
 @{
     ViewData["Title"] = "Prikaz";
-    DisplayFeedVM fid = ViewBag.fid;
+    var kreator = (string)ViewBag.username;
+    var trenutna = (int)ViewBag.trenutna;
+    var ukupnoStranica = (int)ViewBag.ukupnoStranica;
 }
 
-<h1>@fid.naziv</h1>
-<a asp-controller="Objava" asp-action="Dodaj" asp-route-id="@fid.ID" class="btn btn-outline-primary">Dodaj objavu</a>
-<br /><br />
-@if (fid.Objave.Count() == 0)
+<br />
+
+@if (Model.Objave.Count() == 0)
 {
     <p>Trenutno nema objava dodajte nekad novu</p>
 }
 else
 {
+    <nav>
+        @*@await this.Component.InvokeAsync("Pager", new { pagingList = Model.Objave })*@
+        <ul class="pagination">
+            @for (int i = 1; i <= ukupnoStranica; i++)
+            {
+                if (i == trenutna)
+                {
+                    <li class="page-item active">
+                        <a class="page-link" ajax-poziv="da" ajax-rezultat="Feed" href="/Feed/Prikaz/@Model.ID?page=@i">@i</a>
+
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" ajax-poziv="da" ajax-rezultat="Feed" href="/Feed/Prikaz/@Model.ID?page=@i">@i</a>
+                    </li>
+                }
+
+            }
+        </ul>
+    </nav>
+
     <table>
-        @foreach (var x in fid.Objave)
+        @foreach (var x in Model.Objave)
         {
 
-            <tr>   
+            <tr>
                 <td>
                     <table>
                         <tr>
-                            <td><a asp-controller="Objava" asp-action="Prikaz" asp-route-id="@x.ID" >@x.Naziv</a></td>
+                            <td><a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Prikaz/@x.ID">@x.Naziv</a></td>
                             <td class="small">@x.DatumKreiranja</td>
-                            <td class="small">Napisao/la : </td>
+                            <td class="small">Napisao/la : @kreator</td>
                         </tr>
                     </table>
                 </td>
@@ -33,11 +61,19 @@ else
                     @x.Content
                 </td>
             </tr>
-            
+
         }
     </table>
+    @*<nav>
+            <vc:pager paging-list="Model.Objave" />
+        </nav>*@
 }
-<br /><br />
-<input type="button" value="Edit" onclick="window.location.href='/Feed/Edit/@fid.ID'" />
-<input type="button" value="Obrisi" onclick="window.location.href='/Feed/Obrisi/@fid.ID'"  />
-
+<br />
+<br />
+@if (kreator == Context.User.Identity.Name)
+{
+    <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Dodaj/@Model.ID" class="btn btn-outline-primary">Dodaj objavu</a>
+    <br />
+}
+@*<input type="button" value="Edit" onclick="window.location.href='/Feed/Edit/@fid.ID'" />
+    <input type="button" value="Obrisi" onclick="window.location.href='/Feed/Obrisi/@fid.ID'"  />*@
