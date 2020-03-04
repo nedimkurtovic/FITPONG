@@ -8,6 +8,7 @@ using FIT_PONG.Models.BL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -63,6 +64,7 @@ namespace FIT_PONG
                 x.HtmlIndicatorDown = " <span>&darr;</span>";
                 x.HtmlIndicatorUp= " <span>&uarr;</span>";
             });
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //dodano zbog api controllera
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

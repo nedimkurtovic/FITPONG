@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using FIT_PONG.Models;
 using FIT_PONG.ViewModels.TakmicenjeVMs;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq;
@@ -16,10 +18,20 @@ namespace FIT_PONG.Controllers
     public class FitApiController : ApiController
     {
         private readonly MyDb db;
+        private readonly UserManager<IdentityUser<int>> userManager;
+        private readonly SignInManager<IdentityUser<int>> signInManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public FitApiController(MyDb db)
+
+        public FitApiController(MyDb db, 
+            UserManager<IdentityUser<int>> userManager,
+            SignInManager<IdentityUser<int>> signInManager,
+            IHttpContextAccessor httpContextAccessor)
         {
             this.db = db;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public string Get(int id)
@@ -32,12 +44,15 @@ namespace FIT_PONG.Controllers
                .ThenInclude(x => x.Igrac)
                .SingleOrDefault(y => y.ID == id);
             List<int> l = new List<int>();
+            var userName = httpContextAccessor.HttpContext.User.Identity.Name;
+            Igrac igr = db.Igraci.Include(d => d.User).Where(d => d.User.Email == userName).SingleOrDefault();
+
             for (int i = 0; i < takm.Bracketi[0].Runde.Count(); i++)
             {
                 for (int j = 0; j < takm.Bracketi[0].Runde[i].Utakmice.Count(); j++)
                 {
-                    if (takm.Bracketi[0].Runde[i].Utakmice[j].UcescaNaUtakmici[0].IgracID == 60
-                        || takm.Bracketi[0].Runde[i].Utakmice[j].UcescaNaUtakmici[1].IgracID == 60)
+                    if (takm.Bracketi[0].Runde[i].Utakmice[j].UcescaNaUtakmici[0].IgracID == igr.ID
+                        || takm.Bracketi[0].Runde[i].Utakmice[j].UcescaNaUtakmici[1].IgracID == igr.ID)
                         l.Add(takm.Bracketi[0].Runde[i].Utakmice[j].BrojUtakmice);
                 }
             }
@@ -65,10 +80,10 @@ namespace FIT_PONG.Controllers
                          }).OrderBy(x => x.BrojUtakmice).ToList();
             lista = lista.DistinctBy(x => new { x.IgUtId }).ToList();
 
-            List<(string tim1, int? set1, int? set2, string tim2)> parovi = new List<(string tim1, int? set1, int? set2, string tim2)>();
+            List<(string tim1, int? set1, int? set2, string tim2,int IgId1, int IgId2) > parovi = new List<(string tim1, int? set1, int? set2, string tim2, int IgId1,int IgId2)>();
             for (int i = 0; i < lista.Count(); i += 2)
             {
-                parovi.Add((lista[i].Naziv, lista[i].OsvojeniSetovi, lista[i + 1].OsvojeniSetovi, lista[i + 1].Naziv));
+                parovi.Add((lista[i].Naziv, lista[i].OsvojeniSetovi, lista[i + 1].OsvojeniSetovi, lista[i + 1].Naziv, lista[i].IgUtId,lista[i+1].IgUtId));
             }
 
             var jsonObj = JsonConvert.SerializeObject(parovi);
@@ -86,12 +101,15 @@ namespace FIT_PONG.Controllers
                .ThenInclude(x => x.Igrac)
                .SingleOrDefault(y => y.ID == id);
             List<int> l = new List<int>();
+            var userName = httpContextAccessor.HttpContext.User.Identity.Name;
+            Igrac igr = db.Igraci.Include(d => d.User).Where(d => d.User.Email == userName).SingleOrDefault();
+            
             for (int i = 0; i < takm.Bracketi[0].Runde.Count(); i++)
             {
                 for (int j = 0; j < takm.Bracketi[0].Runde[i].Utakmice.Count(); j++)
                 {
-                    if (takm.Bracketi[0].Runde[i].Utakmice[j].UcescaNaUtakmici[0].IgracID == 60
-                        || takm.Bracketi[0].Runde[i].Utakmice[j].UcescaNaUtakmici[1].IgracID == 60)
+                    if (takm.Bracketi[0].Runde[i].Utakmice[j].UcescaNaUtakmici[0].IgracID == igr.ID
+                        || takm.Bracketi[0].Runde[i].Utakmice[j].UcescaNaUtakmici[1].IgracID == igr.ID)
                         l.Add(takm.Bracketi[0].Runde[i].Utakmice[j].BrojUtakmice);
                 }
             }
@@ -120,10 +138,12 @@ namespace FIT_PONG.Controllers
                          }).OrderBy(x => x.BrojUtakmice).ToList();
             lista = lista.DistinctBy(x => new { x.IgUtId }).ToList();
 
-            List<(string tim1, int? set1, int? set2, string tim2)> parovi = new List<(string tim1, int? set1, int? set2, string tim2)>();
+
+
+            List<(string tim1, int? set1, int? set2, string tim2, int IgId1, int IgId2)> parovi = new List<(string tim1, int? set1, int? set2, string tim2, int IgId1, int IgId2)>();
             for (int i = 0; i < lista.Count(); i += 2)
             {
-                parovi.Add((lista[i].Naziv, lista[i].OsvojeniSetovi, lista[i + 1].OsvojeniSetovi, lista[i + 1].Naziv));
+                parovi.Add((lista[i].Naziv, lista[i].OsvojeniSetovi, lista[i + 1].OsvojeniSetovi, lista[i + 1].Naziv, lista[i].IgUtId, lista[i + 1].IgUtId));
             }
 
             var jsonObj = JsonConvert.SerializeObject(parovi);
