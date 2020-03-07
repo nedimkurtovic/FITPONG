@@ -20,10 +20,13 @@ namespace FIT_PONG.Controllers
 
         private readonly MyDb db;
         private readonly InitTakmicenja inicijalizator;
-        public TakmicenjeController(MyDb instanca, InitTakmicenja instancaInita)
+        private readonly ELOCalculator ELOCalculator;
+
+        public TakmicenjeController(MyDb instanca, InitTakmicenja instancaInita, ELOCalculator ELOCalculator)
         {
             db = instanca;
             inicijalizator = instancaInita;
+            this.ELOCalculator = ELOCalculator;
         }
         public IActionResult Index(int page = 1, string sortExpression= "-DatumKreiranja")
         {
@@ -87,8 +90,81 @@ namespace FIT_PONG.Controllers
             ViewBag.id = id;
             ViewBag.brojRundi = obj.Bracketi[0].Runde.Count();
 
-
             return View();
+        }
+
+        public IActionResult Evidencija(EvidencijaVM model)
+        {
+            Igrac_Utakmica rezultat1 = db.IgraciUtakmice
+                                            .Include(d => d.Igrac)
+                                            .Include(d=>d.Utakmica)
+                                            .Where(d => d.IgID == model.IgracUtakmicaId1)
+                                            .SingleOrDefault();
+            Igrac_Utakmica rezultat2 = db.IgraciUtakmice
+                                            .Include(d => d.Igrac)
+                                            .Include(d => d.Utakmica)
+                                            .Where(d => d.IgID == model.IgracUtakmicaId2)
+                                            .SingleOrDefault();
+            if (rezultat1 != null && rezultat2 != null)//provjera da su dobavljeni validni objekti
+            {
+                if (model.Rezultat1!= null && model.Rezultat2!=null 
+                    && model.Rezultat1 >= 0 && model.Rezultat1 <= 5 
+                    && model.Rezultat2 >= 0 && model.Rezultat2 <= 5)
+                {
+
+                    rezultat1.OsvojeniSetovi = model.Rezultat1;
+                    rezultat1.PristupniElo = rezultat1.Igrac.ELO;
+                    rezultat2.OsvojeniSetovi = model.Rezultat2;
+                    rezultat2.PristupniElo = rezultat2.Igrac.ELO;
+                    if (model.Rezultat1 > model.Rezultat2)//provjera ko je pobjednik
+                    {
+                        rezultat1.TipRezultataID = 1;
+                        rezultat2.TipRezultataID = 2;
+                        rezultat1.Igrac.ELO = ELOCalculator.VratiEloSingle(rezultat1.Igrac.ELO, rezultat2.Igrac.ELO, 1);
+                        rezultat2.Igrac.ELO = ELOCalculator.VratiEloSingle(rezultat2.Igrac.ELO, rezultat1.Igrac.ELO, 0);
+                    }
+                    else
+                    {
+                        rezultat1.TipRezultataID = 2;
+                        rezultat2.TipRezultataID = 1;
+                        rezultat1.Igrac.ELO = ELOCalculator.VratiEloSingle(rezultat1.Igrac.ELO, rezultat2.Igrac.ELO, 0);
+                        rezultat2.Igrac.ELO = ELOCalculator.VratiEloSingle(rezultat2.Igrac.ELO, rezultat1.Igrac.ELO, 1);
+                    }
+                    rezultat1.Utakmica.DatumVrijeme = DateTime.Now;
+                    rezultat2.Utakmica.DatumVrijeme = DateTime.Now;
+                    db.Update(rezultat1);
+                    db.Update(rezultat2);
+                    db.SaveChanges();
+                }
+            }
+            
+            return Redirect("/Takmicenje");
+        }
+
+        private void PreracunajElo(DateTime DatumVrijeme, int igracId, int noviElo)
+        {
+            List<Igrac_Utakmica> rezultati = db.IgraciUtakmice.Include(d=>d.Utakmica)
+                                                              .Include(d=>d.Igrac)
+                                                              .Where(d => d.IgracID == igracId && d.Utakmica.DatumVrijeme > DatumVrijeme)
+                                                              .OrderBy(d=>d.Utakmica.DatumVrijeme)
+                                                              .ToList();
+            foreach (var item in rezultati)
+            {
+                if (item.OsvojeniSetovi != null)
+                {
+                    int score = item.TipRezultataID ?? default(int);
+                    item.PristupniElo = noviElo;
+                    item.Igrac.ELO = 
+                        ELOCalculator.VratiEloSingle(item.PristupniElo ?? default(int), 
+                                       db.IgraciUtakmice.Where(d => d.UtakmicaID == item.UtakmicaID && d.IgracID!=item.IgracID)
+                                       .Single()
+                                       .PristupniElo ?? default(int),
+                                       score - 1);
+                    noviElo = item.Igrac.ELO;
+                    db.Update(item);
+                    db.SaveChanges();
+                }
+            }
         }
 
 
