@@ -46,6 +46,7 @@ namespace FIT_PONG
             //konkretno ovaj DI kontenjer services se brine oko kreiranja servisa i disposeanja istih zavisno od njihovog vremena
             //trajanja,postoje scoped transient i singleton
             services.AddScoped<InitTakmicenja>();
+            services.AddScoped<ELOCalculator>();
             services.AddScoped<iEmailServis, FITPONGGmail>();
             services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
             services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(opcije =>
