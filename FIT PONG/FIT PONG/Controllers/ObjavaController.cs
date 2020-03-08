@@ -78,7 +78,7 @@ namespace FIT_PONG.Controllers
                 }
             }
             
-            return View(obj);
+            return PartialView(obj);
         }
         [HttpPost]
         public IActionResult Edit(ObjavaUnosVM objekat)
@@ -103,7 +103,7 @@ namespace FIT_PONG.Controllers
                     }
                 }
             }
-            return View(objekat);
+            return PartialView(objekat);
         }
 
         [HttpGet]
