@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Prikaz1";
+    bool dodatniButtoni = (bool)ViewBag.autorizovan;
 }
 
 <h1>@Html.DisplayFor(model => model.Naziv)</h1>
@@ -21,7 +22,10 @@
     </dl>
 </div>
 <div>
-    <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Edit/@Model.ID" class="btn btn-outline-info">Edit</a>
-    <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Obrisi/@Model.ID" class="btn btn-outline-danger">Obrisi</a>
+    @if (dodatniButtoni)
+    {
+        <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Edit/@Model.ID" class="btn btn-outline-info">Edit</a>
+        <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Obrisi/@Model.ID" class="btn btn-outline-danger">Obrisi</a>
+    }
     <a ajax-poziv="da" ajax-rezultat="Feed" href="/Feed/Prikaz/@Model.FeedID" class="btn btn-outline-success">Nazad na feed</a>
 </div>

@@ -34,13 +34,15 @@ namespace FIT_PONG.Controllers
                     DatumKreiranja = obj.DatumKreiranja,
                     FeedID = db.FeedsObjave.Where(x => x.ObjavaID == obj.ID).Select(s => s.FeedID).SingleOrDefault()
                 };
-
+                ViewBag.autorizovan = AutorizovanZaAkciju(obj.ID, HttpContext.User.Identity.Name);
                 return PartialView(novi);
             }
             return Redirect("/Objava/Neuspjeh");
         }
         public IActionResult Dodaj(int ID)
         {
+            if (!AutorizovanZaAkcijuDodaj(ID, HttpContext.User.Identity.Name))
+                return VratiNijeAutorizovan();
             return PartialView(new ObjavaUnosVM {FeedID = ID });
         }
         [HttpPost]
@@ -80,31 +82,7 @@ namespace FIT_PONG.Controllers
             
             return PartialView(obj);
         }
-        [HttpPost]
-        public IActionResult Edit(ObjavaUnosVM objekat)
-        {
-            if(ModelState.IsValid)
-            {
-                Objava obj = db.Objave.Find(objekat.ID);
-                if(obj != null)
-                {
-                    try
-                    {
-                        obj.Content = objekat.Content;
-                        obj.Naziv = objekat.Naziv;
-                        obj.DatumIzmjene = DateTime.Now;
-                        db.Update(obj);
-                        db.SaveChanges();
-                        return Redirect("/Objava/Prikaz/" + obj.ID);
-                    }
-                    catch(DbUpdateException er)
-                    {
-                        ModelState.AddModelError("", "Greska prilikom updatea provjerite info" + er.Message);
-                    }
-                }
-            }
-            return PartialView(objekat);
-        }
+       
 
         [HttpGet]
         public IActionResult Edit(int id)
@@ -112,6 +90,8 @@ namespace FIT_PONG.Controllers
             Objava obj = db.Objave.Find(id);
             if(obj != null)
             {
+                if (!AutorizovanZaAkciju(id, HttpContext.User.Identity.Name))
+                    return VratiNijeAutorizovan();
                 ObjavaUnosVM objVM = new ObjavaUnosVM
                 {
                     ID = obj.ID,
@@ -122,6 +102,32 @@ namespace FIT_PONG.Controllers
             }
             return Redirect("Neuspjeh");
         }
+        [HttpPost]
+        public IActionResult Edit(ObjavaUnosVM objekat)
+        {
+            if (ModelState.IsValid)
+            {
+                Objava obj = db.Objave.Find(objekat.ID);
+                if (obj != null)
+                {
+                    try
+                    {
+                        obj.Content = objekat.Content;
+                        obj.Naziv = objekat.Naziv;
+                        obj.DatumIzmjene = DateTime.Now;
+                        db.Update(obj);
+                        db.SaveChanges();
+                        return Redirect("/Objava/Prikaz/" + obj.ID);
+                    }
+                    catch (DbUpdateException er)
+                    {
+                        ModelState.AddModelError("", "Greska prilikom updatea provjerite info" + er.Message);
+                    }
+                }
+            }
+            return PartialView(objekat);
+        }
+
         public IActionResult Obrisi(int ? id)
         {
             if(id==null)
@@ -131,6 +137,8 @@ namespace FIT_PONG.Controllers
             Objava obj = db.Objave.Find(id);
             if(obj != null)
             {
+                if (!AutorizovanZaAkciju(id.GetValueOrDefault(), HttpContext.User.Identity.Name))
+                    return VratiNijeAutorizovan();
                 ObjavaPrikazVM objekat = new ObjavaPrikazVM
                 {
                     ID = obj.ID,
@@ -152,11 +160,12 @@ namespace FIT_PONG.Controllers
                 try
                 {
                     FeedObjava FidObj = db.FeedsObjave.Where(x => x.ObjavaID == obj.ID).FirstOrDefault();
+                    int fidID = FidObj.FeedID;
                     if (FidObj != null)
                         db.FeedsObjave.Remove(FidObj);
                     db.Objave.Remove(obj);
                     db.SaveChanges();
-                    return Redirect("/Objava/Uspjeh");
+                    return Redirect("/Feed/Prikaz/" + fidID);
                 }
                 catch(DbUpdateException er)
                 {
@@ -166,11 +175,48 @@ namespace FIT_PONG.Controllers
         }
         public IActionResult Neuspjeh()
         {
+            ViewBag.poruka = "Nesto je krenulo po zlu";
             return PartialView();
         }
         public IActionResult Uspjeh()
         {
             return PartialView();
         }
+        private bool AutorizovanZaAkciju(int id, string pozivatelj)
+        {
+            Feed obj = db.FeedsObjave.Include(x=>x.Feed).Where(x => x.ObjavaID == id).Select(x => x.Feed).FirstOrDefault();
+            if (obj != null)
+            {
+                Takmicenje tak = db.Takmicenja.Where(x => x.FeedID == obj.ID).FirstOrDefault();
+                if (tak != null)
+                {
+                    var idUser = db.Users.Where(x => x.UserName == pozivatelj).FirstOrDefault();
+                    if (tak.KreatorID == idUser.Id)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            return false;
+        }
+        private bool AutorizovanZaAkcijuDodaj(int id, string pozivatelj)
+        {
+            Takmicenje tak = db.Takmicenja.Where(x => x.FeedID == id).FirstOrDefault();
+            if (tak != null)
+            {
+                var idUser = db.Users.Where(x => x.UserName == pozivatelj).FirstOrDefault();
+                if (tak.KreatorID == idUser.Id)
+                    return true;
+                else
+                    return false;
+            }
+            return false;
+        }
+            private IActionResult VratiNijeAutorizovan()
+        {
+            ViewBag.poruka = "Niste autorizovani za takvu radnju";
+            return PartialView("Neuspjeh");
+        }
+
     }
 }
