@@ -20,15 +20,15 @@ namespace FIT_PONG.Models.BL
             int noviElo =(int) Math.Round(PozivateljELO + K * (Score - E));
             return noviElo;
         }
-        public int VratiEloDouble(int PozivateljELO, int KolegaELO, int Suparnik1ELO, int SuparnikELO, int Score)
+        public int VratiEloDouble(int PozivateljELO, int KolegaELO, int Suparnik1ELO, int Suparnik2ELO, int Score)
         {
             int prosjekPozivatelj = (int) Math.Round(Prosjek(PozivateljELO, KolegaELO)); 
-            int prosjekSuparnik = (int) Math.Round(Prosjek(PozivateljELO, KolegaELO));
-            double R1 = Math.Pow(10, (prosjekPozivatelj / 400));
-            double R2 = Math.Pow(10, (prosjekSuparnik / 400));
+            int prosjekSuparnik = (int) Math.Round(Prosjek(Suparnik1ELO, Suparnik2ELO));
+            double R1 = Math.Pow(10, ((double)prosjekPozivatelj / (double)400));
+            double R2 = Math.Pow(10, ((double)prosjekSuparnik / (double)400));
             double E = R1 / (R1 + R2);
             int noviElo = (int)Math.Round(PozivateljELO + K * (Score - E));
-            int razlika = noviElo - prosjekPozivatelj;
+            int razlika = noviElo - PozivateljELO;
             return PozivateljELO + razlika;
             //nisam siguran jos kako cemo pozivati konkretno funkciju, kako sam je trenutno implementirao apsolutno za svaki zapis
             //iz igrac_utakmica tabele ce se posebno morati pozvati ova funkcija, nije problem ni napraviti neku tuple varijantu koja 

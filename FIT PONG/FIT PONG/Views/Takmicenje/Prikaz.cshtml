@@ -47,7 +47,7 @@
 <div class="tab">
     <button class="tablinks active" onclick="openTab(event, 'Detalji')">Detalji</button>
     <button class="tablinks" onclick="openTab(event, 'Rezultati')">Rezultati</button>
-    <button class="tablinks" onclick="openTab(event, 'EvidentirajMec')">Evidentiraj meč</button>
+    <button class="tablinks" onclick="openTab(event, 'EvidencijaMeca')">Evidentiraj meč</button>
     <button class="tablinks" onclick="openTab(event, 'Feed')">Objave</button>
 </div>
 
@@ -58,7 +58,7 @@
 <div id="Rezultati" class="tabcontent">
 </div>
 
-<div id="EvidentirajMec" class="tabcontent">
+<div id="EvidencijaMeca" class="tabcontent">
 </div>
 <div id="Feed" class="tabcontent">
 </div>
@@ -90,7 +90,7 @@
             var myUrl = "RezultatiSingleDouble";
             if ("@Model.Sistem" == "Round robin")
                 myUrl = "RezultatiRoundRobin";
-            if (tabName == "EvidentirajMec")
+            if (tabName == "EvidencijaMeca")
                 myUrl = tabName;
             if (tabName == "Detalji")
                 myUrl = tabName;

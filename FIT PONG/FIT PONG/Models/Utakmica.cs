@@ -26,6 +26,7 @@ namespace FIT_PONG.Models
         public Status_Utakmice Status { get; set; }
         public int StatusID { get; set; }
 
+        public bool IsEvidentirana { get; set; }
         public List<Igrac_Utakmica> UcescaNaUtakmici{ get; set; }
         
         public int OdgovarajuceMjestoUcesca()

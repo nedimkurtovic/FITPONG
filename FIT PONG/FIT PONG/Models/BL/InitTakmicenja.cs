@@ -127,9 +127,9 @@ namespace FIT_PONG.Models.BL
                 }
             }
         }
-        public int NadjiOdgovarajucuIducuUtakmicu(int brojTrenutneUtakmice, int BrojUtakmicaUTrenutnojRundi)
+        public int NadjiOdgovarajucuIducuUtakmicu(int brojTrenutneUtakmice, int BrojUtakmicaUTrenutnojRundi, int BrojPrveUtakmiceTrenutneRunde = 1)
         {
-            int brojac = 1;
+            int brojac = BrojPrveUtakmiceTrenutneRunde;
             for (int i = BrojUtakmicaUTrenutnojRundi; i >= 0; i--)
             {
                 if (brojac == brojTrenutneUtakmice)
@@ -224,7 +224,8 @@ namespace FIT_PONG.Models.BL
                 RundaID = rundaID,
                 UcescaNaUtakmici = new List<Igrac_Utakmica>(),
                 StatusID = 1,
-                TipUtakmice = db.TipoviUtakmica.Where(x => x.Naziv == vrstaTakmicenja.Naziv).FirstOrDefault()
+                TipUtakmice = db.TipoviUtakmica.Where(x => x.Naziv == vrstaTakmicenja.Naziv).FirstOrDefault(),
+                IsEvidentirana = false
             };
             db.Utakmice.Add(novaUtakmica);
             db.SaveChanges();

@@ -21,12 +21,16 @@ namespace FIT_PONG.Controllers
         private readonly MyDb db;
         private readonly InitTakmicenja inicijalizator;
         private readonly ELOCalculator ELOCalculator;
+        private readonly Evidentor evidentor;
 
-        public TakmicenjeController(MyDb instanca, InitTakmicenja instancaInita, ELOCalculator ELOCalculator)
+        public TakmicenjeController(MyDb instanca, InitTakmicenja instancaInita, ELOCalculator ELOCalculator,Evidentor _evidentor)
         {
             db = instanca;
             inicijalizator = instancaInita;
             this.ELOCalculator = ELOCalculator;
+            evidentor = _evidentor;
+            evidentor.inicijalizator = instancaInita;//ne znam koliko je ovo sigurno i ima smisla, pokusat cu, samo jednu funkciju koristim 
+            //ako bude frke izbacit cu ga skroz djeni zeve
         }
         public IActionResult Index(int page = 1, string sortExpression= "-DatumKreiranja")
         {
@@ -675,6 +679,92 @@ namespace FIT_PONG.Controllers
                 return new TakmicenjeVM(obj);
             return null;
         }
+
+
+
+        //=============================ZA SAMU EVIDENCIJU UTAKMICE=============================\\
+        [HttpGet]
+        public IActionResult EvidencijaMeca(int id)
+        {
+            Igrac igrac = evidentor.NadjiIgraca(HttpContext.User.Identity.Name);
+            List<Utakmica> NjegoveUtakmice = evidentor.DobaviUtakmice(igrac, id);
+            List<EvidencijaMecaVM> model = new List<EvidencijaMecaVM>();
+            foreach (Utakmica i in NjegoveUtakmice)
+            {
+                //ne bi se smjelo nikada desiti da se nadje null igracID jer je na frontendu prikazano samo ono gdje su oba igraca unesena..
+                //to je rjeseno onom funkcijom JelBye unutar funkcije DobaviUtakmice u par linija koda iznad
+                EvidencijaMecaVM nova = new EvidencijaMecaVM();
+                List<Igrac_Utakmica> svaUcesca = db.IgraciUtakmice.Where(x => x.UtakmicaID == i.ID).ToList();
+                List<(Prijava pr, Igrac_Utakmica ucesce)> Timovi = new List<(Prijava pr, Igrac_Utakmica ucesce)>();
+                foreach (Igrac_Utakmica j in svaUcesca)
+                {
+                    Prijava prijavaJoinUcesce = evidentor.GetPrijavuZaUcesce(j, id);
+                    Timovi.Add((prijavaJoinUcesce, j));
+                }
+                (List<Igrac_Utakmica> Tim1, List<Igrac_Utakmica> Tim2) TimoviFinalni = evidentor.VratiUcescaPoTimu(Timovi);
+                //dovoljno je provjeriti samo za jednog igraca, a svakako radi i za varijantu kad je double jer oba igraca pripadaju istoj prijavi koja ima //isti naziv
+                string NazivTim1 = Timovi.Where(x => x.ucesce == TimoviFinalni.Tim1[0]).Select(x => x.pr.Naziv).FirstOrDefault();
+                string NazivTim2 = Timovi.Where(x => x.ucesce == TimoviFinalni.Tim2[0]).Select(x => x.pr.Naziv).FirstOrDefault();
+
+                nova.Tim1 = TimoviFinalni.Tim1;
+                nova.Tim2 = TimoviFinalni.Tim2;
+
+                nova.NazivTim1 = NazivTim1;
+                nova.NazivTim2 = NazivTim2;
+
+                nova.RezultatTim1 = null;
+                nova.RezultatTim1 = null;
+                model.Add(nova);
+            }
+            ViewBag.id = id;
+            return PartialView(model);
+        }
+        [HttpPost]
+        public IActionResult EvidencijaMeca(EvidencijaMecaVM obj)
+        {
+            if (ModelState.IsValid)
+            {       
+                Igrac podnositeljZahtjeva = evidentor.NadjiIgraca(HttpContext.User.Identity.Name);
+                if(!obj.Tim1.Select(x=>x.IgracID).Contains(podnositeljZahtjeva.ID) 
+                    && !obj.Tim2.Select(x => x.IgracID).Contains(podnositeljZahtjeva.ID))
+                {
+                    return VratiNijeAutorizovan();
+                }
+                List<string> errori = evidentor.VratiListuErrora(obj);
+                if (errori.Count() == 0)
+                {
+                    //nikad ne bi niti jedan tim trebao biti null da napomenem, to je rijeseno u evidencijimeca httpget    
+
+                        try
+                        {
+                            if(evidentor.EvidentirajMec(obj))
+                                return RedirectToAction("EvidencijaMeca", new { id = obj.TakmicenjeID });
+                            else
+                            {
+                                ModelState.AddModelError("", "Došlo je do nepredviđene greške, pokusajte opet");
+                            }
+                        }
+                        catch(Exception err)
+                        {
+                            //mislim da se ovaj blok nikad nece hittat obzirom da imam try catch u evidentoru ali eto
+                            ModelState.AddModelError("", "Došlo je do greške");
+                        }
+                }
+                else
+                {
+                    foreach(string err in errori)
+                    {
+                        ModelState.AddModelError("", err);
+                    }
+                }
+            }
+            //nisam siguran da li je pametnije vratiti sve ili samo jedan ali eto
+            List<EvidencijaMecaVM> temp = new List<EvidencijaMecaVM>();
+            temp.Add(obj);
+            ViewBag.id = obj.TakmicenjeID;
+            return PartialView(temp);
+        }
+       
 
     }
 }

@@ -44,6 +44,9 @@ namespace FIT_PONG.Controllers
                .ThenInclude(x => x.Igrac)
                .SingleOrDefault(y => y.ID == id);
             List<int> l = new List<int>();
+            if (!takm.Inicirano)
+                //vrati nesto ovdje puca program kad nije inicirano a udjes u rezultate
+                return "";
             var userName = httpContextAccessor.HttpContext.User.Identity.Name;
             Igrac igr = db.Igraci.Include(d => d.User).Where(d => d.User.Email == userName).SingleOrDefault();
 

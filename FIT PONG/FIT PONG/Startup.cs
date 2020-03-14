@@ -47,6 +47,7 @@ namespace FIT_PONG
             //trajanja,postoje scoped transient i singleton
             services.AddScoped<InitTakmicenja>();
             services.AddScoped<ELOCalculator>();
+            services.AddScoped<Evidentor>();
             services.AddScoped<iEmailServis, FITPONGGmail>();
             services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
             services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(opcije =>

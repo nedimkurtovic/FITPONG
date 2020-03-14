@@ -1,0 +1,72 @@
+﻿@model List<EvidencijaMecaVM>
+@{
+    Layout = null;
+    var takid = (int)ViewBag.id;
+}
+<style>
+    .score {
+        width: 40px;
+    }
+</style>
+
+@if (Model.Count == 0)
+{
+    <h1>Trenutno nema dostupnih meceva za evidentirati</h1>
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-4">Lijeva strana</div>
+            <div class="col-1">Score</div>
+            <div class="col-1">Score</div>
+            <div class="col-4  align-self-end" style="text-align:end">Desna strana</div>
+            <div class="col-1">Akcija</div>
+        </div>
+    </div>
+    <hr />
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <form ajax-poziv="da" ajax-rezultat="EvidencijaMeca" action="/Takmicenje/EvidencijaMeca/">
+            <div class="container">
+                <div class="text text-danger" asp-validation-summary="All">
+                </div>
+                <div class="row">
+                    @for (int j = 0; j < Model[i].Tim1.Count; j++)
+                    {
+                        @*<input type="hidden" value="@Model[i].Tim1[j]" name="Tim1[@j]" />
+                            <input type="hidden" value="@Model[i].Tim2[j]" name="Tim2[@j]" />*@
+
+                        <input type="hidden" value="@Model[i].Tim1[j].IgID" name="Tim1[@j].IgID" />
+                        <input type="hidden" value="@Model[i].Tim1[j].IgracID" name="Tim1[@j].IgracID" />
+                        <input type="hidden" value="@Model[i].Tim1[j].OsvojeniSetovi" name="Tim1[@j].OsvojeniSetovi" />
+                        <input type="hidden" value="@Model[i].Tim1[j].PristupniElo" name="Tim1[@j].PristupniElo" />
+                        <input type="hidden" value="@Model[i].Tim1[j].TipRezultataID" name="Tim1[@j].TipRezultataID" />
+                        <input type="hidden" value="@Model[i].Tim1[j].UtakmicaID" name="Tim1[@j].UtakmicaID" />
+
+                        <input type="hidden" value="@Model[i].Tim2[j].IgID" name="Tim2[@j].IgID" />
+                        <input type="hidden" value="@Model[i].Tim2[j].IgracID" name="Tim2[@j].IgracID" />
+                        <input type="hidden" value="@Model[i].Tim2[j].OsvojeniSetovi" name="Tim2[@j].OsvojeniSetovi" />
+                        <input type="hidden" value="@Model[i].Tim2[j].PristupniElo" name="Tim2[@j].PristupniElo" />
+                        <input type="hidden" value="@Model[i].Tim2[j].TipRezultataID" name="Tim2[@j].TipRezultataID" />
+                        <input type="hidden" value="@Model[i].Tim2[j].UtakmicaID" name="Tim2[@j].UtakmicaID" />
+
+
+                    }
+                    <input type="hidden" value="@Model[i].NazivTim1" name="NazivTim1" />
+                    <input type="hidden" value="@Model[i].NazivTim2" name="NazivTim2" />
+
+
+                    <input type="hidden" name="TakmicenjeID" value="@takid" />
+                    <div class="col-4">@Model[i].NazivTim1</div>
+                    <div class="col-1"><input class="score" type="number" name="RezultatTim1" /></div>
+                    <div class="col-1"><input class="score" type="number" name="RezultatTim2" /></div>
+                    <div class="col-4 align-self-end" style="text-align:end">@Model[i].NazivTim2</div>
+                    <div class="col-2"><input type="submit" onclick="return confirm('Da li ste sigurni?')" value="Evidentiraj" /></div>
+
+                </div>
+            </div>
+
+        </form>
+    }
+}

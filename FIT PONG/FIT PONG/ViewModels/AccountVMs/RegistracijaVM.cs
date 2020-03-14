@@ -17,7 +17,7 @@ namespace FIT_PONG.ViewModels.AccountVMs
 
         [DataType(DataType.Password)]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Morate potvrditi password")]
-        [Compare("Password",ErrorMessage ="Morate unijet isti password jebo ga vi")]
+        [Compare("Password",ErrorMessage ="Morate unijeti isti password")]
         public string PotvrdaPassword{ get; set; }
     }
 }
