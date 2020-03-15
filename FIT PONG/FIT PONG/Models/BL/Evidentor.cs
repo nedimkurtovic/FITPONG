@@ -68,7 +68,7 @@ namespace FIT_PONG.Models.BL
                     if (ZadnjaUtakmica(obj.Tim1[0], obj.TakmicenjeID))
                     {
                         //prebaci takmicenje na zavrseno il whatever
-                        Status_Takmicenja zavrseno = db.StatusiTakmicenja.Where(x => x.Opis == "Zavrseno").FirstOrDefault();
+                        Status_Takmicenja zavrseno = db.StatusiTakmicenja.Where(x => x.Opis == "Zavrseno" || x.Opis == "Završeno").FirstOrDefault();
                         db.Takmicenja.Where(x => x.ID == obj.TakmicenjeID).FirstOrDefault().StatusID = zavrseno.ID;
                         db.SaveChanges();
                     }

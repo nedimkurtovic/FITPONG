@@ -14,8 +14,8 @@ namespace FIT_PONG.Models.BL
         private static int K = 32;
         public int VratiEloSingle(int PozivateljELO, int SuparnikELO, int Score)
         {
-            double R1 = Math.Pow(10, (PozivateljELO / 400));
-            double R2 = Math.Pow(10, (SuparnikELO / 400));
+            double R1 = Math.Pow(10, ((double)PozivateljELO / (double)400));
+            double R2 = Math.Pow(10, ((double)SuparnikELO / (double)400));
             double E = R1 / (R1 + R2);
             int noviElo =(int) Math.Round(PozivateljELO + K * (Score - E));
             return noviElo;
