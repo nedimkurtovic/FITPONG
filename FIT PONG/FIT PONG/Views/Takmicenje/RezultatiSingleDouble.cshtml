@@ -33,12 +33,10 @@
                         br++;
                     }
                     autoCompleteData.results[br].push([x[i].Item2, x[i].Item3]);
-
                 }
-
             }
         });
-            autoCompleteData.results[br-1].push([2, 0]);
+            //autoCompleteData.results[br-1].push([2, 0]);
             /* If you call doneCb([value], true), the next edit will be automatically
                activated. This works only in the first round. */
             function acEditFn(container, data, doneCb) {
