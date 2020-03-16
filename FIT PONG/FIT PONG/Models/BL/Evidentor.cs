@@ -469,18 +469,19 @@ namespace FIT_PONG.Models.BL
         {
             List<(string naziv, int? rez, int igId)> lista = new List<(string naziv, int? rez, int igID)>();
             List<(string naziv, int? rez)> povratna = new List<(string naziv, int? rez)>();
+            bool doubleovi = (u.UcescaNaUtakmici.Count == 4) ? true : false;
             foreach (Igrac_Utakmica i in u.UcescaNaUtakmici)
             {
                 Prijava p = GetPrijavuZaUcesce(i, takmid);
 
                 if (p != null)
                 {
-                    if (!SadrziPrijavuZaParove(lista, (p.Naziv, i.OsvojeniSetovi, i.IgID)))
+                    if (!SadrziPrijavuZaParove(lista, (p.Naziv, i.OsvojeniSetovi, i.IgID),doubleovi))
                         lista.Add((p.Naziv, i.OsvojeniSetovi, i.IgID));
                     continue;
                 }
                 else
-                    if (!SadrziPrijavuZaParove(lista, (null, i.OsvojeniSetovi, i.IgID)))
+                    if (!SadrziPrijavuZaParove(lista, (null, i.OsvojeniSetovi, i.IgID), doubleovi))
                 {
                     lista.Add((null, null, i.IgID));
                 }
@@ -493,7 +494,7 @@ namespace FIT_PONG.Models.BL
             //ne bi nikada teoretski trebala ova linija hitat
             return (null, null, null, null);
         }
-        private bool SadrziPrijavuZaParove(List<(string naziv, int? rez, int igId)> lista, (string naziv, int? rez, int igId) zapis)
+        private bool SadrziPrijavuZaParove(List<(string naziv, int? rez, int igId)> lista, (string naziv, int? rez, int igId) zapis, bool doubleovi)
         {
             foreach ((string naziv, int? rez, int igId) i in lista)
             {
@@ -503,6 +504,9 @@ namespace FIT_PONG.Models.BL
                 //tim..
                 if (zapis.naziv == null && i.naziv == null)
                 {
+                    if (!doubleovi && lista.Count == 1)// kad su singlovi a niko nije rasporedjen na utakmici, donji uslov uvijek vrati true
+                        //pa sam morao imati ovaj poseban slucaj
+                        return false;
                     if (zapis.igId == i.igId + 1)
                         return true;
                     else
