@@ -303,6 +303,8 @@ namespace FIT_PONG.Models.BL
         }
         public bool PrijavaSadrziIgraca(int? igracID, List<Prijava_igrac> listaIgraca)
         {
+            if (igracID == null)
+                return false;
             foreach (Prijava_igrac i in listaIgraca)
             {
                 if (i.IgracID == igracID.GetValueOrDefault())
@@ -459,6 +461,55 @@ namespace FIT_PONG.Models.BL
             foreach (Igrac_Utakmica i in lista)
             {
                 if (i.IgID == zapis.IgID)
+                    return true;
+            }
+            return false;
+        }
+        public (string tim1, int? rez1, int? rez2, string tim2) GetPar(Utakmica u, int takmid)
+        {
+            List<(string naziv, int? rez, int igId)> lista = new List<(string naziv, int? rez, int igID)>();
+            List<(string naziv, int? rez)> povratna = new List<(string naziv, int? rez)>();
+            foreach (Igrac_Utakmica i in u.UcescaNaUtakmici)
+            {
+                Prijava p = GetPrijavuZaUcesce(i, takmid);
+
+                if (p != null)
+                {
+                    if (!SadrziPrijavuZaParove(lista, (p.Naziv, i.OsvojeniSetovi, i.IgID)))
+                        lista.Add((p.Naziv, i.OsvojeniSetovi, i.IgID));
+                    continue;
+                }
+                else
+                    if (!SadrziPrijavuZaParove(lista, (null, i.OsvojeniSetovi, i.IgID)))
+                {
+                    lista.Add((null, null, i.IgID));
+                }
+            }
+            //ako je sve kako treba, ovo bi i za single i za double uvijek trebalo vratiti 2 zapisa, tim1 i tim2
+            if (lista.Count != 0)
+            {
+                return (lista[0].naziv, lista[0].rez, lista[1].rez, lista[1].naziv);
+            }
+            //ne bi nikada teoretski trebala ova linija hitat
+            return (null, null, null, null);
+        }
+        private bool SadrziPrijavuZaParove(List<(string naziv, int? rez, int igId)> lista, (string naziv, int? rez, int igId) zapis)
+        {
+            foreach ((string naziv, int? rez, int igId) i in lista)
+            {
+                //ovdje je situacija da pod prepostavkom da ce igID uvijek se kreirati redoslijedom tj da ce ucesca na jednoj utakmici biti 
+                //poredana kao 1 2 3 4, onda ce ovo važiti, ako bude frke onda ovdje se treba vratiti jer konkretno trenutna mana ove funckije je
+                //nemogucnost razaznavanja ko je u kojem timu ako su nullovi igracID, tj kad niko nije postavljen na utakmici,kako znati ko je koji 
+                //tim..
+                if (zapis.naziv == null && i.naziv == null)
+                {
+                    if (zapis.igId == i.igId + 1)
+                        return true;
+                    else
+                        continue;
+                }
+
+                if (i.naziv == zapis.naziv && i.igId != zapis.igId)
                     return true;
             }
             return false;

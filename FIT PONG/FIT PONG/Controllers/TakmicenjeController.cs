@@ -67,24 +67,26 @@ namespace FIT_PONG.Controllers
 
         public IActionResult RezultatiSingleDouble(int? id)
         {
-            if (db.Takmicenja.Where(x => x.ID == id).SingleOrDefault() != null)
+            Takmicenje obj = db.Takmicenja.Where(x => x.ID == id).SingleOrDefault();
+            if (obj != null && obj.Inicirano)
             {
                 ViewBag.id = id;
                 return View();
             }
+            //ovdje treba partial view s porukom nije generisan raspored jer ovo poziva ajax 
             return View("Neuspjeh");
         }
 
         public IActionResult RezultatiRoundRobin(int? id)
         {
             TakmicenjeVM obj = GetTakmicenjeVM(id);
-
-            if (obj != null)
+            if (obj != null && obj.Inicirano.GetValueOrDefault())
             {
                 ViewBag.id = id;
                 ViewBag.brojRundi = obj.Bracketi[0].Runde.Count();
                 return View();
             }
+            //ovdje treba partial view ista prica ko i gore
             return View("Neuspjeh");
         }
 
