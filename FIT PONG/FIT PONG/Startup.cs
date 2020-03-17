@@ -94,6 +94,7 @@ namespace FIT_PONG
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<LampicaHub>("/lampica");
+                endpoints.MapHub<ChatHub>("/chathub");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

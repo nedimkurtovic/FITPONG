@@ -1,0 +1,194 @@
+﻿<style>
+    #LijevaStrana {
+        float: left;
+        width: 70%;
+        height: 30%;
+    }
+
+    #ListaUsera {
+        float: left;
+        width: 25%;
+        height: 500px;
+        border: 2px solid black;
+    }
+
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+    .tabsadrzaj {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+        height: 450px;
+        overflow: scroll;
+    }
+
+    .tab button.active {
+        background-color: #ccc;
+    }
+
+    .tab button.novaPoruka {
+        background-color: #7FFF00;
+    }
+
+    .tab button:hover {
+        background-color: #ddd;
+    }
+
+    .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+    }
+
+    #prozori {
+        width: 70%;
+        height: 30%;
+        float: left;
+    }
+
+    #listausera {
+        float: left;
+        width: 25%;
+        border: 2px solid black;
+        height: 500px;
+    }
+
+    ul {
+        padding-left: 2px;
+    }
+
+        ul li {
+            border-bottom: 1px solid black;
+            list-style: none;
+        }
+
+            ul li a {
+                height: 100%;
+                width: 100%;
+            }
+
+    #batnposalji {
+        height: 50px;
+    }
+
+    .zatvori {
+        cursor: pointer;
+        opacity: 0.3;
+        position: absolute;
+        top: 5px;
+        right: -12px;
+        transform: translate(0%, -50%);
+        z-index: 100;
+    }
+
+        .zatvori:hover {
+            opacity: 1;
+        }
+    /*.tablinks{
+        position:relative;
+    }*/
+    .tab div {
+        position: relative;
+    }
+</style>
+
+
+<div id="LijevaStrana">
+    <div id="tabovi" class="tab">
+        <button class="tablinks" id="linkMain" onclick="PrebaciTab(event,'sadrzajMain','linkMain')">Main</button>
+    </div>
+    <div id="sadrzajtabova">
+        <div class="tabsadrzaj" id="sadrzajMain">
+            <span class="text-success">Dobrodosli!</span>
+            <br />
+        </div>
+    </div>
+</div>
+<div id="ListaUsera">
+    <span>Aktivni su</span>
+    <br />
+    <ul>
+    </ul>
+</div>
+<div id="Input">
+    <textarea cols="155" rows="5"></textarea>
+    <button id="batnposalji">Posalji</button>
+</div>
+
+@section Scripts{
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+
+    <script src="~/js/ChatSituacija.js"></script>
+    <script>
+        function PrebaciTab(event, sadrzajDiv, linkButton) {
+            var tabovi = $(".tablinks");
+            for (var i = 0; i < tabovi.length; i++)
+                tabovi[i].className = tabovi[i].className.replace(" active", "");
+            var id = "#" + linkButton;
+            $(id)[0].className += " active";
+            $(id)[0].className = $(id)[0].className.replace(" novaPoruka", "");
+
+            id = "#" + sadrzajDiv;
+
+            var sviDivovi = $(".tabsadrzaj");
+            for (var i = 0; i < sviDivovi.length; i++)
+                sviDivovi[i].style.display = "none";
+            $(id)[0].style.display = "block";
+        }
+        document.getElementById("linkMain").click();
+        $("a").on("click", function (event) {
+            KreirajAkoNema();
+        })
+        function KreirajAkoNema(event) {
+            var username = $(event).text();
+            username = username.trim();
+            //cistim string jer zna predstavljati problem ako username ima cudne znakove a njegova vrijednost se stavlja kao id, u tom
+            //slucaju kad se dobavlja element s tim id-em moraju se escapeat svi akarakteri sto je ogroman posao i ne da mi se
+            //nisam siguran kolika je vjerovatnoca da postoji kolizija ali postoji definitivno
+            var usernameOciscen = username.replace(/[^a-zA-Z0-9+]+/gi, '');
+            var sadrzajDivID = "sadrzaj" + usernameOciscen;
+            var buttonId = "link" + usernameOciscen;
+
+            var tabovi = $(".tablinks");
+            for (var i = 0; i < tabovi.length; i++) {
+                if (tabovi[i].id == "link" + usernameOciscen) {
+                    $(tabovi[i]).trigger("click");
+                    return 0;
+                }
+            }
+
+
+            var tab = document.createElement("button");
+            tab.id = buttonId;
+            tab.className = "tablinks active";
+            tab.setAttribute("onclick", "PrebaciTab(event,'" + sadrzajDivID + "', '" + buttonId + "')");
+            tab.innerText = username;
+
+
+
+            var div = document.createElement("div");
+            div.id = sadrzajDivID;
+            div.style.display = "none";
+            div.className = "tabsadrzaj";
+
+            $("#tabovi").append(tab);
+            $("#sadrzajtabova").append(div);
+
+            var ajdi = "#" + buttonId;
+            $(ajdi).on("click", function (event) {
+                PrebaciTab(event, sadrzajDivID, buttonId);
+            });
+            $(ajdi).trigger("click");
+
+        }
+    </script>
+}
