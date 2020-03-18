@@ -49,6 +49,7 @@
     <button class="tablinks" onclick="openTab(event, 'Rezultati')">Rezultati</button>
     <button class="tablinks" onclick="openTab(event, 'EvidencijaMeca')">Evidentiraj meč</button>
     <button class="tablinks" onclick="openTab(event, 'Feed')">Objave</button>
+    <button class="tablinks" onclick="openTab(event, 'Tabela')">Tabela</button>
 </div>
 
 <!-- Tab content -->
@@ -61,6 +62,8 @@
 <div id="EvidencijaMeca" class="tabcontent">
 </div>
 <div id="Feed" class="tabcontent">
+</div>
+<div id="Tabela" class="tabcontent">
 </div>
 
 
@@ -96,6 +99,8 @@
                 myUrl = tabName;
             if (tabName == "Feed")
                 myUrl= "PrikaziFeed"
+            if (tabName == "Tabela")
+                myUrl= "GetTabela"
 
             //treba izmijeniti url tako da odgovara i akciji evidentiraj mec.... neki univerzalan nacin
             $.ajax({

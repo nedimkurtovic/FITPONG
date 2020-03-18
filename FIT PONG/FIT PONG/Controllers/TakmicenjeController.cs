@@ -74,7 +74,8 @@ namespace FIT_PONG.Controllers
                 return View();
             }
             //ovdje treba partial view s porukom nije generisan raspored jer ovo poziva ajax 
-            return View("Neuspjeh");
+            ViewBag.poruka = "Raspored nije generisan";
+            return PartialView("Neuspjeh");
         }
 
         public IActionResult RezultatiRoundRobin(int? id)
@@ -87,7 +88,8 @@ namespace FIT_PONG.Controllers
                 return View();
             }
             //ovdje treba partial view ista prica ko i gore
-            return View("Neuspjeh");
+            ViewBag.poruka = "Raspored nije generisan";
+            return PartialView("Neuspjeh");
         }
 
         public IActionResult EvidentirajMec(int? id)
@@ -766,7 +768,60 @@ namespace FIT_PONG.Controllers
             ViewBag.id = obj.TakmicenjeID;
             return PartialView(temp);
         }
-       
 
+        public IActionResult GetTabela(int id)
+        {
+            Takmicenje obj = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
+            if (obj == null)
+                return PartialView("Neuspjeh");
+            List<TabelaStavkaVM> parovi = new List<TabelaStavkaVM>();
+            List<Utakmica> sveNaTakmicenju = db.Utakmice.AsNoTracking()
+         .Include(x => x.UcescaNaUtakmici)
+         .Include(x => x.Runda).ThenInclude(x => x.Bracket).ThenInclude(x => x.Takmicenje)
+         .Where(x => x.Runda.Bracket.TakmicenjeID == id).ToList();
+
+            //ako nije inicirano vratiti ce samo praznu listu jer nema utakmica sto sam docekao kako treba tamo na partial viewu 
+            foreach (Utakmica i in sveNaTakmicenju)
+            {
+                (string tim1, int? rez1, int? rez2, string tim2) par = evidentor.GetPar(i, id);
+                UbaciUTabelu(par, ref parovi);
+            }
+            parovi = parovi.OrderByDescending(x => x.Pobjeda).ToList();
+            return PartialView(parovi);
+        }
+
+        public void UbaciUTabelu((string tim1, int? rez1, int? rez2, string tim2) par
+            , ref List<TabelaStavkaVM> parovi)
+        {
+            if (par.tim1 != null)
+            {
+                if (!parovi.Select(x => x.Naziv).Contains(par.tim1))
+                    parovi.Add(new TabelaStavkaVM { Naziv = par.tim1, Pobjeda = 0, Poraza = 0, UkupnoOdigrano = 0 });
+                if (par.rez1 != null && par.rez2 != null)
+                {
+                    bool pobjeda = (par.rez1 > par.rez2);
+                    if (pobjeda)
+                        parovi.Where(x => x.Naziv == par.tim1).FirstOrDefault().Pobjeda++;
+                    else
+                        parovi.Where(x => x.Naziv == par.tim1).FirstOrDefault().Poraza++;
+                    parovi.Where(x => x.Naziv == par.tim1).FirstOrDefault().UkupnoOdigrano++;
+                }
+            }
+            if (par.tim2 != null)
+            {
+                if (!parovi.Select(x => x.Naziv).Contains(par.tim2))
+                    parovi.Add(new TabelaStavkaVM { Naziv = par.tim2, Pobjeda = 0, Poraza = 0, UkupnoOdigrano = 0 });
+                if (par.rez1 != null && par.rez2 != null)
+                {
+                    bool pobjeda = (par.rez1 < par.rez2);
+                    if (pobjeda)
+                        parovi.Where(x => x.Naziv == par.tim2).FirstOrDefault().Pobjeda++;
+                    else
+                        parovi.Where(x => x.Naziv == par.tim2).FirstOrDefault().Poraza++;
+                    parovi.Where(x => x.Naziv == par.tim2).FirstOrDefault().UkupnoOdigrano++;
+                }
+            }
+
+        }
     }
 }
