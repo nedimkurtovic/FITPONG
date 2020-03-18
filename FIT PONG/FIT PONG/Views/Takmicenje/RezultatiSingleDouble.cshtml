@@ -3,11 +3,11 @@
     Layout = null;
     var id = ViewBag.id;
 }
-
 <div class="turnir">
 
 
 </div>
+
 <script>
     $(document).ready(function () {
         var autoCompleteData = {
@@ -20,18 +20,33 @@
             type: "Get",
             success: function (data) {
                 var x = JSON.parse(data);
-                var tempPolovine = (x.length + 1) / 2;
-                br = -1;
-                for (var i = 0; i < x.length + 1; i++) {
-                    if (i < ((x.length + 1) / 2))
-                        autoCompleteData.teams.push([x[i].Item1, x[i].Item4]);
 
-                    if (i == 0 || i == temp) {
-                        autoCompleteData.results.push([]);
-                        temp = (x.length + 1) - (tempPolovine);
-                        tempPolovine /= 2;
+                var tempDuzina = x.length + 1;
+                var brojacUtakmice = 0;
+                var brojacRunde = 0;
+                //sustinski i ce predstavljati broj runde
+                for (var i = 0; i < x.length; i++) {
 
-                        br++;
+                    for (var j = 0; j < tempDuzina / 2; j++) {
+
+                        if (j == 0) {
+                            autoCompleteData.results.push([]);
+                        }
+                        if (i > 0)
+                        {
+                            var ime = x[brojacUtakmice].Item1;
+                            var pozicija = PozicijaPrveUTakmice(ime, autoCompleteData.teams, i);
+                            if (pozicija == 1)
+                                autoCompleteData.results[brojacRunde].push([x[brojacUtakmice].Item2, x[brojacUtakmice++].Item3]);
+                            else if(pozicija==2){
+                                autoCompleteData.results[brojacRunde].push([x[brojacUtakmice].Item3, x[brojacUtakmice++].Item2]);
+                            }
+                        }
+                        else {
+                            autoCompleteData.teams.push([x[brojacUtakmice].Item1, x[brojacUtakmice].Item4]);
+                            autoCompleteData.results[brojacRunde].push([x[brojacUtakmice].Item2, x[brojacUtakmice++].Item3]);
+                        }
+
                     }
                     autoCompleteData.results[br].push([x[i].Item2, x[i].Item3]);
                     if (x[i].Item1 != null && x[i].Item4 != null) {
@@ -40,47 +55,78 @@
                         else if (x[i].Item4.length > maxLength)
                             maxLength = x[i].Item4.length;
                     }
+                    brojacRunde++;
+                    tempDuzina /= 2;
+                    if (brojacUtakmice == x.length)
+                        break;
                 }
             }
         });
-            autoCompleteData.results[br-1].push([2, 0]);
-            /* If you call doneCb([value], true), the next edit will be automatically
-               activated. This works only in the first round. */
-            function acEditFn(container, data, doneCb) {
-                var input = $('<input type="text">');
-                input.val(data);
-                input.autocomplete({ source: acData });
-                input.blur(function () { doneCb(input.val()) });
-                input.keyup(function (e) { if ((e.keyCode || e.which) === 13) input.blur() });
-                container.html(input);
-                input.focus();
-            }
 
-            function acRenderFn(container, data, score, state) {
-                switch (state) {
-                    case 'empty-bye':
-                        container.append('BYE');
-                        return;
-                    case 'empty-tbd':
-                        container.append('TBD');
-                        return;
+        function PozicijaPrveUTakmice(Ime, timovi, TrenutnaRunda) {
+            var povratni = [];
+            for (var i = 0; i < timovi.length; i++)
+            {
+                var brojStvarneUtakmice = i + 1;
+                if ((timovi[i][0] === Ime || timovi[i][1] === Ime)) {
 
-                    case 'entry-no-score':
-                    case 'entry-default-win':
-                    case 'entry-complete':
-                        var fields = data;
-                        container.append(fields);
-                        return;
+                    povratni.push(i + 1);
+                    var brojTekmiURundi = timovi.length;
+                    var brojPrveUtakmice = 1;
+                    var brojRundi = Math.log2(brojTekmiURundi);
+                    var drugaRundaIducaUtakmica = NadjiOdgovarajucuIducuUtakmicu(i+1, brojTekmiURundi, brojPrveUtakmice);
+                    povratni.push(drugaRundaIducaUtakmica);
+                    for (var j = 0; j < brojRundi; j++)
+                    {
+                        brojPrveUtakmice = brojPrveUtakmice + brojTekmiURundi;//misli se na narednu rundu
+                        brojTekmiURundi = brojTekmiURundi / 2;
+                        var NarednaRundaIducaUtakmica =
+                            NadjiOdgovarajucuIducuUtakmicu(drugaRundaIducaUtakmica, brojTekmiURundi, brojPrveUtakmice);
+                        povratni.push(NarednaRundaIducaUtakmica);
+                        drugaRundaIducaUtakmica = NarednaRundaIducaUtakmica;
+                    }
+                    if (TrenutnaRunda != 0)//uvijek ce biti jer nikad necu 0 slat ali eto
+                    {
+                        if (povratni[TrenutnaRunda - 1] % 2 == 0)
+                            return 2;
+                        else
+                            return 1;
+                    }
                 }
-            };
+            }
+            return -1;
+        }
+        // sta treba:: naci prvu utakmicu, zapamtit broj, pozvat funkciju nadjiodgovarajuce mjesto na iducoj utakmici, to pozvat do kraja tako
+        //da nadjes sve moguce utakmice na kojima bi igrao ukoliko odnese pobjedu na svakoj, onda nadji u listi where trenutna==i i vrati i-1;
+        //e onda kad si dobio prethodnu utakmicu vidi da li je parna, ako je parna Item2 ce biti pushan drugi ako nije onda ce item2 biti prvi
+        //Pushan u rezultate
+        function NadjiOdgovarajucuIducuUtakmicu(brojTrenutneUtakmice, BrojUtakmicaUTrenutnojRundi, BrojPrveUtakmiceTrenutneRunde = 1)
+        {
+            var brojac = BrojPrveUtakmiceTrenutneRunde;
+            for (var i = BrojUtakmicaUTrenutnojRundi; i >= 0; i--)
+            {
+                if (brojac == brojTrenutneUtakmice)
+                    return brojTrenutneUtakmice + i;
+                else
+                    if ((brojac + 1) == brojTrenutneUtakmice)
+                    return brojac + i;
+                brojac += 2;
+            }
+            return -1;
+        }
 
-            $(function () {
-                var container = $('.turnir')
-                container.bracket({
-                    init: autoCompleteData,
-                    decorator: { edit: acEditFn, render: acRenderFn }
-                });
-            });
+        //autoCompleteData.results[br-1].push([2, 0]);
+        /* If you call doneCb([value], true), the next edit will be automatically
+           activated. This works only in the first round. */
+        function acEditFn(container, data, doneCb) {
+            var input = $('<input type="text">');
+            input.val(data);
+            input.autocomplete({ source: acData });
+            input.blur(function () { doneCb(input.val()) });
+            input.keyup(function (e) { if ((e.keyCode || e.which) === 13) input.blur() });
+            container.html(input);
+            input.focus();
+        }
 
         var resizeParameters = {
              teamWidth:maxLength + 140,
@@ -97,4 +143,32 @@
         $(updateResizeDemo)
 
 });
+</script>
+        function acRenderFn(container, data, score, state) {
+            switch (state) {
+                case 'empty-bye':
+                    container.append('BYE');
+                    return;
+                case 'empty-tbd':
+                    container.append('TBD');
+                    return;
+
+                case 'entry-no-score':
+                case 'entry-default-win':
+                case 'entry-complete':
+                    var fields = data;
+                    container.append(fields);
+                    return;
+            }
+        };
+        $(function () {
+            var container = $('.turnir')
+            container.bracket({
+                init: autoCompleteData,
+                decorator: { edit: acEditFn, render: acRenderFn }
+            });
+        });
+    });
+
+
 </script>
