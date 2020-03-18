@@ -72,14 +72,14 @@ namespace FIT_PONG.Controllers
             igrac.BrojPostovanja=db.Postovanja.Count(p => p.PostovaniID == id);
             igrac.listaPrijava = (from pi in db.PrijaveIgraci
                                   join pr in db.Prijave on pi.PrijavaID equals pr.ID
-                                  where pi.IgracID == id && pr.Takmicenje.RokZavrsetkaPrijave>=DateTime.Now
+                                  where pi.IgracID == id
                                   select new Prijava
                                   {
                                       ID=pr.ID,
                                       Naziv=pr.Naziv,
                                       Takmicenje=pr.Takmicenje
                                   }).ToList();
-
+            ViewBag.userId = db.Users.Where(d => d.Email == User.Identity.Name).FirstOrDefault().Id;
             return View(igrac);
         }
         
@@ -163,6 +163,12 @@ namespace FIT_PONG.Controllers
             {
                 return View("Greska");
             }
+            var userId = db.Users.Where(d => d.Email == User.Identity.Name).FirstOrDefault().Id;
+
+            if (userId != igracID)
+                return VratiNijeAutorizovan();
+
+
             IgracEditPodatkeVM obj = new IgracEditPodatkeVM
             {
                 ID = igrac.ID,
@@ -174,6 +180,7 @@ namespace FIT_PONG.Controllers
                 GradId=igrac.GradID
             };
             GetGradove();
+            
             return View(obj);
         }
 
@@ -181,6 +188,7 @@ namespace FIT_PONG.Controllers
         public IActionResult EditPodatke(IgracEditPodatkeVM obj)
         {
             Igrac igrac = db.Igraci.Find(obj.ID);
+            
             
             if (igrac!=null && ModelState.IsValid)
             {
@@ -210,6 +218,10 @@ namespace FIT_PONG.Controllers
             {
                 return View("Greska");
             }
+            var userId = db.Users.Where(d => d.Email == User.Identity.Name).FirstOrDefault().Id;
+
+            if (userId != igracID)
+                return VratiNijeAutorizovan();
             if (obj.ProfileImagePath != "/profile_picture_default.png")
             {
                 ProcesBrisanjaSlike(obj.ProfileImagePath);
@@ -227,7 +239,10 @@ namespace FIT_PONG.Controllers
 
             if (igrac == null)
                 return View("Greska");
-            
+            var userId = db.Users.Where(d => d.Email == User.Identity.Name).FirstOrDefault().Id;
+
+            if (userId != igracID)
+                return VratiNijeAutorizovan();
             IgracEditSlikuVM obj = new IgracEditSlikuVM
             {
                 ID = igracID,
@@ -292,11 +307,13 @@ namespace FIT_PONG.Controllers
                 return View("Greska");
             else if (postovanje != null)
             {
-                ViewBag.igrac = igrac1.PrikaznoIme;
-                return View("DuploPoštovanje");
+                db.Remove(postovanje);
             }
-            Postovanje novo = new Postovanje(postivalacID, postovaniID);
-            db.Add(novo);
+            else
+            {
+                Postovanje novo = new Postovanje(postivalacID, postovaniID);
+                db.Add(novo);
+            }
             db.SaveChanges();
             return Redirect("/Igrac/PrikazProfila/" + postovaniID);
 
@@ -353,6 +370,14 @@ namespace FIT_PONG.Controllers
             ViewBag.poruka = poruka;
             return View();
         }
+
+
+        public IActionResult VratiNijeAutorizovan()
+        {
+            ViewBag.poruka = "Niste autorizovani za takvu radnju";
+            return View("Neuspjeh");
+        }
+
 
         private void GetGradove()
         {

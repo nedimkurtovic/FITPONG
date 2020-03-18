@@ -61,11 +61,18 @@
     <tbody>
         @foreach (var item in Model.Prijave)
         {
-            <tr>
-                <td>@item.ID</td>
-                <td>@item.Naziv</td>
+        <tr>
+            <td>@item.ID</td>
+            <td>@item.Naziv</td>
+            @if (Model.DatumZavrsetkaPrijava >= DateTime.Now)
+            {
                 <td><a href="/Takmicenje/BlokirajPrijavu?prijavaID=@item.ID&nazivTima=@item.Naziv" id="blok-@item.ID" class="btn btn-outline-danger" onclick="return confirm('Da li ste sigurni da želite blokirati prijavu?')">Blokiraj</a></td>
-            </tr>
+            }
+            else
+            {
+                <td><a style="cursor:pointer" class="btn btn-danger" onclick="return alert('Ne možete blokirati igrača jer su prijave završene.')">Blokiraj</a></td>
+            }
+        </tr>
         }
     </tbody>
 </table>

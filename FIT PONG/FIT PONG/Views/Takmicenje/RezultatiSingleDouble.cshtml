@@ -13,6 +13,7 @@
         var autoCompleteData = {
             teams: [], results: []
         };
+        var maxLength = 0;
         $.ajax({
             async: false,
             url: "https://localhost:44322/FitApi/Get/@id",
@@ -33,6 +34,12 @@
                         br++;
                     }
                     autoCompleteData.results[br].push([x[i].Item2, x[i].Item3]);
+                    if (x[i].Item1 != null && x[i].Item4 != null) {
+                        if (x[i].Item1.length > x[i].Item4.length && x[i].Item1.length > maxLength)
+                            maxLength = x[i].Item1.length;
+                        else if (x[i].Item4.length > maxLength)
+                            maxLength = x[i].Item4.length;
+                    }
                 }
             }
         });
@@ -75,9 +82,19 @@
                 });
             });
 
+        var resizeParameters = {
+             teamWidth:maxLength + 140,
+             scoreWidth: 40,
+             matchMargin: 10,
+             roundMargin: 50,
+             init: autoCompleteData
+        };
 
-        });
+        function updateResizeDemo() {
+            $('.turnir').bracket(resizeParameters);
+        }
 
+        $(updateResizeDemo)
 
-
+});
 </script>

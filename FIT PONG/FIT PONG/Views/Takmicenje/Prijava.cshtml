@@ -9,9 +9,8 @@
     <table class="table">
         <tr>
             <td>@Html.Label("Vaše prikazno ime: ")</td>
-            <td>@Html.DropDownListFor(x => x.Igrac1ID, new SelectList(ViewBag.igraci, "ID", "Opis", 0), "Izaberi")</td>
+            <td>@Html.DropDownListFor(x => x.Igrac1ID, new SelectList(ViewBag.igrac, "ID", "Opis", 0), "Izaberi")</td>
             <td>@Html.ValidationMessageFor(x => x.Igrac1ID, "", new { @class = "text-danger" })</td>
-
         </tr>
         @if (Model.isTim)
         {

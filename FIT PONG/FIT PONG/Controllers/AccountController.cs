@@ -125,6 +125,11 @@ namespace FIT_PONG.Controllers
             if(ModelState.IsValid)
             {
                 var korisnik = await UserM.FindByEmailAsync(obj.UserName);
+                if (korisnik == null)
+                {
+                    ModelState.AddModelError("", "Neispravni podaci za login.");
+                    return View(obj);
+                }
                 var rezultat = await SignIn.PasswordSignInAsync(obj.UserName,obj.Password,obj.RememberMe,false);
                 var Igrac = db.Igraci.Find(korisnik.Id);
 

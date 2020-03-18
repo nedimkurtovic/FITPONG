@@ -17,7 +17,7 @@
             3. Nakon što ste skenirali QR kod, unesite šestocifreni kod iz vaše aplikacije u polje ispod.</h4><br />
             <h5>Verifikacijski kod</h5>
             <form action="/Account/UkljuciAutentifikaciju" method="post">
-                <input asp-for="Code" />
+                <input asp-for="Code" autofocus/>
                 <input type="submit" class="btn btn-outline-info" value="Potvrdi" />
                 <span asp-validation-for="Code" class="text-danger"></span>
             </form>

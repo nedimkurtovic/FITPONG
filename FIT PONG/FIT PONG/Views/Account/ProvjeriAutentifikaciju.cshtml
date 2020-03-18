@@ -8,7 +8,7 @@
 <form action="/Account/ProvjeriAutentifikaciju" method="post">
     <div>
         @Html.ValidationMessage("Lockout")<br />
-        <input asp-for="Code" placeholder="Unesite 6-cifreni kod..." />
+        <input autofocus asp-for="Code" placeholder="Unesite 6-cifreni kod..." />
         <input type="submit" value="Potvrdi" />
         <span asp-validation-for="Code" class="text-danger"></span><br /><br />
         <a href="/Account/PosaljiMail">Pošalji kod na mail</a>

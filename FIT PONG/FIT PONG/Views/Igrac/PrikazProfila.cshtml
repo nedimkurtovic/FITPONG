@@ -6,6 +6,7 @@
     var poruka = Model.ProfileImagePath == "/profile_picture_default.png" ? "Ne možete ukloniti default-nu sliku profila." :
         "Da li ste sigurni da želite obrisati sliku profila?";
     ;
+    var id = ViewBag.userId;
 }
 <style>
 
@@ -37,13 +38,17 @@
     }
 </style>
 <img src=@Url.Content(Model.ProfileImagePath) asp-append-version="true" alt="Slika nije ispravno učitana." />
-<h1 style="margin:10px;display:inline;">@Model.PrikaznoIme</h1>
+<h1 style="margin:10px;display:inline;">@Model.PrikaznoIme @id</h1>
 @*Ovo je samo privremeno dok se ne rijesi microsoft identity, jer je postivalacID u ovom trenutku hard-kodiran parametar*@
 <a href="/Igrac/PostujIgraca?postovaniID=@Model.ID" class="btn btn-outline-secondary" style="display:inline;margin-left:200px;">Poštuj igrača: @Model.BrojPostovanja</a>
 <br />
-<a asp-controller="Igrac" asp-action="EditSliku" asp-route-igracID="@Model.ID" class="btn btn-outline-primary">Promijeni sliku</a>
-<br />
-<a href="/Igrac/UkloniSliku?igracID=@Model.ID" class="btn btn-outline-danger" onclick="return confirm('@poruka')">Ukloni sliku</a>
+
+@if (Model.ID == id)
+{
+    <a asp-controller="Igrac" asp-action="EditSliku" asp-route-igracID="@Model.ID" class="btn btn-outline-primary">Promijeni sliku</a>
+    <br />
+    <a href="/Igrac/UkloniSliku?igracID=@Model.ID" class="btn btn-outline-danger" onclick="return confirm('@poruka')">Ukloni sliku</a>
+}
 @if (Model.statistika != null)
 {
     <div id="statistika" class="card">
@@ -89,9 +94,12 @@
     <h3>Spol: @Model.Spol</h3>
     <h3>Grad: @Model.Grad</h3>
 </div>
-<button id="btn" class="btn btn-outline-info" style="margin:10px;" onclick="PrikaziPrijave()">Moje prijave</button>
+@if (Model.ID == id)
+{
 
-    <table id="tbl" class="table table-primary" style="width:400px; margin:10px;">
+    <button id="btn" class="btn btn-outline-info" style="margin:10px;" onclick="PrikaziPrijave()">Moje prijave</button>
+
+    <table id="tbl" class="table table-primary" style="width:500px; margin:10px;">
         <thead>
             <tr>
                 <th>Naziv takmičenja</th>
@@ -100,14 +108,17 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model.listaPrijava != null && Model.listaPrijava.Count>0)
+            @if (Model.listaPrijava != null && Model.listaPrijava.Count > 0)
             {
                 @foreach (var item in Model.listaPrijava)
                 {
                     <tr>
                         <td>@item.Takmicenje.Naziv</td>
                         <td>@item.Naziv</td>
-                        <td><a asp-controller="Takmicenje" asp-action="Otkazi" asp-route-prijavaID="@item.ID" class="btn btn-danger" style="cursor:pointer;" onclick="return confirm('Jeste li sigurni da želite otkazati prijavu?')">Otkaži</a></td>
+                        @if (item.Takmicenje.RokZavrsetkaPrijave >= DateTime.Now)
+                        {
+                            <td><a asp-controller="Takmicenje" asp-action="Otkazi" asp-route-prijavaID="@item.ID" class="btn btn-danger" style="cursor:pointer;" onclick="return confirm('Jeste li sigurni da želite otkazati prijavu?')">Otkaži</a></td>
+                        }
                     </tr>
                 }
             }
@@ -118,18 +129,23 @@
             }
         </tbody>
     </table>
+}
+
 
 <a href="/Igrac/Index" class="btn btn-outline-secondary" style="margin:10px;">Back</a>
-<a asp-controller="Igrac" asp-action="EditPodatke" asp-route-igracID="@Model.ID" class="btn btn-outline-primary" style="margin:10px;">Edituj profil</a>
+@if (Model.ID == id)
+{
+    <a asp-controller="Igrac" asp-action="EditPodatke" asp-route-igracID="@Model.ID" class="btn btn-outline-primary" style="margin:10px;">Edituj profil</a>
+}
 
-@section Scripts{ 
-<script>
-    function PrikaziPrijave() {
-        var tbl = document.getElementById("tbl").style;
-        if (tbl.display == "block")
-            tbl.display = "none";
-        else
-            tbl.display = "block";
-    }
-</script>
+@section Scripts{
+    <script>
+        function PrikaziPrijave() {
+            var tbl = document.getElementById("tbl").style;
+            if (tbl.display == "block")
+                tbl.display = "none";
+            else
+                tbl.display = "block";
+        }
+    </script>
 }

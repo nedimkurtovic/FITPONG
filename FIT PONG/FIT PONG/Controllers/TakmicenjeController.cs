@@ -71,10 +71,10 @@ namespace FIT_PONG.Controllers
             if (obj != null && obj.Inicirano)
             {
                 ViewBag.id = id;
-                return View();
+                return PartialView();
             }
             //ovdje treba partial view s porukom nije generisan raspored jer ovo poziva ajax 
-            return View("Neuspjeh");
+            return PartialView("NemaRezultata");
         }
 
         public IActionResult RezultatiRoundRobin(int? id)
@@ -84,10 +84,10 @@ namespace FIT_PONG.Controllers
             {
                 ViewBag.id = id;
                 ViewBag.brojRundi = obj.Bracketi[0].Runde.Count();
-                return View();
+                return PartialView();
             }
             //ovdje treba partial view ista prica ko i gore
-            return View("Neuspjeh");
+            return PartialView("NemaRezultata");
         }
 
         public IActionResult EvidentirajMec(int? id)
@@ -424,11 +424,18 @@ namespace FIT_PONG.Controllers
             return View();
         }
 
+        public IActionResult NemaRezultata()
+        {
+            return PartialView();
+        }
+
+
         [HttpPost]
         public IActionResult Prijava(TakmicenjePrijavaVM prijava)
         {
+            Takmicenje t = db.Takmicenja.Find(prijava.takmicenjeID);
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && t.RokZavrsetkaPrijave >= DateTime.Now)
             {
                 Prijava_igrac pi = db.PrijaveIgraci.Where(p => p.Prijava.TakmicenjeID == prijava.takmicenjeID && p.IgracID == prijava.Igrac1ID).SingleOrDefault();
                 if (pi != null)
@@ -507,8 +514,8 @@ namespace FIT_PONG.Controllers
             if (takm.Vrsta.Naziv == "Single")
                 tp.isTim = false;
 
-            ViewBag.igraci = db.Igraci.Where(i => i.ELO >= takm.MinimalniELO).Select(i => new ComboBoxVM { ID = i.ID, Opis = i.PrikaznoIme }).ToList();
-
+            ViewBag.igraci = db.Igraci.Where(i => i.ELO >= takm.MinimalniELO && i.User.Email!=User.Identity.Name).Select(i => new ComboBoxVM { ID = i.ID, Opis = i.PrikaznoIme }).ToList();
+            ViewBag.igrac = db.Igraci.Include(i=>i.User).Where(i => i.ELO >= takm.MinimalniELO && i.User.Email==User.Identity.Name).Select(i => new ComboBoxVM { ID = i.ID, Opis = i.PrikaznoIme }).ToList();       
             return View(tp);
         }
 
@@ -537,8 +544,9 @@ namespace FIT_PONG.Controllers
 
         private void LoadViewBagPrijava(int id)
         {
-            Takmicenje t = db.Takmicenja.Find(id);
-            ViewBag.igraci = db.Igraci.Where(i => i.ELO >= t.MinimalniELO).Select(i => new ComboBoxVM { ID = i.ID, Opis = i.PrikaznoIme }).ToList();
+            Takmicenje takm = db.Takmicenja.Find(id);
+            ViewBag.igraci = db.Igraci.Where(i => i.ELO >= takm.MinimalniELO && i.User.Email != User.Identity.Name).Select(i => new ComboBoxVM { ID = i.ID, Opis = i.PrikaznoIme }).ToList();
+            ViewBag.igrac = db.Igraci.Include(i => i.User).Where(i => i.ELO >= takm.MinimalniELO && i.User.Email == User.Identity.Name).Select(i => new ComboBoxVM { ID = i.ID, Opis = i.PrikaznoIme }).ToList();
         }
 
         private void KreirajPrijavuIgrac(TakmicenjePrijavaVM prijava, int id)
@@ -566,9 +574,13 @@ namespace FIT_PONG.Controllers
 
         public IActionResult BlokirajPrijavu(int prijavaID, string nazivTima)
         {
-            Prijava p = db.Prijave.Find(prijavaID);
+            Prijava p = db.Prijave.Include(d => d.Takmicenje).Where(p => p.ID == prijavaID).SingleOrDefault();
             if (p != null)
             {
+                var userId = db.Users.Where(d => d.Email == User.Identity.Name).FirstOrDefault();
+                if (p.Takmicenje.KreatorID != userId.Id)
+                    return VratiNijeAutorizovan();
+
                 Stanje_Prijave sp = db.StanjaPrijave.Where(x => x.PrijavaID == prijavaID).SingleOrDefault();
                 if (sp != null)
                     db.Remove(sp);
