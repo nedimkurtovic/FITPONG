@@ -37,7 +37,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+    arguments: '--configuration $(BuildConfiguration) --output "d:\a\1\a\FIT PONG"'
     zipAfterPublish: false
 
 - task: FtpUpload@2
@@ -46,7 +46,7 @@ steps:
     serverUrl: 'p1869.app.fit.ba'
     username: 'p1869'
     password: 'yApwk7!'
-    rootDirectory: '$(build.artifactstagingdirectory)'
+    rootDirectory: 'd:\a\1\a\FIT PONG'
     filePatterns: '**'
     remoteDirectory: '/httpdocs/'
     clean: false
