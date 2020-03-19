@@ -43,7 +43,7 @@ steps:
 - task: FtpUpload@2
   inputs:
     credentialsOption: 'inputs'
-    serverUrl: 'p1869.app.fit.ba'
+    serverUrl: 'ftp://p1869.app.fit.ba'
     username: 'p1869'
     password: 'yApwk7!'
     rootDirectory: 'd:\a\1\a\FIT PONG'
