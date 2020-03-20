@@ -47,9 +47,9 @@ namespace FIT_PONG.Hubs
         }
         public async Task PosaljiPoruku(string poruka, string Primatelj)
         {
-            string posiljatelj = ListaKonekcija.Where(x => x.username == Context.User.Identity.Name).FirstOrDefault().username;
-            string vrijeme = DateTime.UtcNow.TimeOfDay.Hours.ToString() + ":" 
-                + DateTime.UtcNow.TimeOfDay.Minutes.ToString() + ":" + DateTime.UtcNow.TimeOfDay.Seconds.ToString();
+            string posiljateljevoIme = _evidentor.NadjiIgraca(Context.User.Identity.Name).PrikaznoIme;
+            string posiljatelj = ListaKonekcija.Where(x => x.username == posiljateljevoIme).FirstOrDefault().username;
+            string vrijeme = DateTime.UtcNow.AddHours(1).ToString("hh:mm:ss");
             if (Primatelj != "Main")
             {
                 string primatelj = ListaKonekcija.Where(x => x.username == Primatelj).FirstOrDefault().connectionid;

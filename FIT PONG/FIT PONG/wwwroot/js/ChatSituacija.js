@@ -53,6 +53,7 @@ function DodajTekst(drugiucesnik, poruka, posiljatelj, vrijeme) {
     var id = "#sadrzaj" + drugiucesnik;
     //console.log($(id));
     $(id)[0].innerHTML += vrijeme + " | " + posiljatelj + " : " + poruka + "<br>";
+    $(id)[0].scrollTop = $(id)[0].scrollHeight - $(id)[0].clientHeight;
 }
 function KreirajDiv(drugiucesnik) {
     if (drugiucesnik == "Main") {
