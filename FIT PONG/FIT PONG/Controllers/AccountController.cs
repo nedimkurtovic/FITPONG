@@ -237,7 +237,7 @@ namespace FIT_PONG.Controllers
                     catch (Exception err)
                     {
                         ModelState.AddModelError("",@"Doslo je do greske prilikom slanja mejla, pokusajte ponovo, 
-                                                ukoliko se problem ponovi obavijestite administratora");
+                                                ukoliko se problem ponovi obavijestite administratora ,"+err.Message);
                         return View(obj);
                     }
                 }
