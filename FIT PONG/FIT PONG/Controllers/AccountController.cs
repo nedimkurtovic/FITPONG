@@ -172,6 +172,8 @@ namespace FIT_PONG.Controllers
         [AllowAnonymous]
         public IActionResult PromjenaRequest()
         {
+            ViewBag.poruka = "Za resetovanje passworda unesite mejl";
+            ViewBag.akcija = "PromjenaRequest";
             return View();
         }
 
@@ -190,11 +192,58 @@ namespace FIT_PONG.Controllers
                         user = user.Email,
                         token = token
                     }, Request.Scheme);
-                    EmailServis.PosaljiResetPassword(url, obj.Email);
+                    try
+                    {
+                        EmailServis.PosaljiResetPassword(url, obj.Email);
+                        return View("ZahtjevPoslan");
+                    }
+                    catch (Exception err)
+                    {
+                        ModelState.AddModelError("", @"Doslo je do greske prilikom slanja mejla, 
+                                                ukoliko se problem ponovi obavijestite administratora");
+                    }
                 }
                 return View("ZahtjevPoslan");
             }
             return View(obj);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult PosaljiKonfirmacijskiMejlPonovo()
+        {
+            ViewBag.poruka = "Unesite vasu email adresu";
+            ViewBag.akcija = "PosaljiKonfirmacijskiMejlPonovo";
+            return View("PromjenaRequest");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> PosaljiKonfirmacijskiMejlPonovo(ResetPasswordEmailVM obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserM.FindByEmailAsync(obj.Email);
+                if (user != null && !user.EmailConfirmed)
+                {
+                    var tokenko = await UserM.GenerateEmailConfirmationTokenAsync(user);
+                    string url = Url.Action("PotvrdiMail", "Account", new { userid = user.Id, token = tokenko }, Request.Scheme);
+                    try
+                    {
+                        EmailServis.PosaljiKonfirmacijskiMejl(url, obj.Email);
+                        return View("ZahtjevPoslan");
+
+                    }
+                    catch (Exception err)
+                    {
+                        ModelState.AddModelError("",@"Doslo je do greske prilikom slanja mejla, pokusajte ponovo, 
+                                                ukoliko se problem ponovi obavijestite administratora");
+                        return View(obj);
+                    }
+                }
+            }
+            //ovo su mjere zastite
+            return View("ZahtjevPoslan");
         }
 
         [HttpGet]

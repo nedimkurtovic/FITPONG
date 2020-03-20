@@ -38,7 +38,7 @@
     }
 </style>
 <img src=@Url.Content(Model.ProfileImagePath) asp-append-version="true" alt="Slika nije ispravno učitana." />
-<h1 style="margin:10px;display:inline;">@Model.PrikaznoIme @id</h1>
+<h1 style="margin:10px;display:inline;">@Model.PrikaznoIme</h1>
 @*Ovo je samo privremeno dok se ne rijesi microsoft identity, jer je postivalacID u ovom trenutku hard-kodiran parametar*@
 <a href="/Igrac/PostujIgraca?postovaniID=@Model.ID" class="btn btn-outline-secondary" style="display:inline;margin-left:200px;">Poštuj igrača: @Model.BrojPostovanja</a>
 <br />

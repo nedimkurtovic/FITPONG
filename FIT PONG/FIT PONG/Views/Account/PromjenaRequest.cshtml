@@ -1,9 +1,12 @@
 ﻿@model ResetPasswordEmailVM
 @{
     ViewData["Title"] = "PromjenaRequest";
+    var poruka = (string)ViewBag.poruka;
+    var akcija = (string)ViewBag.akcija;
 }
-<h1>Za resetovanje passworda unesite mejl </h1>
-<form asp-action="PromjenaRequest" asp-controller="Account" method="post">
+<h1></h1>
+<form asp-action="@akcija" asp-controller="Account" method="post">
+    <div asp-validation-summary="All" class="text text-danger"></div>
     <div class="form-group">
         <label asp-for="Email"></label>
         <input asp-for="Email" />

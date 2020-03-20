@@ -138,7 +138,9 @@ namespace FIT_PONG.Controllers
                     token = igrac.Token
                 });
             }
-
+            ViewBag.id = igrac.ID.GetValueOrDefault();
+            ViewBag.token = igrac.Token;
+            GetGradove();
             return View(igrac);
 
         }
