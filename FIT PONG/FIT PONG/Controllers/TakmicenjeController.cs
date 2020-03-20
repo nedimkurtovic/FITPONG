@@ -1,10 +1,12 @@
-﻿using FIT_PONG.Models;
+﻿using FIT_PONG.Hubs;
+using FIT_PONG.Models;
 using FIT_PONG.Models.BL;
 using FIT_PONG.ViewModels;
 using FIT_PONG.ViewModels.TakmicenjeVMs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using ReflectionIT.Mvc.Paging;
 using System;
@@ -22,8 +24,13 @@ namespace FIT_PONG.Controllers
         private readonly InitTakmicenja inicijalizator;
         private readonly ELOCalculator ELOCalculator;
         private readonly Evidentor evidentor;
+        private readonly IHubContext<NotifikacijeHub> notifikacijeHub;
 
-        public TakmicenjeController(MyDb instanca, InitTakmicenja instancaInita, ELOCalculator ELOCalculator,Evidentor _evidentor)
+        public TakmicenjeController(MyDb instanca, 
+            InitTakmicenja instancaInita, 
+            ELOCalculator ELOCalculator,
+            Evidentor _evidentor,
+            IHubContext<NotifikacijeHub> notifikacijeHub)
         {
             db = instanca;
             inicijalizator = instancaInita;
@@ -31,6 +38,7 @@ namespace FIT_PONG.Controllers
             evidentor = _evidentor;
             evidentor.inicijalizator = instancaInita;//ne znam koliko je ovo sigurno i ima smisla, pokusat cu, samo jednu funkciju koristim 
             //ako bude frke izbacit cu ga skroz djeni zeve
+            this.notifikacijeHub = notifikacijeHub;
         }
         public IActionResult Index(int page = 1, string sortExpression= "-DatumKreiranja")
         {
@@ -696,8 +704,7 @@ namespace FIT_PONG.Controllers
             return null;
         }
 
-
-
+        
         //=============================ZA SAMU EVIDENCIJU UTAKMICE=============================\\
         [HttpGet]
         public IActionResult EvidencijaMeca(int id)
@@ -753,12 +760,15 @@ namespace FIT_PONG.Controllers
 
                         try
                         {
-                            if(evidentor.EvidentirajMec(obj))
-                                return RedirectToAction("EvidencijaMeca", new { id = obj.TakmicenjeID });
-                            else
-                            {
-                                ModelState.AddModelError("", "Došlo je do nepredviđene greške, pokusajte opet");
-                            }
+                        if (evidentor.EvidentirajMec(obj)) { 
+
+                            notifikacijeHub.Clients.All.SendAsync("startaj", GetListaUseraNotifikacije(obj.Tim1[0].UtakmicaID), obj.NazivTim1, obj.NazivTim2, obj.TakmicenjeID);
+                            return RedirectToAction("EvidencijaMeca", new { id = obj.TakmicenjeID });
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Došlo je do nepredviđene greške, pokusajte opet");
+                        }
                         }
                         catch(Exception err)
                         {
@@ -834,6 +844,81 @@ namespace FIT_PONG.Controllers
                 }
             }
 
+        }
+
+
+        public IActionResult GetFavoriti(int id)
+        {
+            FavoritiVM model = GetFavPomocna(id);
+
+            return PartialView(model);
+        }
+
+        public IActionResult OznaciUtakmicu(int id)
+        {
+            var userId = db.Users.Where(d => d.Email == User.Identity.Name).FirstOrDefault().Id;
+
+            Favoriti fav = db.Favoriti.Where(d => d.UserID == userId && d.UtakmicaId == id).SingleOrDefault();
+            Utakmica u = db.Utakmice.Include(d => d.Runda).ThenInclude(d => d.Bracket).Where(d => d.ID == id).SingleOrDefault();
+            if (u != null)
+            {
+                if (fav != null)
+                {
+                    db.Remove(fav);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    Favoriti novi = new Favoriti
+                    {
+                        UserID = userId,
+                        UtakmicaId = id
+                    };
+
+                    db.Add(novi);
+                    db.SaveChanges();
+                }
+                FavoritiVM model = GetFavPomocna(u.Runda.Bracket.TakmicenjeID);
+                return PartialView("GetFavoriti", model);
+            }
+            return PartialView("Neuspjeh");
+        }
+
+        private FavoritiVM GetFavPomocna(int id)
+        {
+            List<Utakmica> utakmice = db.Utakmice.AsNoTracking()
+                .Include(x => x.UcescaNaUtakmici)
+                .Include(x => x.Runda).ThenInclude(x => x.Bracket).ThenInclude(x => x.Takmicenje)
+                .Where(x => x.Runda.Bracket.TakmicenjeID == id).ToList();
+
+            FavoritiVM model = new FavoritiVM();
+            var userId = db.Users.Where(d => d.Email == User.Identity.Name).FirstOrDefault().Id;
+
+            foreach (var item in utakmice)
+            {
+                var fav = db.Favoriti.Where(i => i.UserID == userId && i.UtakmicaId == item.ID).SingleOrDefault();
+
+                (string tim1, int? rez1, int? rez2, string tim2) par = evidentor.GetPar(item, id);
+                if (fav != null)
+                    model.oznaceneUtakmice.Add((par.tim1, par.rez1, par.rez2, par.tim2, item.ID));
+                else
+                    model.neoznaceneUtakmice.Add((par.tim1, par.rez1, par.rez2, par.tim2, item.ID));
+            }
+
+            return model;
+        }
+
+        private List<String> GetListaUseraNotifikacije(int utakId)
+        {
+            List<Favoriti> favoriti = db.Favoriti.Include(d=>d.User).Where(d => d.UtakmicaId == utakId).ToList();
+            
+            List<String> lista = new List<string>();
+            
+            foreach (var item in favoriti)
+            {
+                lista.Add(item.User.Email);
+            }
+            return lista;
         }
     }
 }

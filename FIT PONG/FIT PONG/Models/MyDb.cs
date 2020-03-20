@@ -45,6 +45,7 @@ namespace FIT_PONG.Models
         public DbSet<Feed> Feeds { get; set; }
         public DbSet<FeedObjava> FeedsObjave { get; set; }
         public DbSet<BlokLista> BlokListe { get; set; }
+        public DbSet<Favoriti> Favoriti { get; set; }
 
 
 

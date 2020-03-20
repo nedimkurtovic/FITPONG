@@ -1,0 +1,64 @@
+﻿@model FIT_PONG.ViewModels.TakmicenjeVMs.FavoritiVM
+
+<style>
+    img {
+        width: 20px;
+        height: 20px;
+    }
+</style>
+
+@if (Model.oznaceneUtakmice.Count == 0 && Model.neoznaceneUtakmice.Count == 0)
+{
+    <h2>Takmičenje još nije inicirano.</h2>
+}
+else
+{
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tim - 1</th>
+                <th>Rezultat</th>
+                <th>Rezultat</th>
+                <th>Tim - 2</th>
+                <th>Favorit</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr><th>Označene utakmice</th></tr>
+            @if (Model.oznaceneUtakmice.Count == 0)
+            {
+                <tr><td>Niste označili nijednu utakmicu.</td></tr>
+            }
+            @foreach (var item in Model.oznaceneUtakmice)
+            {
+                if (item.tim1 != null && item.tim2 != null)
+                {
+                    <tr>
+                        <td>@item.tim1</td>
+                        <td>@item.rez1</td>
+                        <td>@item.rez2</td>
+                        <td>@item.tim2</td>
+                        <td><a ajax-poziv="da" ajax-rezultat="Favoriti" href="/Takmicenje/OznaciUtakmicu/@item.utakmicaId"><img src="~/star_full.jpg" /></a></td>
+                    </tr>
+                }
+            }
+            <tr><th>Neoznačene utakmice</th></tr>
+
+            @foreach (var item in Model.neoznaceneUtakmice)
+            {
+                if (item.tim1 != null && item.tim2 != null)
+                {
+                    <tr>
+                        <td>@item.tim1</td>
+                        <td>@item.rez1</td>
+                        <td>@item.rez2</td>
+                        <td>@item.tim2</td>
+                        <td><a ajax-poziv="da" ajax-rezultat="Favoriti" href="/Takmicenje/OznaciUtakmicu/@item.utakmicaId"><img src="~/star_blank.jpg" /></a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

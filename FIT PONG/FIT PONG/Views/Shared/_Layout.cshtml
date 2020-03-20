@@ -75,6 +75,8 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+         @*   <div class="alert alert-success alert-dismissible" id="notifikacije" style="padding:10px;width:500px;height:auto;border:2px solid black;"></div>*@
+            <div class="container"id="notifikacije"></div>
             @RenderBody()
 
         </main>
@@ -95,6 +97,9 @@
     @*<script src="~/lib/jquery/dist/jquery-1.6.2.min.js"></script>*@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.11.1/jquery.bracket.min.js"></script>
     <script src="~/js/JFIT.js"></script>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/notifikacije.js"></script>
+
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.11.1/jquery.bracket.min.css" />
     @RenderSection("Scripts", required: false)
 

@@ -49,6 +49,7 @@ namespace FIT_PONG
             services.AddScoped<ELOCalculator>();
             services.AddScoped<Evidentor>();
             services.AddScoped<iEmailServis, FITPONGGmail>();
+            services.AddScoped<NotifikacijeHub>();
             services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
             services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(opcije =>
             {
@@ -95,6 +96,7 @@ namespace FIT_PONG
             {
                 endpoints.MapHub<LampicaHub>("/lampica");
                 endpoints.MapHub<ChatHub>("/chathub");
+                endpoints.MapHub<NotifikacijeHub>("/notifikacije");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

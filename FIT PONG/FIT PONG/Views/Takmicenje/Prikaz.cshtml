@@ -50,6 +50,7 @@
     <button class="tablinks" onclick="openTab(event, 'EvidencijaMeca')">Evidentiraj meč</button>
     <button class="tablinks" onclick="openTab(event, 'Feed')">Objave</button>
     <button class="tablinks" onclick="openTab(event, 'Tabela')">Tabela</button>
+    <button class="tablinks" onclick="openTab(event, 'Favoriti')">Favoriti</button>
 </div>
 
 <!-- Tab content -->
@@ -65,6 +66,9 @@
 </div>
 <div id="Tabela" class="tabcontent">
 </div>
+<div id="Favoriti" class="tabcontent">
+</div>
+
 
 
 @section Scripts{
@@ -100,7 +104,10 @@
             if (tabName == "Feed")
                 myUrl= "PrikaziFeed"
             if (tabName == "Tabela")
-                myUrl= "GetTabela"
+                myUrl = "GetTabela"
+            if (tabName == "Favoriti")
+                myUrl = "GetFavoriti"
+
 
             //treba izmijeniti url tako da odgovara i akciji evidentiraj mec.... neki univerzalan nacin
             $.ajax({
@@ -110,8 +117,6 @@
                 success: function (data) {
                  $("#"+tabName).html(data);
                 }
-
-                
             });
 
         }
