@@ -238,7 +238,9 @@ namespace FIT_PONG.Controllers
                     {
                         ModelState.AddModelError("",@"Doslo je do greske prilikom slanja mejla, pokusajte ponovo, 
                                                 ukoliko se problem ponovi obavijestite administratora ,"+err.Message);
-                        return View(obj);
+                        ViewBag.poruka = "Unesite vasu email adresu";
+                        ViewBag.akcija = "PosaljiKonfirmacijskiMejlPonovo";
+                        return View("PromjenaRequest",obj);
                     }
                 }
             }
