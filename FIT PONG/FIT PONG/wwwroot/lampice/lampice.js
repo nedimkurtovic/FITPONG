@@ -11,6 +11,11 @@ konekcija.on("PromjenaStatusa", function (imefajla) {
     lampa.src = imefajla;
 });
 
+konekcija.on("PromjenaPoruke", function (poruka) {
+    var lampicaPoruka = document.getElementById("lampicaPoruka");
+    lampicaPoruka.innerHTML = poruka;
+});
+
 document.addEventListener("DOMContentLoaded", function () {
     konekcija.start().then(() => {
         konekcija.invoke("VratiTrenutno").catch(function (err) {
@@ -19,11 +24,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-document.getElementById("lampica").addEventListener("click",function (event) {
+document.getElementById("lampica").addEventListener("click", function (event) {
     var trenutnaSlika = document.getElementById("lampica").getAttribute("src");
-    konekcija.invoke("PromijeniStanje", trenutnaSlika).catch(function (err) {
-        return console.error(err.toString());
-    });
-    event.preventDefault();
+    $.ajax({
+        type: "GET",
+        url: "/Account/GetPrikaznoIme",
+        success: function (rezultz) {
+          
+            konekcija.invoke("PromijeniStanje", trenutnaSlika,rezultz).catch(function (err) {
+                return console.error(err.toString());
+            });
+            event.preventDefault();
+        }
+    })
+    
 });
 

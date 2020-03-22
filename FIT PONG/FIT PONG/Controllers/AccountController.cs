@@ -212,7 +212,7 @@ namespace FIT_PONG.Controllers
         [AllowAnonymous]
         public IActionResult PosaljiKonfirmacijskiMejlPonovo()
         {
-            ViewBag.poruka = "Unesite vasu email adresu";
+            ViewBag.poruka = "Unesite vašu email adresu";
             ViewBag.akcija = "PosaljiKonfirmacijskiMejlPonovo";
             return View("PromjenaRequest");
         }
@@ -489,6 +489,8 @@ namespace FIT_PONG.Controllers
         }
         public string GetPrikaznoIme()
         {
+            if (HttpContext.User.Identity.Name == null)
+                return "";
             var user = db.Users.Where(x => x.UserName == HttpContext.User.Identity.Name).FirstOrDefault();
             if (user != null)
                 return db.Igraci.Where(x => x.ID == user.Id).FirstOrDefault().PrikaznoIme;

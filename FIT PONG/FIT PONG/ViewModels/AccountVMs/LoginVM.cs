@@ -8,12 +8,15 @@ namespace FIT_PONG.ViewModels.AccountVMs
 {
     public class LoginVM
     {
-        [Required]
+        [Required(ErrorMessage ="Morate unijeti email")]
+        [Display( Name ="Email")]
         public string UserName { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Morate unijeti password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required]
+        [Display(Name ="Remember me")]
         public bool RememberMe { get; set; }
     }
 }

@@ -320,19 +320,46 @@ namespace FIT_PONG.Controllers
             //preko js : da li ste sigurni u operaciju,mada nece se svaki dan brisati takmicenje ne vjerujem da ce veliki load
             //biti na bazi,ali u svakom slucaju najmanji problem je skratit jednu funkciju i ubacit alert,ovaj princip je
             //svakako medju prvim koji sam naucio,ne znaci da je ispravan
-            try
+            Takmicenje obj = db.Takmicenja.Include(x => x.Feed).Include(x=>x.Prijave).Where(c => c.ID == ID).SingleOrDefault();
+            if (!obj.Inicirano)
             {
-                Takmicenje obj = db.Takmicenja.Include(x => x.Feed).Where(c => c.ID == ID).SingleOrDefault();
-                db.Feeds.Remove(obj.Feed);
-                db.Takmicenja.Remove(obj);
-                db.SaveChanges();
-                return Redirect("/Takmicenje/Index");
-            }
-            catch (DbUpdateException err)
-            {
+                using (var transakcija = db.Database.BeginTransaction())
+                {
+                    try
+                    {
 
+
+                        List<FeedObjava> feedObjavas = db.FeedsObjave.Where(x => x.FeedID == obj.FeedID).ToList();
+                        foreach (FeedObjava fo in feedObjavas)
+                        {
+                            List<Objava> objave = db.Objave.Where(x => x.ID == fo.ObjavaID).ToList();
+                            db.Objave.RemoveRange(objave);
+                            db.FeedsObjave.Remove(fo);
+                        }
+
+                        db.Feeds.Remove(obj.Feed);
+
+                        foreach (Prijava i in obj.Prijave)
+                        {
+                            List<Prijava_igrac> lista = db.PrijaveIgraci.Where(x => x.PrijavaID == i.ID).ToList();
+                            List<Stanje_Prijave> stanjaprijave = db.StanjaPrijave.Where(x => x.PrijavaID == i.ID).ToList();
+                            db.RemoveRange(lista);
+                            db.RemoveRange(stanjaprijave);
+                            db.Prijave.Remove(i);
+                        }
+                        db.Takmicenja.Remove(obj);
+                        db.SaveChanges();
+                        transakcija.Commit();
+                        return Redirect("/Takmicenje/Index");
+                    }
+                    catch (DbUpdateException err)
+                    {
+                        transakcija.Rollback();
+                    }
+                }
             }
-            return Redirect("/Takmicenje/Neuspjeh");
+            ViewBag.poruka = "Takmičenje se može obrisati samo ako nije inicirano";
+            return View("/Takmicenje/Neuspjeh");
         }
 
         public bool PostojiTakmicenje(string naziv)
