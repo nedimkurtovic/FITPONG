@@ -4,28 +4,39 @@
     ViewData["Title"] = "Prikaz1";
     bool dodatniButtoni = (bool)ViewBag.autorizovan;
 }
-
-<h1>@Html.DisplayFor(model => model.Naziv)</h1>
-<table>
-    <tr>
-        <td class="small">@Html.DisplayFor(model => model.DatumKreiranja) -</td>
-        <td class="small">Ime Feeda</td>
-        <td class="small">Napisao/la :</td>
-    </tr>
-</table>
-<div>
-    <hr />
-    <dl class="row">
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-    </dl>
-</div>
-<div>
-    @if (dodatniButtoni)
-    {
-        <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Edit/@Model.ID" class="btn btn-outline-info">Edit</a>
-        <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Obrisi/@Model.ID" class="btn btn-outline-danger">Obrisi</a>
-    }
-    <a ajax-poziv="da" ajax-rezultat="Feed" href="/Feed/Prikaz/@Model.FeedID" class="btn btn-outline-success">Nazad na feed</a>
+    <style>
+        #dodatniBatni a{
+            width:150px;
+        }
+    </style>
+<br />
+<div class="row justify-content-center">
+    <div class="col-6">
+        <h1>@Html.DisplayFor(model => model.Naziv)</h1>
+        <table>
+            <tr>
+                <td class="small">Datum objave: @Html.DisplayFor(model => model.DatumKreiranja)</td>
+            </tr>
+        </table>
+        <div>
+            <hr />
+            <dl class="row">
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Content)
+                </dd>
+            </dl>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <div id="dodatniBatni" class="text-center">
+            @if (dodatniButtoni)
+            {
+                <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Edit/@Model.ID" class="btn btn-outline-info">Edit</a>
+                <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Obrisi/@Model.ID" class="btn btn-outline-danger">Obrisi</a>
+            }
+            <a ajax-poziv="da" ajax-rezultat="Feed" href="/Feed/Prikaz/@Model.FeedID" class="btn btn-outline-success">Nazad na feed</a>
+        </div>
+    </div>
 </div>

@@ -487,6 +487,7 @@ namespace FIT_PONG.Controllers
             }
             return true;
         }
+        [AllowAnonymous]
         public string GetPrikaznoIme()
         {
             if (HttpContext.User.Identity.Name == null)

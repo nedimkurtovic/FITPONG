@@ -12,62 +12,75 @@
 
 <br />
 
-@if (Model.Objave.Count() == 0)
-{
-    <p>Trenutno nema objava dodajte nekad novu</p>
-}
-else
-{
-    <nav>
-        <ul class="pagination">
-            @for (int i = 1; i <= ukupnoStranica; i++)
-            {
-                if (i == trenutna)
-                {
-                    <li class="page-item active">
-                        <a class="page-link" ajax-poziv="da" ajax-rezultat="Feed" href="/Feed/Prikaz/@Model.ID?page=@i">@i</a>
-
-                    </li>
-                }
-                else
-                {
-                    <li class="page-item">
-                        <a class="page-link" ajax-poziv="da" ajax-rezultat="Feed" href="/Feed/Prikaz/@Model.ID?page=@i">@i</a>
-                    </li>
-                }
-
-            }
-        </ul>
-    </nav>
-
-    <table>
-        @foreach (var x in Model.Objave)
+<div class="row justify-content-center">
+    <div class="col-6">
+        @if (Model.Objave.Count() == 0)
         {
-
-            <tr>
-                <td>
-                    <table>
-                        <tr>
-                            <td><a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Prikaz/@x.ID">@x.Naziv</a></td>
-                            <td class="small">@x.DatumKreiranja</td>
-                            <td class="small">Napisao/la : @kreator</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td style="border-bottom:1px solid">
-                    @x.Content
-                </td>
-            </tr>
-
+            <p>Trenutno nema objava dodajte nekad novu</p>
         }
-    </table>
-}
-<br />
-<br />
-@if (kreator == Context.User.Identity.Name)
-{
-    <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Dodaj/@Model.ID" class="btn btn-outline-primary">Dodaj objavu</a>
-    <br />
-}
+        else
+        {
+            <nav>
+                <ul class="pagination">
+                    @for (int i = 1; i <= ukupnoStranica; i++)
+                    {
+                        if (i == trenutna)
+                        {
+                            <li class="page-item active">
+                                <a class="page-link" ajax-poziv="da" ajax-rezultat="Feed" href="/Feed/Prikaz/@Model.ID?page=@i">@i</a>
+
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" ajax-poziv="da" ajax-rezultat="Feed" href="/Feed/Prikaz/@Model.ID?page=@i">@i</a>
+                            </li>
+                        }
+
+                    }
+                </ul>
+            </nav>
+            <div>
+                <table>
+                    @foreach (var x in Model.Objave)
+                    {
+
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td><a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Prikaz/@x.ID">@x.Naziv</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="small">@x.DatumKreiranja</td>
+                                        <td class="small">Napisao/la : @kreator</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr><td><br /></td></tr>
+                        <tr>
+                            @{
+                                var duzina = (@x.Content.Length > 50) ? 45 : @x.Content.Length;
+                            }
+                            <td style="border-bottom:1px solid">
+                                @x.Content.Substring(0, duzina)...
+                            </td>
+                        </tr>
+
+                    }
+                </table>
+            </div>
+        }
+        <br />
+        <br />
+        <div class="text-center">
+            @if (kreator == Context.User.Identity.Name)
+            {
+                <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Dodaj/@Model.ID" class="btn btn-outline-primary">Dodaj objavu</a>
+                <br />
+            }
+        </div>
+    </div>
+</div>

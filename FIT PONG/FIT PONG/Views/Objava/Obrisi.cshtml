@@ -2,8 +2,16 @@
 @{
     ViewData["Title"] = "Obrisi";
 }
-
-<h1>Da li sigurno zelite obrisati @Model.Naziv ?</h1>
-<h2>@Model.Content</h2>
-<a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/PotvrdaBrisanja/@Model.ID" class="btn btn-danger">DA</a>
-<a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Prikaz/@Model.ID" class="btn btn-light">NE</a>
+    <style>
+        #batni a{
+            width:80px;
+            margin-right:30px;
+        }
+    </style>
+<h3 class="text-center">Da li sigurno zelite obrisati objavu: @Model.Naziv ?</h3>
+<br />
+<br />
+<div id="batni" class="text-center">
+    <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/PotvrdaBrisanja/@Model.ID" class="btn btn-danger">DA</a>
+    <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Prikaz/@Model.ID" class="btn btn-info">NE</a>
+</div>
