@@ -42,7 +42,7 @@ namespace FIT_PONG.Models.BL
             {
                 try
                 {
-                    
+
                     int pobjednik = (obj.RezultatTim1.GetValueOrDefault() > obj.RezultatTim2.GetValueOrDefault()) ? 1 : 2;
                     UpdateIgracUtakmicaZapis(obj, pobjednik);
                     //potrebno mec postaviti na zavrsen
@@ -64,7 +64,7 @@ namespace FIT_PONG.Models.BL
                     db.Utakmice.Where(x => x.ID == trenutna.ID).FirstOrDefault().IsEvidentirana = true;
 
                     db.SaveChanges();
-                    
+
                     if (ZadnjaUtakmica(obj.Tim1[0], obj.TakmicenjeID))
                     {
                         //prebaci takmicenje na zavrseno il whatever
@@ -123,6 +123,9 @@ namespace FIT_PONG.Models.BL
             x.PristupniElo = xigrac.ELO;
             y.PristupniElo = yigrac.ELO;
 
+            string X = "pobjeda";
+            string Y = "poraz";
+
             if (xs == 1)
             {
                 x.TipRezultata = pobjeda;
@@ -132,8 +135,11 @@ namespace FIT_PONG.Models.BL
             {
                 x.TipRezultata = poraz;
                 y.TipRezultata = pobjeda;
+                X = "poraz";
+                Y = "pobjeda";
             }
-
+            UpdateStatistikuIStanjePrijave(x.IgracID ?? default(int), X=="pobjeda" ? true : false, false);
+            UpdateStatistikuIStanjePrijave(y.IgracID ?? default(int), Y=="pobjeda" ? true : false, false);
 
             db.Update(x);
             db.Update(y);
@@ -184,7 +190,8 @@ namespace FIT_PONG.Models.BL
             y1.PristupniElo = y1igrac.ELO;
             y2.PristupniElo = y2igrac.ELO;
 
-
+            string X = "pobjeda";
+            string Y = "poraz";
             if (xs == 1)
             {
                 x1.TipRezultata = pobjeda;
@@ -198,7 +205,13 @@ namespace FIT_PONG.Models.BL
                 x2.TipRezultata = poraz;
                 y1.TipRezultata = pobjeda;
                 y2.TipRezultata = pobjeda;
+                X = "poraz";
+                Y = "pobjeda";
             }
+            UpdateStatistikuIStanjePrijave(x1.IgracID ?? default(int), X=="pobjeda" ? true : false, true);
+            UpdateStatistikuIStanjePrijave(x2.IgracID ?? default(int), X=="pobjeda" ? true : false, true);
+            UpdateStatistikuIStanjePrijave(y1.IgracID ?? default(int), Y=="pobjeda" ? true : false, true);
+            UpdateStatistikuIStanjePrijave(y2.IgracID ?? default(int), Y=="pobjeda" ? true : false, true);
 
             db.IgraciUtakmice.Update(x1);
             db.IgraciUtakmice.Update(x2);
@@ -373,7 +386,49 @@ namespace FIT_PONG.Models.BL
             return ig;
         }
 
+        private void UpdateStatistikuIStanjePrijave(int id, bool pobjeda, bool isTim)
+        {
+            Statistika s = db.Statistike.Where(d => d.IgracID == id && d.AkademskaGodina == DateTime.Now.Year).SingleOrDefault();
+            Prijava_igrac p = db.PrijaveIgraci.Where(d => d.IgracID == id).FirstOrDefault();
+            Stanje_Prijave sp = db.StanjaPrijave.Where(d => d.PrijavaID == p.PrijavaID).FirstOrDefault();
+            
+            if (s == null)
+            {
+                s = new Statistika(id);
+                sp = new Stanje_Prijave(p.PrijavaID);
+                db.Add(s);
+                db.Add(sp);
+                db.SaveChanges();
+            }
 
+            if (isTim)
+            {
+                if (pobjeda)
+                {
+                    s.BrojTimskihPobjeda++;
+                    sp.BrojPobjeda++;
+                    sp.BrojBodova += 2;
+                }
+                else
+                    sp.BrojIzgubljenih++;
+            }
+            else
+            {
+                if (pobjeda)
+                {
+                    s.BrojSinglePobjeda++;
+                    sp.BrojBodova += 2;
+                    sp.BrojPobjeda++;
+                }
+                else
+                    sp.BrojIzgubljenih++;
+
+            }
+            s.BrojOdigranihMeceva++;
+            sp.BrojOdigranihMeceva++;
+            db.Update(s);
+            db.SaveChanges();
+        }
 
         //=============================ZA PREMJESTANJE IGRACA NA UTAKMICU=============================\\
         public void UnaprijediIgraceNaUtakmicu(List<Igrac_Utakmica> PobjednickaUcesca, Utakmica trenutnaUtakmica)
@@ -476,7 +531,7 @@ namespace FIT_PONG.Models.BL
 
                 if (p != null)
                 {
-                    if (!SadrziPrijavuZaParove(lista, (p.Naziv, i.OsvojeniSetovi, i.IgID),doubleovi))
+                    if (!SadrziPrijavuZaParove(lista, (p.Naziv, i.OsvojeniSetovi, i.IgID), doubleovi))
                         lista.Add((p.Naziv, i.OsvojeniSetovi, i.IgID));
                     continue;
                 }
@@ -523,9 +578,9 @@ namespace FIT_PONG.Models.BL
         {
             List<string> povratne = new List<string>();
             List<(int takmid, Utakmica utakmica)> x = new List<(int takmid, Utakmica utakmica)>();
-            List<Utakmica> zadnje = db.Utakmice.AsNoTracking().Include(x=>x.UcescaNaUtakmici).Include(x => x.Runda).ThenInclude(x => x.Bracket).ThenInclude(x => x.Takmicenje)
+            List<Utakmica> zadnje = db.Utakmice.AsNoTracking().Include(x => x.UcescaNaUtakmici).Include(x => x.Runda).ThenInclude(x => x.Bracket).ThenInclude(x => x.Takmicenje)
                 .Where(x => x.IsEvidentirana).OrderByDescending(x => x.DatumVrijeme).Take(brojUtakmica).ToList();
-            foreach(Utakmica i in zadnje)
+            foreach (Utakmica i in zadnje)
             {
                 (string tim1, int? rez1, int? rez2, string tim2) par = GetPar(i, i.Runda.Bracket.TakmicenjeID);
                 if (par.rez1 > par.rez2)
