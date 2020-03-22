@@ -63,7 +63,7 @@ namespace FIT_PONG.Controllers
                                     .Include(d => d.Utakmica)
                                     .Include(d=>d.Igrac)
                                     .Where(d=>d.OsvojeniSetovi!=null)
-                                    //.Where(d => d.Utakmica.DatumVrijeme.Month == DateTime.Now.Month)
+                                    .Where(d => d.Utakmica.DatumVrijeme.Month == DateTime.Now.Month)
                                     .OrderByDescending(d => d.OsvojeniSetovi).ToList();
             if (x.Count != 0)
             {
