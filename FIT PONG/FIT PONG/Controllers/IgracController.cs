@@ -80,6 +80,15 @@ namespace FIT_PONG.Controllers
                                       Takmicenje=pr.Takmicenje
                                   }).ToList();
             ViewBag.userId = db.Users.Where(d => d.Email == User.Identity.Name).FirstOrDefault().Id;
+            var userId = db.Users.Where(d => d.Email == User.Identity.Name).FirstOrDefault().Id;
+            if (userId != id)
+            {
+                Igrac i = db.Igraci.Find(id);
+                i.BrojPosjetaNaProfil++;
+                db.Update(i);
+                db.SaveChanges();
+            }
+            
             return View(igrac);
         }
         
