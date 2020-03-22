@@ -9,6 +9,7 @@ namespace FIT_PONG.ViewModels.Home
     public class HomeIndexVM
     {
         public List<string> ZadnjiRezultati { get; set; }
-        public List<Objava> ZadnjeObjave { get; set; }
+        public List<(Objava, Takmicenje)> ZadnjeObjave { get; set; } = new List<(Objava, Takmicenje)>();
+        public List<string> FunFacts { get; set; }
     }
 }

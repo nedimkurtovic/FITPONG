@@ -529,9 +529,9 @@ namespace FIT_PONG.Models.BL
             {
                 (string tim1, int? rez1, int? rez2, string tim2) par = GetPar(i, i.Runda.Bracket.TakmicenjeID);
                 if (par.rez1 > par.rez2)
-                    povratne.Add(par.tim1 + " je pobijedio/la " + par.tim2 + " rezultatom : " + par.rez1 + " : " + par.rez2);         
+                    povratne.Add(par.tim1 + " je pobijedio/la " + par.tim2 + " rezultatom -> " + par.rez1 + " : " + par.rez2);
                 else
-                    povratne.Add(par.tim1 + " je izgubio/la od " + par.tim2 + " rezultatom : " + par.rez1 + " : " + par.rez2);
+                    povratne.Add(par.tim1 + " je izgubio/la od " + par.tim2 + " rezultatom -> " + par.rez1 + " : " + par.rez2);
 
             }
             return povratne;
