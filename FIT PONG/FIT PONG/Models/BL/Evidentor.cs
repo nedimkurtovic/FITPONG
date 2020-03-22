@@ -518,5 +518,23 @@ namespace FIT_PONG.Models.BL
             }
             return false;
         }
+
+        public List<string> GetZadnjeUtakmice(int brojUtakmica = 5)
+        {
+            List<string> povratne = new List<string>();
+            List<(int takmid, Utakmica utakmica)> x = new List<(int takmid, Utakmica utakmica)>();
+            List<Utakmica> zadnje = db.Utakmice.AsNoTracking().Include(x=>x.UcescaNaUtakmici).Include(x => x.Runda).ThenInclude(x => x.Bracket).ThenInclude(x => x.Takmicenje)
+                .Where(x => x.IsEvidentirana).OrderByDescending(x => x.DatumVrijeme).Take(brojUtakmica).ToList();
+            foreach(Utakmica i in zadnje)
+            {
+                (string tim1, int? rez1, int? rez2, string tim2) par = GetPar(i, i.Runda.Bracket.TakmicenjeID);
+                if (par.rez1 > par.rez2)
+                    povratne.Add(par.tim1 + " je pobijedio/la " + par.tim2 + " rezultatom : " + par.rez1 + " : " + par.rez2);         
+                else
+                    povratne.Add(par.tim1 + " je izgubio/la od " + par.tim2 + " rezultatom : " + par.rez1 + " : " + par.rez2);
+
+            }
+            return povratne;
+        }
     }
 }

@@ -19,7 +19,7 @@
     $(document).ready(function () {
         $.ajax({
             async: false,
-            url: "https://localhost:44322/FitApi/Get/@id",
+            url: "/FitApi/Get/@id",
             type: "Get",
             success: function (data) {
                 var x = JSON.parse(data);

@@ -16,7 +16,7 @@
         var maxLength = 0;
         $.ajax({
             async: false,
-            url: "https://localhost:44322/FitApi/Get/@id",
+            url: "/FitApi/Get/@id",
             type: "Get",
             success: function (data) {
                 var x = JSON.parse(data);
@@ -115,9 +115,7 @@
             return -1;
         }
 
-        //autoCompleteData.results[br-1].push([2, 0]);
-        /* If you call doneCb([value], true), the next edit will be automatically
-           activated. This works only in the first round. */
+        
         function acEditFn(container, data, doneCb) {
             var input = $('<input type="text">');
             input.val(data);

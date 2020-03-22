@@ -19,7 +19,6 @@
 else
 {
     <nav>
-        @*@await this.Component.InvokeAsync("Pager", new { pagingList = Model.Objave })*@
         <ul class="pagination">
             @for (int i = 1; i <= ukupnoStranica; i++)
             {
@@ -64,9 +63,6 @@ else
 
         }
     </table>
-    @*<nav>
-            <vc:pager paging-list="Model.Objave" />
-        </nav>*@
 }
 <br />
 <br />
@@ -75,5 +71,3 @@ else
     <a ajax-poziv="da" ajax-rezultat="Feed" href="/Objava/Dodaj/@Model.ID" class="btn btn-outline-primary">Dodaj objavu</a>
     <br />
 }
-@*<input type="button" value="Edit" onclick="window.location.href='/Feed/Edit/@fid.ID'" />
-    <input type="button" value="Obrisi" onclick="window.location.href='/Feed/Obrisi/@fid.ID'"  />*@

@@ -1,4 +1,6 @@
-﻿@{
+﻿@inject SignInManager<IdentityUser<int>> signinMenadjer;
+@model HomeIndexVM
+@{
     ViewData["Title"] = "Home Page";
 }
 <style>
@@ -6,14 +8,97 @@
         width: 150px;
         height: 150px;
     }
+
+    .customclasa {
+        width: 150px;
+        margin-right: 20px;
+    }
+
+    .divZaLogine {
+        margin-top: 20px;
+    }
+    .lijevaStrana{
+
+        width:50%;
+        float:left;
+    }
+      .desnaStrana{
+     
+        float:left;
+        height:500px;
+
+        width:45%;
+        margin-left:4%;
+    }
+    .lampicaDiv{
+        margin-bottom:100px;
+    }
+    .objave{
+
+    }
+    .vannavbara {
+        padding-left: 2px;
+    }
+
+        .vannavbara li {
+            border-bottom: 1px solid black;
+            list-style: none;
+            margin-bottom:5px;
+        }
+
+
 </style>
 
-<img id="lampica" src="~/lampice/lampicaoff2.jpg" alt="alttext" />
+@if (!signinMenadjer.IsSignedIn(User))
+{
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="text-center">
+        <h2 class="display-4">Dobrodošli</h2>
+        <img src="~/homelogo.jpg" />
+
+    </div>
+    <div class="text-center divZaLogine">
+        <a class="btn btn-warning customclasa" asp-action="Registracija" asp-controller="Account">Registracija</a>
+        <a class="btn btn-success customclasa" asp-action="Login" asp-controller="Account">Login</a>
+
+    </div>
+}
+else
+{
+<div class="container">
+    <div class="lijevaStrana">
+
+        <div class="text-left lampicaDiv">
+            <img id="lampica" src="~/lampice/lampicaoff2.jpg" alt="alttext" />
+        </div>
+        <h5>Zadnje objave</h5>
+        <hr />
+        <div class="objave text-left">
+            <ul class="vannavbara">
+                @foreach (Objava o in Model.ZadnjeObjave)
+                {
+                <li><h6>@o.Naziv</h6> 
+                    @o.Content
+                </li>
+                }
+            </ul>
+        </div>
+
+    </div>
+    <div class="desnaStrana">
+        <h5>Zadnji rezultati</h5>
+        <hr />
+        <div>
+            <ul class="vannavbara">
+                @foreach (string i in Model.ZadnjiRezultati)
+                {
+                    <li><h6>@i</h6> </li>
+                }
+            </ul>
+        </div>
+    </div>
 </div>
+}
 
 <script src="~/lib/signalr/dist/browser/signalr.js"></script>
 <script src="~/lampice/lampice.js"></script>

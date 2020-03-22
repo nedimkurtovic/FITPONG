@@ -11,7 +11,7 @@
             <td>@Html.EditorFor(mod => mod.Naziv)</td>
             <td>@Html.ValidationMessageFor(s => s.Naziv, "", new { @class = "text-danger" })</td>
         </tr>
-        @if (Model.RokPocetkaPrijave != null) /*ako si rucno unosio ljude nemas ti sta ovo mijenjat*/
+        @if (Model.RokPocetkaPrijave != null)
         {
             <tr>
                 <td>Pocetak prijava</td>

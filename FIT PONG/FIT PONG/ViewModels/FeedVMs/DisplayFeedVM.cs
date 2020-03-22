@@ -12,7 +12,6 @@ namespace FIT_PONG.ViewModels.FeedVMs
         public int ID { get; set; }
         public string naziv { get; set; }
         public DateTime DatumModifikacije{ get; set; }
-        //public List<Objava> Objave { get; set; }
         public PagingList<Objava> Objave { get; set; }
     }
 }

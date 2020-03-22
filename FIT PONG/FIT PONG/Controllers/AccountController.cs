@@ -487,5 +487,12 @@ namespace FIT_PONG.Controllers
             }
             return true;
         }
+        public string GetPrikaznoIme()
+        {
+            var user = db.Users.Where(x => x.UserName == HttpContext.User.Identity.Name).FirstOrDefault();
+            if (user != null)
+                return db.Igraci.Where(x => x.ID == user.Id).FirstOrDefault().PrikaznoIme;
+            return "Unknown";
+        }
     }
 }

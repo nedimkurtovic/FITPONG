@@ -32,8 +32,6 @@ $("#batnposalji").on("click", function (event) {
     PosaljiPoruku(event);
 })
 function PosaljiPoruku(event) {
-    //console.log($(".active"));
-    //console.log($("textarea"));
     var Primatelj = $(".active")[0].innerText;
     var poruka = $("textarea")[0].value;
     $("textarea")[0].value = "";
@@ -46,12 +44,10 @@ konekcija.on("PrimiPoruku", function (poruka, posiljatelj, drugiucesnik, vrijeme
     KreirajDiv(drugiucesnik);
     DodajTekst(drugiucesnik, poruka, posiljatelj, vrijeme);
 })
-//var sadrzajDivID = "sadrzaj" + usernameOciscen;
-//var buttonId = "link" + usernameOciscen;
+
 function DodajTekst(drugiucesnik, poruka, posiljatelj, vrijeme) {
     var usernameOciscen = drugiucesnik.replace(/[^a-zA-Z0-9+]+/gi, '');
-    var id = "#sadrzaj" + drugiucesnik;
-    //console.log($(id));
+    var id = "#sadrzaj" + drugiucesnik; // moguce je da je ovdje trebala biti varijabla usernameOciscen
     $(id)[0].innerHTML += vrijeme + " | " + posiljatelj + " : " + poruka + "<br>";
     $(id)[0].scrollTop = $(id)[0].scrollHeight - $(id)[0].clientHeight;
 }
@@ -76,15 +72,6 @@ function KreirajDiv(drugiucesnik) {
         batn.innerText = drugiucesnik;
         batn.id = buttonId;
 
-        //var BatnDiv = document.createElement("div");
-        //BatnDiv.style.position = "relative";
-        //var spanX = document.createElement("span");
-        //spanX.innerText = "X";
-        //spanX.className = "zatvori";
-
-        //$(BatnDiv).append(spanX);
-        //$(BatnDiv).append(batn);
-
         var prozorContent = document.createElement("div");
         prozorContent.className = "tabsadrzaj";
         prozorContent.id = sadrzajDivID;
@@ -98,9 +85,7 @@ function KreirajDiv(drugiucesnik) {
         $(ajdi).on("click", function (event) {
             PrebaciTab(event, sadrzajDivID, buttonId);
         });
-        console.log("jel ovo ime");
 
-        //$(ajdi).trigger("click");
     }
     else {
         if (!element.hasClass("active"))
