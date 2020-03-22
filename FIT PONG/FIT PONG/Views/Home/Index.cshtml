@@ -17,25 +17,26 @@
     .divZaLogine {
         margin-top: 20px;
     }
-    .lijevaStrana{
 
-        width:50%;
-        float:left;
+    .lijevaStrana {
+        width: 50%;
+        float: left;
     }
-      .desnaStrana{
-     
-        float:left;
-        height:500px;
 
-        width:45%;
-        margin-left:4%;
+    .desnaStrana {
+        float: left;
+        height: 500px;
+        width: 45%;
+        margin-left: 4%;
     }
-    .lampicaDiv{
-        margin-bottom:100px;
-    }
-    .objave{
 
+    .lampicaDiv {
+        margin-bottom: 100px;
     }
+
+    .objave {
+    }
+
     .vannavbara {
         padding-left: 2px;
     }
@@ -43,10 +44,144 @@
         .vannavbara li {
             border-bottom: 1px solid black;
             list-style: none;
-            margin-bottom:5px;
+            margin-bottom: 5px;
         }
 
+    /* [SLIDER] */
+    .slider, .slider .slide {
+        width: 500px;
+        height: 300px;
+    }
 
+    .slider {
+        overflow: hidden;
+        margin: 0 auto;
+        font-size: 1.2em;
+        background-color: lightblue;
+        border: 2px solid black;
+    }
+
+        .slider .container {
+            position: relative;
+            bottom: 0;
+            right: 0;
+            animation: slide-animation 30s infinite;
+        }
+
+        .slider #rez {
+            position: relative;
+            bottom: 0;
+            right: 0;
+            animation: rezultati 20s infinite;
+        }
+
+        .slider .slide {
+            position: relative;
+            box-sizing: border-box;
+            padding: 10px 20px;
+        }
+
+    #sliderRezultati, #rezultati {
+        width: 500px;
+        height: 200px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    /* [ANIMATION] */
+    @@keyframes slide-animation {
+        0% {
+            opacity: 0;
+            bottom: 0;
+        }
+
+        11% {
+            opacity: 1;
+            bottom: 0;
+        }
+
+        22% {
+            bottom: 100%;
+        }
+
+        33% {
+            bottom: 100%;
+        }
+
+        44% {
+            bottom: 200%;
+        }
+
+        55% {
+            bottom: 200%;
+        }
+
+        66% {
+            bottom: 300%;
+        }
+
+        77% {
+            bottom: 300%;
+        }
+
+        88% {
+            opacity: 1;
+            bottom: 400%;
+        }
+
+        100% {
+            opacity: 0;
+            bottom: 400%;
+        }
+    }
+
+    @@keyframes rezultati {
+        0% {
+            opacity: 0;
+            bottom: 0;
+        }
+
+        11% {
+            opacity: 1;
+            bottom: 0;
+        }
+
+        22% {
+            bottom: 100%;
+        }
+
+        33% {
+            bottom: 100%;
+        }
+
+        44% {
+            bottom: 200%;
+        }
+
+        55% {
+            bottom: 200%;
+        }
+
+        66% {
+            bottom: 300%;
+        }
+
+        77% {
+            bottom: 300%;
+        }
+
+        88% {
+            opacity: 1;
+            bottom: 400%;
+        }
+
+        100% {
+            opacity: 0;
+            bottom: 400%;
+        }
+    }
 </style>
 
 @if (!signinMenadjer.IsSignedIn(User))
@@ -65,40 +200,70 @@
 }
 else
 {
-<div class="container">
-    <div class="lijevaStrana">
-
-        <div class="text-left lampicaDiv">
-            <img id="lampica" src="~/lampice/lampicaoff2.jpg" alt="alttext" />
+    <div class="container">
+        <div class="lijevaStrana">
+            <div class="text-left lampicaDiv">
+                <img id="lampica" src="~/lampice/lampicaoff2.jpg" alt="alttext" />
+            </div>
+            <h1>
+                Obavijesti
+            </h1>
+            <div class="slider">
+                <div class="container">
+                    @foreach (var item in Model.ZadnjeObjave)
+                    {
+                        <div class="slide">
+                            <h3>@item.Item1.Naziv ajsdhgakjdga</h3>
+                            <p>Za detalje kliknite na <a href="https://www.p1869.app.fit.ba/Takmicenje/Prikaz?id=@item.Item2.ID">@item.Item2.Naziv</a></p>
+                            <br />
+                            <p>
+                                @item.Item1.Content
+                            </p>
+                            @if (item.Item1.Content.Length > 100)
+                            {
+                                <p>. . .</p>
+                            }
+                            <br />
+                            <p>@item.Item1.DatumIzmjene</p>
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
-        <h5>Zadnje objave</h5>
-        <hr />
-        <div class="objave text-left">
-            <ul class="vannavbara">
-                @foreach (Objava o in Model.ZadnjeObjave)
-                {
-                <li><h6>@o.Naziv</h6> 
-                    @o.Content
-                </li>
-                }
-            </ul>
+        <div class="desnaStrana">
+            <h1>
+                Rezultati
+            </h1>
+            <div class="slider" id="sliderRezultati">
+                <div class="container" id="rez">
+                    @foreach (var item in Model.ZadnjiRezultati)
+                    {
+                        <div class="slide" id="rezultati">
+                            <h3>@item</h3>
+                        </div>
+                    }
+                </div>
+            </div>
+            <h1>
+                Fun corner :)
+            </h1>
+            <div class="slider">
+                <div class="container" id="rez">
+                    <div class="slide">
+                        @foreach (var item in Model.FunFacts)
+                        {
+                            <div class="slide">
+                                <h3>@item</h3>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
-    <div class="desnaStrana">
-        <h5>Zadnji rezultati</h5>
-        <hr />
-        <div>
-            <ul class="vannavbara">
-                @foreach (string i in Model.ZadnjiRezultati)
-                {
-                    <li><h6>@i</h6> </li>
-                }
-            </ul>
-        </div>
-    </div>
-</div>
 }
 
 <script src="~/lib/signalr/dist/browser/signalr.js"></script>
 <script src="~/lampice/lampice.js"></script>
+
+
