@@ -2,66 +2,71 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
-<form asp-action="Edit" method="post">
-    <table>
-        @Html.HiddenFor(x => x.ID)
-        <tr>
-            <td>Naziv</td>
-            <td>@Html.EditorFor(mod => mod.Naziv)</td>
-            <td>@Html.ValidationMessageFor(s => s.Naziv, "", new { @class = "text-danger" })</td>
-        </tr>
-        @if (Model.RokPocetkaPrijave != null)
-        {
-            <tr>
-                <td>Pocetak prijava</td>
-                <td><input type="datetime-local" asp-for="RokPocetkaPrijave" /></td>
-                <td>@Html.ValidationMessageFor(s => s.RokPocetkaPrijave, "", new { @class = "text-danger" })</td>
-            </tr>
-            <tr>
-                <td>Kraj prijava</td>
-                <td><input type="datetime-local" asp-for="RokZavrsetkaPrijave" /></td>
-                <td>@Html.ValidationMessageFor(s => s.RokZavrsetkaPrijave, "", new { @class = "text-danger" })</td>
-
-            </tr>
-            <tr>
-                <td>Minimalni ELO</td>
-                <td><input type="text" asp-for="MinimalniELO" /></td>
-                <td>@Html.ValidationMessageFor(s => s.MinimalniELO, "", new { @class = "text-danger" })</td>
-
-            </tr>
-            <tr>
-                <td>Kategorija</td>
-                <td>@Html.DropDownListFor(n => n.KategorijaID, new SelectList(ViewBag.kategorije, "ID", "Opis"), "Odaberite kategoriju")</td>
-                <td>@Html.ValidationMessageFor(s => s.KategorijaID, "", new { @class = "text-danger" })</td>
-
-            </tr>
-
-            <tr>
-                <td>Vrsta</td>
-                <td>@Html.DropDownListFor(n => n.VrstaID, new SelectList(ViewBag.vrste, "ID", "Opis"), "Odaberite vrstu")</td>
-                <td>@Html.ValidationMessageFor(s => s.VrstaID, "", new { @class = "text-danger" })</td>
-
-            </tr>
+    <style>
+        .batni{
+            width:100px;
         }
-        <tr>
-            <td>Status</td>
-            <td>@Html.DropDownListFor(n => n.StatusID, new SelectList(ViewBag.statusi, "ID", "Opis"), "Odaberite status")</td>
-            <td>@Html.ValidationMessageFor(s => s.StatusID, "", new { @class = "text-danger" })</td>
-
-        </tr>
-        <tr>
-            <td>Datum pocetka</td>
-            <td><input type="datetime-local" asp-for="DatumPocetka" /></td>
-            <td>@Html.ValidationMessageFor(s => s.DatumPocetka, "", new { @class = "text-danger" })</td>
-        </tr>
-        <tr>
-            <td>Datum zavrsetka</td>
-            <td><input type="datetime-local" asp-for="DatumZavrsetka" /></td>
-            <td>@Html.ValidationMessageFor(s => s.DatumZavrsetka, "", new { @class = "text-danger" })</td>
-        </tr>
-    </table>
-    <input type="submit" value="Spasi" />
-    <a href="/Takmicenje/" class="btn btn-outline-light">Odbaci</a>
-</form>
-
+    </style>
+<div class="row justify-content-center">
+    <div class="col-6">
+        <form asp-action="Edit" method="post">
+            @Html.HiddenFor(x => x.ID)
+            <input type="hidden" asp-for="ID" />
+            <input type="hidden" asp-for="VrstaID" />
+            <div class="form-group">
+                <label asp-for="Naziv"></label>
+                <input asp-for="Naziv" class="form-control" />
+                <span asp-validation-for="Naziv" class="text-danger"></span>
+            </div>
+            @if (Model.RokPocetkaPrijave != null)
+            {
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label asp-for="RokPocetkaPrijave"></label>
+                        <input type="datetime-local" class="form-control" asp-for="RokPocetkaPrijave" />
+                        <span asp-validation-for="RokPocetkaPrijave" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col" >
+                        <label asp-for="RokZavrsetkaPrijave"></label>
+                        <input type="datetime-local" class="form-control" asp-for="RokZavrsetkaPrijave" />
+                        <span asp-validation-for="RokZavrsetkaPrijave" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MinimalniELO"></label>
+                    <input type="text" class="form-control" asp-for="MinimalniELO" />
+                    <span asp-validation-for="MinimalniELO" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="KategorijaID"></label>
+                    @Html.DropDownListFor(n => n.KategorijaID, new SelectList(ViewBag.kategorije, "ID", "Opis")
+                   , "Odaberite kategoriju", new { @class = "form-control" })
+                    <span asp-validation-for="KategorijaID" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="StatusID"></label>
+                @Html.DropDownListFor(n => n.StatusID, new SelectList(ViewBag.statusi, "ID", "Opis")
+               , "Odaberite status", new { @class = "form-control" })
+                <span asp-validation-for="StatusID" class="text-danger"></span>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label asp-for="DatumPocetka"></label>
+                    <input type="datetime-local" class="form-control" asp-for="DatumPocetka" />
+                    <span asp-validation-for="DatumPocetka" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="DatumZavrsetka"></label>
+                    <input type="datetime-local" class="form-control" asp-for="DatumZavrsetka" />
+                    <span asp-validation-for="DatumZavrsetka" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group text-center">
+                <input type="submit" class="btn btn-success batni" value="Spasi" />
+                <a href="/Takmicenje/" class="btn btn-info batni">Odbaci</a>
+            </div>
+        </form>
+    </div>
+</div>
