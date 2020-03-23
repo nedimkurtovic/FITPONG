@@ -1,4 +1,5 @@
 ﻿using FIT_PONG.Models;
+using FIT_PONG.Models.BL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace FIT_PONG.ViewModels.Home
     {
         public List<string> ZadnjiRezultati { get; set; }
         public List<(Objava, Takmicenje)> ZadnjeObjave { get; set; } = new List<(Objava, Takmicenje)>();
-        public List<string> FunFacts { get; set; }
+        public List<TopIgraciVM> TopIgraci { get; set; }
     }
 }

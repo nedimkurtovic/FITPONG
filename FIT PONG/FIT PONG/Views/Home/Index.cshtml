@@ -84,7 +84,7 @@
 
     #sliderRezultati, #rezultati {
         width: 500px;
-        height: 200px;
+        height: 110px;
     }
 
     h1 {
@@ -183,6 +183,36 @@
             bottom: 400%;
         }
     }
+    #podij{
+
+        border:1px solid black;
+    }
+    #podijDiv{
+        position:relative;
+    }
+    #podijDiv div{
+        position:absolute;
+        border:1px solid black;
+        width:130px;
+        height:135px;
+        font-size:18px;
+        text-align:center
+    }
+    #podijDiv div small{
+        display:block;
+    }
+    #prvi{
+        margin-left:165px;
+        margin-top:68px;
+    }
+    #drugi{
+        margin-left:20px;
+        margin-top:118px;
+    }
+    #treci{
+         margin-left:310px;
+         margin-top:157px;
+    }
 </style>
 
 @if (!signinMenadjer.IsSignedIn(User))
@@ -251,18 +281,43 @@ else
                     }
                 </div>
             </div>
-            <h1>
-                Fun corner :)
-            </h1>
-            <div class="slider">
+            <h2 class="text-center">
+                Top ove sedmice
+            </h2>
+            <div>
                 <div class="container" id="rez">
-                    <div class="slide">
-                        @foreach (var item in Model.FunFacts)
-                        {
-                            <div class="slide">
-                                <h3>@item</h3>
-                            </div>
-                        }
+                    <div id="podijDiv">
+                        <div id="prvi">
+                            @if (Model.TopIgraci.Count > 0 && Model.TopIgraci[0] != null)
+                            {
+                                <small>@Model.TopIgraci[0].Naziv</small>
+                                <small>Osvojenih setova : @Model.TopIgraci[0].BrojOsvojenihSetova</small>
+                                <small>ELO : @Model.TopIgraci[0].ELO</small>
+                                <small>Pobjeda : @Model.TopIgraci[0].BrojPobjeda</small>
+                                <small>Poraza : @Model.TopIgraci[0].BrojPoraza</small>
+                            }
+                        </div>
+                        <div id="drugi">
+                            @if (Model.TopIgraci.Count > 1 && Model.TopIgraci[1] != null)
+                            {
+                                <small>@Model.TopIgraci[1].Naziv</small>
+                                <small>Osvojenih setova : @Model.TopIgraci[1].BrojOsvojenihSetova</small>
+                                <small>ELO : @Model.TopIgraci[1].ELO</small>
+                                <small>Pobjeda : @Model.TopIgraci[1].BrojPobjeda</small>
+                                <small>Poraza : @Model.TopIgraci[1].BrojPoraza</small>
+                            }
+                        </div>
+                        <div id="treci">
+                            @if (Model.TopIgraci.Count > 2 && Model.TopIgraci[2] != null)
+                            {
+                                <small>@Model.TopIgraci[2].Naziv</small>
+                                <small>Osvojenih setova : @Model.TopIgraci[2].BrojOsvojenihSetova</small>
+                                <small>ELO : @Model.TopIgraci[2].ELO</small>
+                                <small>Pobjeda : @Model.TopIgraci[2].BrojPobjeda</small>
+                                <small>Poraza : @Model.TopIgraci[2].BrojPoraza</small>
+                            }
+                        </div>
+                        <img id="podij" src="~/podij4.jpg" />
                     </div>
                 </div>
             </div>

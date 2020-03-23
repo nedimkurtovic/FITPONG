@@ -1,4 +1,5 @@
-﻿using FIT_PONG.ViewModels.TakmicenjeVMs;
+﻿using FIT_PONG.ViewModels.Home;
+using FIT_PONG.ViewModels.TakmicenjeVMs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -62,6 +63,7 @@ namespace FIT_PONG.Models.BL
                             UnaprijediIgraceNaUtakmicu(obj.Tim2, trenutna);
                     }
                     db.Utakmice.Where(x => x.ID == trenutna.ID).FirstOrDefault().IsEvidentirana = true;
+                    db.Utakmice.Where(x => x.ID == trenutna.ID).FirstOrDefault().DatumVrijeme = DateTime.Now;
 
                     db.SaveChanges();
 
@@ -590,6 +592,54 @@ namespace FIT_PONG.Models.BL
 
             }
             return povratne;
+        }
+        public List<TopIgraciVM> GetNajboljeOveSedmice()
+        {
+            DateTime prosliPonedjeljak = GetProsliPonedjeljak(DateTime.Now);
+            List<Utakmica> utakmiceUSedmici = db.Utakmice.AsNoTracking().Include(x => x.UcescaNaUtakmici)
+                .Where(x => x.IsEvidentirana && x.DatumVrijeme >= prosliPonedjeljak && x.DatumVrijeme <= DateTime.Now)
+                .ToList();
+            List<TopIgraciVM> listaPovratnih = new List<TopIgraciVM>();
+            foreach(Utakmica i in utakmiceUSedmici)
+            {
+                foreach(Igrac_Utakmica j in i.UcescaNaUtakmici)
+                {
+                    if(listaPovratnih.Where(x=>x.IgracId == j.IgracID).Count() == 0)
+                    {                     
+                        Igrac_Utakmica ucesceNatekmi = db.IgraciUtakmice
+                            .Include(x => x.TipRezultata).Include(x=>x.Igrac)
+                            .Where(x => x.IgID == j.IgID).FirstOrDefault();
+                        listaPovratnih.Add(new TopIgraciVM 
+                        { 
+                            BrojOsvojenihSetova = 0,
+                            BrojPobjeda = 0,
+                            BrojPoraza = 0,
+                            ELO = ucesceNatekmi.Igrac.ELO,
+                            IgracId = ucesceNatekmi.IgracID.GetValueOrDefault(),
+                            Naziv = ucesceNatekmi.Igrac.PrikaznoIme
+                        });
+                    }
+                    Igrac_Utakmica ucesce = db.IgraciUtakmice.Include(x => x.TipRezultata)
+                            .Where(x => x.IgID == j.IgID).FirstOrDefault();
+                    TopIgraciVM obj = listaPovratnih.Where(x => x.IgracId == j.IgracID).FirstOrDefault();
+                    bool pobjeda = (ucesce.TipRezultata.Naziv == "Pobjeda") ? true : false;
+                    if (pobjeda)
+                        obj.BrojPobjeda++;
+                    else
+                        obj.BrojPoraza++;
+                    obj.BrojOsvojenihSetova += j.OsvojeniSetovi.GetValueOrDefault();
+                }
+            }
+            return listaPovratnih.OrderByDescending(x=>x.BrojOsvojenihSetova).ToList();
+        }
+        public DateTime GetProsliPonedjeljak(DateTime trenutno)
+        {
+            for(int i = 0;i<7;i++)
+            {
+                if (trenutno.AddDays(-i).DayOfWeek == DayOfWeek.Monday)
+                    return trenutno.AddDays(-i).Date;
+            }
+            return new DateTime(1000, 1, 1);
         }
     }
 }

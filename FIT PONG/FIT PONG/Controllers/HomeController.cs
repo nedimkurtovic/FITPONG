@@ -40,7 +40,7 @@ namespace FIT_PONG.Controllers
                     model.ZadnjeObjave.Add((item, t));
                 }
             }
-            model.FunFacts = GetFunFacts();
+            model.TopIgraci = evidentor.GetNajboljeOveSedmice();
             model.ZadnjiRezultati = evidentor.GetZadnjeUtakmice(10);
             return View(model);
         }
