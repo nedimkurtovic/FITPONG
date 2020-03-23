@@ -65,7 +65,7 @@
             <br />
             <div class="form-group text-center">
                 <input type="submit" class="btn btn-success batni" value="Spasi" />
-                <a href="/Takmicenje/" class="btn btn-info batni">Odbaci</a>
+                <a asp-action="Prikaz" asp-controller="Takmicenje" asp-route-id="@Model.ID" class="btn btn-info batni">Odbaci</a>
             </div>
         </form>
     </div>

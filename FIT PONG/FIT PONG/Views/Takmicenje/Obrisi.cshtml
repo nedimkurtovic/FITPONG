@@ -2,13 +2,24 @@
 @{
     ViewData["Title"] = "Obrisi";
 }
+    <style>
+        .batni{
+            width:100px;
+        }
+    </style>
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <form action="/Takmicenje/PotvrdaBrisanja" method="post">
+                <h1>Da li ste sigurni da želite obrisati :</h1>
+                <h2>@Model.Naziv takmicenje</h2>
+                <br />
+                <br />
+                @Html.HiddenFor(s => s.ID)
 
-<form action="/Takmicenje/PotvrdaBrisanja" method="post">
-    <h1>Da li ste sigurni da zelite obrisati :</h1>
-    <h2>@Model.Naziv takmicenje</h2>
-    <br />
-    <br />
-    @Html.HiddenFor(s=> s.ID)
-    <input type="submit" class="btn btn-outline-danger" value="DA" />
-    <a asp-controller="Takmicenje" class="btn btn-outline-primary">NE</a>
-</form>
+            <div class="form-group text-center">
+                <input type="submit" class="btn btn-outline-danger col batni" value="DA" />
+                <a asp-controller="Takmicenje" asp-action="Prikaz" asp-route-id="@Model.ID" class="btn btn-outline-primary col batni">NE</a>
+            </div>
+            </form>
+        </div>
+    </div>

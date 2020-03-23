@@ -9,14 +9,13 @@
     var trenutna = (int)ViewBag.trenutna;
     var ukupnoStranica = (int)ViewBag.ukupnoStranica;
 }
-
 <br />
 
 <div class="row justify-content-center">
     <div class="col-6">
         @if (Model.Objave.Count() == 0)
         {
-            <p>Trenutno nema objava dodajte nekad novu</p>
+            <p class="text-center">Trenutno nema objava dodajte nekad novu</p>
         }
         else
         {
