@@ -3,40 +3,39 @@
     ViewData["Title"] = "Prijava";
 }
 
-<h1>Prijavi se na takmičenje</h1>
+<h1 class="text-center">Prijavi se na takmičenje</h1>
+<br />
+<div class="row justify-content-center">
+    <div class="col-6">
+        <form action="/Takmicenje/Prijava" method="post">
+            <div class="form-group">
+                @Html.Label("Vaše prikazno ime: ")
+                @Html.DropDownListFor(x => x.Igrac1ID, new SelectList(ViewBag.igrac, "ID", "Opis", 0)
+               , "Izaberi",  new { @class = "form-control" })
+                <span asp-validation-for="Igrac2ID" class="text-danger"></span>
+            </div>
+            @if (Model.isTim)
+            {
 
-<form action="/Takmicenje/Prijava" method="post">
-    <table class="table">
-        <tr>
-            <td>@Html.Label("Vaše prikazno ime: ")</td>
-            <td>@Html.DropDownListFor(x => x.Igrac1ID, new SelectList(ViewBag.igrac, "ID", "Opis", 0), "Izaberi")</td>
-            <td>@Html.ValidationMessageFor(x => x.Igrac1ID, "", new { @class = "text-danger" })</td>
-        </tr>
-        @if (Model.isTim)
-        {
-            <tr>
-                <td>@Html.Label("Izaberite saigrača:")</td>
-                <td>@Html.DropDownListFor(x => x.Igrac2ID, new SelectList(ViewBag.igraci, "ID", "Opis"), "Izaberi")</td>
-                @*<td>@Html.ValidationMessage("igraci", new { @class = "text-danger" })*@
-                <td>@Html.ValidationMessageFor(x => x.Igrac2ID, "", new { @class = "text-danger" })</td>
+                <div class="form-group">
+                    @Html.Label("Izaberite saigrača:")
+                    @Html.DropDownListFor(x => x.Igrac2ID, new SelectList(ViewBag.igraci, "ID", "Opis")
+                   , "Izaberi" , new { @class = "form-control" })
+                    <span asp-validation-for="Igrac2ID" class="text-danger"></span>
+                </div>
 
-
-            </tr>
-
-            <tr>
-                <td>@Html.Label("Naziv tima: ")</td>
-                <td>@Html.TextBoxFor(x => x.Naziv)</td>
-                <td>@Html.ValidationMessageFor(x => x.Naziv, "", new { @class = "text-danger" })</td>
-            </tr>
-
-        }
-
-        @Html.HiddenFor(x => x.takmicenjeID)
-        @Html.HiddenFor(x => x.isTim)
-        <tr>
-            <td>
-                <input type="submit" value="Prijavi" class="btn btn-primary" />
-            </td>
-        </tr>
-    </table>
-</form>
+                <div class="form-group">
+                    @Html.Label("Naziv tima: ")
+                    @Html.TextBoxFor(x => x.Naziv , new { @class = "form-control" })
+                    <span asp-validation-for="Naziv" class="text-danger"></span>
+                </div>
+            }
+            @Html.HiddenFor(x => x.takmicenjeID)
+            @Html.HiddenFor(x => x.isTim)
+            <br />
+            <div class="form-group text-center">
+                <input type="submit" value="Prijavi" class="btn btn-info" style="width:100px;" />
+            </div>
+        </form>
+    </div>
+</div>
