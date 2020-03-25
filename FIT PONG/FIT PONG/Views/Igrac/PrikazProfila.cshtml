@@ -14,12 +14,10 @@
         width: 200px;
         height: 200px;
         border: 1px solid black;
-        float: left;
         margin: 10px;
     }
 
     .btn {
-        margin: 5px;
     }
 
     #statistika {
@@ -36,19 +34,44 @@
     #tbl {
         display: none;
     }
+    #batni a{
+        width:160px;
+    }
+
 </style>
-<img src=@Url.Content(Model.ProfileImagePath) asp-append-version="true" alt="Slika nije ispravno učitana." />
-<h1 style="margin:10px;display:inline;">@Model.PrikaznoIme</h1>
-@*Ovo je samo privremeno dok se ne rijesi microsoft identity, jer je postivalacID u ovom trenutku hard-kodiran parametar*@
-<a href="/Igrac/PostujIgraca?postovaniID=@Model.ID" class="btn btn-outline-secondary" style="display:inline;margin-left:200px;">Poštuj igrača: @Model.BrojPostovanja</a>
+<div class="row justify-content-center">
+    <div class="col-8 justify-content-center text-center">
+        <div class="form-group">
+            <img src=@Url.Content(Model.ProfileImagePath) asp-append-version="true" style="border-radius:50%;" alt="Slika nije ispravno učitana." />
+            <div id="batni" class="form-row justify-content-center">
+                <a href="/Igrac/PostujIgraca?postovaniID=@Model.ID" class="btn btn-outline-secondary">Poštuj igrača: @Model.BrojPostovanja</a>
+                @if (Model.ID == id)
+                {
+                    <a asp-controller="Igrac" asp-action="EditSliku" asp-route-igracID="@Model.ID" class="btn btn-outline-primary">Promijeni sliku</a>
+                    <br />
+                    <a href="/Igrac/UkloniSliku?igracID=@Model.ID" class="btn btn-outline-danger" onclick="return confirm('@poruka')">Ukloni sliku</a>
+                }
+            </div>
+        </div>
+        <div class="form-group"> 
+            <h1 style="margin:10px;display:inline;" class="form-group text-center">@Model.PrikaznoIme</h1>
+        </div>
+        <div class="form-group">
+            <div>
+                <h3 class="text-center">Visina: @visina</h3>
+                <h3 class="text-center">Jača ruka: @jacaRuka</h3>
+                <h3 class="text-center">Broj posjeta na profil: @Model.BrojPosjetaNaProfil</h3>
+                <h3 class="text-center">ELO: @Model.ELO</h3>
+                <h3 class="text-center">Spol: @Model.Spol</h3>
+                <h3 class="text-center">Grad: @Model.Grad</h3>
+            </div>
+        </div>
+    </div>
+</div>
 <br />
 
-@if (Model.ID == id)
-{
-    <a asp-controller="Igrac" asp-action="EditSliku" asp-route-igracID="@Model.ID" class="btn btn-outline-primary">Promijeni sliku</a>
-    <br />
-    <a href="/Igrac/UkloniSliku?igracID=@Model.ID" class="btn btn-outline-danger" onclick="return confirm('@poruka')">Ukloni sliku</a>
-}
+<div class="">
+
 @if (Model.statistika != null)
 {
     <div id="statistika" class="card">
@@ -86,13 +109,6 @@
         </div>
     </div>
 }
-<div class="card border-info" style="margin-top:80px;margin-left:10px;width:500px;padding:10px;">
-    <h3>Visina: @visina</h3>
-    <h3>Jača ruka: @jacaRuka</h3>
-    <h3>Broj posjeta na profil: @Model.BrojPosjetaNaProfil</h3>
-    <h3>ELO: @Model.ELO</h3>
-    <h3>Spol: @Model.Spol</h3>
-    <h3>Grad: @Model.Grad</h3>
 </div>
 @if (Model.ID == id)
 {
