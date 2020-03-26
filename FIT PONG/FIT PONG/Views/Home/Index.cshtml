@@ -4,15 +4,24 @@
     ViewData["Title"] = "Home Page";
 }
 <style>
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
+
     #lampica {
         width: 150px;
         height: 150px;
-        cursor:pointer;
+        cursor: pointer;
     }
 
     .customclasa {
         width: 150px;
         margin-right: 20px;
+    }
+
+    #fitpong{
+        width:90%;
     }
 
     .divZaLogine {
@@ -21,12 +30,14 @@
 
     .lijevaStrana {
         width: 50%;
+        height:100%;
         float: left;
+        padding-bottom:20px;
     }
 
     .desnaStrana {
         float: left;
-        height: 500px;
+        height:100%;
         width: 45%;
         margin-left: 4%;
     }
@@ -47,11 +58,11 @@
             list-style: none;
             margin-bottom: 5px;
         }
-
+        
     /* [SLIDER] */
     .slider, .slider .slide {
-        width: 500px;
-        height: 300px;
+        width: 100%;
+        height: 280px;
     }
 
     .slider {
@@ -83,8 +94,8 @@
         }
 
     #sliderRezultati, #rezultati {
-        width: 500px;
-        height: 110px;
+        width: 95%;
+        height: 130px;
     }
 
     h1 {
@@ -183,35 +194,127 @@
             bottom: 400%;
         }
     }
-    #podij{
 
-        border:1px solid black;
+    #podij {
+        border: 1px solid black;
+        width: 100%;
+        height:100%;
     }
-    #podijDiv{
-        position:relative;
+
+    #podijDiv {
+        position: relative;
+        width: 100%;
+        height:350px;
     }
-    #podijDiv div{
+
+        #podijDiv div {
+            position: absolute;
+            border: 1px solid black;
+            /*width:130px;*/
+            width: 30%;
+            height: 35%;
+            font-size: 18px;
+            text-align: center
+        }
+
+            #podijDiv div small {
+                display: block;
+            }
+
+    #prvi {
+        /*margin-left:165px;
+        margin-top:68px;*/
+        position: absolute;
+        left: 36%;
+        top: 15%;
+    }
+
+    #drugi {
+        /*margin-left:20px;
+        margin-top:118px;*/
+        position: absolute;
+        left: 4%;
+        top: 30%;
+    }
+
+    #treci {
+        /*margin-left: 310px;
+        margin-top: 157px;*/
+        position: absolute;
+        right: 2%;
+        top: 40%;
+    }
+
+    #wrapper{
+        width:100%;
+        padding:10px;
         position:absolute;
-        border:1px solid black;
-        width:130px;
-        height:135px;
-        font-size:18px;
-        text-align:center
     }
-    #podijDiv div small{
-        display:block;
+
+    @@media screen and (max-width: 800px) {
+       
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body{
+            min-height:135%;
+        }
+
+        .lijevaStrana {
+            width: 95%;
+            clear: both;
+        }
+
+        .desnaStrana{
+            width:95%;
+            clear:both;
+            margin:0;
+            padding:0;
+        }
+
+        #wrapper{
+            min-height:200px;
+            overflow:hidden;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
     }
-    #prvi{
-        margin-left:165px;
-        margin-top:68px;
-    }
-    #drugi{
-        margin-left:20px;
-        margin-top:118px;
-    }
-    #treci{
-         margin-left:310px;
-         margin-top:157px;
+
+    @@media screen and (max-width: 600px) {
+       html,body{
+           min-height:140%;
+       }
+
+       #wrapper{
+           width:90%;
+       }
+
+       .header{
+           width:100%;
+       }
+
+       h1{
+           font-size:18px;
+       }
+
+       h3{
+           font-size:15px;
+       }
+
+       p{
+           font-size:13px;
+       }
+
+       small{
+           font-size:11px;
+       }
     }
 </style>
 
@@ -220,7 +323,7 @@
 
     <div class="text-center">
         <h2 class="display-4">Dobrodošli</h2>
-        <img src="~/homelogo.jpg" />
+        <img src="~/homelogo.jpg" id="fitpong"/>
 
     </div>
     <div class="text-center divZaLogine">
@@ -232,16 +335,16 @@
 else
 {
 
-    <div class="container">
+    <div class="container" id="wrapper">
         <div class="lijevaStrana">
             <div class="text-left lampicaDiv">
                 <img id="lampica" src="~/lampice/lampicaoff2.jpg" alt="alttext" />
-                <div class="badge badge-primary text-wrap" id="lampicaPoruka" style="width:100px;"></div>
+                <div class="badge badge-primary text-wrap" id="lampicaPoruka" style=" width: 100px;"></div>
             </div>
             <h1>
                 Obavijesti
             </h1>
-            <div class="slider">
+            <div class="slider" id="obavijesti">
                 <div class="container">
                     @foreach (var item in Model.ZadnjeObjave)
                     {
@@ -260,7 +363,6 @@ else
                                     @item.Item1.Content
                                 </p>
                             }
-                            <br />
                             <p>@item.Item1.DatumIzmjene</p>
                         </div>
                     }
