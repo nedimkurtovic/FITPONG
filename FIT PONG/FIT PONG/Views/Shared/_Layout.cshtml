@@ -33,16 +33,20 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Igrac" asp-action="Index">Igrači</a>
                         </li>
+
                         @if (signinMenadjer.IsSignedIn(User))
                         {
                             <li class="nav-item">
                                 <a asp-action="Index" class="nav-link text-light" asp-controller="Chat">Chat</a>
                             </li>
                         }
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Report" asp-action="Dodaj">Prijavi grešku</a>
+                        </li>
                         @*OVO JE SAMO PRIVREMENO DOK SE NE RIJESI MICROSOFT IDENTITY, SLUZI SAMO ZA PROVJERU DODAVANJA I OSTALIH TESTIRANJA*@
                         @*<li class="nav-item" style="position:absolute; right:20px;">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Igrac" asp-action="Dodaj">Registruj se</a>
-                            </li>*@
+            <a class="nav-link text-light" asp-area="" asp-controller="Igrac" asp-action="Dodaj">Registruj se</a>
+        </li>*@
                     </ul>
                     <ul class="navbar-nav mr-auto flex-grow-1">
                         @if (signinMenadjer.IsSignedIn(User))

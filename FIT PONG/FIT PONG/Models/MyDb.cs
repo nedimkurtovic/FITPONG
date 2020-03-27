@@ -28,18 +28,18 @@ namespace FIT_PONG.Models
         public DbSet<Vrsta_Takmicenja> VrsteTakmicenja { get; set; }
         public DbSet<Grad> Gradovi { get; set; }
         public DbSet<Igrac> Igraci { get; set; }
-        public DbSet<Konverzacija> Konverzacije { get; set; }
+        //public DbSet<Konverzacija> Konverzacije { get; set; }
         //public DbSet<Login> Logins { get; set; }
         //public DbSet<Permisija> Permisije { get; set; }
-        public DbSet<Poruka> Poruke { get; set; }
+        //public DbSet<Poruka> Poruke { get; set; }
         public DbSet<Postovanje> Postovanja { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Statistika> Statistike { get; set; }
-        public DbSet<TipStatusaPoruke> TipoviStatusaPoruke { get; set; }
+        //public DbSet<TipStatusaPoruke> TipoviStatusaPoruke { get; set; }
         //public DbSet<Uloga> Uloge { get; set; }
          //public DbSet<UlogaPermisija> UlogePermisije { get; set; }
         //public DbSet<User> Useri { get; set; }
-        public DbSet<UserKonverzacija> UseriKonverzacije { get; set; }
+        //public DbSet<UserKonverzacija> UseriKonverzacije { get; set; }
         //public DbSet<UserUloga> UseriUloge { get; set; }
         public DbSet<Objava> Objave { get; set; }
         public DbSet<Feed> Feeds { get; set; }
@@ -72,8 +72,8 @@ namespace FIT_PONG.Models
             //modelBuilder.Entity<UlogaPermisija>()
             // .HasKey(up => new { up.UlogaID, up.PermisijaID});
 
-            modelBuilder.Entity<UserKonverzacija>()
-             .HasKey(uk => new { uk.UserID, uk.KonverzacijaID});
+            //modelBuilder.Entity<UserKonverzacija>()
+            // .HasKey(uk => new { uk.UserID, uk.KonverzacijaID});
 
             //modelBuilder.Entity<UserUloga>()
             // .HasKey(uu => new { uu.UserID, uu.UlogaID});

@@ -12,9 +12,11 @@ using Microsoft.EntityFrameworkCore;
 using MailKit.Net.Smtp;
 using MimeKit;
 using FIT_PONG.Models.BL;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FIT_PONG.Controllers
 {
+    [AllowAnonymous]
     public class ReportController : Controller
     {
         private readonly MyDb db;
