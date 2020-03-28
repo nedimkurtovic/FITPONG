@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ReflectionIT.Mvc.Paging;
 
 namespace FIT_PONG.Controllers
 {
@@ -25,10 +26,13 @@ namespace FIT_PONG.Controllers
             _host = host;
         }
 
-        public IActionResult Index(string searchBy, string search, string orderBy)
+        public IActionResult Index(string searchBy, string search, string sortExpression= "PrikaznoIme", int page=1)
         {
             if (search == null)
                 ViewData["prazno"] = "nema igraca";
+            var userId = db.Users.Where(d => d.Email == User.Identity.Name).FirstOrDefault().Id;
+            ViewBag.userId = userId;
+            
             if (searchBy == "JacaRuka")
             {
                 List<IgracVM> igraci = db.Igraci.Select(x => new IgracVM
@@ -41,8 +45,9 @@ namespace FIT_PONG.Controllers
                     Visina = x.Visina,
                     ELO = x.ELO
                 }).Where(x => x.JacaRuka == search || search == null).ToList();
-                igraci=Sort(igraci, orderBy);
-                return View(igraci);
+                var igraciPaged = PagingList.Create(igraci, 4, page, sortExpression, "ID");
+                ViewBag.igraci = igraci;
+                return View(igraciPaged);
             }
             else
             {
@@ -56,8 +61,9 @@ namespace FIT_PONG.Controllers
                     Visina = x.Visina,
                     ELO = x.ELO
                 }).Where(x => x.PrikaznoIme.Contains(search) || search == null).OrderBy(x => x.PrikaznoIme).ToList();
-                igraci=Sort(igraci, orderBy);
-                return View(igraci);
+                var igraciPaged = PagingList.Create(igraci, 4, page, sortExpression, "ID");
+                ViewBag.igraci = igraci;
+                return View(igraciPaged);
             }
             
         }

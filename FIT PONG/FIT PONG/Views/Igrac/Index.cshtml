@@ -1,44 +1,75 @@
-﻿@model List<FIT_PONG.ViewModels.IgracVMs.IgracVM>
+﻿@using ReflectionIT.Mvc;
+@using ReflectionIT.Mvc.Paging;
+@addTagHelper *, ReflectionIT.Mvc.Paging
+@model PagingList<FIT_PONG.ViewModels.IgracVMs.IgracVM>
 @{
     ViewData["Title"] = "Index";
     var x = ViewData["prazno"] as string;
+    var userId = ViewBag.userId;
+    var igraci = ViewBag.igraci as List<FIT_PONG.ViewModels.IgracVMs.IgracVM>;
 }
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
 <style>
-    tr {
-        background-color: lightseagreen;
+    body {
+        font-family: sans-serif;
+    }
+
+    #search {
+        width: 400px;
+        height: 40px;
+        display: inline-block;
+    }
+
+    html, body {
+        height: 115%;
     }
 
     img {
-        width: 100% !important;
+        width: 100px;
+        height: 100px;
     }
 
-    a.btn.btn-secondary:hover {
-        color: white !important;
-        width: 100% !important;
+    #paging{
+        float:right;
     }
 
-    p {
-        font-weight: bold;
-        color: white;
+    div.row{
+        clear:both;
     }
 
-    .imageThumbnail {
-        height: 200px;
-        width: auto;
+    @@media screen and (max-width: 800px) {
+
+        input {
+            width: 50%;
+        }
+
+        #search {
+            width: 200px;
+            margin:10px;
+        }
+
+        img {
+            width: 50px;
+            height: 50px;
+        }
+
+        input.btn.btn-dark{
+            width:80px;
+            margin:10px;
+        }
+
     }
+
 </style>
 <form action="/Igrac/Index" method="post">
-    <b>Search By: </b>
+    <b>Search By: </b><br/>
     <input type="radio" value="PrikaznoIme" name="searchBy" checked="checked" /><text>Prikazno ime</text>
     <input type="radio" value="JacaRuka" name="searchBy" /><text>Jača ruka</text>
     <br /><br />
-    <input name="search" type="text" class="form-control form-control-sm mr-3 w-75 awesomplete" placeholder="Search..." aria-label="search" style="width:500px !important;height:40px; display:inline-block;" data-list="#mylist">
+    <input id="search" name="search" type="text" value="@ViewData["currentFilter"]" class="form-control form-control-sm mr-3 awesomplete" placeholder="Search..." aria-label="search" data-list="#mylist">
     <input type="submit" class="btn btn-dark" value="Search" style="display:inline-block;height:40px !important;" />
     <br /><br />
-    <b>Sort By: </b>
-    <input type="radio" value="PrikaznoIme" name="orderBy" checked="checked" /><text>Prikazno ime</text>
-    <input type="radio" value="EloRaiting" name="orderBy" /><text>ELO raiting</text>
-    <input type="radio" value="BrojPosjetaNaProfil" name="orderBy" /><text>Broj posjeta na profil</text>
 </form>
 <br />
 
@@ -46,41 +77,82 @@
 {
     if (x == "nema igraca")
     {
-        <br /><br />
+        <br />
+        <br />
         <h2>Trenutno nema igrača u bazi.</h2>
     }
 
     else
     {
-        <br /><br />
+        <br />
+        <br />
         <h2>Nema igrača u bazi koji zadovoljavaju traženi kriterij.</h2>
         <a href="/Igrac/Index" class="btn btn-outline-secondary">Prikaži sve</a>
     }
 }
+<div class="container">
+    <div class="row" id="paging">
+        <div>
+            @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <div class="table-responsive">
+                    <table class="table user-list">
+                        <thead>
+                            <tr>
+                                <th class="text-nowrap"><span>@Html.SortableHeaderFor(x => x.PrikaznoIme)</span></th>
+                                <th class="text-nowrap"><span>@Html.SortableHeaderFor(x => x.BrojPostovanja)</span></th>
+                                <th class="text-nowrap"><span>@Html.SortableHeaderFor(x => x.BrojPosjetaNaProfil)</span></th>
+                                <th class="text-center text-nowrap"><span>@Html.SortableHeaderFor(x => x.ELO)</span></th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="bg-light" style="border-top: 10px solid #fff;">
+                                        <img class="m-2 border border-primary" src=@Url.Content(item.ProfileImagePath) alt="" />
+                                        <a href="/Igrac/PrikazProfila/@item.ID" class="user-link font-weight-bold w-25">@item.PrikaznoIme</a>
+                                    </td>
+                                    <td class="text-center bg-light" style="border-top: 10px solid #fff;"><span>@item.BrojPostovanja</span></td>
+                                    <td class="text-center bg-light" style="border-top: 10px solid #fff;"><span>@item.BrojPosjetaNaProfil</span></td>
+                                    <td class="text-center bg-light" style="border-top: 10px solid #fff;"><span>@item.ELO</span></td>
+                                    <td class="bg-light" style="border-top: 10px solid #fff;">
+                                        <a href="/Igrac/PrikazProfila/@item.ID" class="table-link">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </a>
+                                        @if (item.ID == userId)
+                                        {
+                                            <a href="/Igrac/EditPodatke/@item.ID" class="table-link">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
 
-
-
-<div class="card-deck">
-    @foreach (var item in Model)
-
-    {
-        <div class="card m-3" style="min-width:15rem;max-width:22%;">
-            <div class="card-header text-center" style="font-weight:bold">@item.ELO</div>
-            <div class="card-body text-center">
-                <img class="card-img-top imageThumbnail" src=@Url.Content(item.ProfileImagePath) asp-append-version="true" alt="Slika nije ispravno učitana." />
-            </div>
-
-            <div class="card-footer text-center">
-                <a asp-controller="Igrac" asp-action="PrikazProfila" asp-route-id="@item.ID" class="btn btn-secondary" style="width:100%;color:black;font-weight:bold;">@item.PrikaznoIme</a>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    }
+    </div>
 </div>
 
 <ul id='mylist'>
     <li hidden>desna</li>
     <li hidden>lijeva</li>
-    @foreach (var item in Model)
+    @foreach (var item in igraci)
     {
         <li hidden>@item.PrikaznoIme</li>
     }
