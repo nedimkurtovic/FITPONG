@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FIT_PONG.Controllers
 {
+
     public class GradController : Controller
     {
         private readonly MyDb db;
@@ -18,14 +19,18 @@ namespace FIT_PONG.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+                return VratiNijeAutorizovan();
             List<Grad> gradovi = db.Gradovi.ToList();
             ViewData["gradoviKey"] = gradovi;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Dodaj(Grad grad)
+        public IActionResult Dodaj(Grad grad)
         {
+            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+                return VratiNijeAutorizovan();
             if (DaLiPostoji(grad.Naziv))
                 return View("Greska");
 
@@ -39,13 +44,30 @@ namespace FIT_PONG.Controllers
         }
 
         [HttpGet]
-        public ActionResult Dodaj()
+        public IActionResult Dodaj()
         {
+            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+                return VratiNijeAutorizovan();
             return View();
         }
 
-        public ActionResult Obrisi(int gradID)
+        public IActionResult Neuspjeh(string poruka)
         {
+            ViewBag.poruka = poruka;
+            return View();
+        }
+
+
+        public IActionResult VratiNijeAutorizovan()
+        {
+            ViewBag.poruka = "Niste autorizovani za takvu radnju";
+            return View("Neuspjeh");
+        }
+
+        public IActionResult Obrisi(int gradID)
+        {
+            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+                return VratiNijeAutorizovan();
             Grad grad=db.Gradovi.Find(gradID);
             if (grad != null)
             {
@@ -57,8 +79,10 @@ namespace FIT_PONG.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(int gradID)
+        public IActionResult Edit(int gradID)
         {
+            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+                return VratiNijeAutorizovan();
             Grad grad = db.Gradovi.Find(gradID);
             if (grad == null)
             {
@@ -68,8 +92,10 @@ namespace FIT_PONG.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int ID, Grad grad)
+        public IActionResult Edit(int ID, Grad grad)
         {
+            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+                return VratiNijeAutorizovan();
             if (DaLiPostoji(grad.Naziv))
                 return View("Greska");
 
