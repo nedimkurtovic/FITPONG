@@ -18,14 +18,19 @@ namespace FIT_PONG.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+                return VratiNijeAutorizovan();
             List<Sistem_Takmicenja> sistemi = db.SistemiTakmicenja.ToList();
             ViewData["sistemiKey"] = sistemi;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Dodaj(Sistem_Takmicenja st)
+        public IActionResult Dodaj(Sistem_Takmicenja st)
         {
+            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+                return VratiNijeAutorizovan();
+
             if (DaLiPostoji(st.Opis))
                 return View("Greska");
 
@@ -39,13 +44,19 @@ namespace FIT_PONG.Controllers
         }
 
         [HttpGet]
-        public ActionResult Dodaj()
+        public IActionResult Dodaj()
         {
+            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+                return VratiNijeAutorizovan();
+
             return View();
         }
 
-        public ActionResult Obrisi(int id)
+        public IActionResult Obrisi(int id)
         {
+            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+                return VratiNijeAutorizovan();
+
             Sistem_Takmicenja st = db.SistemiTakmicenja.Find(id);
             if (st != null)
             {
@@ -57,8 +68,11 @@ namespace FIT_PONG.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
+            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+                return VratiNijeAutorizovan();
+
             Sistem_Takmicenja st = db.SistemiTakmicenja.Find(id);
             if (st == null)
                 return Redirect("/SistemTakmicenja");
@@ -67,8 +81,11 @@ namespace FIT_PONG.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, Sistem_Takmicenja st)
+        public IActionResult Edit(int id, Sistem_Takmicenja st)
         {
+            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+                return VratiNijeAutorizovan();
+
             if (DaLiPostoji(st.Opis))
                 return View("Greska");
 
@@ -92,6 +109,19 @@ namespace FIT_PONG.Controllers
                     return true;
             }
             return false;
+        }
+
+        public IActionResult Neuspjeh(string poruka)
+        {
+            ViewBag.poruka = poruka;
+            return View();
+        }
+
+
+        public IActionResult VratiNijeAutorizovan()
+        {
+            ViewBag.poruka = "Niste autorizovani za takvu radnju";
+            return View("Neuspjeh");
         }
 
     }
