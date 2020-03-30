@@ -10,6 +10,8 @@ namespace FIT_PONG.ViewModels.AccountVMs
     {
         [Required]
         [EmailAddress]
+        [RegularExpression(pattern: "[a-zA-Z0-9.]+@edu\\.fit\\.ba"
+            , ErrorMessage = "Email mora biti u obliku ime.prezime@edu.fit.ba")]
         public string Email{ get; set; }
     }
 }

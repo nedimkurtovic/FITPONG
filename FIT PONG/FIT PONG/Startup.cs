@@ -56,7 +56,7 @@ namespace FIT_PONG
                 opcije.Password.RequiredLength = 6;
                 opcije.Password.RequireUppercase = false;
                 opcije.Password.RequireDigit = false;
-                //opcije.SignIn.RequireConfirmedEmail = true;
+                opcije.SignIn.RequireConfirmedEmail = true;
             })
                 .AddEntityFrameworkStores<MyDb>()
                 .AddDefaultTokenProviders();

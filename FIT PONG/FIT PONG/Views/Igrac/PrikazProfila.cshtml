@@ -21,13 +21,10 @@
     }
 
     #statistika {
-        float: right;
-        display: inline;
         font-family: Consolas;
         width: 400px;
         top: 100px;
         right: 100px;
-        position: absolute;
         background-color: darkslategrey;
     }
 
@@ -53,7 +50,7 @@
                 }
             </div>
         </div>
-        <div class="form-group"> 
+        <div class="form-group">
             <h1 style="margin:10px;display:inline;" class="form-group text-center">@Model.PrikaznoIme</h1>
         </div>
         <div class="form-group">
@@ -67,49 +64,48 @@
             </div>
         </div>
     </div>
-</div>
-<br />
+    <div class=" col-3 justify-content-center text-center">
+        @if (Model.statistika != null)
+        {
+            <div id="statistika" class="card">
+                <table class="table table-dark">
+                    <thead><tr><th> <h2>Statistika za @Model.statistika.AkademskaGodina. godinu</h2></th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td>Broj odigranih mečeva:</td>
+                            <td>@Model.statistika.BrojOdigranihMeceva</td>
+                        </tr>
+                        <tr>
+                            <td>Broj single pobjeda:</td>
+                            <td>@Model.statistika.BrojSinglePobjeda</td>
+                        </tr>
+                        <tr>
+                            <td>Broj osvojenih turnira:</td>
+                            <td>@Model.statistika.BrojOsvojenihTurnira</td>
+                        </tr>
+                        <tr>
+                            <td>Broj osvojenih liga:</td>
+                            <td>@Model.statistika.BrojOsvojenihTurnira</td>
+                        </tr>
+                        <tr>
+                            <td>Najveći pobjednički niz:</td>
+                            <td>@Model.statistika.BrojOsvojenihTurnira</td>
+                        </tr>
+                        <tr>
+                            <td>Broj timskih pobjeda:</td>
+                            <td>@Model.statistika.BrojOsvojenihTurnira</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="buttoni">
+                    <a asp-controller="Igrac" asp-action="Statistike" asp-route-igracID="@Model.ID" class="btn btn-outline-light">Pogledaj ostale statistike</a>
+                </div>
+            </div>
+        }
 
-<div class="">
-
-@if (Model.statistika != null)
-{
-    <div id="statistika" class="card">
-        <table class="table table-dark">
-            <thead><tr><th> <h2>Statistika za @Model.statistika.AkademskaGodina. godinu</h2></th></tr></thead>
-            <tbody>
-                <tr>
-                    <td>Broj odigranih mečeva:</td>
-                    <td>@Model.statistika.BrojOdigranihMeceva</td>
-                </tr>
-                <tr>
-                    <td>Broj single pobjeda:</td>
-                    <td>@Model.statistika.BrojSinglePobjeda</td>
-                </tr>
-                <tr>
-                    <td>Broj osvojenih turnira:</td>
-                    <td>@Model.statistika.BrojOsvojenihTurnira</td>
-                </tr>
-                <tr>
-                    <td>Broj osvojenih liga:</td>
-                    <td>@Model.statistika.BrojOsvojenihTurnira</td>
-                </tr>
-                <tr>
-                    <td>Najveći pobjednički niz:</td>
-                    <td>@Model.statistika.BrojOsvojenihTurnira</td>
-                </tr>
-                <tr>
-                    <td>Broj timskih pobjeda:</td>
-                    <td>@Model.statistika.BrojOsvojenihTurnira</td>
-                </tr>
-            </tbody>
-        </table>
-        <div id="buttoni">
-            <a asp-controller="Igrac" asp-action="Statistike" asp-route-igracID="@Model.ID" class="btn btn-outline-light">Pogledaj ostale statistike</a>
-        </div>
     </div>
-}
 </div>
+
 @if (Model.ID == id)
 {
 
