@@ -1,0 +1,20 @@
+﻿@model FIT_PONG.Database.DTOs.Sistem_Takmicenja
+@{
+    ViewData["Title"] = "DodajForma";
+}
+
+<h1>Edituj sistem takmičenja</h1>
+<form action="Edit" method="post">
+    <table>
+        <tr><td><input asp-for="ID" type="hidden" /></td></tr>
+        <tr>
+            <td><label asp-for="Opis"></label></td>
+            <td><input asp-for="Opis" class="input-group" autofocus /></td>
+            <td><span asp-validation-for="Opis" class="text-danger"></span></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Edituj" class="btn btn-danger" /></td>
+        </tr>
+    </table>
+</form>
+
