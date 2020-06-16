@@ -5,43 +5,52 @@ using System.Threading.Tasks;
 using FIT_PONG.Models;
 using Microsoft.AspNetCore.Mvc;
 using FIT_PONG.Database.DTOs;
+using FIT_PONG.Services;
+using FIT_PONG.SharedModels.Requests.Gradovi;
+using FIT_PONG.Filters;
+using FITPONG.Services;
 
 namespace FIT_PONG.Controllers
 {
 
     public class GradController : Controller
     {
-        private readonly MyDb db;
+        private readonly IGradoviService gradoviServis;
 
-        public GradController(MyDb context)
+        public GradController(IGradoviService _GradoviServis)
         {
-            db = context;
+            gradoviServis = _GradoviServis;
         }
 
         public IActionResult Index()
         {
             if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
                 return VratiNijeAutorizovan();
-            List<Grad> gradovi = db.Gradovi.ToList();
+            var gradovi = gradoviServis.Get();
             ViewData["gradoviKey"] = gradovi;
             return View();
         }
 
         [HttpPost]
-        public IActionResult Dodaj(Grad grad)
+        public IActionResult Dodaj(GradoviInsertUpdate grad)
         {
             if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
                 return VratiNijeAutorizovan();
-            if (DaLiPostoji(grad.Naziv))
-                return View("Greska");
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(grad);
+            try
             {
-                db.Gradovi.Add(grad);
-                db.SaveChanges();
-                return Redirect("/Grad");
+                if(gradoviServis.Add(grad) != null)
+                    return Redirect("/Grad");
             }
-            return View();
+            catch (UserException exc)
+            {
+                foreach ((string key, string msg) x in exc.Errori)
+                {
+                    ModelState.AddModelError(x.key, x.msg);
+                }
+            }
+            return View(grad);
         }
 
         [HttpGet]
@@ -52,11 +61,11 @@ namespace FIT_PONG.Controllers
             return View();
         }
 
-        public IActionResult Neuspjeh(string poruka)
-        {
-            ViewBag.poruka = poruka;
-            return View();
-        }
+        //public IActionResult Neuspjeh(string poruka)
+        //{
+        //    ViewBag.poruka = poruka;
+        //    return View();
+        //}
 
 
         public IActionResult VratiNijeAutorizovan()
@@ -65,63 +74,63 @@ namespace FIT_PONG.Controllers
             return View("Neuspjeh");
         }
 
-        public IActionResult Obrisi(int gradID)
-        {
-            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
-                return VratiNijeAutorizovan();
-            Grad grad=db.Gradovi.Find(gradID);
-            if (grad != null)
-            {
-                db.Remove(grad);
-                db.SaveChanges();
-            }
-            
-            return Redirect("/Grad");
-        }
+        //public IActionResult Obrisi(int gradID)
+        //{
+        //    if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+        //        return VratiNijeAutorizovan();
+        //    Grad grad=db.Gradovi.Find(gradID);
+        //    if (grad != null)
+        //    {
+        //        db.Remove(grad);
+        //        db.SaveChanges();
+        //    }
 
-        [HttpGet]
-        public IActionResult Edit(int gradID)
-        {
-            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
-                return VratiNijeAutorizovan();
-            Grad grad = db.Gradovi.Find(gradID);
-            if (grad == null)
-            {
-                return Redirect("/Grad");
-            }
-            return View(grad);
-        }
+        //    return Redirect("/Grad");
+        //}
 
-        [HttpPost]
-        public IActionResult Edit(int ID, Grad grad)
-        {
-            if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
-                return VratiNijeAutorizovan();
-            if (DaLiPostoji(grad.Naziv))
-                return View("Greska");
+        //[HttpGet]
+        //public IActionResult Edit(int gradID)
+        //{
+        //    if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+        //        return VratiNijeAutorizovan();
+        //    Grad grad = db.Gradovi.Find(gradID);
+        //    if (grad == null)
+        //    {
+        //        return Redirect("/Grad");
+        //    }
+        //    return View(grad);
+        //}
 
-            Grad g = db.Gradovi.Find(ID);
-            if (g != null && ModelState.IsValid)
-            {
-                g.Naziv = grad.Naziv;
-                db.SaveChanges();
-                return Redirect("/Grad");
-            }
-            
-            return View(g);
-        }
+        //[HttpPost]
+        //public IActionResult Edit(int ID, Grad grad)
+        //{
+        //    if (User.Identity.Name != "aldin.talic@edu.fit.ba" && User.Identity.Name != "nedim.kurtovic@edu.fit.ba")
+        //        return VratiNijeAutorizovan();
+        //    if (DaLiPostoji(grad.Naziv))
+        //        return View("Greska");
 
-        bool DaLiPostoji(string naziv)
-        {
-            List<Grad> gradovi = db.Gradovi.ToList();
-            foreach (var item in gradovi)
-            {
-                if (item.Naziv == naziv)
-                    return true;
-            }
-            
-            return false;
-        }
+        //    Grad g = db.Gradovi.Find(ID);
+        //    if (g != null && ModelState.IsValid)
+        //    {
+        //        g.Naziv = grad.Naziv;
+        //        db.SaveChanges();
+        //        return Redirect("/Grad");
+        //    }
+
+        //    return View(g);
+        //}
+
+        //bool DaLiPostoji(string naziv)
+        //{
+        //    List<Grad> gradovi = db.Gradovi.ToList();
+        //    foreach (var item in gradovi)
+        //    {
+        //        if (item.Naziv == naziv)
+        //            return true;
+        //    }
+
+        //    return false;
+        //}
 
     }
 }

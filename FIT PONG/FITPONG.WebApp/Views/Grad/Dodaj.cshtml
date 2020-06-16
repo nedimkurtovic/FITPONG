@@ -1,10 +1,11 @@
-﻿@model Grad
+﻿@model FIT_PONG.SharedModels.Requests.Gradovi.GradoviInsertUpdate
 @{
     ViewData["Title"] = "DodajForma";
 }
 
 <h1>Dodaj novi grad</h1>
 <form action="/Grad/Dodaj" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <table>
         <tr>
             <td>Naziv grada</td>

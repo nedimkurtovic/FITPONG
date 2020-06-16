@@ -199,7 +199,7 @@ namespace FIT_PONG.Controllers
                         EmailServis.PosaljiResetPassword(url, obj.Email);
                         return View("ZahtjevPoslan");
                     }
-                    catch (Exception err)
+                    catch (Exception)
                     {
                         ModelState.AddModelError("", @"Doslo je do greske prilikom slanja mejla, 
                                                 ukoliko se problem ponovi obavijestite administratora");

@@ -703,6 +703,9 @@ namespace FIT_PONG.Controllers
                 {
                     return VratiNijeAutorizovan();
                 }
+
+                //ovdje bi trebala nova klasa odnosno pardon, kad dodje servis, nece bit nista ovog errori count, vec samo dole
+                //poziv direktno na servis a on ce bacit exception ako bude errora
                 List<string> errori = evidentor.VratiListuErrora(obj);
                 if (errori.Count() == 0)
                 {

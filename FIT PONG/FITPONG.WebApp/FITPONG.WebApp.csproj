@@ -52,7 +52,7 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="GoogleAuthenticator" Version="2.0.1" />
     <PackageReference Include="MailKit" Version="2.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.3" />
@@ -71,11 +71,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Profiles\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FITPONG.Database\FITPONG.Database.csproj" />
+    <ProjectReference Include="..\FITPONG.Services\FITPONG.Services.csproj" />
+    <ProjectReference Include="..\FITPONG.SharedModels\FITPONG.SharedModels.csproj" />
   </ItemGroup>
 
 </Project>

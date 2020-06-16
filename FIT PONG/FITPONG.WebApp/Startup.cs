@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FIT_PONG.Filters;
 using FIT_PONG.Hubs;
 using FIT_PONG.Models;
 using FIT_PONG.Models.BL;
+using FIT_PONG.Services;
+using FIT_PONG.Services.Bazni;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +41,7 @@ namespace FIT_PONG
                                     .RequireAuthenticatedUser()
                                     .Build();
                 opcije.Filters.Add(new AuthorizeFilter(policijarukeuvis));
+                opcije.Filters.Add<Filterko>(); // exception filter
             });
             //ovdje registrujemo dbkontekst(ovo je varijanta bez UoW/Repozitorij patterna odnosno bez ikakvih interfejsa
             //u zavisnosti od baze koju zelis koristiti samo mijenjas string ovdje
@@ -52,7 +56,8 @@ namespace FIT_PONG
             services.AddScoped<Evidentor>();
             services.AddScoped<iEmailServis, FITPONGGmail>();
             services.AddScoped<NotifikacijeHub>();
-            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
+            services.AddScoped<IGradoviService, GradoviService>();
+            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Netza")));
             services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(opcije =>
             {
                 opcije.Password.RequiredLength = 6;
