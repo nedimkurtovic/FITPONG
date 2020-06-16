@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using FIT_PONG.SharedModels.Requests.Takmicenja;
+using FIT_PONG.ViewModels.TakmicenjeVMs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,8 @@ namespace FIT_PONG.Profiles
 
             CreateMap<SharedModels.Requests.Objave.ObjaveInsertUpdate, Database.DTOs.Objava>();
             CreateMap<Database.DTOs.Objava, SharedModels.Objave>();
+
+            CreateMap<EvidencijaMecaVM, EvidencijaMeca>();
         }
     }
 }

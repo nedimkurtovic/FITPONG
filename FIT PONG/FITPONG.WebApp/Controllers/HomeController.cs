@@ -19,9 +19,9 @@ namespace FIT_PONG.Controllers
         /*ovdje ce se na pocetku prikazivati main dashboard,zadnje informacije ili whatever dakle trebat ce i ovdje 
          bazu omoguciti*/
         private readonly ILogger<HomeController> _logger;
-        private readonly MyDb db;
-        private readonly Evidentor evidentor;
-        public HomeController(ILogger<HomeController> logger , MyDb instanca , Evidentor evidentorInstanca)
+        private readonly FIT_PONG.Database.MyDb db;
+        private readonly FIT_PONG.Services.BL.Evidentor evidentor;
+        public HomeController(ILogger<HomeController> logger , FIT_PONG.Database.MyDb instanca , FIT_PONG.Services.BL.Evidentor evidentorInstanca)
         {
             _logger = logger;
             db = instanca;
@@ -41,7 +41,7 @@ namespace FIT_PONG.Controllers
                     model.ZadnjeObjave.Add((item, t));
                 }
             }
-            model.TopIgraci = evidentor.GetNajboljeOveSedmice();
+            //model.TopIgraci = evidentor.GetNajboljeOveSedmice();
             model.ZadnjiRezultati = evidentor.GetZadnjeUtakmice(10);
             return View(model);
         }

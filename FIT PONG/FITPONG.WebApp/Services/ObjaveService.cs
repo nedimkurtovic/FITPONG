@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using FIT_PONG.Filters;
-using FIT_PONG.Models;
+using FIT_PONG.Database;
 using FIT_PONG.Services.Bazni;
 using FIT_PONG.SharedModels;
 using FIT_PONG.SharedModels.Requests.Objave;
-using FITPONG.Services;
+using FIT_PONG.Services;
 using Org.BouncyCastle.Asn1.Mozilla;
 using System;
 using System.Collections.Generic;

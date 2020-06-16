@@ -18,10 +18,10 @@ namespace FIT_PONG.Controllers
     public class IgracController : Controller
     {
 
-        private readonly MyDb db;
+        private readonly FIT_PONG.Database.MyDb db;
         private readonly IWebHostEnvironment _host;
 
-        public IgracController(MyDb context, IWebHostEnvironment host)
+        public IgracController(FIT_PONG.Database.MyDb context, IWebHostEnvironment host)
         {
             db = context;
             _host = host;

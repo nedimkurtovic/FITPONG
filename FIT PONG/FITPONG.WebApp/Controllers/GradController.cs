@@ -8,7 +8,6 @@ using FIT_PONG.Database.DTOs;
 using FIT_PONG.Services;
 using FIT_PONG.SharedModels.Requests.Gradovi;
 using FIT_PONG.Filters;
-using FITPONG.Services;
 
 namespace FIT_PONG.Controllers
 {

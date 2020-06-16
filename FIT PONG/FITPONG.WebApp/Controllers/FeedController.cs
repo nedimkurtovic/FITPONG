@@ -15,8 +15,8 @@ namespace FIT_PONG.Controllers
     public class FeedController : Controller
     {
 
-        private readonly MyDb db;
-        public FeedController(MyDb instanca)
+        private readonly FIT_PONG.Database.MyDb db;
+        public FeedController(FIT_PONG.Database.MyDb instanca)
         {
             db = instanca;
         }    

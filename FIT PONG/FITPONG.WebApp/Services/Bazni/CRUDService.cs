@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FIT_PONG.Models;
 using MoreLinq;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ namespace FIT_PONG.Services.Bazni
         where TDb : class
     {
 
-        public CRUDService(MyDb _db, IMapper _mapko):base(_db,_mapko)
+        public CRUDService(FIT_PONG.Database.MyDb _db, IMapper _mapko):base(_db,_mapko)
         {
             db = _db;
             mapko = _mapko;

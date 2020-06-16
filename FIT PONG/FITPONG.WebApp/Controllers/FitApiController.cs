@@ -19,17 +19,17 @@ namespace FIT_PONG.Controllers
 {
     public class FitApiController : ApiController
     {
-        private readonly MyDb db;
+        private readonly FIT_PONG.Database.MyDb db;
         private readonly UserManager<IdentityUser<int>> userManager;
         private readonly SignInManager<IdentityUser<int>> signInManager;
         private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly Evidentor evidentor;
+        private readonly FIT_PONG.Services.BL.Evidentor evidentor;
 
-        public FitApiController(MyDb db, 
+        public FitApiController(FIT_PONG.Database.MyDb db, 
             UserManager<IdentityUser<int>> userManager,
             SignInManager<IdentityUser<int>> signInManager,
             IHttpContextAccessor httpContextAccessor,
-            Evidentor evidentor)
+            FIT_PONG.Services.BL.Evidentor evidentor)
         {
             this.db = db;
             this.userManager = userManager;

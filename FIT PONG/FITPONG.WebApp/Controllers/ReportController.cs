@@ -20,13 +20,13 @@ namespace FIT_PONG.Controllers
     [AllowAnonymous]
     public class ReportController : Controller
     {
-        private readonly MyDb db;
+        private readonly FIT_PONG.Database.MyDb db;
         private readonly IWebHostEnvironment _host;
 
-        public iEmailServis emailServis { get; }
+        public FIT_PONG.Services.BL.iEmailServis emailServis { get; }
 
-        public ReportController(MyDb instanca,IWebHostEnvironment _webhost,
-            iEmailServis imejlovi)
+        public ReportController(FIT_PONG.Database.MyDb instanca,IWebHostEnvironment _webhost,
+            FIT_PONG.Services.BL.iEmailServis imejlovi)
         {
             db = instanca;
             _host = _webhost;

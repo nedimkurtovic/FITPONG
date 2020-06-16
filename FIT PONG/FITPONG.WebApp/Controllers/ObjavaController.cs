@@ -14,8 +14,8 @@ namespace FIT_PONG.Controllers
     {
         //readonly je nesto slicno constu ali nije ni blizu,const se moze samo pri deklaraciji incijalizovat dok se readonly
         //varijabla moze incijalizovati samo u konstruktoru i nigdje vise
-        private readonly MyDb db;
-        public ObjavaController(MyDb instanca)
+        private readonly FIT_PONG.Database.MyDb db;
+        public ObjavaController(FIT_PONG.Database.MyDb instanca)
         {
             db = instanca;
         }

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FIT_PONG.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +8,10 @@ namespace FIT_PONG.Services.Bazni
 {
     public class BaseService<T,TDb, TSearch> : IBaseService<T, TSearch> where TDb:class
     {
-        protected MyDb db;
+        protected FIT_PONG.Database.MyDb db;
         protected IMapper mapko;
 
-        public BaseService(MyDb _db, IMapper _mapko)
+        public BaseService(FIT_PONG.Database.MyDb _db, IMapper _mapko)
         {
             db = _db;
             mapko = _mapko;

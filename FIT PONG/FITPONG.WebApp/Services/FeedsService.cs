@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using FIT_PONG.Models;
 using FIT_PONG.Services.Bazni;
+using FIT_PONG.Database;
 using Microsoft.Data.SqlClient.Server;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;

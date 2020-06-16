@@ -20,13 +20,13 @@ namespace FIT_PONG.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly MyDb db;
+        private readonly FIT_PONG.Database.MyDb db;
         private readonly SignInManager<IdentityUser<int>> SignIn;
         private readonly UserManager<IdentityUser<int>> UserM;
         public iEmailServis EmailServis { get; }
 
 
-        public AccountController(MyDb instanca,
+        public AccountController(FIT_PONG.Database.MyDb instanca,
             SignInManager<IdentityUser<int>> menadzer,
             UserManager<IdentityUser<int>> menadzerusera,
             iEmailServis emailServis

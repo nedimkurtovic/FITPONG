@@ -10,9 +10,9 @@ namespace FIT_PONG.Controllers
 {
     public class SistemTakmicenjaController : Controller
     {
-        private readonly MyDb db;
+        private readonly FIT_PONG.Database.MyDb db;
 
-        public SistemTakmicenjaController(MyDb context)
+        public SistemTakmicenjaController(FIT_PONG.Database.MyDb context)
         {
             db = context;
         }
