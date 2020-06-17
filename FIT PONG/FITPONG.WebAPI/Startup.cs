@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using FIT_PONG.Database;
 using FIT_PONG.Services.Services;
 using Microsoft.AspNetCore.Builder;
@@ -40,6 +41,9 @@ namespace FITPONG.WebAPI
             })
                 .AddEntityFrameworkStores<MyDb>()
                 .AddDefaultTokenProviders();
+
+
+            services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IFeedsService, FeedsService>();
             services.AddScoped<IGradoviService, GradoviService>();
             services.AddScoped<IObjaveService, ObjaveService>();
