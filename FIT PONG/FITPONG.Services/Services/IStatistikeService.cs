@@ -8,7 +8,7 @@ namespace FIT_PONG.Services.Services
     {
         List<SharedModels.Statistike> Get(int userID);
         SharedModels.Statistike GetByID(int id);
-        SharedModels.Statistike Add(int userID, int AkademskaGodina);
+        SharedModels.Statistike Add(int userID);
         SharedModels.Statistike Update(int id, bool pobjeda, bool isTim);
 
     }

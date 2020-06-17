@@ -57,7 +57,7 @@ namespace FIT_PONG
             services.AddScoped<iEmailServis, FITPONGGmail>();
             services.AddScoped<NotifikacijeHub>();
             services.AddScoped<IGradoviService, GradoviService>();
-            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Netza")));
+            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
             services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(opcije =>
             {
                 opcije.Password.RequiredLength = 6;
