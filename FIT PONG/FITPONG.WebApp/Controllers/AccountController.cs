@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using System.Threading.Tasks;
-using FIT_PONG.Models;
-using FIT_PONG.Models.BL;
+using FIT_PONG.Services;
+using FIT_PONG.Services.BL;
 using FIT_PONG.ViewModels.AccountVMs;
 using FIT_PONG.ViewModels.IgracVMs;
 using Microsoft.AspNetCore.Authorization;
@@ -23,13 +23,13 @@ namespace FIT_PONG.Controllers
         private readonly FIT_PONG.Database.MyDb db;
         private readonly SignInManager<IdentityUser<int>> SignIn;
         private readonly UserManager<IdentityUser<int>> UserM;
-        public iEmailServis EmailServis { get; }
+        public FIT_PONG.Services.BL.iEmailServis EmailServis { get; }
 
 
         public AccountController(FIT_PONG.Database.MyDb instanca,
             SignInManager<IdentityUser<int>> menadzer,
             UserManager<IdentityUser<int>> menadzerusera,
-            iEmailServis emailServis
+            FIT_PONG.Services.BL.iEmailServis emailServis
             )
         {
             db = instanca;

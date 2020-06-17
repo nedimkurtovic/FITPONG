@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using FIT_PONG.Models;
+using FIT_PONG.Services;
 using FIT_PONG.ViewModels.FeedVMs;
 using FIT_PONG.ViewModels;
 using Microsoft.EntityFrameworkCore;

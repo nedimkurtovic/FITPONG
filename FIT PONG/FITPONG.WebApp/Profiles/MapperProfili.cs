@@ -20,7 +20,9 @@ namespace FIT_PONG.Profiles
             CreateMap<SharedModels.Requests.Objave.ObjaveInsertUpdate, Database.DTOs.Objava>();
             CreateMap<Database.DTOs.Objava, SharedModels.Objave>();
 
+            //Webapp mapovi
             CreateMap<EvidencijaMecaVM, EvidencijaMeca>();
+            CreateMap<CreateTakmicenjeVM, TakmicenjaInsert>();
         }
     }
 }

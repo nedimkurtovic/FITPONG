@@ -1,4 +1,4 @@
-using FIT_PONG.Models;
+using FIT_PONG.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using System;

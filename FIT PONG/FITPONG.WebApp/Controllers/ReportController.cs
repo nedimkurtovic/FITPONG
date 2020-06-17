@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FIT_PONG.Models;
+using FIT_PONG.Services;
 using FIT_PONG.ViewModels.ReportVMs;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +11,7 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using MailKit.Net.Smtp;
 using MimeKit;
-using FIT_PONG.Models.BL;
+using FIT_PONG.Services.BL;
 using Microsoft.AspNetCore.Authorization;
 using FIT_PONG.Database.DTOs;
 

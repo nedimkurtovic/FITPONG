@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FIT_PONG.ViewModels.ObjavaVMS;
-using FIT_PONG.Models;
+using FIT_PONG.Services;
 using Microsoft.EntityFrameworkCore;
 using FIT_PONG.Database.DTOs;
 

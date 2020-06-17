@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using FIT_PONG.Models;
 using FIT_PONG.Database.DTOs;
 
 namespace FIT_PONG.ViewModels.TakmicenjeVMs

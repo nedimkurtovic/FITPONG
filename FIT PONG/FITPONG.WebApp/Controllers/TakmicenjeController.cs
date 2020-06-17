@@ -1,6 +1,6 @@
 ﻿using FIT_PONG.Hubs;
-using FIT_PONG.Models;
-using FIT_PONG.Models.BL;
+using FIT_PONG.Services;
+using FIT_PONG.Services.BL;
 using FIT_PONG.ViewModels;
 using FIT_PONG.ViewModels.TakmicenjeVMs;
 using Microsoft.AspNetCore.Identity;
@@ -112,7 +112,8 @@ namespace FIT_PONG.Controllers
             if (ModelState.IsValid)
             {
                 TakmicenjeValidator validator = new TakmicenjeValidator();
-                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaDodaj(objekat,
+                TakmicenjaInsert objekatValidator = mapko.Map<TakmicenjaInsert>(objekat);
+                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaDodaj(objekatValidator,
                     db.Takmicenja.Select(x => x.Naziv).ToList(),
                     db.Igraci.ToList());
 
@@ -237,7 +238,8 @@ namespace FIT_PONG.Controllers
             if (ModelState.IsValid)
             {
                 TakmicenjeValidator validator = new TakmicenjeValidator();
-                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaEdit(objekat, db.Takmicenja.ToList());
+                TakmicenjaUpdate objekatValidator = mapko.Map<TakmicenjaUpdate>(objekat);
+                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaEdit(objekatValidator,objekat.ID ,db.Takmicenja.ToList());
                 if (listaerrora.Count() == 0)
                 {
                     Takmicenje obj = db.Takmicenja.Find(objekat.ID);

@@ -1,4 +1,4 @@
-﻿using FITPONG.Services;
+﻿using FIT_PONG.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

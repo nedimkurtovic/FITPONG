@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FIT_PONG.Models;
+using FIT_PONG.Services;
 using Microsoft.AspNetCore.Mvc;
 using FIT_PONG.Database.DTOs;
-using FIT_PONG.Services;
 using FIT_PONG.SharedModels.Requests.Gradovi;
 using FIT_PONG.Filters;
 

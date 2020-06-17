@@ -1,4 +1,4 @@
-﻿using FIT_PONG.Models.BL;
+﻿using FIT_PONG.Services.BL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -11,10 +11,10 @@ namespace FIT_PONG.Hubs
     public class ChatHub:Hub
     {
         private readonly SignInManager<IdentityUser<int>> SignIn;
-        private readonly Evidentor _evidentor;
+        private readonly FIT_PONG.Services.BL.Evidentor _evidentor;
         private static List<(string username, string connectionid)> ListaKonekcija = new List<(string username,string connectionid)>();
 
-        public ChatHub(SignInManager<IdentityUser<int>> menadjer, Evidentor evidentor)
+        public ChatHub(SignInManager<IdentityUser<int>> menadjer, FIT_PONG.Services.BL.Evidentor evidentor)
         {
             SignIn = menadjer;
             _evidentor = evidentor;
