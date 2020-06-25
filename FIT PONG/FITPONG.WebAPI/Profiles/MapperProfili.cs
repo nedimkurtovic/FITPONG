@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FIT_PONG.SharedModels.Requests.Takmicenja;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace FIT_PONG.WebAPI.Profiles
 
             CreateMap<SharedModels.Requests.Objave.ObjaveInsertUpdate, Database.DTOs.Objava>();
             CreateMap<Database.DTOs.Objava, SharedModels.Objave>();
+
+            CreateMap<Database.DTOs.Takmicenje, SharedModels.Takmicenja>();
+            CreateMap<SharedModels.Requests.Takmicenja.TakmicenjaUpdate, Database.DTOs.Takmicenje>();
         }
     }
 }

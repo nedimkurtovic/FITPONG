@@ -8,7 +8,8 @@ namespace FIT_PONG.Services.Services
     {
 		List<SharedModels.Takmicenja> Get(SharedModels.Requests.Takmicenja.TakmicenjeSearch obj);
 		SharedModels.Takmicenja GetByID(int id);
-		SharedModels.Takmicenja Add(SharedModels.Requests.Takmicenja.TakmicenjaInsert obj);
+		//moguce je i da ce se id kreatora slati a ne username
+		SharedModels.Takmicenja Add(SharedModels.Requests.Takmicenja.TakmicenjaInsert obj, string KreatorUsername);
 		SharedModels.Takmicenja Update(int id, SharedModels.Requests.Takmicenja.TakmicenjaUpdate obj);//autorizovat
 		SharedModels.Takmicenja Delete(int id);//autorizovat
 		SharedModels.Takmicenja Initialize(int id);//autorizovat //ili da vraca mdoel takmicejna ili string uspjesan init

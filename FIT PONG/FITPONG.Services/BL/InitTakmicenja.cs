@@ -18,44 +18,64 @@ namespace FIT_PONG.Services.BL
         }
 
         //nedostaje validacija, pogledati init akciju u takmicenje kontroleru u WEBAPP
+        public List<(string key, string error)> VratiListuErrora(Takmicenje _takmicenje)
+        {
+            var listaErrora = new List<(string key, string error)>();
+            if (!_takmicenje.Inicirano)
+                listaErrora.Add(("", "Takmicenje je vec inicirano"));
+                if (_takmicenje.RokPocetkaPrijave != null && _takmicenje.RokZavrsetkaPrijave > DateTime.Now)
+                    listaErrora.Add(("","Rok registracija mora zavrsiti prije generisanja rasporeda"));
+            if (_takmicenje.Prijave.Count() < 4)
+                listaErrora.Add(("","Takmicenje mora imati barem 4 igraca, otvorite ponovo registracije"));
+            return listaErrora;
+        }
         public void GenerisiRaspored(Takmicenje _takmicenje)
         {
-
-            Bracket noviBracket = new Bracket
+            using (var transakcija = db.Database.BeginTransaction())
             {
-                Naziv = _takmicenje.Naziv + " bracket",
-                TakmicenjeID = _takmicenje.ID,
-                Runde = new List<Runda>()
-            };
-
-            _takmicenje.Bracketi.Add(noviBracket);
-            db.SaveChanges();
-
-            //kreirati runde(izracunati broj rundi od broja prijava i sistema takmicenja)
-            //otprilike ce biti nesto ovako : 	
-            (int runde, int byeovi) Runde = pomocnaFunkcijaIzracunajRunde(_takmicenje.Sistem, _takmicenje.Prijave.Count());
-            //kreirati runde i za svaku rundu ce biti potrebno kreirati utakmice
-            //otprilike ovako
-            int kopijaBrojIgraca = _takmicenje.Prijave.Count();  //brojIGraca(query je ovo) // ovo je ustvari brojPrijava a ne igraca)
-            int brojUtakmice = 1;
-            for (int i = 0; i < Runde.runde; i++)
-            {
-                Runda runda = new Runda
+                try
                 {
-                    BracketID = noviBracket.ID,
-                    BrojRunde = i + 1,
-                    Utakmice = new List<Utakmica>()
-                };// atributi : BracketID postaviti, brojRunde = i+1 // datum pocetka bi se mogao pri evidenciji meca rjesavat,prvi 												mec koji se evidentira updateuje pocetkarunde datum
-                noviBracket.Runde.Add(runda);
-                db.SaveChanges();
-                KreirajTekmeURundi(ref kopijaBrojIgraca, runda.ID, _takmicenje.Sistem, ref brojUtakmice, _takmicenje.Vrsta);
+                    Bracket noviBracket = new Bracket
+                    {
+                        Naziv = _takmicenje.Naziv + " bracket",
+                        TakmicenjeID = _takmicenje.ID,
+                        Runde = new List<Runda>()
+                    };
+
+                    _takmicenje.Bracketi.Add(noviBracket);
+                    db.SaveChanges();
+
+                    //kreirati runde(izracunati broj rundi od broja prijava i sistema takmicenja)
+                    //otprilike ce biti nesto ovako : 	
+                    (int runde, int byeovi) Runde = pomocnaFunkcijaIzracunajRunde(_takmicenje.Sistem, _takmicenje.Prijave.Count());
+                    //kreirati runde i za svaku rundu ce biti potrebno kreirati utakmice
+                    //otprilike ovako
+                    int kopijaBrojIgraca = _takmicenje.Prijave.Count();  //brojIGraca(query je ovo) // ovo je ustvari brojPrijava a ne igraca)
+                    int brojUtakmice = 1;
+                    for (int i = 0; i < Runde.runde; i++)
+                    {
+                        Runda runda = new Runda
+                        {
+                            BracketID = noviBracket.ID,
+                            BrojRunde = i + 1,
+                            Utakmice = new List<Utakmica>()
+                        };// atributi : BracketID postaviti, brojRunde = i+1 // datum pocetka bi se mogao pri evidenciji meca rjesavat,prvi 												mec koji se evidentira updateuje pocetkarunde datum
+                        noviBracket.Runde.Add(runda);
+                        db.SaveChanges();
+                        KreirajTekmeURundi(ref kopijaBrojIgraca, runda.ID, _takmicenje.Sistem, ref brojUtakmice, _takmicenje.Vrsta);
+                    }
+                    RasporediIgrace(_takmicenje);
+
+                    db.SaveChanges();
+                    _takmicenje.Inicirano = true;
+                    db.SaveChanges();
+                }
+                catch (Exception err)
+                {
+                    transakcija.Rollback();
+                    throw err;
+                }
             }
-            RasporediIgrace(_takmicenje);
-
-            db.SaveChanges();
-            _takmicenje.Inicirano = true;
-            db.SaveChanges();
-
         }
         public void KreirajTekmeURundi(ref int kopijaBrojIgraca, int rundaID, Sistem_Takmicenja sistem, ref int brojUtakmice, Vrsta_Takmicenja vrstaTakmicenja)
         {
