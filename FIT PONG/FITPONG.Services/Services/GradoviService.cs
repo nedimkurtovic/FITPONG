@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FIT_PONG.Database;
-using FITPONG.Services;
+using FIT_PONG.Services;
 
 namespace FIT_PONG.Services.Services
 {

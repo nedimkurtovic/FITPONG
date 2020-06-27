@@ -1,5 +1,5 @@
-using FIT_PONG.Models;
-using FIT_PONG.Models.BL;
+using FIT_PONG.Services;
+using FIT_PONG.Services.BL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FITPONG.Services
+namespace FIT_PONG.Services
 {
     public class UserException : Exception
     {

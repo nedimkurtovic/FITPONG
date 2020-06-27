@@ -4,8 +4,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
-using FIT_PONG.Models;
-using FIT_PONG.Models.BL;
+using FIT_PONG.Services;
+using FIT_PONG.Services.BL;
 using FIT_PONG.ViewModels.TakmicenjeVMs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -19,17 +19,17 @@ namespace FIT_PONG.Controllers
 {
     public class FitApiController : ApiController
     {
-        private readonly MyDb db;
+        private readonly FIT_PONG.Database.MyDb db;
         private readonly UserManager<IdentityUser<int>> userManager;
         private readonly SignInManager<IdentityUser<int>> signInManager;
         private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly Evidentor evidentor;
+        private readonly FIT_PONG.Services.BL.Evidentor evidentor;
 
-        public FitApiController(MyDb db, 
+        public FitApiController(FIT_PONG.Database.MyDb db, 
             UserManager<IdentityUser<int>> userManager,
             SignInManager<IdentityUser<int>> signInManager,
             IHttpContextAccessor httpContextAccessor,
-            Evidentor evidentor)
+            FIT_PONG.Services.BL.Evidentor evidentor)
         {
             this.db = db;
             this.userManager = userManager;

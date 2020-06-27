@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FIT_PONG.Filters;
 using FIT_PONG.Hubs;
-using FIT_PONG.Models;
-using FIT_PONG.Models.BL;
 using FIT_PONG.Services;
+using FIT_PONG.Services.BL;
 using FIT_PONG.Services.Bazni;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -51,13 +50,13 @@ namespace FIT_PONG
             //konkretno ovaj DI kontenjer services se brine oko kreiranja servisa i disposeanja istih zavisno od njihovog vremena
             //trajanja,postoje scoped transient i singleton
             services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<InitTakmicenja>();
-            services.AddScoped<ELOCalculator>();
-            services.AddScoped<Evidentor>();
-            services.AddScoped<iEmailServis, FITPONGGmail>();
+            services.AddDbContext<FIT_PONG.Database.MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Netza")));
+            services.AddScoped<FIT_PONG.Services.BL.InitTakmicenja>();
+            services.AddScoped<FIT_PONG.Services.BL.ELOCalculator>();
+            services.AddScoped<FIT_PONG.Services.BL.Evidentor>();
+            services.AddScoped<FIT_PONG.Services.BL.iEmailServis, FIT_PONG.Services.BL.FITPONGGmail>();
             services.AddScoped<NotifikacijeHub>();
-            services.AddScoped<IGradoviService, GradoviService>();
-            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
+            services.AddScoped<FIT_PONG.Services.IGradoviService, FIT_PONG.Services.GradoviService>();
             services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(opcije =>
             {
                 opcije.Password.RequiredLength = 6;
@@ -65,7 +64,7 @@ namespace FIT_PONG
                 opcije.Password.RequireDigit = false;
                 opcije.SignIn.RequireConfirmedEmail = true;
             })
-                .AddEntityFrameworkStores<MyDb>()
+                .AddEntityFrameworkStores<FIT_PONG.Database.MyDb>()
                 .AddDefaultTokenProviders();
             services.AddSignalR();
             services.AddPaging(x =>

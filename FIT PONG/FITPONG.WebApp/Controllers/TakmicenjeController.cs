@@ -1,6 +1,6 @@
 ﻿using FIT_PONG.Hubs;
-using FIT_PONG.Models;
-using FIT_PONG.Models.BL;
+using FIT_PONG.Services;
+using FIT_PONG.Services.BL;
 using FIT_PONG.ViewModels;
 using FIT_PONG.ViewModels.TakmicenjeVMs;
 using Microsoft.AspNetCore.Identity;
@@ -16,23 +16,24 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using FIT_PONG.Database.DTOs;
 using AutoMapper;
+using FIT_PONG.SharedModels.Requests.Takmicenja;
 
 namespace FIT_PONG.Controllers
 {
     public class TakmicenjeController : Controller
     {
 
-        private readonly MyDb db;
-        private readonly InitTakmicenja inicijalizator;
-        private readonly ELOCalculator ELOCalculator;
-        private readonly Evidentor evidentor;
+        private readonly FIT_PONG.Database.MyDb db;
+        private readonly FIT_PONG.Services.BL.InitTakmicenja inicijalizator;
+        private readonly FIT_PONG.Services.BL.ELOCalculator ELOCalculator;
+        private readonly FIT_PONG.Services.BL.Evidentor evidentor;
         private readonly IHubContext<NotifikacijeHub> notifikacijeHub;
         private readonly IMapper mapko;
 
-        public TakmicenjeController(MyDb instanca, 
-            InitTakmicenja instancaInita, 
-            ELOCalculator ELOCalculator,
-            Evidentor _evidentor,
+        public TakmicenjeController(FIT_PONG.Database.MyDb instanca,
+            FIT_PONG.Services.BL.InitTakmicenja instancaInita,
+            FIT_PONG.Services.BL.ELOCalculator ELOCalculator,
+            FIT_PONG.Services.BL.Evidentor _evidentor,
             IHubContext<NotifikacijeHub> notifikacijeHub,
             IMapper _mapko)
         {
@@ -111,7 +112,8 @@ namespace FIT_PONG.Controllers
             if (ModelState.IsValid)
             {
                 TakmicenjeValidator validator = new TakmicenjeValidator();
-                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaDodaj(objekat,
+                TakmicenjaInsert objekatValidator = mapko.Map<TakmicenjaInsert>(objekat);
+                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaDodaj(objekatValidator,
                     db.Takmicenja.Select(x => x.Naziv).ToList(),
                     db.Igraci.ToList());
 
@@ -236,7 +238,8 @@ namespace FIT_PONG.Controllers
             if (ModelState.IsValid)
             {
                 TakmicenjeValidator validator = new TakmicenjeValidator();
-                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaEdit(objekat, db.Takmicenja.ToList());
+                TakmicenjaUpdate objekatValidator = mapko.Map<TakmicenjaUpdate>(objekat);
+                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaEdit(objekatValidator,objekat.ID ,db.Takmicenja.ToList());
                 if (listaerrora.Count() == 0)
                 {
                     Takmicenje obj = db.Takmicenja.Find(objekat.ID);
@@ -706,14 +709,15 @@ namespace FIT_PONG.Controllers
 
                 //ovdje bi trebala nova klasa odnosno pardon, kad dodje servis, nece bit nista ovog errori count, vec samo dole
                 //poziv direktno na servis a on ce bacit exception ako bude errora
-                List<string> errori = evidentor.VratiListuErrora(obj);
+                EvidencijaMeca objekatZaEvidentor = mapko.Map<EvidencijaMeca>(obj); 
+                List<string> errori = evidentor.VratiListuErrora(objekatZaEvidentor);
                 if (errori.Count() == 0)
                 {
                     //nikad ne bi niti jedan tim trebao biti null da napomenem, to je rijeseno u evidencijimeca httpget    
 
                         try
                         {
-                        if (evidentor.EvidentirajMec(obj)) { 
+                        if (evidentor.EvidentirajMec(objekatZaEvidentor,obj.TakmicenjeID)) { 
 
                             notifikacijeHub.Clients.All.SendAsync("startaj", GetListaUseraNotifikacije(obj.Tim1[0].UtakmicaID), obj.NazivTim1, obj.NazivTim2, obj.TakmicenjeID);
                             return RedirectToAction("EvidencijaMeca", new { id = obj.TakmicenjeID });

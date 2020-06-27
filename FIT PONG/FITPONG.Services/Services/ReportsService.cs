@@ -5,7 +5,7 @@ using FIT_PONG.Services.Services;
 using FIT_PONG.SharedModels;
 using FIT_PONG.SharedModels.Requests.Reports;
 using FIT_PONG.WebAPI.Services.Bazni;
-using FITPONG.Services;
+using FIT_PONG.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;

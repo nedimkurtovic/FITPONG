@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using FIT_PONG.Models;
+using FIT_PONG.Services;
 using FIT_PONG.ViewModels.FeedVMs;
 using FIT_PONG.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +15,8 @@ namespace FIT_PONG.Controllers
     public class FeedController : Controller
     {
 
-        private readonly MyDb db;
-        public FeedController(MyDb instanca)
+        private readonly FIT_PONG.Database.MyDb db;
+        public FeedController(FIT_PONG.Database.MyDb instanca)
         {
             db = instanca;
         }    

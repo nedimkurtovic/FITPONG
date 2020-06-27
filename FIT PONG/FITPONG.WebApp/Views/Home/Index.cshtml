@@ -390,7 +390,7 @@ else
                 <div class="container" id="rez">
                     <div id="podijDiv">
                         <div id="prvi">
-                            @if (Model.TopIgraci.Count > 0 && Model.TopIgraci[0] != null)
+                            @if (Model.TopIgraci != null && Model.TopIgraci.Count > 0 && Model.TopIgraci[0] != null)
                             {
                                 <small>@Model.TopIgraci[0].Naziv</small>
                                 <small>Osvojenih setova : @Model.TopIgraci[0].BrojOsvojenihSetova</small>
@@ -400,7 +400,7 @@ else
                             }
                         </div>
                         <div id="drugi">
-                            @if (Model.TopIgraci.Count > 1 && Model.TopIgraci[1] != null)
+                            @if (Model.TopIgraci != null && Model.TopIgraci.Count > 1 && Model.TopIgraci[1] != null)
                             {
                                 <small>@Model.TopIgraci[1].Naziv</small>
                                 <small>Osvojenih setova : @Model.TopIgraci[1].BrojOsvojenihSetova</small>
@@ -410,7 +410,7 @@ else
                             }
                         </div>
                         <div id="treci">
-                            @if (Model.TopIgraci.Count > 2 && Model.TopIgraci[2] != null)
+                            @if (Model.TopIgraci != null && Model.TopIgraci.Count > 2 && Model.TopIgraci[2] != null)
                             {
                                 <small>@Model.TopIgraci[2].Naziv</small>
                                 <small>Osvojenih setova : @Model.TopIgraci[2].BrojOsvojenihSetova</small>

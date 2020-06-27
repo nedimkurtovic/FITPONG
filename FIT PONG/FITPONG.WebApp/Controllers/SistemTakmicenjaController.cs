@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FIT_PONG.Models;
+using FIT_PONG.Services;
 using Microsoft.AspNetCore.Mvc;
 using FIT_PONG.Database.DTOs;
 
@@ -10,9 +10,9 @@ namespace FIT_PONG.Controllers
 {
     public class SistemTakmicenjaController : Controller
     {
-        private readonly MyDb db;
+        private readonly FIT_PONG.Database.MyDb db;
 
-        public SistemTakmicenjaController(MyDb context)
+        public SistemTakmicenjaController(FIT_PONG.Database.MyDb context)
         {
             db = context;
         }

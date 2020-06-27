@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using FIT_PONG.Database.DTOs;
 using FIT_PONG.Filters;
-using FIT_PONG.Models;
 using FIT_PONG.Services.Bazni;
 using FIT_PONG.SharedModels;
-using FITPONG.Services;
+using FIT_PONG.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace FIT_PONG.Services
         IGradoviService
     {
 
-        public GradoviService(MyDb _db, IMapper _mapko):base(_db,_mapko)
+        public GradoviService(FIT_PONG.Database.MyDb _db, IMapper _mapko):base(_db,_mapko)
         {
         }
         public bool Validiraj(Database.DTOs.Grad obj)

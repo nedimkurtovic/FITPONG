@@ -1,4 +1,4 @@
-using FIT_PONG.Models;
+using FIT_PONG.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -11,12 +11,12 @@ namespace FIT_PONG.Hubs
     public class NotifikacijeHub : Hub
     {
         private readonly SignInManager<IdentityUser<int>> signIn;
-        private readonly MyDb db;
+        private readonly FIT_PONG.Database.MyDb db;
 
         public static List<(string username, string connectionid)> ListaKonekcija = new List<(string username, string connectionid)>();
 
 
-        public NotifikacijeHub(SignInManager<IdentityUser<int>> signIn, MyDb db)
+        public NotifikacijeHub(SignInManager<IdentityUser<int>> signIn, FIT_PONG.Database.MyDb db)
         {
             this.signIn = signIn;
             this.db = db;

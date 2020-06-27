@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FIT_PONG.ViewModels.ObjavaVMS;
-using FIT_PONG.Models;
+using FIT_PONG.Services;
 using Microsoft.EntityFrameworkCore;
 using FIT_PONG.Database.DTOs;
 
@@ -14,8 +14,8 @@ namespace FIT_PONG.Controllers
     {
         //readonly je nesto slicno constu ali nije ni blizu,const se moze samo pri deklaraciji incijalizovat dok se readonly
         //varijabla moze incijalizovati samo u konstruktoru i nigdje vise
-        private readonly MyDb db;
-        public ObjavaController(MyDb instanca)
+        private readonly FIT_PONG.Database.MyDb db;
+        public ObjavaController(FIT_PONG.Database.MyDb instanca)
         {
             db = instanca;
         }

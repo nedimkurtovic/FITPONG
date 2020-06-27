@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FIT_PONG.Models;
+using FIT_PONG.Services;
 using ReflectionIT.Mvc.Paging;
 using FIT_PONG.Database.DTOs;
 
