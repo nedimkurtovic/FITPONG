@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using FIT_PONG.Database;
+using FIT_PONG.Services.BL;
 using FIT_PONG.Services.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,7 +32,9 @@ namespace FITPONG.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Netza")));
+            services.AddAutoMapper(typeof(Startup));
+            services.AddDbContext<FIT_PONG.Database.MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
+
             services.AddIdentity<IdentityUser<int>,IdentityRole<int>>(opcije=> 
             {
                 opcije.Password.RequiredLength = 6;
@@ -40,9 +44,13 @@ namespace FITPONG.WebAPI
             })
                 .AddEntityFrameworkStores<MyDb>()
                 .AddDefaultTokenProviders();
-            services.AddScoped<IFeedsService, FeedsService>();
-            services.AddScoped<IGradoviService, GradoviService>();
-            services.AddScoped<IObjaveService, ObjaveService>();
+
+            services.AddScoped<FIT_PONG.Services.Services.IFeedsService, FIT_PONG.Services.Services.FeedsService>();
+            services.AddScoped<FIT_PONG.Services.Services.IGradoviService, FIT_PONG.Services.Services.GradoviService>();
+            services.AddScoped<FIT_PONG.Services.Services.IObjaveService, FIT_PONG.Services.Services.ObjaveService>();
+            services.AddScoped<FIT_PONG.Services.Services.IUsersService, FIT_PONG.Services.Services.UsersService>();
+            services.AddScoped<FIT_PONG.Services.Services.IStatistikeService, FIT_PONG.Services.Services.StatistikeService>();
+            services.AddScoped<FIT_PONG.Services.BL.iEmailServis, FIT_PONG.Services.BL.FITPONGGmail>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

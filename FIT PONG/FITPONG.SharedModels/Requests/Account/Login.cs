@@ -17,5 +17,7 @@ namespace FIT_PONG.SharedModels.Requests.Account
         [Required]
         [Display(Name = "Remember me")]
         public bool RememberMe { get; set; }
+
+        public string Code { get; set; } //2F code, nisam siguran da li ovo treba biti u ovom requestu...
     }
 }

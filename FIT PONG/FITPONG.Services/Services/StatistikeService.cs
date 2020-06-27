@@ -9,7 +9,7 @@ using System.Text;
 
 namespace FIT_PONG.Services.Services
 {
-    class StatistikeService : IStatistikeService
+    public class StatistikeService : IStatistikeService
     {
         private readonly MyDb db;
         private readonly IMapper mapper;

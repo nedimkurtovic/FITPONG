@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FIT_PONG.Services.Services
 {
@@ -9,8 +10,8 @@ namespace FIT_PONG.Services.Services
     {
 		List<SharedModels.Users> Get(SharedModels.Requests.Account.AccountSearchRequest obj);
 		SharedModels.Users Get(int ID);
-		SharedModels.Users Register(SharedModels.Requests.Account.AccountInsert obj);
-		SharedModels.Users Login(SharedModels.Requests.Account.Login obj); //Umjesto profile pic path treba Slika 
+		Task<SharedModels.Users> Register(SharedModels.Requests.Account.AccountInsert obj);
+		Task<SharedModels.Users> Login(SharedModels.Requests.Account.Login obj); //Umjesto profile pic path treba Slika 
 		// ((pitanje za vjezbe kako osigurati da ne mozes pozvati logout za drugog korisnika) //autorizovat
 		//naredne zabiljeske se odnose na Logout metodu ali i sve metode gdje je potreban userID
 		//drugo pitanje je sta je pametnije odabrati, username ili id? Ja bih isao ovom logikom : Obzirom da ce se 
@@ -23,11 +24,13 @@ namespace FIT_PONG.Services.Services
 		//proslijedimo Request.Headers["Authorization"]
 		//toj nasoj metodi u servisu i ona nam vrati id ako postoji, ako ne postoji baca exception il nesto
 		//moguce da je logout bespotreban i visak obzirom da se pri svakom requestu salje username i pw
-			//string Logout(ovo treba odluciti---> int id || string username);//stavio sam string kao poruka : "Korisnik odjavljen" npr i to 
+		//ovo treba odluciti---> //stavio sam string kao poruka : "Korisnik odjavljen" npr i to 
+		
+		//string Logout(int id || string username);
 		
 		string SendConfirmationEmail(SharedModels.Requests.Account.Email_Password_Request obj);
-		SharedModels.Users ConfirmEmail(int id, string token);
-		string SendPasswordChange(SharedModels.Requests.Account.Email_Password_Request obj);
+		Task<SharedModels.Users> ConfirmEmail(string userId, string token);
+		Task<string> SendPasswordChange(SharedModels.Requests.Account.Email_Password_Request obj);
 		string ConfirmPasswordChange(int id, string token, string password);
 		string ResetProfilePicture(int id);//autorizovat
 		string UpdateProfilePicture(int id, byte[] Slika);//klasa slika umjesto niz byteova //autorizovat
