@@ -4,8 +4,9 @@ using FIT_PONG.Database.DTOs;
 using FIT_PONG.Services.BL;
 using FIT_PONG.SharedModels;
 using FIT_PONG.SharedModels.Requests.Takmicenja;
+using MailKit;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Math.EC.Rfc7748;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,25 @@ namespace FIT_PONG.Services.Services
             initTakmicenja = _initTakmicenja;
             validator = _validator;
             mapko = _mapko;
+        }
+        public List<Takmicenja> Get(TakmicenjeSearch obj)
+        {
+            var qry = db.Takmicenja.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(obj.Naziv))
+                qry.Where(x => x.Naziv.StartsWith(obj.Naziv));
+            
+            var TakmicenjaPovratni = qry.ToList();
+            return mapko.Map<List<SharedModels.Takmicenja>>(TakmicenjaPovratni);
+        }
+
+        public Takmicenja GetByID(int id)
+        {
+            var obj = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
+            if(obj == null)
+            {
+                throw new UserException("Takmicenje ne postoji");
+            }
+            return mapko.Map<SharedModels.Takmicenja>(obj);
         }
 
         public Takmicenja Add(TakmicenjaInsert objekat, string KreatorUsername)
@@ -94,6 +114,22 @@ namespace FIT_PONG.Services.Services
                 }
             }
         }
+        public Takmicenja Update(int id, TakmicenjaUpdate obj)
+        {
+            var objBaza = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
+            if (objBaza == null)// neka ovog dijela ovdje, jer kad ga premjestim u validirajUpdatetakmicenja, onda 
+                //cu dole pomjeriti ovu prethodnu i naredne 3 linije koda, i onda cu opet morat ako prodje ta funkcija
+                //opet ovdje dobavljati objekat baze
+            {
+                throw new UserException("Takmicenje ne postoji");
+            }
+            //ako nije inicirano mozes mijenjati odredjene atribute, dodati korisniku mogucnost
+            //mijenjanja/ dodavanja / uklanjanja novih/starih igraca?
+            ValidirajUpdateTakmicenja(obj, id, objBaza);
+            mapko.Map(objBaza, obj);
+            db.SaveChanges();
+            return mapko.Map<Takmicenja>(objBaza);
+        }
 
         public Takmicenja Delete(int id)
         {
@@ -105,6 +141,7 @@ namespace FIT_PONG.Services.Services
             {
                 throw new UserException("Takmicenje ne postoji");
             }
+            ValidirajDeleteTakmicenja(obj);
             var temp = mapko.Map<Takmicenja>(obj);
             using (var transakcija = db.Database.BeginTransaction())
             {
@@ -143,25 +180,6 @@ namespace FIT_PONG.Services.Services
 
         }
 
-        public List<Takmicenja> Get(TakmicenjeSearch obj)
-        {
-            var qry = db.Takmicenja.AsQueryable();
-            if (!string.IsNullOrWhiteSpace(obj.Naziv))
-                qry.Where(x => x.Naziv.StartsWith(obj.Naziv));
-            
-            var TakmicenjaPovratni = qry.ToList();
-            return mapko.Map<List<SharedModels.Takmicenja>>(TakmicenjaPovratni);
-        }
-
-        public Takmicenja GetByID(int id)
-        {
-            var obj = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
-            if(obj == null)
-            {
-                throw new UserException("Takmicenje ne postoji");
-            }
-            return mapko.Map<SharedModels.Takmicenja>(obj);
-        }
 
         public Takmicenja Initialize(int id)
         {
@@ -189,22 +207,136 @@ namespace FIT_PONG.Services.Services
             var objPovratni = db.Takmicenja.Where(x => x.ID == id);
             return mapko.Map<Takmicenja>(objPovratni);
         }
-        public Takmicenja Update(int id, TakmicenjaUpdate obj)
+
+        public List<EvidencijaMeca> GetEvidencije(string KorisnikUsername, int takmid)
         {
-            var objBaza = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
-            if (objBaza == null)// neka ovog dijela ovdje, jer kad ga premjestim u validirajUpdatetakmicenja, onda 
-                //cu dole pomjeriti ovu prethodnu i naredne 3 linije koda, i onda cu opet morat ako prodje ta funkcija
-                //opet ovdje dobavljati objekat baze
+            Igrac igrac = evidentor.NadjiIgraca(KorisnikUsername);
+            List<Utakmica> NjegoveUtakmice = evidentor.DobaviUtakmice(igrac, takmid);
+            List<EvidencijaMeca> model = new List<EvidencijaMeca>();
+            foreach (Utakmica i in NjegoveUtakmice)
             {
-                throw new UserException("Takmicenje ne postoji");
+                //ne bi se smjelo nikada desiti da se nadje null igracID jer je na frontendu prikazano samo ono gdje su oba igraca unesena..
+                //to je rjeseno onom funkcijom JelBye unutar funkcije DobaviUtakmice u par linija koda iznad
+                EvidencijaMeca nova = new EvidencijaMeca();
+                List<Igrac_Utakmica> svaUcesca = db.IgraciUtakmice.Where(x => x.UtakmicaID == i.ID).ToList();
+                List<(Prijava pr, Igrac_Utakmica ucesce)> Timovi = new List<(Prijava pr, Igrac_Utakmica ucesce)>();
+                foreach (Igrac_Utakmica j in svaUcesca)
+                {
+                    Prijava prijavaJoinUcesce = evidentor.GetPrijavuZaUcesce(j, takmid);
+                    Timovi.Add((prijavaJoinUcesce, j));
+                }
+                (List<Igrac_Utakmica> Tim1, List<Igrac_Utakmica> Tim2) TimoviFinalni = evidentor.VratiUcescaPoTimu(Timovi);
+                //dovoljno je provjeriti samo za jednog igraca, a svakako radi i za varijantu kad je double jer oba igraca pripadaju istoj prijavi koja ima //isti naziv
+                string NazivTim1 = Timovi.Where(x => x.ucesce == TimoviFinalni.Tim1[0]).Select(x => x.pr.Naziv).FirstOrDefault();
+                string NazivTim2 = Timovi.Where(x => x.ucesce == TimoviFinalni.Tim2[0]).Select(x => x.pr.Naziv).FirstOrDefault();
+
+                nova.Tim1 = TimoviFinalni.Tim1;
+                nova.Tim2 = TimoviFinalni.Tim2;
+
+                nova.NazivTim1 = NazivTim1;
+                nova.NazivTim2 = NazivTim2;
+
+                nova.RezultatTim1 = null;
+                nova.RezultatTim1 = null;
+                model.Add(nova);
             }
-            //ako nije inicirano mozes mijenjati odredjene atribute, dodati korisniku mogucnost
-            //mijenjanja/ dodavanja / uklanjanja novih/starih igraca?
-            ValidirajUpdateTakmicenja(obj, id, objBaza);
-            mapko.Map(objBaza, obj);
-            db.SaveChanges();
-            return mapko.Map<Takmicenja>(objBaza);
+            return model;   
         }
+
+        public EvidencijaMeca EvidentirajMec(int takmid, EvidencijaMeca obj)
+            //ovdje realno se moze vratiti trenutno evidentirani mec, ili pozvati metodu iznad GetEvidencije
+            //i onda mu samo vrati ovo sto mu preostalo za evidentirati
+        {
+            ValidirajEvidencijuMeca(obj);
+            //nikad ne bi niti jedan tim trebao biti null da napomenem, to je rijeseno u evidencijimeca httpget    
+            if(!evidentor.EvidentirajMec(obj, takmid))
+                throw new UserException("Greška prilikom spašavanja zapisa");
+            return obj;
+        }
+        public List<RasporedStavka> GetRaspored(int id)
+        {
+            Takmicenje obj = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
+            if (obj == null)
+            {
+                throw new UserException("Takmičenje ne postoji ili je obrisano");
+            }
+            List<RasporedStavka> parovi = new List<RasporedStavka>();
+            List<Utakmica> sveNaTakmicenju = db.Utakmice.AsNoTracking()
+                .Include(x => x.UcescaNaUtakmici)
+                .Include(x => x.Runda).ThenInclude(x => x.Bracket).ThenInclude(x => x.Takmicenje)
+                .Where(x => x.Runda.Bracket.TakmicenjeID == id).ToList();
+
+            foreach (Utakmica i in sveNaTakmicenju)
+            {
+                (string tim1, int? rez1, int? rez2, string tim2) par = evidentor.GetPar(i, id);
+                RasporedStavka nova = new RasporedStavka { 
+                    Tim1 = par.tim1,
+                    Tim2 = par.tim2,
+                    RezultatTim1 = par.rez1,
+                    RezultatTim2 = par.rez2
+                };
+                parovi.Add(nova);
+            }
+            
+            return parovi;
+        }
+        public List<TabelaStavka> GetTabela(int id)
+        {
+            Takmicenje obj = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
+            if (obj == null)
+            {
+                throw new UserException("Takmičenje ne postoji ili je obrisano");
+            }
+            var parovi = new List<TabelaStavka>();
+            List<Utakmica> sveNaTakmicenju = db.Utakmice.AsNoTracking()
+         .Include(x => x.UcescaNaUtakmici)
+         .Include(x => x.Runda).ThenInclude(x => x.Bracket).ThenInclude(x => x.Takmicenje)
+         .Where(x => x.Runda.Bracket.TakmicenjeID == id).ToList();
+
+            
+            foreach (Utakmica i in sveNaTakmicenju)
+            {
+                (string tim1, int? rez1, int? rez2, string tim2) par = evidentor.GetPar(i, id);
+                UbaciUTabelu(par, ref parovi);
+            }
+            parovi = parovi.OrderByDescending(x => x.Pobjeda).ToList();
+            return parovi;
+        }
+
+        private void UbaciUTabelu((string tim1, int? rez1, int? rez2, string tim2) par
+            , ref List<TabelaStavka> parovi)
+        {
+            if (par.tim1 != null)
+            {
+                if (!parovi.Select(x => x.Naziv).Contains(par.tim1))
+                    parovi.Add(new TabelaStavka { Naziv = par.tim1, Pobjeda = 0, Poraza = 0, UkupnoOdigrano = 0 });
+                if (par.rez1 != null && par.rez2 != null)
+                {
+                    bool pobjeda = (par.rez1 > par.rez2);
+                    if (pobjeda)
+                        parovi.Where(x => x.Naziv == par.tim1).FirstOrDefault().Pobjeda++;
+                    else
+                        parovi.Where(x => x.Naziv == par.tim1).FirstOrDefault().Poraza++;
+                    parovi.Where(x => x.Naziv == par.tim1).FirstOrDefault().UkupnoOdigrano++;
+                }
+            }
+            if (par.tim2 != null)
+            {
+                if (!parovi.Select(x => x.Naziv).Contains(par.tim2))
+                    parovi.Add(new TabelaStavka { Naziv = par.tim2, Pobjeda = 0, Poraza = 0, UkupnoOdigrano = 0 });
+                if (par.rez1 != null && par.rez2 != null)
+                {
+                    bool pobjeda = (par.rez1 < par.rez2);
+                    if (pobjeda)
+                        parovi.Where(x => x.Naziv == par.tim2).FirstOrDefault().Pobjeda++;
+                    else
+                        parovi.Where(x => x.Naziv == par.tim2).FirstOrDefault().Poraza++;
+                    parovi.Where(x => x.Naziv == par.tim2).FirstOrDefault().UkupnoOdigrano++;
+                }
+            }
+
+        }
+
         //=============================ZONA VALIDACIJE ISPOD, NASTAVITI S PAŽNJOM !==============================
         #region Validacija
         private bool ValidirajAddTakmicenja(TakmicenjaInsert obj)
@@ -240,6 +372,15 @@ namespace FIT_PONG.Services.Services
             RegulisiListuErrora(listaErrora);
             return true;
         }
+        private bool ValidirajEvidencijuMeca(EvidencijaMeca obj)
+        {
+            List<string> errori = evidentor.VratiListuErrora(obj);
+            var PrevedenaLista = new List<(string key, string msg)>();
+            foreach (string i in errori)
+                PrevedenaLista.Add(("", i));
+            RegulisiListuErrora(PrevedenaLista);
+            return true;
+        }
         //ideja za ime -> private bool CistaListaErrora, to bi genijalno bilo, raja ce poludit kad vidi
         private void RegulisiListuErrora(List<(string key, string msg)> listaErrora)
         {
@@ -251,6 +392,7 @@ namespace FIT_PONG.Services.Services
                 throw ex;
             }
         }
-#endregion
+
+        #endregion
     }
 }

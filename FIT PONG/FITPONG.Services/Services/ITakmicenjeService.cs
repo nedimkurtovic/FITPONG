@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FIT_PONG.SharedModels.Requests.Takmicenja;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,11 +14,15 @@ namespace FIT_PONG.Services.Services
 		SharedModels.Takmicenja Update(int id, SharedModels.Requests.Takmicenja.TakmicenjaUpdate obj);//autorizovat
 		SharedModels.Takmicenja Delete(int id);//autorizovat
 		SharedModels.Takmicenja Initialize(int id);//autorizovat //ili da vraca mdoel takmicejna ili string uspjesan init
-		//modelzaraspored GetRaspored(int id);
-		//modelzaevidencije GetEvidencije(int userid, int takmid);//do userid je potrebno doc preko logovane sesije ili nekog requesta ili auth podataka
+		List<RasporedStavka> GetRaspored(int id); 
+		List<EvidencijaMeca> GetEvidencije(string KorisnikUsername, int takmid);//do userid je potrebno doc preko logovane sesije ili nekog requesta ili auth podataka
 		//mogao bi ovaj evidentiraj mec da vraca konkretan mec sto se evidentirao
-		//? EvidentirajMec(int takmid, SharedModels.Requests.Takmicenja.EvidencijaMeca obj);
-		//modelzatabelu GetTabela(int takmid);
+		EvidencijaMeca EvidentirajMec(int takmid, EvidencijaMeca obj);//ovo treba autorizovati ali mislim da 
+		//bi dobro bilo izdvojiti tu autorizaciju u authorizeAttribute klasu neku custom i stavit je iznad akcije
+		List<TabelaStavka> GetTabela(int takmid);
 
+
+
+	
 	}
 }
