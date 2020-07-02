@@ -24,7 +24,7 @@ namespace FIT_PONG.WebAPI.Controllers
         //treba razdvojiti logiku, tj valjalo bi imati TakmicenjeAutorizacijaService, koji ce se iskljucivo
         //baviti autorizacijom, nema smisla, bukvalno u 90% slucajeva trazi se od takmicenje servisa da se
         //brine oko autorizacije
-        public TakmicenjaController(ITakmicenjeService _takmicenjeService, IUsersService _usersService
+        public TakmicenjaController(ITakmicenjeService _takmicenjeService, IUsersService _usersService,
             ITakmicenjeAutorizator _takmicenjeAutorizator)
         {
             takmicenjeService = _takmicenjeService;
