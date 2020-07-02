@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FIT_PONG.Database;
 using FIT_PONG.Services.Services;
+using FIT_PONG.Services.Services.Autorizacija;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace FITPONG.WebAPI
 {
@@ -42,11 +44,44 @@ namespace FITPONG.WebAPI
                 .AddEntityFrameworkStores<MyDb>()
                 .AddDefaultTokenProviders();
 
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("v1", new OpenApiInfo
+                { Version = "v1", Title = "FITPONG.api" });
+                x.AddSecurityDefinition("basicAuth", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "basic"
+                });
+                x.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "basicAuth" }
+                        },
+                        new string[]{}
+                    }
+                });
+            });
 
             services.AddAutoMapper(typeof(Startup));
+            
+            //fina gradska raja
+            services.AddScoped<FIT_PONG.Services.BL.InitTakmicenja>();
+            services.AddScoped<FIT_PONG.Services.BL.ELOCalculator>();
+            services.AddScoped<FIT_PONG.Services.BL.Evidentor>();
+            services.AddScoped<FIT_PONG.Services.BL.iEmailServis, FIT_PONG.Services.BL.FITPONGGmail>();
+            services.AddScoped<FIT_PONG.Services.BL.TakmicenjeValidator>();
+
+            //ciste puno linija koda, negdje i obraz!
             services.AddScoped<IFeedsService, FeedsService>();
             services.AddScoped<IGradoviService, GradoviService>();
             services.AddScoped<IObjaveService, ObjaveService>();
+            services.AddScoped<ITakmicenjeService, TakmicenjeService>();
+
+            //SIPA
+            services.AddScoped<ITakmicenjeAutorizator, TakmicenjeAutorizator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +91,14 @@ namespace FITPONG.WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = "";
+            });
 
             app.UseHttpsRedirection();
 

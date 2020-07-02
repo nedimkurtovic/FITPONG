@@ -239,7 +239,8 @@ namespace FIT_PONG.Controllers
             {
                 TakmicenjeValidator validator = new TakmicenjeValidator();
                 TakmicenjaUpdate objekatValidator = mapko.Map<TakmicenjaUpdate>(objekat);
-                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaEdit(objekatValidator,objekat.ID ,db.Takmicenja.ToList());
+                Takmicenje objBaza = db.Takmicenja.Find(objekat.ID);
+                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaEdit(objekatValidator,objekat.ID ,db.Takmicenja.ToList(),objBaza);
                 if (listaerrora.Count() == 0)
                 {
                     Takmicenje obj = db.Takmicenja.Find(objekat.ID);
