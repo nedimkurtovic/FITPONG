@@ -8,6 +8,7 @@ using FIT_PONG.Services.Services;
 using FIT_PONG.Services.Services.Autorizacija;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,11 @@ namespace FITPONG.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Netza")));
+            services.AddDbContext<MyDb>(opcije => {
+                opcije.UseSqlServer(Configuration.GetConnectionString("Netza"),
+                    c=>c.MigrationsAssembly("FITPONG.Database"));
+                
+                });
             services.AddIdentity<IdentityUser<int>,IdentityRole<int>>(opcije=> 
             {
                 opcije.Password.RequiredLength = 6;
@@ -82,6 +87,8 @@ namespace FITPONG.WebAPI
 
             //SIPA
             services.AddScoped<ITakmicenjeAutorizator, TakmicenjeAutorizator>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

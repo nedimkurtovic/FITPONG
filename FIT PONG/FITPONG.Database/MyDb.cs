@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FIT_PONG.Database.DTOs;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using FITPONG.Database.DTOs;
 
 namespace FIT_PONG.Database
 {
@@ -47,7 +48,6 @@ namespace FIT_PONG.Database
         public DbSet<FeedObjava> FeedsObjave { get; set; }
         public DbSet<BlokLista> BlokListe { get; set; }
         public DbSet<Favoriti> Favoriti { get; set; }
-
 
 
         //ostaje pitanje za razmotrit kako ce se ovo ponasat sa identitycontextom jer cemo morat mijenjat ono sto nasljedjuje

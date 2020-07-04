@@ -39,7 +39,7 @@ namespace FIT_PONG.Services.Services.Autorizacija
         public bool AuthorizeEvidencijaMeca(int UserId, EvidencijaMeca obj)
         {
             if (!obj.Tim1.Select(x => x.IgracID).Contains(UserId)
-                    && !obj.Tim2.Select(x => x.IgracID).Contains(UserId)
+                    && !obj.Tim2.Select(x => x.IgracID).Contains(UserId))
                 throw new AuthorizeException("Niste autorizovani za ovu radnju!");
             return true;
         }
