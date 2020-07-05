@@ -103,5 +103,30 @@ namespace FIT_PONG.WebAPI.Controllers
         {
             return takmicenjeService.GetTabela(id);
         }
+
+
+        //nedostaje :
+        //39.	POST 	/takmicenja/{id}/prijave	
+        //43.	GET	/takmicenje/{id}/utakmice
+        //47.	GET 	/takmicenje/{id}/favoriti
+
+        //postoje sljedeci endpointi:
+        /*
+         * Statistike
+            48.	GET	/statistike/{id}		//FIT_PONG.SharedModels.Statistike.cs	
+                Prijave
+
+            49.	GET	/prijave/{id}		//FIT_PONG.SharedModels.Prijave
+            50.	DELETE	/prijave/{id}
+
+         * Utakmice
+            51.	GET	/utakmice/{id}		//FIT_PONG.SharedModels.Utakmice
+            52.	GET 	/utakmice/{id}/ucesca	//FIT_PONG.SharedModels.Utakmice
+            53.	POST	/utakmice/{id}/oznaciUtakmicu
+            Ucesca
+            54.	GET	/ucesca/{id}
+
+        Nisam siguran da li ima smisla stavljati ih u zaseban kontroler tj praviti posebne kontrolere za 1,2 endpointa?
+         */
     }
 }

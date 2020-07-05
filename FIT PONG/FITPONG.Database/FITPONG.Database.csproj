@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>FIT_PONG.Database</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,6 +10,8 @@
     <Compile Remove="Migrations\20200704092741_Testirung.Designer.cs" />
     <Compile Remove="Migrations\20200704094005_Testirung.cs" />
     <Compile Remove="Migrations\20200704094005_Testirung.Designer.cs" />
+    <Compile Remove="Migrations\20200704100010_DodanaSuspenzija.cs" />
+    <Compile Remove="Migrations\20200704100010_DodanaSuspenzija.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
