@@ -106,6 +106,12 @@
     <Compile Include="frmReportDetalji.Designer.cs">
       <DependentUpon>frmReportDetalji.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmReportImageViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportImageViewer.Designer.cs">
+      <DependentUpon>frmReportImageViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmReportiPregled.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,6 +138,21 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmObjavaDodaj.resx">
+      <DependentUpon>frmObjavaDodaj.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReportDetalji.resx">
+      <DependentUpon>frmReportDetalji.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReportImageViewer.resx">
+      <DependentUpon>frmReportImageViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReportiPregled.resx">
+      <DependentUpon>frmReportiPregled.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -160,6 +181,9 @@
       <Project>{71fd63b5-8291-4aed-8925-f614fe299b42}</Project>
       <Name>FITPONG.SharedModels</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\FitpongLogo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

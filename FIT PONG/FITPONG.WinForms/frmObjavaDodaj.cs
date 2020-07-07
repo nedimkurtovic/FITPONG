@@ -16,5 +16,6 @@ namespace FIT_PONG.WinForms
         {
             InitializeComponent();
         }
+
     }
 }
