@@ -24,6 +24,16 @@ namespace FIT_PONG.WebAPI.Controllers
         //treba razdvojiti logiku, tj valjalo bi imati TakmicenjeAutorizacijaService, koji ce se iskljucivo
         //baviti autorizacijom, nema smisla, bukvalno u 90% slucajeva trazi se od takmicenje servisa da se
         //brine oko autorizacije
+
+            //autorizoatorove exceptione hvata glavni filterko babuka
+            
+            //Authorize politika tj basicauthentification handler ce rjesavati da li je ispravan
+            //auth header kako bih ja mogao iz usersservice nesmetano samo pokupiti userid ili username
+            //bez da se brinem da li ima gresaka u authorization headeru, dakle sve u basicauthhendleru 
+            //se rjesava po tom pitanju
+
+            //ALI Treba voditi ogromnog racuna o ovome : DA LI SE SALJE PRIKAZNOIME(Igrac) ILI USERNAME(User)
+            //u auth headeru kao username, potrebno sto prije rijesiti tu dilemu
         public TakmicenjaController(ITakmicenjeService _takmicenjeService, IUsersService _usersService,
             ITakmicenjeAutorizator _takmicenjeAutorizator)
         {
@@ -46,8 +56,8 @@ namespace FIT_PONG.WebAPI.Controllers
         [HttpPost]
         public Takmicenja Insert(TakmicenjaInsert obj)
         {
-            //var userName = usersService.GetUsername(HttpContext.Request.Headers); nesto na ovaj fazon
-            //takmicenjeService.Add(obj, userName); nesto na ovaj fazon
+            var userId = usersService.GetUserID(HttpContext.Request);// nesto na ovaj fazon
+            takmicenjeService.Add(obj, userId);// nesto na ovaj fazon
             throw new NotImplementedException();
         }
 
@@ -55,24 +65,27 @@ namespace FIT_PONG.WebAPI.Controllers
         //ovdje ce biti potrebno authorizovati
         public Takmicenja Update(int id, TakmicenjaUpdate obj)
         {
-            //var UserID = usersService.GetUserID(HttpContext.Request.Headers);
-            //return takmicenjeService.Update(id, obj, UserID); nesto ovako
+            var userId = usersService.GetUserID(HttpContext.Request);
+            takmicenjeAutorizator.AuthorizeUpdate(userId, id);
+            return takmicenjeService.Update(id, obj); 
             throw new NotImplementedException();
 
         }
         [HttpDelete("{id}")]
         public Takmicenja Delete(int id)
         {
-            //var UserID = usersService.GetUserID(HttpContext.Request.Headers);
-            //return takmicenjeService.Delete(id, UserID); nesto ovako
+            var userId = usersService.GetUserID(HttpContext.Request);
+            takmicenjeAutorizator.AuthorizeDelete(userId, id);
+            return takmicenjeService.Delete(id);
             throw new NotImplementedException();
         }
 
         [HttpPost("{id}/akcije/init")]
         public Takmicenja Init(int id)
         {
-            //var UserID = usersService.GetUserID(HttpContext.Request.Headers);
-            //return takmicenjeService.Init(id, UserID); nesto ovako
+            var userId = usersService.GetUserID(HttpContext.Request);
+            takmicenjeAutorizator.AuthorizeInit(userId, id);
+            return takmicenjeService.Initialize(id);
             throw new NotImplementedException();
         }
 
@@ -85,16 +98,21 @@ namespace FIT_PONG.WebAPI.Controllers
         [HttpGet("{id}/evidencije")]
         public List<EvidencijaMeca> GetEvidencije(int id)
         {
-            //var userName = usersService.GetUserName(HttpContext.Request.Headers);
-            //return takmicenjeService.GetEvidencije(userName, id); nesto ovako
+            var userName = usersService.GetPrikaznoIme(HttpContext.Request);
+            //ovdje treba biti oprezan ko kroz minsko polje zasto : 
+                //u users servisu GetPrikaznoIme po trenutnoj implementaciji vraca PrikaznoIme
+                //sto odgovara prvoj linij koda u GetEvidencije(dobavlja igraca na osnovu prikaznog imena)
+                //u slucaju da GetPrikaznoIme vraca username iz usera(iako nema nikakve logike da to uradi)
+                //bice belaj
+            return takmicenjeService.GetEvidencije(userName, id);
             throw new NotImplementedException();
         }
 
         [HttpPost("{id}/evidencije")]
         public List<EvidencijaMeca> EvidentirajMec(int id, [FromBody]EvidencijaMeca obj)
         {
-            //var userName = usersService.GetUserName(HttpContext.Request.Headers);
-            //return takmicenjeService.GetEvidencije(userName, id); nesto ovako
+            var userName = usersService.GetPrikaznoIme(HttpContext.Request);
+            return takmicenjeService.GetEvidencije(userName, id);
             throw new NotImplementedException();
         }
         

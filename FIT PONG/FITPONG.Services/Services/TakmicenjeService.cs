@@ -112,18 +112,14 @@ namespace FIT_PONG.Services.Services
                 }
             }
         }
-        public Takmicenja Update(int id, TakmicenjaUpdate obj, int KreatorID)
+        public Takmicenja Update(int id, TakmicenjaUpdate obj)
         {
-            var objBaza = db.Takmicenja.Include(x=>x.Kreator).Where(x => x.ID == id).FirstOrDefault();
+            var objBaza = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
             if (objBaza == null)// neka ovog dijela ovdje, jer kad ga premjestim u validirajUpdatetakmicenja, onda 
                 //cu dole pomjeriti ovu prethodnu i naredne 3 linije koda, i onda cu opet morat ako prodje ta funkcija
                 //opet ovdje dobavljati objekat baze
             {
                 throw new UserException("Takmičenje ne postoji");
-            }
-            if(objBaza.KreatorID != KreatorID)
-            {
-                throw new UserException("Niste autorizovani za ovu radnju");
             }
             //ako nije inicirano mozes mijenjati odredjene atribute, dodati korisniku mogucnost
             //mijenjanja/ dodavanja / uklanjanja novih/starih igraca?
@@ -133,21 +129,17 @@ namespace FIT_PONG.Services.Services
             return mapko.Map<Takmicenja>(objBaza);
         }
 
-        public Takmicenja Delete(int id, int KreatorID)
+        public Takmicenja Delete(int id)
         {
             // dobro razmisliti da li ce se ovo implementirati, skupa je malo operacija, ili mozda ograniciti samo
             // da se moze obrisati ako nije takmicenje inicirano, tj neko koristio rucni unos ofo ono pa skonto 
             //da je zajebo pa treba ponovo(vidis treba skontat dugme za kreatora, dodaj jos igraca ili nesto)
             Takmicenje obj = db.Takmicenja
-                .Include(x => x.Feed).Include(x => x.Prijave).Include(x=>x.Kreator)
+                .Include(x => x.Feed).Include(x => x.Prijave)
                 .Where(c => c.ID == id).SingleOrDefault();
             if (obj == null)
             {
                 throw new UserException("Takmicenje ne postoji");
-            }
-            if (obj.KreatorID != KreatorID)
-            {
-                throw new UserException("Niste autorizovani za ovu radnju");
             }
             ValidirajDeleteTakmicenja(obj);
             var temp = mapko.Map<Takmicenja>(obj);

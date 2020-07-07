@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -32,6 +33,7 @@ namespace FIT_PONG.Services.Services
 		string ResetProfilePicture(int id);//autorizovat
 		string UpdateProfilePicture(int id, byte[] Slika);//klasa slika umjesto niz byteova //autorizovat
 		string Postovanje(int postivalacID, int postovaniID);
-
+		string GetPrikaznoIme(HttpRequest Request);
+		int GetUserID(HttpRequest Request);
 	}
 }

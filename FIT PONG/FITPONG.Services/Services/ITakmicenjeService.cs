@@ -11,8 +11,8 @@ namespace FIT_PONG.Services.Services
 		SharedModels.Takmicenja GetByID(int id);
 		//moguce je i da ce se id kreatora slati a ne username
 		SharedModels.Takmicenja Add(SharedModels.Requests.Takmicenja.TakmicenjaInsert obj, int KreatorID);
-		SharedModels.Takmicenja Update(int id, SharedModels.Requests.Takmicenja.TakmicenjaUpdate obj, int KreatorID);//autorizovat
-		SharedModels.Takmicenja Delete(int id, int KreatorID);//autorizovat
+		SharedModels.Takmicenja Update(int id, SharedModels.Requests.Takmicenja.TakmicenjaUpdate obj);//autorizovat
+		SharedModels.Takmicenja Delete(int id);//autorizovat
 		SharedModels.Takmicenja Initialize(int id);//autorizovat //ili da vraca mdoel takmicejna ili string uspjesan init
 		List<RasporedStavka> GetRaspored(int id); 
 		List<EvidencijaMeca> GetEvidencije(string KorisnikUsername, int takmid);//do userid je potrebno doc preko logovane sesije ili nekog requesta ili auth podataka
