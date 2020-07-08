@@ -16,7 +16,7 @@ namespace FIT_PONG.SharedModels
         public int ELO { get; set; }
         public char Spol { get; set; }
         public string Grad { get; set; }
-        public Statistike statistika { get; set; }
+        public List<Statistike> statistike { get; set; }
         public int BrojPostovanja { get; set; }
         public List<Prijave> listaPrijava { get; set; }
     }

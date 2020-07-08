@@ -10,13 +10,19 @@ namespace FIT_PONG.Services.BL
 {
     public class FITPONGGmail : iEmailServis
     {
-        public void PosaljiKonfirmacijskiMejl(string linkzaklik,string email)
+        public void PosaljiKonfirmacijskiMejl(string linkzaklik, string email, string tip="web")
         {
-            PomocnaFunkcija(email, linkzaklik, "Yo brate/bratice dobrodosao na fitpong potvrdi mejl ovdje");
+            if (tip=="web")
+                PomocnaFunkcija(email, linkzaklik, "Yo brate/bratice dobrodosao na fitpong potvrdi mejl ovdje");
+            else
+                PomocnaFunkcijaAPI(email, linkzaklik, "Unesite sljedeci token u aplikaciju kako bi potvrdili mail: ");
         }
-        public void PosaljiResetPassword(string linkzaklik, string email)
+        public void PosaljiResetPassword(string linkzaklik, string email, string tip="web")
         {
-            PomocnaFunkcija(email, linkzaklik, "Yo brate / bratice resetuj password ovdje");
+            if (tip == "web")
+                PomocnaFunkcija(email, linkzaklik, "Yo brate / bratice resetuj password ovdje");
+            else
+                PomocnaFunkcijaAPI(email, linkzaklik, "Unesite sljedeci token u aplikaciju kako bi resetovali password: ");
         }
         public void PosaljiMejlReport(Report novi)
         {
@@ -53,6 +59,18 @@ namespace FIT_PONG.Services.BL
             Poruka.Body = new TextPart("html")
             {
                 Text = poruka + ": " + "<a href='" + linkzaklik + "'>KLIK</a>"
+            };
+            Sendaj(Poruka);
+        }
+        public void PomocnaFunkcijaAPI(string email, string token, string poruka)
+        {
+            var Poruka = new MimeMessage();
+            Poruka.From.Add(new MailboxAddress("fitpongtest@gmail.com"));
+            Poruka.To.Add(new MailboxAddress(email));
+
+            Poruka.Body = new TextPart("html")
+            {
+                Text = poruka + ": " + token
             };
             Sendaj(Poruka);
         }

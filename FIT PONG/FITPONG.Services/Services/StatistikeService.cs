@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FIT_PONG.Database;
 using FIT_PONG.SharedModels;
-using FITPONG.Services;
+using FIT_PONG.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

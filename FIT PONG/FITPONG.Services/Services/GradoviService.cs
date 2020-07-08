@@ -60,5 +60,12 @@ namespace FIT_PONG.Services.Services
             db.SaveChanges();
             return mapko.Map<SharedModels.Gradovi>(bazaObjekat);
         }
+
+        public List<Gradovi> Get()
+        {
+            var gradovi = db.Gradovi.ToList();
+
+            return mapko.Map<List<SharedModels.Gradovi>>(gradovi);
+        }
     }
 }

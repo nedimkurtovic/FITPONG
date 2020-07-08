@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,13 @@ namespace FIT_PONG.WebAPI.Profiles
 
             CreateMap<SharedModels.Requests.Objave.ObjaveInsertUpdate, Database.DTOs.Objava>();
             CreateMap<Database.DTOs.Objava, SharedModels.Objave>();
+
+            CreateMap<SharedModels.Requests.Account.AccountInsert, SharedModels.Users>();
+            CreateMap<Database.DTOs.Igrac, SharedModels.Users>();
+
+            CreateMap<Database.DTOs.Statistika, SharedModels.Statistike>();
+
+
         }
     }
 }
