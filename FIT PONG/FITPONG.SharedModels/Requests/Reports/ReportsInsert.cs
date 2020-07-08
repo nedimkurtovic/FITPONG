@@ -21,6 +21,6 @@ namespace FIT_PONG.SharedModels.Requests.Reports
         [Required(ErrorMessage = "Ovo polje je obavezno")]
         public string Email { get; set; }
 
-        public List<byte[]> Prilozi { get; set; }
+        public List<Fajl> Prilozi { get; set; }
     }
 }

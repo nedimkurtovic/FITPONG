@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>FIT_PONG</RootNamespace>
+    <RootNamespace>FIT_PONG.WebApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

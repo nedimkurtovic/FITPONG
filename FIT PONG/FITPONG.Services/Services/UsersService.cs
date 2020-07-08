@@ -1,23 +1,28 @@
-﻿using AutoMapper;
+﻿﻿using AutoMapper;
 using FIT_PONG.Database;
+using FIT_PONG.Database.DTOs;
 using FIT_PONG.Services.BL;
 using FIT_PONG.Services.Services;
 using FIT_PONG.SharedModels;
 using FIT_PONG.SharedModels.Requests.Account;
 using FIT_PONG.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Linq;
-using System.Text;
 using Google.Authenticator;
 using ValidationContext = System.ComponentModel.DataAnnotations.ValidationContext;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
+using System.Linq;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading;
 
 namespace FIT_PONG.Services.Services
 {
@@ -331,6 +336,38 @@ namespace FIT_PONG.Services.Services
             }
 
             return prijave;
+        }
+        public int GetUserID(HttpRequest Request)
+        {
+            var credentials = GetCredentials(Request);
+            var username = credentials[0];
+            var igrac = GetIgraca(username);
+            return igrac.ID;
+
+        }
+        public string GetPrikaznoIme(HttpRequest Request)
+        {
+            var credentials = GetCredentials(Request);
+            var username = credentials[0];
+            var igrac = GetIgraca(username);
+            //potrebno prvojeriti da li ce se vracati rpikazno ime ili users.username i jos bitno:
+            //potrebno je provjeriti da li ce se slati prikazno ime u authorization headeru
+            //ili email, to sve zavisi od toga kako napravimo usera kad se kreira novi
+            return igrac.PrikaznoIme;
+        }
+        private string[] GetCredentials(HttpRequest Request)
+        {
+            var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+            var credentialBytes = Convert.FromBase64String(authHeader.Parameter);
+            var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':');
+            return credentials;
+        }
+        private Igrac GetIgraca(string username)
+        {
+            var user = db.Igraci.Where(x => x.PrikaznoIme == username).FirstOrDefault();
+            if (user != null)
+                return user;
+            throw new UserException("User ne postoji ili je obrisan");
         }
     }
 }

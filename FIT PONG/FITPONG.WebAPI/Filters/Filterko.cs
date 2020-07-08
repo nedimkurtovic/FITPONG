@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,6 +26,12 @@ namespace FIT_PONG.WebAPI.Filters
                     context.ModelState.AddModelError(x.key, x.msg);
                 }
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+            if (context.Exception is AuthorizeException)
+            {
+                AuthorizeException izuzetak = context.Exception as AuthorizeException;
+                context.ModelState.AddModelError("",izuzetak.Message);
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
             }
             else
             {

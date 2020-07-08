@@ -9,8 +9,10 @@ using FIT_PONG.Services.Services;
 using FIT_PONG.WebAPI;
 using FIT_PONG.WebAPI.Security;
 using Microsoft.AspNetCore.Authentication;
+using FIT_PONG.Services.Services.Autorizacija;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -94,8 +96,15 @@ namespace FITPONG.WebAPI
                 .AddEntityFrameworkStores<MyDb>()
                 .AddDefaultTokenProviders();
 
+            
+            //fina gradska raja
+            services.AddScoped<FIT_PONG.Services.BL.InitTakmicenja>();
+            services.AddScoped<FIT_PONG.Services.BL.ELOCalculator>();
+            services.AddScoped<FIT_PONG.Services.BL.Evidentor>();
+            services.AddScoped<FIT_PONG.Services.BL.iEmailServis, FIT_PONG.Services.BL.FITPONGGmail>();
+            services.AddScoped<FIT_PONG.Services.BL.TakmicenjeValidator>();
 
-            services.AddAutoMapper(typeof(Startup));
+            //ciste puno linija koda, negdje i obraz!
             services.AddScoped<IFeedsService, FeedsService>();
             services.AddScoped<IGradoviService, GradoviService>();
             services.AddScoped<IObjaveService, ObjaveService>();
@@ -103,6 +112,12 @@ namespace FITPONG.WebAPI
             services.AddScoped<IStatistikeService, StatistikeService>();
             services.AddScoped<iEmailServis, FITPONGGmail>();
 
+            services.AddScoped<ITakmicenjeService, TakmicenjeService>();
+
+            //SIPA
+            services.AddScoped<ITakmicenjeAutorizator, TakmicenjeAutorizator>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -112,6 +127,14 @@ namespace FITPONG.WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = "";
+            });
 
             app.UseRouting();
 
@@ -123,16 +146,6 @@ namespace FITPONG.WebAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
         }

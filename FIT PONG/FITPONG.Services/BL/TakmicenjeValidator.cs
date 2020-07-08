@@ -21,14 +21,14 @@ namespace FIT_PONG.Services.BL
 
             List<(string key, string error)> listaErrora = new List<(string key, string error)>();
             if (PostojiTakmicenje(objekat.Naziv))
-                listaErrora.Add(("", "Vec postoji takmicenje u bazi"));
+                listaErrora.Add(("", "Već postoji takmičenje u bazi"));
             if (!objekat.RucniOdabir)
             {
                 if (objekat.RokZavrsetkaPrijave != null && objekat.RokZavrsetkaPrijave != null &&
                   objekat.RokZavrsetkaPrijave < objekat.RokPocetkaPrijave)
-                    listaErrora.Add((nameof(objekat.RokZavrsetkaPrijave), "Datum zavrsetka prijava ne moze biti prije pocetka"));
+                    listaErrora.Add((nameof(objekat.RokZavrsetkaPrijave), "Datum završetka prijava ne može biti prije početka"));
                 if (objekat.DatumPocetka != null && objekat.RokZavrsetkaPrijave != null && objekat.DatumPocetka < objekat.RokZavrsetkaPrijave)
-                    listaErrora.Add((nameof(objekat.DatumPocetka), "Datum pocetka ne moze biti prije zavrsetka prijava"));
+                    listaErrora.Add((nameof(objekat.DatumPocetka), "Datum početka ne moze biti prije završetka prijava"));
             }
             else
             {
@@ -46,16 +46,16 @@ namespace FIT_PONG.Services.BL
                         !ValidnaKorisnickaImena(objekat.RucnoOdabraniIgraci)
                         )
                     {
-                        listaErrora.Add(("", "Molimo unesite ispravno imena igraca"));
+                        listaErrora.Add(("", "Molimo unesite ispravno imena igrača"));
                     }
                     if (RucnaImenaSadrziDuplikate(objekat.RucnoOdabraniIgraci))
-                        listaErrora.Add(("", "Nemojte dva puta istog igraca navoditi"));
+                        listaErrora.Add(("", "Igrače navodite samo jednom"));
                     if (BrojRucnoUnesenih(objekat.RucnoOdabraniIgraci) < 4)
-                        listaErrora.Add(("", "Minimalno 4 igraca za takmicenje"));
+                        listaErrora.Add(("", "Minimalno 4 igrača za takmičenje"));
                 }
                 else
                 {
-                    listaErrora.Add(("", "Molimo unesite ispravno imena igraca"));
+                    listaErrora.Add(("", "Molimo unesite ispravno imena igrača"));
                 }
             }
             _listaTakmicenja = null;
@@ -144,19 +144,24 @@ namespace FIT_PONG.Services.BL
             return false;
         }
         public List<(string key, string error)> VratiListuErroraAkcijaEdit(TakmicenjaUpdate objekat,int ID,
-            List<Takmicenje> ListaTakmicenja)
+            List<Takmicenje> ListaTakmicenja, Takmicenje bazaObj)
         {
             List<(string key, string error)> listaErrora = new List<(string key, string error)>();
                                                 //OVDJE CE BITI PROSLIJEDJEN ID PARAMETAR OVOJ FUNKCIJI
             if (TakmicenjaViseOd(objekat.Naziv, ID, ListaTakmicenja))
-                listaErrora.Add((nameof(objekat.Naziv), "Vec postoji takmicenje u bazi"));
-            if (objekat.RokZavrsetkaPrijave != null && objekat.RokPocetkaPrijave != null &&
-                objekat.RokZavrsetkaPrijave < objekat.RokPocetkaPrijave)
-                listaErrora.Add((nameof(objekat.RokZavrsetkaPrijave), "Datum zavrsetka prijava ne moze biti prije pocetka"));
-            if (objekat.DatumPocetka != null && objekat.RokZavrsetkaPrijave != null && objekat.DatumPocetka < objekat.RokZavrsetkaPrijave)
-                listaErrora.Add((nameof(objekat.DatumPocetka), "Datum pocetka ne moze biti prije zavrsetka prijava"));
+                listaErrora.Add((nameof(objekat.Naziv), "Već postoji takmičenje u bazi"));
+            if (bazaObj.Inicirano)
+            {
+                if (objekat.RokZavrsetkaPrijave != null && objekat.RokPocetkaPrijave != null &&
+                    objekat.RokZavrsetkaPrijave < objekat.RokPocetkaPrijave)
+                    listaErrora.Add((nameof(objekat.RokZavrsetkaPrijave), "Datum završetka prijava ne moze biti prije početka takmičenja"));
+                if (objekat.DatumPocetka != null && objekat.RokZavrsetkaPrijave != null && objekat.DatumPocetka < objekat.RokZavrsetkaPrijave)
+                    listaErrora.Add((nameof(objekat.DatumPocetka), "Datum početka ne može biti prije završetka prijava"));
+            }
+            else
+                listaErrora.Add(("", "Takmičenje je već inicirano, nije moguće mijenjati datume prijava"));
             if (objekat.DatumPocetka != null && objekat.DatumZavrsetka != null && objekat.DatumZavrsetka < objekat.DatumPocetka)
-                listaErrora.Add((nameof(objekat.DatumZavrsetka), "Datum pocetka takmicenja ne moze biti prije zavrsetka"));
+                listaErrora.Add((nameof(objekat.DatumZavrsetka), "Datum početka takmičenja ne može biti prije završetka"));
 
             return listaErrora;
         }

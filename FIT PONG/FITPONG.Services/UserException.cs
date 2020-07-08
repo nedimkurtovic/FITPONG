@@ -9,6 +9,7 @@ namespace FIT_PONG.Services
         public UserException() { }
         public UserException(string msg) : base(msg)
         {
+            Errori.Add(("", msg));
         }
         public void AddError(string key, string msg)
         {

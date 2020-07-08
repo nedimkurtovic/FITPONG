@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FIT_PONG.SharedModels
+namespace FIT_PONG.SharedModels.Requests.Takmicenja
 {
     public class TabelaStavka
     {

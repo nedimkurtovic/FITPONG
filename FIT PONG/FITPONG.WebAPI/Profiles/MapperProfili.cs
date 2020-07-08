@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using FIT_PONG.SharedModels.Requests.Takmicenja;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,8 @@ namespace FIT_PONG.WebAPI.Profiles
             CreateMap<Database.DTOs.Statistika, SharedModels.Statistike>();
 
 
+            CreateMap<Database.DTOs.Takmicenje, SharedModels.Takmicenja>();
+            CreateMap<SharedModels.Requests.Takmicenja.TakmicenjaUpdate, Database.DTOs.Takmicenje>();
         }
     }
 }
