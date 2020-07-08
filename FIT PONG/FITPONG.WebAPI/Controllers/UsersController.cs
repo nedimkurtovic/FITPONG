@@ -27,11 +27,13 @@ namespace FIT_PONG.WebAPI.Controllers
             this.statistikeService = statistikeService;
         }
 
+
         [HttpGet]
         public List<Users> Get([FromQuery]AccountSearchRequest obj)
         {
             return usersService.Get(obj);
         }
+
 
         [HttpGet("{id}")]
         public Users Get(int id)
@@ -39,15 +41,15 @@ namespace FIT_PONG.WebAPI.Controllers
             return usersService.Get(id);
         }
 
+
         [HttpPost]
         [AllowAnonymous]
         [Route("registracija")]
         public Task<Users> Register(AccountInsert obj)
         {
-            var host = $"http://{ HttpContext.Request.Host }";
-
-            return usersService.Register(obj, host.ToString());
+            return usersService.Register(obj);
         }
+
 
         [HttpPost]
         [Route("login")]
@@ -57,13 +59,42 @@ namespace FIT_PONG.WebAPI.Controllers
             return usersService.Login(obj);
         }
 
+
+        [HttpPost]
+        [Route("mailPonovnoSlanje")]
+        [AllowAnonymous]
+        public Task<string> PonovoPosaljiMail(Email_Password_Request obj)
+        {
+            return usersService.SendConfirmationEmail(obj);
+        }
+
+
         [HttpGet]
-        [Route("/potvrdiMejl")]
+        [Route("potvrdiMejl")]
         [AllowAnonymous]
         public Task<String> ConfirmEmail([FromQuery]string userId, [FromQuery]string token)
         {
             return usersService.ConfirmEmail(userId, token);
         }
+
+
+        [HttpPost]
+        [Route("promjenaPassworda")]
+        public Task<string> ResetujPassword(Email_Password_Request obj)
+        {
+            return usersService.SendPasswordChange(obj);
+        }
+
+
+        [HttpPost]
+        [Route("potvrdiPromjenuPassworda")]
+        public Task<String> ConfirmPasswordChange(PasswordPromjena obj)
+        {
+            var loggedInUserName = User.Identity.Name;
+
+            return usersService.ConfirmPasswordChange(loggedInUserName, obj);
+        }
+
 
         [HttpPost]
         [Route("{postovaniId}/akcije/postuj")]
@@ -75,5 +106,8 @@ namespace FIT_PONG.WebAPI.Controllers
 
             return usersService.Postovanje(loggedInUserName, postovaniId);
         }
+
+        
+
     }
 }

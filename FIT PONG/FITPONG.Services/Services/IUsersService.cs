@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FIT_PONG.SharedModels.Requests.Account;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,7 @@ namespace FIT_PONG.Services.Services
     {
 		List<SharedModels.Users> Get(SharedModels.Requests.Account.AccountSearchRequest obj);
 		SharedModels.Users Get(int ID);
-		Task<SharedModels.Users> Register(SharedModels.Requests.Account.AccountInsert obj, string host);
+		Task<SharedModels.Users> Register(SharedModels.Requests.Account.AccountInsert obj);
 		Task<SharedModels.Users> Login(SharedModels.Requests.Account.Login obj); //Umjesto profile pic path treba Slika 
 		// ((pitanje za vjezbe kako osigurati da ne mozes pozvati logout za drugog korisnika) //autorizovat
 		//naredne zabiljeske se odnose na Logout metodu ali i sve metode gdje je potreban userID
@@ -29,10 +30,10 @@ namespace FIT_PONG.Services.Services
 		
 		//string Logout(int id || string username);
 		
-		string SendConfirmationEmail(SharedModels.Requests.Account.Email_Password_Request obj);
+		Task<string> SendConfirmationEmail(SharedModels.Requests.Account.Email_Password_Request obj);
 		Task<string> ConfirmEmail(string userId, string token);
-		Task<string> SendPasswordChange(SharedModels.Requests.Account.Email_Password_Request obj, string host);
-		Task<string> ConfirmPasswordChange(int id, string token, string password);
+		Task<string> SendPasswordChange(SharedModels.Requests.Account.Email_Password_Request obj);
+		Task<string> ConfirmPasswordChange(string loggedInUserName, PasswordPromjena obj);
 		string ResetProfilePicture(int id);//autorizovat
 		string UpdateProfilePicture(int id, byte[] Slika);//klasa slika umjesto niz byteova //autorizovat
 		string Postovanje(string loggedInUserName, int postovaniID);

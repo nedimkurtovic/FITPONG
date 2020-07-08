@@ -22,6 +22,8 @@ namespace FIT_PONG.WebAPI.Profiles
 
             CreateMap<SharedModels.Requests.Account.AccountInsert, SharedModels.Users>();
             CreateMap<Database.DTOs.Igrac, SharedModels.Users>();
+            CreateMap<SharedModels.Users, Database.DTOs.Igrac>();
+
 
             CreateMap<Database.DTOs.Statistika, SharedModels.Statistike>();
 
