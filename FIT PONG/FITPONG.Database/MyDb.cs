@@ -48,6 +48,8 @@ namespace FIT_PONG.Database
         public DbSet<FeedObjava> FeedsObjave { get; set; }
         public DbSet<BlokLista> BlokListe { get; set; }
         public DbSet<Favoriti> Favoriti { get; set; }
+        public DbSet<Suspenzija> Suspenzije { get; set; }
+        public DbSet<VrstaSuspenzije> VrsteSuspenzije { get; set; }
 
 
         //ostaje pitanje za razmotrit kako ce se ovo ponasat sa identitycontextom jer cemo morat mijenjat ono sto nasljedjuje

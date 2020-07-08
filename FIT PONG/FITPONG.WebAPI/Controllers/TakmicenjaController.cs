@@ -68,7 +68,6 @@ namespace FIT_PONG.WebAPI.Controllers
             var userId = usersService.GetUserID(HttpContext.Request);
             takmicenjeAutorizator.AuthorizeUpdate(userId, id);
             return takmicenjeService.Update(id, obj); 
-            throw new NotImplementedException();
 
         }
         [HttpDelete("{id}")]
@@ -77,7 +76,6 @@ namespace FIT_PONG.WebAPI.Controllers
             var userId = usersService.GetUserID(HttpContext.Request);
             takmicenjeAutorizator.AuthorizeDelete(userId, id);
             return takmicenjeService.Delete(id);
-            throw new NotImplementedException();
         }
 
         [HttpPost("{id}/akcije/init")]
@@ -86,7 +84,6 @@ namespace FIT_PONG.WebAPI.Controllers
             var userId = usersService.GetUserID(HttpContext.Request);
             takmicenjeAutorizator.AuthorizeInit(userId, id);
             return takmicenjeService.Initialize(id);
-            throw new NotImplementedException();
         }
 
         [HttpGet("{id}/raspored")]
@@ -105,7 +102,6 @@ namespace FIT_PONG.WebAPI.Controllers
                 //u slucaju da GetPrikaznoIme vraca username iz usera(iako nema nikakve logike da to uradi)
                 //bice belaj
             return takmicenjeService.GetEvidencije(userName, id);
-            throw new NotImplementedException();
         }
 
         [HttpPost("{id}/evidencije")]
@@ -113,7 +109,6 @@ namespace FIT_PONG.WebAPI.Controllers
         {
             var userName = usersService.GetPrikaznoIme(HttpContext.Request);
             return takmicenjeService.GetEvidencije(userName, id);
-            throw new NotImplementedException();
         }
         
         [HttpGet("{id}/tabela")]
@@ -125,7 +120,8 @@ namespace FIT_PONG.WebAPI.Controllers
 
         //nedostaje :
         //39.	POST 	/takmicenja/{id}/prijave	
-        //43.	GET	/takmicenje/{id}/utakmice
+        //43.	GET	/takmicenje/{id}/utakmice <- u kakav model spremit ovo? Ne koristi se nigdje 
+        //tj nemamo nikakvu implementaciju koja ce koristiti ovo 
         //47.	GET 	/takmicenje/{id}/favoriti
 
         //postoje sljedeci endpointi:
