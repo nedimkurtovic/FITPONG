@@ -69,10 +69,11 @@ namespace FIT_PONG.Services.BL
                     db.SaveChanges();
                     _takmicenje.Inicirano = true;
                     db.SaveChanges();
+                    transakcija.Commit();
                 }
                 catch (Exception err)
                 {
-                    transakcija.Rollback();
+                    transakcija.Rollback();                    
                     throw err;
                 }
             }

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using FIT_PONG.Database.DTOs;
 using FIT_PONG.SharedModels.Requests.Takmicenja;
 using FIT_PONG.Database;
+using Org.BouncyCastle.Math.EC.Rfc7748;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace FIT_PONG.Services.BL
 {
@@ -48,11 +50,13 @@ namespace FIT_PONG.Services.BL
                     int pobjednik = (obj.RezultatTim1.GetValueOrDefault() > obj.RezultatTim2.GetValueOrDefault()) ? 1 : 2;
                     UpdateIgracUtakmicaZapis(obj, pobjednik);
                     //potrebno mec postaviti na zavrsen
-                    Utakmica trenutna = db.IgraciUtakmice
+                    Igrac_Utakmica trenutniIg = db.IgraciUtakmice
                             .AsNoTracking().Include(x => x.Utakmica).ThenInclude(x => x.Runda)
-                            .Include(x => x.Utakmica.UcescaNaUtakmici)
                             .Where(x => x.IgID == obj.Tim1[0].IgID)
-                            .Select(x => x.Utakmica).FirstOrDefault();
+                            .FirstOrDefault();
+
+                    Utakmica trenutna = db.Utakmice.Include(x => x.UcescaNaUtakmici).Include(x=>x.Runda)
+                        .Where(x => x.ID == trenutniIg.UtakmicaID).FirstOrDefault();
 
                     if (GetTakmicenjeSistem(takmicenjeID) == "Single elimination"
                         && !ZadnjaUtakmica(obj.Tim1[0], takmicenjeID))
@@ -452,10 +456,13 @@ namespace FIT_PONG.Services.BL
         {
             //bracket mi treba da ne bi morao raditi join do takmicenja, najblizi iduci filter koji bi mi dao rundu iz istog takmicenja
             //je bracket pa da skratim jedan join viska
-            Runda runda = db.Utakmice
-                .Include(x => x.Runda).ThenInclude(x => x.Utakmice).Include(x => x.Runda.Bracket)
+            int RundaIDUtakmicina = db.Utakmice
+                .Include(x => x.Runda)
                 .AsNoTracking()
-                .Where(x => x.ID == trenutnaUtakmica.ID).Select(x => x.Runda).FirstOrDefault();
+                .Where(x => x.ID == trenutnaUtakmica.ID).Select(x => x.Runda.ID).FirstOrDefault();
+            Runda runda = db.Runde.Include(x => x.Bracket).Include(x => x.Utakmice)
+                .Where(x => x.ID == RundaIDUtakmicina).FirstOrDefault();
+
             int bracketid = db.Brackets.Where(x => x.ID == runda.BracketID).FirstOrDefault().ID;
             int BrojPrveUtakmiceIduceRunde = runda.Utakmice.Min(x => x.BrojUtakmice);
             int nadjiIducuUtakmicu = inicijalizator.NadjiOdgovarajucuIducuUtakmicu(trenutnaUtakmica.BrojUtakmice,
@@ -547,7 +554,16 @@ namespace FIT_PONG.Services.BL
             //ako je sve kako treba, ovo bi i za single i za double uvijek trebalo vratiti 2 zapisa, tim1 i tim2
             if (lista.Count != 0)
             {
-                return (lista[0].naziv, lista[0].rez, lista[1].rez, lista[1].naziv);
+                //kako je tala obrisao igraca ovdje je pocelo pucati, poruka : Nemojte brisati igraca
+                //ta funkcionalnost jos nije dostupna na stranici kad bude moci cete brisati, do tad nemojte
+                (string naziv, int? rez) tim1 =
+                    (lista[0].naziv != null) ?
+                    (lista[0].naziv, lista[0].rez) : (null, null);
+                (string naziv, int? rez) tim2 =
+                    (lista.Count > 1) ?
+                    (lista[1].naziv, lista[1].rez) : (null, null);
+
+                return (tim1.naziv, tim1.rez, tim2.rez, tim2.naziv);
             }
             //ne bi nikada teoretski trebala ova linija hitat
             return (null, null, null, null);
