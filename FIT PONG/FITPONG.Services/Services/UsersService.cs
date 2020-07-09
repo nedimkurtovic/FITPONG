@@ -43,49 +43,6 @@ namespace FIT_PONG.Services.Services
             this.mapper = mapper;
         }
 
-        public async Task<string> ConfirmEmail(string userId, string token)
-        {
-            if (userId == null || token == null)
-                throw new UserException("UserID i token ne smiju biti null.");
-
-            var user = await usermanager.FindByIdAsync(userId);
-            if (user == null)
-                throw new UserException("User ne postoji u bazi");
-
-
-            var rezultat = await usermanager.ConfirmEmailAsync(user, token);
-            if (!rezultat.Succeeded)
-                throw new UserException("Doslo je do greske prilikom potvrde mejla.");
-
-            return "Uspjesno ste potvrdili mail.";
-        }
-
-        public async Task<string> ConfirmPasswordChange(int id, string token, string password)
-        {
-            var u = db.Users.Find(id);
-
-            if (u != null)
-            {
-                var user = await usermanager.FindByEmailAsync(u.Email);
-                if (user != null)
-                {
-                    var rezultat = await usermanager.ResetPasswordAsync(user, token, password);
-                    if (rezultat.Succeeded)
-                        return "Password je uspjesno resetovan.";
-                    else
-                    {
-                        UserException exception = new UserException();
-
-                        foreach (var error in rezultat.Errors)
-                            exception.AddError("", error.Description);
-
-                        throw exception;
-                    }
-                }
-            }
-            throw new UserException("User ne postoji u bazi.");
-        }
-
         public List<Users> Get(AccountSearchRequest obj)
         {
             var users = new List<Database.DTOs.Igrac>();
@@ -121,14 +78,61 @@ namespace FIT_PONG.Services.Services
             return mapper.Map<SharedModels.Users>(u);
         }
 
+        public async Task<Users> Register(AccountInsert obj)
+        {
+            if (PostojiPrikaznoIme(obj.PrikaznoIme))
+                throw new UserException("Prikazno ime koje ste unijeli je vec zauzeto.");
+
+            var user = new IdentityUser<int>
+            {
+                UserName = obj.Email,
+                Email = obj.Email
+            };
+
+            var result = await usermanager.CreateAsync(user, obj.Password);
+            if (result.Succeeded)
+            {
+                var igrac = new Igrac
+                {
+                    ID = user.Id,
+                    ELO = 1000,
+                    GradID = obj.GradId,
+                    BrojPosjetaNaProfil = 0,
+                    JacaRuka = obj.JacaRuka,
+                    PrikaznoIme = obj.PrikaznoIme,
+                    Spol = obj.Spol,
+                    Visina = obj.Visina,
+                    TwoFactorEnabled = false
+                };
+
+                db.Add(igrac);
+                db.SaveChanges();
+
+                var token = await usermanager.GenerateEmailConfirmationTokenAsync(user);
+                mailservis.PosaljiKonfirmacijskiMejl(token, user.Email, "api");
+                return mapper.Map<SharedModels.Users>(obj);
+            }
+            else
+            {
+                var exception = new UserException();
+                foreach (var error in result.Errors)
+                {
+                    exception.AddError(error.Code, error.Description);
+                }
+                throw exception;
+            }
+
+        }
+
         public async Task<Users> Login(Login obj)
         {
             var korisnik = await usermanager.FindByEmailAsync(obj.UserName);
             if (korisnik == null)
                 throw new UserException("Neispravni podaci za login.");
 
-            var rezultat = await signinmanager.PasswordSignInAsync(obj.UserName, obj.Password, obj.RememberMe, false);
             var igrac = db.Igraci.Find(korisnik.Id);
+
+            var rezultat = await signinmanager.PasswordSignInAsync(obj.UserName, obj.Password, obj.RememberMe, false);
 
             if (rezultat.IsLockedOut)
             {
@@ -157,6 +161,94 @@ namespace FIT_PONG.Services.Services
         //    await signinmanager.SignOutAsync();
         //}
 
+        public async Task<string> SendConfirmationEmail(Email_Password_Request obj)
+        {
+            var user = await usermanager.FindByEmailAsync(obj.Email);
+
+            if (user != null && !user.EmailConfirmed)
+            {
+                var token = await usermanager.GenerateEmailConfirmationTokenAsync(user);
+                mailservis.PosaljiKonfirmacijskiMejl(token, user.Email, "api");
+                return "Konfirmacijski mail uspjesno poslan.";
+            }
+            else
+            {
+                throw new UserException("Korisnik ne postoji u bazi ili je mail vec potvrdjen.");
+            }
+
+            }
+
+        public async Task<string> SendPasswordChange(Email_Password_Request obj)
+        {
+            var user = await usermanager.FindByEmailAsync(obj.Email);
+            if (user != null && user.EmailConfirmed)
+            {
+                var token = await usermanager.GeneratePasswordResetTokenAsync(user);
+
+                try
+                {
+                    mailservis.PosaljiResetPassword(token, obj.Email, "api");
+                    return "Poslan mail za promjenu passworda.";
+                }
+                catch (Exception)
+                {
+                    throw new UserException("Doslo je do greske prilikom promjene passworda.");
+                }
+            }
+            throw new UserException("Korisnik ne postoji ili nije povrdio mail.");
+
+        }
+       
+        public async Task<string> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null)
+                throw new UserException("UserID i token ne smiju biti null.");
+
+            var user = await usermanager.FindByIdAsync(userId);
+            if (user == null)
+                throw new UserException("User ne postoji u bazi");
+
+            if(user.EmailConfirmed)
+                throw new UserException("Mail je vec potvrdjen.");
+
+            var rezultat = await usermanager.ConfirmEmailAsync(user, token);
+            if (!rezultat.Succeeded)
+                throw new UserException("Doslo je do greske prilikom potvrde mejla.");
+
+
+
+            return "Uspjesno ste potvrdili mail.";
+        }
+
+        public async Task<string> ConfirmPasswordChange(string loggedInUserName, PasswordPromjena obj)
+        {
+            var u = db.Igraci.Where(d => d.PrikaznoIme == loggedInUserName).FirstOrDefault();
+
+            if (u != null)
+            {
+                var user = await usermanager.FindByIdAsync(u.ID.ToString());
+                if (user != null)
+                {
+                    if (obj.password != obj.potvrdaPassword)
+                        throw new UserException("Passwordi se ne slazu.");
+
+                    var rezultat = await usermanager.ResetPasswordAsync(user, obj.token, obj.password);
+                    if (rezultat.Succeeded)
+                        return "Password je uspjesno resetovan.";
+                    else
+                    {
+                        UserException exception = new UserException();
+
+                        foreach (var error in rezultat.Errors)
+                            exception.AddError("", error.Description);
+
+                        throw exception;
+                    }
+                }
+            }
+            throw new UserException("User ne postoji u bazi.");
+        }
+
         public string Postovanje(string loggedInUserName, int postovaniID)
         {
             var user1 = db.Users.Where(d => d.Email == loggedInUserName).FirstOrDefault();
@@ -181,62 +273,9 @@ namespace FIT_PONG.Services.Services
             return "Postovanje uspjesno azurirano.";
         }
 
-        public async Task<Users> Register(AccountInsert obj, string host)
-        {
-            var user = new IdentityUser<int>
-            {
-                UserName = obj.Email,
-                Email = obj.Email
-            };
-
-            var result = await usermanager.CreateAsync(user, obj.Password);
-            if (result.Succeeded)
-            {
-                var token = await usermanager.GenerateEmailConfirmationTokenAsync(user);
-                mailservis.PosaljiKonfirmacijskiMejl(token, user.Email,"api");
-                return mapper.Map<SharedModels.Users>(obj);
-            }
-            else
-            {
-                var exception = new UserException();
-                foreach (var error in result.Errors)
-                {
-                    exception.AddError(error.Code, error.Description);
-                }
-                throw exception;
-            }
-
-        }
-
         public string ResetProfilePicture(int id)
         {
             throw new NotImplementedException();
-        }
-
-        public string SendConfirmationEmail(Email_Password_Request obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<string> SendPasswordChange(Email_Password_Request obj, string host)
-        {
-            var user = await usermanager.FindByEmailAsync(obj.Email);
-            if (user != null && user.EmailConfirmed)
-            {
-                var token = await usermanager.GeneratePasswordResetTokenAsync(user);
-
-                try
-                {
-                    mailservis.PosaljiResetPassword(token, obj.Email, "api");
-                    return "Poslan mail za promjenu passworda.";
-                }
-                catch (Exception)
-                {
-                    //TO DO                
-                }
-            }
-            throw new UserException("Korisnik ne postoji ili nije povrdio mail.");
-
         }
 
         public string UpdateProfilePicture(int id, byte[] Slika)
@@ -368,6 +407,13 @@ namespace FIT_PONG.Services.Services
             if (user != null)
                 return user;
             throw new UserException("User ne postoji ili je obrisan");
+        }
+
+        private bool PostojiPrikaznoIme(string prikaznoIme)
+        {
+            var igrac = db.Igraci.Where(i => i.PrikaznoIme == prikaznoIme).FirstOrDefault();
+
+            return igrac != null;
         }
     }
 }
