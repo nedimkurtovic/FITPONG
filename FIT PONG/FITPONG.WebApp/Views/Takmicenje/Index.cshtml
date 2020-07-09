@@ -68,14 +68,14 @@ else
     </nav>
     <div class="css-table">
         <div class="css-table-row">
-            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Naziv)</div>
-            <div class="css-table-header">@Html.SortableHeaderFor(x => x.MinimalniELO)</div>
-            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Kategorija)</div>
-            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Sistem)</div>
-            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Vrsta)</div>
-            <div class="css-table-header">@Html.SortableHeaderFor(x => x.DatumZavrsetkaPrijava)</div>
-            <div class="css-table-header">@Html.SortableHeaderFor(x => x.BrojPrijavljenih)</div>
-            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Status)</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x=>x.Naziv , "-Naziv")</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.MinimalniELO, "-MinimalniELO")</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Kategorija, "-Kategorija")</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Sistem, "-Sistem")</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Vrsta, "-Vrsta")</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.DatumZavrsetkaPrijava, "-DatumZavrsetkaPrijava")</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.BrojPrijavljenih, "BrojPrijavljenih")</div>
+            <div class="css-table-header">@Html.SortableHeaderFor(x => x.Status, "Status")</div>
         </div>
         @foreach (var x in Model)
         {
