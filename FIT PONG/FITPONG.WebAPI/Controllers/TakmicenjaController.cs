@@ -6,6 +6,7 @@ using AutoMapper.Configuration.Conventions;
 using FIT_PONG.Services.Services;
 using FIT_PONG.Services.Services.Autorizacija;
 using FIT_PONG.SharedModels;
+using FIT_PONG.SharedModels.Requests;
 using FIT_PONG.SharedModels.Requests.Takmicenja;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,9 +44,10 @@ namespace FIT_PONG.WebAPI.Controllers
         }
 
         [HttpGet]
-        public List<Takmicenja> Get([FromQuery]TakmicenjeSearch obj)
+        public PagedResponse<Takmicenja> Get([FromQuery]TakmicenjeSearch obj)
         {
-            return takmicenjeService.Get(obj);
+            var respons = GetPagedResponse(obj);
+            return respons;
         }
         [HttpGet("{id}")]
         public Takmicenja Get(int id)
@@ -117,6 +119,26 @@ namespace FIT_PONG.WebAPI.Controllers
             return takmicenjeService.GetTabela(id);
         }
 
+        private PagedResponse<Takmicenja> GetPagedResponse(TakmicenjeSearch obj)
+        {
+            var listaTakmicenja = takmicenjeService.Get(obj);
+            PagedResponse<Takmicenja> respons = new PagedResponse<Takmicenja>();
+
+            respons.TotalPageCount = (int)Math.Ceiling((double)listaTakmicenja.Count() / (double)obj.Limit);
+            respons.Stavke = listaTakmicenja.Skip((obj.Page - 1) * obj.Limit).Take(obj.Limit).ToList();
+
+            TakmicenjeSearch iducaKlon = obj.Clone() as TakmicenjeSearch;
+            iducaKlon.Page = (iducaKlon.Page + 1) > respons.TotalPageCount ? -1 : iducaKlon.Page + 1;
+            String iduciUrl = iducaKlon.Page == -1 ? null : this.Url.Action("Get", null, iducaKlon, Request.Scheme);
+
+            TakmicenjeSearch proslaKlon = obj.Clone() as TakmicenjeSearch;
+            proslaKlon.Page = (proslaKlon.Page - 1) < 0 ? -1 : proslaKlon.Page - 1;
+            String prosliUrl = proslaKlon.Page == -1 ? null : this.Url.Action("Get", null, proslaKlon, Request.Scheme);
+
+            respons.IducaStranica = !String.IsNullOrWhiteSpace(iduciUrl) ? new Uri(iduciUrl) : null;
+            respons.ProslaStranica = !String.IsNullOrWhiteSpace(prosliUrl) ? new Uri(prosliUrl) : null;
+            return respons;
+        }
 
         //nedostaje :
         //39.	POST 	/takmicenja/{id}/prijave	
