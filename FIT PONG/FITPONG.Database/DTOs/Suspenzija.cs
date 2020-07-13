@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace FITPONG.Database.DTOs
+namespace FIT_PONG.Database.DTOs
 {
     public class Suspenzija
     {

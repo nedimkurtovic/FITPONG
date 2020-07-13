@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using FIT_PONG.Database.DTOs;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using FITPONG.Database.DTOs;
 
 namespace FIT_PONG.Database
 {

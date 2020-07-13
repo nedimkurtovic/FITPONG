@@ -103,10 +103,10 @@
                     <table class="table user-list">
                         <thead>
                             <tr>
-                                <th class="text-nowrap"><span>@Html.SortableHeaderFor(x => x.PrikaznoIme)</span></th>
-                                <th class="text-nowrap"><span>@Html.SortableHeaderFor(x => x.BrojPostovanja)</span></th>
-                                <th class="text-nowrap"><span>@Html.SortableHeaderFor(x => x.BrojPosjetaNaProfil)</span></th>
-                                <th class="text-center text-nowrap"><span>@Html.SortableHeaderFor(x => x.ELO)</span></th>
+                                <th class="text-nowrap"><span>@Html.SortableHeaderFor(x => x.PrikaznoIme, "-PrikaznoIme")</span></th>
+                                <th class="text-nowrap"><span>@Html.SortableHeaderFor(x => x.BrojPostovanja, "-BrojPostovanja")</span></th>
+                                <th class="text-nowrap"><span>@Html.SortableHeaderFor(x => x.BrojPosjetaNaProfil, "-BrojPosjetaNaProfil")</span></th>
+                                <th class="text-center text-nowrap"><span>@Html.SortableHeaderFor(x => x.ELO, "-ELO")</span></th>
                                 <th>&nbsp;</th>
                             </tr>
                         </thead>

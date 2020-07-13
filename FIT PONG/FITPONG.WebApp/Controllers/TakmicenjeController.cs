@@ -604,23 +604,19 @@ namespace FIT_PONG.Controllers
                     errors.Add("Takmicenje mora imati barem 4 igraca, otvorite ponovo registracije");
                 if (errors.Count() == 0)
                 {
-                    using (var transakcija = db.Database.BeginTransaction())
+                    try
                     {
-                        try
-                        {
-                            inicijalizator.GenerisiRaspored(_takmicenje);
-                            transakcija.Commit();
-                            return RedirectToAction("Prikaz",new { id=_takmicenje.ID});
-                        }
-                        catch (Exception err)
-                        {
-                            transakcija.Rollback();
-                            return Redirect("/Takmicenje/Neuspjeh");
-                        }
+                        inicijalizator.GenerisiRaspored(_takmicenje);
+                        return RedirectToAction("Prikaz", new { id = _takmicenje.ID });
+                    }
+                    catch (Exception)
+                    {
+                        return Redirect("/Takmicenje/Neuspjeh");
                     }
                 }
             }
-            errors.Add("Takmicenje ne postoji ili je vec inicirano");
+        
+        errors.Add("Takmicenje ne postoji ili je vec inicirano");
             return View("Neuspjeh", errors);
         }
         public IActionResult PrikaziFeed(int ID)

@@ -118,7 +118,8 @@ namespace FIT_PONG.Services.BL
             int BrojKorisnika = 0;
             foreach (Match x in matches)
             {
-                if (x.Groups["username"].Success)
+                if (x.Groups["username"].Success && !String.IsNullOrEmpty(x.Groups["username"].Value) 
+                    && !String.IsNullOrWhiteSpace(x.Groups["username"].Value))
                     BrojKorisnika++;
             }
             return BrojKorisnika;
@@ -131,9 +132,13 @@ namespace FIT_PONG.Services.BL
             List<Igrac> svePrijave = new List<Igrac>();
             foreach (Match i in matches)
             {
-                string KorisnickoIme = i.Groups["username"].Value;
-                Igrac noviIgrac = _listaIgraca.Where(x => x.PrikaznoIme == KorisnickoIme).FirstOrDefault();//korisnicka imena su unique
-                svePrijave.Add(noviIgrac);
+                if (i.Groups["username"].Success && !String.IsNullOrEmpty(i.Groups["username"].Value)
+                   && !String.IsNullOrWhiteSpace(i.Groups["username"].Value))
+                {
+                    string KorisnickoIme = i.Groups["username"].Value;
+                    Igrac noviIgrac = _listaIgraca.Where(x => x.PrikaznoIme == KorisnickoIme).FirstOrDefault();//korisnicka imena su unique
+                    svePrijave.Add(noviIgrac);
+                }
             }
             return svePrijave;
         }
