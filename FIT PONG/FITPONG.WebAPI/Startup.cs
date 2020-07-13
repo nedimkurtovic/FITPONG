@@ -118,7 +118,7 @@ namespace FITPONG.WebAPI
             services.AddScoped<ITakmicenjeAutorizator, TakmicenjeAutorizator>();
             services.AddScoped<IUsersAutorizator, UsersAutorizator>();
             services.AddScoped<IGradoviAutorizator, GradoviAutorizator>();
-
+            services.AddScoped<IObjaveAutorizator, ObjaveAutorizator>();
 
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

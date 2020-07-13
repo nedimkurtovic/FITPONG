@@ -89,7 +89,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [Route("potvrdiPromjenuPassworda")]
         public Task<String> ConfirmPasswordChange(PasswordPromjena obj)
         {
-            var loggedInUserName = User.Identity.Name;
+            var loggedInUserName = usersService.GetPrikaznoIme(HttpContext.Request);
 
             return usersService.ConfirmPasswordChange(loggedInUserName, obj);
         }
@@ -99,9 +99,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [Route("{postovaniId}/akcije/postovanje")]
         public string Postovanje(int postovaniId)
         {
-            var loggedInUserName = User.Identity.Name;
-
-            //var loggedInUserName = "testni1";
+            var loggedInUserName = usersService.GetPrikaznoIme(HttpContext.Request);
 
             return usersService.Postovanje(loggedInUserName, postovaniId);
         }
@@ -111,9 +109,8 @@ namespace FIT_PONG.WebAPI.Controllers
         [Route("{userId}/akcije/promijeniSliku")]
         public string PromijeniSliku(int userId, SlikaPromjenaRequest obj)
         {
-            //var loggedInUserName = User.Identity.Name;  
+            var loggedInUserName = usersService.GetPrikaznoIme(HttpContext.Request);
 
-            var loggedInUserName = "testni1";
             var fajl = new Fajl
             {
                 BinarniZapis = obj.Slika,
@@ -128,10 +125,8 @@ namespace FIT_PONG.WebAPI.Controllers
         [Route("{userId}/akcije/ukloniSliku")]
         public string UkloniSliku(int userId)
         {
-            //var loggedInUserName = User.Identity.Name;  
+            var loggedInUserName = usersService.GetPrikaznoIme(HttpContext.Request);
 
-            var loggedInUserName = "testni1";
-            
             return usersService.ResetProfilePicture(loggedInUserName, userId);
         }
 

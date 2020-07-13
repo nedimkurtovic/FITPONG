@@ -26,7 +26,7 @@ namespace FIT_PONG.Services.Services.Autorizacija
             return AuthorizeAdministrator(loggedInUserEmail);
         }
 
-        public bool AuthorizeAdministrator(string loggedInUserEmail)
+        private bool AuthorizeAdministrator(string loggedInUserEmail)
         {
             if (loggedInUserEmail != "nedim.kurtovic@edu.fit.ba" && loggedInUserEmail != "aldin.talic@edu.fit.ba")
                 throw new AuthorizeException("Niste autorizovani za takvu radnju.");
