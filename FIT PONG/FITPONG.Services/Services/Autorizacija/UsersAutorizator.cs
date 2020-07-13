@@ -14,6 +14,11 @@ namespace FIT_PONG.Services.Services.Autorizacija
             this.db = db;
         }
 
+        public bool AuthorizeEditSlikuProfila(int logiraniKorisnikId, int userId)
+        {
+            return IsLogiraniKorisnik(logiraniKorisnikId, userId);
+        }
+
         public bool AuthorizePostovanje()
         {
             throw new NotImplementedException();
@@ -27,6 +32,18 @@ namespace FIT_PONG.Services.Services.Autorizacija
         public bool AuthorizePromjenaPasswordaPotvrda()
         {
             throw new NotImplementedException();
+        }
+
+        public bool AuthorizeUkloniSlikuProfila(int logiraniKorisnikId, int userId)
+        {
+            return IsLogiraniKorisnik(logiraniKorisnikId, userId);
+        }
+
+        private bool IsLogiraniKorisnik(int logiraniKorisnikId, int userId)
+        {
+            if (logiraniKorisnikId != userId)
+                throw new AuthorizeException("Niste autorizovani za takvu radnju.");
+            return true;
         }
     }
 }

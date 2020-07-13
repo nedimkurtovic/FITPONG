@@ -116,6 +116,8 @@ namespace FITPONG.WebAPI
 
             //SIPA
             services.AddScoped<ITakmicenjeAutorizator, TakmicenjeAutorizator>();
+            services.AddScoped<IUsersAutorizator, UsersAutorizator>();
+
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }

@@ -85,7 +85,6 @@ namespace FIT_PONG.WebAPI.Controllers
             return usersService.SendPasswordChange(obj);
         }
 
-
         [HttpPost]
         [Route("potvrdiPromjenuPassworda")]
         public Task<String> ConfirmPasswordChange(PasswordPromjena obj)
@@ -97,17 +96,44 @@ namespace FIT_PONG.WebAPI.Controllers
 
 
         [HttpPost]
-        [Route("{postovaniId}/akcije/postuj")]
+        [Route("{postovaniId}/akcije/postovanje")]
         public string Postovanje(int postovaniId)
         {
-            //var loggedInUserName = User.Identity.Name;  
+            var loggedInUserName = User.Identity.Name;
 
-            var loggedInUserName = "testni1";
+            //var loggedInUserName = "testni1";
 
             return usersService.Postovanje(loggedInUserName, postovaniId);
         }
 
-        
+
+        [HttpPost]
+        [Route("{userId}/akcije/promijeniSliku")]
+        public string PromijeniSliku(int userId, SlikaPromjenaRequest obj)
+        {
+            //var loggedInUserName = User.Identity.Name;  
+
+            var loggedInUserName = "testni1";
+            var fajl = new Fajl
+            {
+                BinarniZapis = obj.Slika,
+                Naziv=obj.Naziv
+            };
+
+            return usersService.UpdateProfilePicture(loggedInUserName, userId, fajl);
+        }
+
+
+        [HttpPost]
+        [Route("{userId}/akcije/ukloniSliku")]
+        public string UkloniSliku(int userId)
+        {
+            //var loggedInUserName = User.Identity.Name;  
+
+            var loggedInUserName = "testni1";
+            
+            return usersService.ResetProfilePicture(loggedInUserName, userId);
+        }
 
     }
 }

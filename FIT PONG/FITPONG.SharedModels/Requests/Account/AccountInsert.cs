@@ -34,7 +34,7 @@ namespace FIT_PONG.SharedModels.Requests.Account
         [Range(0, 300, ErrorMessage = "Visina treba biti u rasponu od 1-300.")]
         public double? Visina { get; set; }
         public int BrojPosjetaNaProfil { get; set; }
-        public byte[] Slika { get; set; }
+        public Fajl Slika { get; set; }
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "ELO raiting smije sadržavati samo broj.")]
         public int ELO { get; set; }
         public int? GradId { get; set; }
