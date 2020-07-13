@@ -110,9 +110,10 @@ namespace FIT_PONG.Services.Services
                     PrikaznoIme = obj.PrikaznoIme,
                     Spol = obj.Spol,
                     Visina = obj.Visina,
-                    TwoFactorEnabled = false,
-                    ProfileImagePath = "~/igraci/" + ProcesSpremanjaSlike(obj.Slika)
+                    TwoFactorEnabled = false
                 };
+                if (obj.Slika != null)
+                    igrac.ProfileImagePath = "~/igraci/" + ProcesSpremanjaSlike(obj.Slika);
 
                 db.Add(igrac);
                 db.SaveChanges();
@@ -453,6 +454,13 @@ namespace FIT_PONG.Services.Services
             //potrebno je provjeriti da li ce se slati prikazno ime u authorization headeru
             //ili email, to sve zavisi od toga kako napravimo usera kad se kreira novi
             return igrac.PrikaznoIme;
+        }
+        public string GetEmail(HttpRequest Request)
+        {
+            var credentials = GetCredentials(Request);
+            var username = credentials[0];
+            var user = db.Users.Where(u => u.UserName == username).FirstOrDefault();
+            return user != null ? user.Email : "";
         }
         private string[] GetCredentials(HttpRequest Request)
         {
