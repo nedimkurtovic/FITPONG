@@ -6,6 +6,7 @@ namespace FIT_PONG.SharedModels.Requests.Account
 {
     public class SlikaPromjenaRequest
     {
+        public string Naziv { get; set; }
         public byte[] Slika{ get; set; }
     }
 }

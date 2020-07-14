@@ -85,29 +85,50 @@ namespace FIT_PONG.WebAPI.Controllers
             return usersService.SendPasswordChange(obj);
         }
 
-
         [HttpPost]
         [Route("potvrdiPromjenuPassworda")]
         public Task<String> ConfirmPasswordChange(PasswordPromjena obj)
         {
-            var loggedInUserName = User.Identity.Name;
+            var loggedInUserName = usersService.GetPrikaznoIme(HttpContext.Request);
 
             return usersService.ConfirmPasswordChange(loggedInUserName, obj);
         }
 
 
         [HttpPost]
-        [Route("{postovaniId}/akcije/postuj")]
+        [Route("{postovaniId}/akcije/postovanje")]
         public string Postovanje(int postovaniId)
         {
-            //var loggedInUserName = User.Identity.Name;  
-
-            var loggedInUserName = "testni1";
+            var loggedInUserName = usersService.GetPrikaznoIme(HttpContext.Request);
 
             return usersService.Postovanje(loggedInUserName, postovaniId);
         }
 
-        
+
+        [HttpPost]
+        [Route("{userId}/akcije/promijeniSliku")]
+        public string PromijeniSliku(int userId, SlikaPromjenaRequest obj)
+        {
+            var loggedInUserName = usersService.GetPrikaznoIme(HttpContext.Request);
+
+            var fajl = new Fajl
+            {
+                BinarniZapis = obj.Slika,
+                Naziv=obj.Naziv
+            };
+
+            return usersService.UpdateProfilePicture(loggedInUserName, userId, fajl);
+        }
+
+
+        [HttpPost]
+        [Route("{userId}/akcije/ukloniSliku")]
+        public string UkloniSliku(int userId)
+        {
+            var loggedInUserName = usersService.GetPrikaznoIme(HttpContext.Request);
+
+            return usersService.ResetProfilePicture(loggedInUserName, userId);
+        }
 
     }
 }

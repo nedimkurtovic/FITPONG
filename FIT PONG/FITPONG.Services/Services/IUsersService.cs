@@ -1,4 +1,5 @@
-﻿using FIT_PONG.SharedModels.Requests.Account;
+﻿using FIT_PONG.SharedModels;
+using FIT_PONG.SharedModels.Requests.Account;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -34,10 +35,16 @@ namespace FIT_PONG.Services.Services
 		Task<string> ConfirmEmail(string userId, string token);
 		Task<string> SendPasswordChange(SharedModels.Requests.Account.Email_Password_Request obj);
 		Task<string> ConfirmPasswordChange(string loggedInUserName, PasswordPromjena obj);
-		string ResetProfilePicture(int id);//autorizovat
-		string UpdateProfilePicture(int id, byte[] Slika);//klasa slika umjesto niz byteova //autorizovat
+		string ResetProfilePicture(string loggedInUserName, int id);//autorizovat
+		string UpdateProfilePicture(string loggedInUserName, int id, Fajl Slika);//klasa slika umjesto niz byteova //autorizovat
 		string Postovanje(string loggedInUserName, int postovaniID);
+<<<<<<< HEAD
 		string GetRequestUserName(HttpRequest Request);
 		int GetRequestUserID(HttpRequest Request);
+=======
+		string GetPrikaznoIme(HttpRequest Request);
+		int GetUserID(HttpRequest Request);
+		string GetEmail(HttpRequest Request);
+>>>>>>> 36812a4e17d4b0f27fd62ca49b29d9a6855b14af
 	}
 }
