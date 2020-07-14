@@ -17,12 +17,12 @@ namespace FIT_PONG.SharedModels.Requests.Takmicenja
         public int? MinimalniELO { get; set; }
 
         [Display(Name = "Kategorija")]
-        public int KategorijaID { get; set; }
+        public int? KategorijaID { get; set; }
 
         [Display(Name = "Vrsta")]
-        public int VrstaID { get; set; }
+        public int? VrstaID { get; set; }
         [Display(Name = "Status")]
-        public int StatusID { get; set; }
+        public int? StatusID { get; set; }
         [Display(Name = "Datum početka")]
         public DateTime? DatumPocetka { get; set; }
         [Display(Name = "Datum završetka")]

@@ -27,7 +27,7 @@ namespace FIT_PONG.WebAPI.Filters
                 }
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
-            if (context.Exception is AuthorizeException)
+            else if (context.Exception is AuthorizeException)
             {
                 AuthorizeException izuzetak = context.Exception as AuthorizeException;
                 context.ModelState.AddModelError("",izuzetak.Message);

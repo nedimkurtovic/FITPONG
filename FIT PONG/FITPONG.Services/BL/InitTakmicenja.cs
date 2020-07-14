@@ -21,12 +21,12 @@ namespace FIT_PONG.Services.BL
         public List<(string key, string error)> VratiListuErrora(Takmicenje _takmicenje)
         {
             var listaErrora = new List<(string key, string error)>();
-            if (!_takmicenje.Inicirano)
-                listaErrora.Add(("", "Takmicenje je vec inicirano"));
+            if (_takmicenje.Inicirano)
+                listaErrora.Add(("", "Takmičenje je već inicirano"));
                 if (_takmicenje.RokPocetkaPrijave != null && _takmicenje.RokZavrsetkaPrijave > DateTime.Now)
                     listaErrora.Add(("","Rok registracija mora zavrsiti prije generisanja rasporeda"));
             if (_takmicenje.Prijave.Count() < 4)
-                listaErrora.Add(("","Takmicenje mora imati barem 4 igraca, otvorite ponovo registracije"));
+                listaErrora.Add(("","Takmičenje mora imati barem 4 igrača, otvorite ponovo registracije"));
             return listaErrora;
         }
         public void GenerisiRaspored(Takmicenje _takmicenje)

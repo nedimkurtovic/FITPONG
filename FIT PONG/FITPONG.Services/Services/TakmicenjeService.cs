@@ -32,14 +32,15 @@ namespace FIT_PONG.Services.Services
             validator = _validator;
             mapko = _mapko;
         }
+        #region RealDeal
         public List<Takmicenja> Get(TakmicenjeSearch obj)
         {
             var qry = db.Takmicenja.AsQueryable();
             if (!string.IsNullOrWhiteSpace(obj.Naziv))
-                qry.Where(x => x.Naziv.StartsWith(obj.Naziv));
+                qry = qry.Where(x => x.Naziv.Contains(obj.Naziv));
             
-            var TakmicenjaPovratni = qry.ToList();
-            return mapko.Map<List<SharedModels.Takmicenja>>(TakmicenjaPovratni);
+            var TakmicenjaPovratni = qry.OrderByDescending(x=>x.ID).ToList();
+            return mapko.Map<List<SharedModels.Takmicenja>>(TakmicenjaPovratni.Where(x=> 1==1));
         }
 
         public Takmicenja GetByID(int id)
@@ -124,7 +125,24 @@ namespace FIT_PONG.Services.Services
             //ako nije inicirano mozes mijenjati odredjene atribute, dodati korisniku mogucnost
             //mijenjanja/ dodavanja / uklanjanja novih/starih igraca?
             ValidirajUpdateTakmicenja(obj, id, objBaza);
-            mapko.Map(objBaza, obj);
+            //mapko.Map(obj, objBaza);//dje si sta ima
+            //dakle definitivno, ako se zeli nesto updateovati, ne smije se poslati null inace ce se
+            //to tretira kao da niste zeljeli to updateovati, bio bi problem da postoji neki atribut
+            //koji se moze nulirati nekim slucajem, sreca ovdje to i nije bas slucaj, tj jest za 
+            //ove datume ali ako si poslao null a onaj je vec nuliran onda se tretira kao null nikom nista
+            //onda ces moci promijeniti vrijednost u neku konkretnu kad iduci put posaljes request,
+            //however neces moc nulirat nazad jebiga
+            if (!String.IsNullOrWhiteSpace(obj.Naziv))
+                objBaza.Naziv = obj.Naziv;
+            objBaza.DatumPocetka = obj.DatumPocetka ?? objBaza.DatumPocetka;
+            objBaza.DatumZavrsetka = obj.DatumZavrsetka ?? objBaza.DatumZavrsetka;
+            objBaza.VrstaID = obj.VrstaID ?? objBaza.VrstaID;
+            objBaza.StatusID = obj.StatusID ?? objBaza.StatusID;
+            objBaza.KategorijaID = obj.KategorijaID ?? objBaza.KategorijaID;
+            objBaza.MinimalniELO = obj.MinimalniELO ?? objBaza.MinimalniELO;
+            objBaza.RokPocetkaPrijave = obj.RokPocetkaPrijave ?? objBaza.RokPocetkaPrijave;
+            objBaza.RokZavrsetkaPrijave = obj.RokZavrsetkaPrijave ?? objBaza.RokZavrsetkaPrijave;
+
             db.SaveChanges();
             return mapko.Map<Takmicenja>(objBaza);
         }
@@ -180,7 +198,6 @@ namespace FIT_PONG.Services.Services
 
         }
 
-
         public Takmicenja Initialize(int id)
         {
             var obj = db.Takmicenja
@@ -204,7 +221,7 @@ namespace FIT_PONG.Services.Services
             {
                 throw new Exception("Došlo je do greške prilikom inicijalizovanja takmičenja");
             }
-            var objPovratni = db.Takmicenja.Where(x => x.ID == id);
+            var objPovratni = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
             return mapko.Map<Takmicenja>(objPovratni);
         }
 
@@ -302,7 +319,9 @@ namespace FIT_PONG.Services.Services
             parovi = parovi.OrderByDescending(x => x.Pobjeda).ToList();
             return parovi;
         }
+        #endregion
 
+        #region Pomagaci
         private void UbaciUTabelu((string tim1, int? rez1, int? rez2, string tim2) par
             , ref List<TabelaStavka> parovi)
         {
@@ -336,7 +355,7 @@ namespace FIT_PONG.Services.Services
             }
 
         }
-
+        #endregion
         //=============================ZONA VALIDACIJE ISPOD, NASTAVITI S PAŽNJOM !==============================
         #region Validacija
         private bool ValidirajAddTakmicenja(TakmicenjaInsert obj)
@@ -345,6 +364,7 @@ namespace FIT_PONG.Services.Services
             var listaTakmicenja = db.Takmicenja.Select(x => x.Naziv).ToList();
             //ako ce biti prbolema onda ce biti kod provera gdje su hardkodirane 
             //vrijednosti(unutar ovog ove funkcije u validatoru), vrstaID 
+
             var listaErrora = validator.VratiListuErroraAkcijaDodaj(obj, listaTakmicenja, igraci);
             RegulisiListuErrora(listaErrora);
             return true;

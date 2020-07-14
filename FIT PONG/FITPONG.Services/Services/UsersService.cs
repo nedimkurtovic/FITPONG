@@ -376,23 +376,23 @@ namespace FIT_PONG.Services.Services
 
             return prijave;
         }
-        public int GetUserID(HttpRequest Request)
+        public int GetRequestUserID(HttpRequest Request)
         {
             var credentials = GetCredentials(Request);
             var username = credentials[0];
-            var igrac = GetIgraca(username);
-            return igrac.ID;
+            var user = GetUsera(username);
+            return user.Id;
 
         }
-        public string GetPrikaznoIme(HttpRequest Request)
+        public string GetRequestUserName(HttpRequest Request)
         {
             var credentials = GetCredentials(Request);
             var username = credentials[0];
-            var igrac = GetIgraca(username);
+            var user = GetUsera(username);
             //potrebno prvojeriti da li ce se vracati rpikazno ime ili users.username i jos bitno:
             //potrebno je provjeriti da li ce se slati prikazno ime u authorization headeru
             //ili email, to sve zavisi od toga kako napravimo usera kad se kreira novi
-            return igrac.PrikaznoIme;
+            return user.UserName;
         }
         private string[] GetCredentials(HttpRequest Request)
         {
@@ -401,9 +401,9 @@ namespace FIT_PONG.Services.Services
             var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':');
             return credentials;
         }
-        private Igrac GetIgraca(string username)
+        private IdentityUser<int> GetUsera(string username)
         {
-            var user = db.Igraci.Where(x => x.PrikaznoIme == username).FirstOrDefault();
+            var user = db.Users.Where(x => x.UserName == username).FirstOrDefault();
             if (user != null)
                 return user;
             throw new UserException("User ne postoji ili je obrisan");

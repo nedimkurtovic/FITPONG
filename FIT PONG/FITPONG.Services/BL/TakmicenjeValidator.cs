@@ -155,7 +155,7 @@ namespace FIT_PONG.Services.BL
                                                 //OVDJE CE BITI PROSLIJEDJEN ID PARAMETAR OVOJ FUNKCIJI
             if (TakmicenjaViseOd(objekat.Naziv, ID, ListaTakmicenja))
                 listaErrora.Add((nameof(objekat.Naziv), "Već postoji takmičenje u bazi"));
-            if (bazaObj.Inicirano)
+            if (!bazaObj.Inicirano)
             {
                 if (objekat.RokZavrsetkaPrijave != null && objekat.RokPocetkaPrijave != null &&
                     objekat.RokZavrsetkaPrijave < objekat.RokPocetkaPrijave)

@@ -24,6 +24,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using FIT_PONG.WebAPI.Filters;
 
 namespace FITPONG.WebAPI
 {
@@ -53,7 +54,10 @@ namespace FITPONG.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddMvc(x => x.Filters.Add<Filterko>());
+            services.AddControllers().AddNewtonsoftJson(opcije => {
+                opcije.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>

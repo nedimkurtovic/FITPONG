@@ -8,13 +8,15 @@ using FIT_PONG.Services.Services.Autorizacija;
 using FIT_PONG.SharedModels;
 using FIT_PONG.SharedModels.Requests;
 using FIT_PONG.SharedModels.Requests.Takmicenja;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FIT_PONG.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]")] 
     [ApiController]
+    [Authorize(AuthenticationSchemes = "BasicAuthentication")]
     //authorize ce ici na nivou citavog kontrolera, zasebne stavke ce imati vlastite auth atribute
     public class TakmicenjaController : ControllerBase
     {
@@ -58,16 +60,16 @@ namespace FIT_PONG.WebAPI.Controllers
         [HttpPost]
         public Takmicenja Insert(TakmicenjaInsert obj)
         {
-            var userId = usersService.GetUserID(HttpContext.Request);// nesto na ovaj fazon
-            takmicenjeService.Add(obj, userId);// nesto na ovaj fazon
-            throw new NotImplementedException();
+            var userId = usersService.GetRequestUserID(HttpContext.Request);// nesto na ovaj fazon
+            // nesto na ovaj fazon
+            return takmicenjeService.Add(obj, userId);
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         //ovdje ce biti potrebno authorizovati
         public Takmicenja Update(int id, TakmicenjaUpdate obj)
         {
-            var userId = usersService.GetUserID(HttpContext.Request);
+            var userId = usersService.GetRequestUserID(HttpContext.Request);
             takmicenjeAutorizator.AuthorizeUpdate(userId, id);
             return takmicenjeService.Update(id, obj); 
 
@@ -75,7 +77,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [HttpDelete("{id}")]
         public Takmicenja Delete(int id)
         {
-            var userId = usersService.GetUserID(HttpContext.Request);
+            var userId = usersService.GetRequestUserID(HttpContext.Request);
             takmicenjeAutorizator.AuthorizeDelete(userId, id);
             return takmicenjeService.Delete(id);
         }
@@ -83,7 +85,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [HttpPost("{id}/akcije/init")]
         public Takmicenja Init(int id)
         {
-            var userId = usersService.GetUserID(HttpContext.Request);
+            var userId = usersService.GetRequestUserID(HttpContext.Request);
             takmicenjeAutorizator.AuthorizeInit(userId, id);
             return takmicenjeService.Initialize(id);
         }
@@ -97,7 +99,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [HttpGet("{id}/evidencije")]
         public List<EvidencijaMeca> GetEvidencije(int id)
         {
-            var userName = usersService.GetPrikaznoIme(HttpContext.Request);
+            var userName = usersService.GetRequestUserName(HttpContext.Request);
             //ovdje treba biti oprezan ko kroz minsko polje zasto : 
                 //u users servisu GetPrikaznoIme po trenutnoj implementaciji vraca PrikaznoIme
                 //sto odgovara prvoj linij koda u GetEvidencije(dobavlja igraca na osnovu prikaznog imena)
@@ -109,7 +111,12 @@ namespace FIT_PONG.WebAPI.Controllers
         [HttpPost("{id}/evidencije")]
         public List<EvidencijaMeca> EvidentirajMec(int id, [FromBody]EvidencijaMeca obj)
         {
-            var userName = usersService.GetPrikaznoIme(HttpContext.Request);
+            var userId = usersService.GetRequestUserID(HttpContext.Request);
+            takmicenjeAutorizator.AuthorizeEvidencijaMeca(userId, obj);
+            takmicenjeService.EvidentirajMec(id, obj);
+            //i dalje je mozda upitno da li vracati sve moguce evidencije odma ili samo ovaj mec koji 
+            //se upravo evidentirao
+            var userName = usersService.GetRequestUserName(HttpContext.Request);
             return takmicenjeService.GetEvidencije(userName, id);
         }
         

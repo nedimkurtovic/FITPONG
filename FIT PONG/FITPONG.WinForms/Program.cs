@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FITPONG.WinformsTest
+namespace FIT_PONG.WinForms
 {
     static class Program
     {
