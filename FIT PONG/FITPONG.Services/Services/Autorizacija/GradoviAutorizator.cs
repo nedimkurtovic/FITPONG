@@ -21,6 +21,11 @@ namespace FIT_PONG.Services.Services.Autorizacija
             return AuthorizeAdministrator(loggedInUserEmail);
         }
 
+        public bool AuthorizeGetById(string loggedInUserEmail)
+        {
+            return AuthorizeAdministrator(loggedInUserEmail);
+        }
+
         public bool AuthorizeUpdate(string loggedInUserEmail)
         {
             return AuthorizeAdministrator(loggedInUserEmail);

@@ -110,12 +110,12 @@ namespace FITPONG.WebAPI
 
             //ciste puno linija koda, negdje i obraz!
             services.AddScoped<IFeedsService, FeedsService>();
+            services.AddScoped<IReportsService, ReportsService>();
             services.AddScoped<IGradoviService, GradoviService>();
             services.AddScoped<IObjaveService, ObjaveService>();
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IStatistikeService, StatistikeService>();
             services.AddScoped<iEmailServis, FITPONGGmail>();
-
             services.AddScoped<ITakmicenjeService, TakmicenjeService>();
 
             //SIPA

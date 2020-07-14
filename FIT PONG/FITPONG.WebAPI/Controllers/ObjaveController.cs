@@ -36,38 +36,33 @@ namespace FIT_PONG.WebAPI.Controllers
             return objaveService.Get();
         }
 
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         public Objave GetById(int id)
         {
             return objaveService.GetById(id);
         }
 
         [HttpPost]
-        [Route("dodajNaGlavniFeed")]
-        public Objave AddGlavniFeed(ObjaveInsertUpdate obj)
+        public Objave Add(ObjaveInsertUpdate obj)
         {
-            objaveAutorizator.AuthorizeAddGlavniFeed(usersService.GetEmail(HttpContext.Request));
+            objaveAutorizator.AuthorizeAddGlavniFeed(usersService.GetRequestUserName(HttpContext.Request));
             return objaveService.Add(obj);
         }
 
-        [HttpPost]
-        [Route("dodaj")]
-        public Objave Add(int FeedId, ObjaveInsertUpdate obj)
-        {
-            return objaveService.Add(FeedId, obj);
-        }
+        //[HttpPost]
+        //public Objave Add(int FeedId, ObjaveInsertUpdate obj)
+        //{
+        //    return objaveService.Add(FeedId, obj);
+        //}
 
 
         [HttpPut]
-        [Route("{id}/uredi")]
         public Objave Edit(int id, ObjaveInsertUpdate obj)
         {
             return objaveService.Update(id, obj);
         }
 
-        [HttpDelete]
-        [Route("obrisi")]
+        [HttpDelete("{id}")]
         public void Delete(int id)
         {
             objaveService.Delete(id);
