@@ -33,28 +33,28 @@ namespace FIT_PONG.WebAPI.Controllers
         [HttpGet]
         public List<Gradovi> Get()
         {
-            gradoviAutorizator.AuthorizeGet(usersService.GetEmail(HttpContext.Request));
+            gradoviAutorizator.AuthorizeGet(usersService.GetRequestUserName(HttpContext.Request));
             return gradoviService.Get();
         } 
 
         [HttpPost]
         public Gradovi Add(GradoviInsertUpdate obj)
         {
-            gradoviAutorizator.AuthorizeAdd(usersService.GetEmail(HttpContext.Request));
+            gradoviAutorizator.AuthorizeAdd(usersService.GetRequestUserName(HttpContext.Request));
             return gradoviService.Add(obj);
         }
 
         [HttpPut]
         public Gradovi Update(int id, GradoviInsertUpdate obj)
         {
-            gradoviAutorizator.AuthorizeUpdate(usersService.GetEmail(HttpContext.Request));
+            gradoviAutorizator.AuthorizeUpdate(usersService.GetRequestUserName(HttpContext.Request));
             return gradoviService.Update(id, obj);
         }
 
         [HttpDelete]
         public void Delete(int id)
         {
-            gradoviAutorizator.AuthorizeDelete(usersService.GetEmail(HttpContext.Request));
+            gradoviAutorizator.AuthorizeDelete(usersService.GetRequestUserName(HttpContext.Request));
             gradoviService.Delete(id);
         }
     }

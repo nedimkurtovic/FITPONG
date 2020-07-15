@@ -455,13 +455,13 @@ namespace FIT_PONG.Services.Services
             //ili email, to sve zavisi od toga kako napravimo usera kad se kreira novi
             return user.UserName;
         }
-        public string GetEmail(HttpRequest Request)
-        {
-            var credentials = GetCredentials(Request);
-            var username = credentials[0];
-            var user = db.Users.Where(u => u.UserName == username).FirstOrDefault();
-            return user != null ? user.Email : "";
-        }
+        //public string GetEmail(HttpRequest Request)
+        //{
+        //    var credentials = GetCredentials(Request);
+        //    var username = credentials[0];
+        //    var user = db.Users.Where(u => u.UserName == username).FirstOrDefault();
+        //    return user != null ? user.Email : "";
+        //}
         private string[] GetCredentials(HttpRequest Request)
         {
             var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);

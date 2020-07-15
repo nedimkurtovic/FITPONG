@@ -29,11 +29,13 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtNaziv = new System.Windows.Forms.TextBox();
             this.lblNaziv = new System.Windows.Forms.Label();
             this.lblDatum = new System.Windows.Forms.Label();
             this.dTPDatum = new System.Windows.Forms.DateTimePicker();
-            this.btnFiltriraj = new System.Windows.Forms.Button();
+            this.btnDobavi = new System.Windows.Forms.Button();
+            this.btnPrethodna = new System.Windows.Forms.Button();
+            this.btnNaredna = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -42,15 +44,16 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(24, 107);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(523, 321);
+            this.dataGridView1.Size = new System.Drawing.Size(523, 292);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             // 
-            // textBox1
+            // txtNaziv
             // 
-            this.textBox1.Location = new System.Drawing.Point(24, 45);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(114, 20);
-            this.textBox1.TabIndex = 1;
+            this.txtNaziv.Location = new System.Drawing.Point(24, 45);
+            this.txtNaziv.Name = "txtNaziv";
+            this.txtNaziv.Size = new System.Drawing.Size(114, 20);
+            this.txtNaziv.TabIndex = 1;
             // 
             // lblNaziv
             // 
@@ -77,25 +80,48 @@
             this.dTPDatum.Size = new System.Drawing.Size(200, 20);
             this.dTPDatum.TabIndex = 4;
             // 
-            // btnFiltriraj
+            // btnDobavi
             // 
-            this.btnFiltriraj.Location = new System.Drawing.Point(423, 43);
-            this.btnFiltriraj.Name = "btnFiltriraj";
-            this.btnFiltriraj.Size = new System.Drawing.Size(124, 23);
-            this.btnFiltriraj.TabIndex = 5;
-            this.btnFiltriraj.Text = "Filtriraj";
-            this.btnFiltriraj.UseVisualStyleBackColor = true;
+            this.btnDobavi.Location = new System.Drawing.Point(423, 43);
+            this.btnDobavi.Name = "btnDobavi";
+            this.btnDobavi.Size = new System.Drawing.Size(124, 23);
+            this.btnDobavi.TabIndex = 5;
+            this.btnDobavi.Text = "Dobavi";
+            this.btnDobavi.UseVisualStyleBackColor = true;
+            this.btnDobavi.Click += new System.EventHandler(this.btnDobavi_Click);
+            // 
+            // btnPrethodna
+            // 
+            this.btnPrethodna.Location = new System.Drawing.Point(179, 415);
+            this.btnPrethodna.Name = "btnPrethodna";
+            this.btnPrethodna.Size = new System.Drawing.Size(75, 23);
+            this.btnPrethodna.TabIndex = 6;
+            this.btnPrethodna.Text = "Prethodna";
+            this.btnPrethodna.UseVisualStyleBackColor = true;
+            this.btnPrethodna.Click += new System.EventHandler(this.btnPrethodna_Click);
+            // 
+            // btnNaredna
+            // 
+            this.btnNaredna.Location = new System.Drawing.Point(304, 415);
+            this.btnNaredna.Name = "btnNaredna";
+            this.btnNaredna.Size = new System.Drawing.Size(75, 23);
+            this.btnNaredna.TabIndex = 7;
+            this.btnNaredna.Text = "Naredna";
+            this.btnNaredna.UseVisualStyleBackColor = true;
+            this.btnNaredna.Click += new System.EventHandler(this.btnNaredna_Click);
             // 
             // frmReportiPregled
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(573, 450);
-            this.Controls.Add(this.btnFiltriraj);
+            this.Controls.Add(this.btnNaredna);
+            this.Controls.Add(this.btnPrethodna);
+            this.Controls.Add(this.btnDobavi);
             this.Controls.Add(this.dTPDatum);
             this.Controls.Add(this.lblDatum);
             this.Controls.Add(this.lblNaziv);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtNaziv);
             this.Controls.Add(this.dataGridView1);
             this.Name = "frmReportiPregled";
             this.Text = "frmReportiPregled";
@@ -108,10 +134,12 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtNaziv;
         private System.Windows.Forms.Label lblNaziv;
         private System.Windows.Forms.Label lblDatum;
         private System.Windows.Forms.DateTimePicker dTPDatum;
-        private System.Windows.Forms.Button btnFiltriraj;
+        private System.Windows.Forms.Button btnDobavi;
+        private System.Windows.Forms.Button btnPrethodna;
+        private System.Windows.Forms.Button btnNaredna;
     }
 }

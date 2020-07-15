@@ -38,13 +38,10 @@ namespace FIT_PONG.Services.Services
 		string ResetProfilePicture(string loggedInUserName, int id);//autorizovat
 		string UpdateProfilePicture(string loggedInUserName, int id, Fajl Slika);//klasa slika umjesto niz byteova //autorizovat
 		string Postovanje(string loggedInUserName, int postovaniID);
-<<<<<<< HEAD
 		string GetRequestUserName(HttpRequest Request);
 		int GetRequestUserID(HttpRequest Request);
-=======
-		string GetPrikaznoIme(HttpRequest Request);
-		int GetUserID(HttpRequest Request);
-		string GetEmail(HttpRequest Request);
->>>>>>> 36812a4e17d4b0f27fd62ca49b29d9a6855b14af
+		//string GetPrikaznoIme(HttpRequest Request);
+		//int GetUserID(HttpRequest Request);
+		//string GetEmail(HttpRequest Request);
 	}
 }

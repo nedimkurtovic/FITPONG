@@ -14,6 +14,8 @@ using System.IO;
 using System.Runtime;
 using System.Text;
 using FIT_PONG.Services.BL;
+using System.Linq;
+using System.Drawing;
 
 namespace FIT_PONG.Services.Services
 {
@@ -25,30 +27,29 @@ namespace FIT_PONG.Services.Services
         {
             emailServis = _emailServis;
         }
-
-        public bool Validiraj(ReportsInsert obj)
+        
+        public List<SharedModels.Reports> Get(ReportsSearch obj)
         {
-            UserException ex = new UserException();
-            if (!OdgovarajuciFajlovi(obj.Prilozi))
-                ex.AddError(nameof(obj.Prilozi), "Možete uploadovati samo slike");
-            if (ex.Errori.Count > 0)
-                throw ex;
-            return true;
-        }
+            var query = db.Reports.Include(x=>x.Prilozi).AsQueryable();
+            if (!String.IsNullOrWhiteSpace(obj.Naslov))
+                query = query.Where(x => x.Naslov == obj.Naslov);
+            if (obj.Datum.Date != new DateTime(1975, 1, 1))
+                query = query.Where(x => x.DatumKreiranja.Date == obj.Datum.Date);
 
-        private bool OdgovarajuciFajlovi(List<Fajl> prilozi)
-        {
-            if (prilozi == null || prilozi.Count == 0)
-                return true;
-            foreach (Fajl i in prilozi)
+            var rezultat = query.ToList();
+            var povratni = mapko.Map<List<Reports>>(rezultat);
+            foreach(var i in povratni)
             {
-                int poz = i.Naziv.LastIndexOf(".");
-                string ekstenzija = i.Naziv.Substring(poz);
-                if (ekstenzija != "png" || ekstenzija != "jpg")
-                    return false;
+                foreach(var j in i.Prilozi)
+                {
+                    Fajl fajl = GetFajl(j);
+                    i.RawPrilozi.Add(fajl);
+                }
             }
-            return true;
+            return povratni;
         }
+
+
 
         public SharedModels.Reports Add(ReportsInsert obj , string rootPathAplikacije = "~") // razmisliti da se iz httpcontext. izvuce root path aplikacije kako bi se
          //uploadovo fajl tj da se ovoj metodi posalje taj parametar a ne ovako da ovaj nagadja sa ~/reports
@@ -99,6 +100,39 @@ namespace FIT_PONG.Services.Services
                 throw ex;
             }
 
+        }
+        private bool Validiraj(ReportsInsert obj)
+        {
+            UserException ex = new UserException();
+            if (!OdgovarajuciFajlovi(obj.Prilozi))
+                ex.AddError(nameof(obj.Prilozi), "Možete uploadovati samo slike");
+            if (ex.Errori.Count > 0)
+                throw ex;
+            return true;
+        }
+
+        private bool OdgovarajuciFajlovi(List<Fajl> prilozi)
+        {
+            if (prilozi == null || prilozi.Count == 0)
+                return true;
+            foreach (Fajl i in prilozi)
+            {
+                int poz = i.Naziv.LastIndexOf(".");
+                string ekstenzija = i.Naziv.Substring(poz);
+                if (ekstenzija != "png" || ekstenzija != "jpg")
+                    return false;
+            }
+            return true;
+        }
+        private Fajl GetFajl(Attachmenti j)
+        {
+            var bajtovi = File.ReadAllBytes(j.Path);
+            int pozicija = j.Path.LastIndexOf("/");
+            var naziv = j.Path.Substring(pozicija);
+            var povratniFajl = new Fajl();
+            povratniFajl.BinarniZapis = bajtovi;
+            povratniFajl.Naziv = naziv;
+            return povratniFajl;
         }
     }
 }

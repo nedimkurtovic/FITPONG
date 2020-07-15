@@ -47,7 +47,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [Route("dodajNaGlavniFeed")]
         public Objave AddGlavniFeed(ObjaveInsertUpdate obj)
         {
-            objaveAutorizator.AuthorizeAddGlavniFeed(usersService.GetEmail(HttpContext.Request));
+            objaveAutorizator.AuthorizeAddGlavniFeed(usersService.GetRequestUserName(HttpContext.Request));
             return objaveService.Add(obj);
         }
 

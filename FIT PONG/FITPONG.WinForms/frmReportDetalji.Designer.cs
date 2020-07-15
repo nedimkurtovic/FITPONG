@@ -38,9 +38,8 @@
             this.lblSadrzaj = new System.Windows.Forms.Label();
             this.rtxtSadrzaj = new System.Windows.Forms.RichTextBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.lvPrilozi = new System.Windows.Forms.ListView();
             this.lblPrilozi = new System.Windows.Forms.Label();
-            this.btnPriloziTest = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblNaslov
@@ -116,17 +115,17 @@
             this.imageList1.ImageSize = new System.Drawing.Size(64, 64);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // listView1
+            // lvPrilozi
             // 
-            this.listView1.HideSelection = false;
-            this.listView1.LargeImageList = this.imageList1;
-            this.listView1.Location = new System.Drawing.Point(404, 164);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(373, 263);
-            this.listView1.SmallImageList = this.imageList1;
-            this.listView1.TabIndex = 4;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.ItemActivate += new System.EventHandler(this.listView1_ItemActivate);
+            this.lvPrilozi.HideSelection = false;
+            this.lvPrilozi.LargeImageList = this.imageList1;
+            this.lvPrilozi.Location = new System.Drawing.Point(404, 164);
+            this.lvPrilozi.Name = "lvPrilozi";
+            this.lvPrilozi.Size = new System.Drawing.Size(373, 263);
+            this.lvPrilozi.SmallImageList = this.imageList1;
+            this.lvPrilozi.TabIndex = 4;
+            this.lvPrilozi.UseCompatibleStateImageBehavior = false;
+            this.lvPrilozi.ItemActivate += new System.EventHandler(this.lvPrilozi_ItemActivate);
             // 
             // lblPrilozi
             // 
@@ -137,23 +136,12 @@
             this.lblPrilozi.TabIndex = 0;
             this.lblPrilozi.Text = "Prilozi";
             // 
-            // btnPriloziTest
-            // 
-            this.btnPriloziTest.Location = new System.Drawing.Point(679, 127);
-            this.btnPriloziTest.Name = "btnPriloziTest";
-            this.btnPriloziTest.Size = new System.Drawing.Size(75, 23);
-            this.btnPriloziTest.TabIndex = 5;
-            this.btnPriloziTest.Text = "Otvori";
-            this.btnPriloziTest.UseVisualStyleBackColor = true;
-            this.btnPriloziTest.Click += new System.EventHandler(this.btnPriloziTest_Click);
-            // 
             // frmReportDetalji
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btnPriloziTest);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.lvPrilozi);
             this.Controls.Add(this.rtxtSadrzaj);
             this.Controls.Add(this.dTPDatum);
             this.Controls.Add(this.txtPosiljatelj);
@@ -181,8 +169,7 @@
         private System.Windows.Forms.Label lblSadrzaj;
         private System.Windows.Forms.RichTextBox rtxtSadrzaj;
         private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView lvPrilozi;
         private System.Windows.Forms.Label lblPrilozi;
-        private System.Windows.Forms.Button btnPriloziTest;
     }
 }

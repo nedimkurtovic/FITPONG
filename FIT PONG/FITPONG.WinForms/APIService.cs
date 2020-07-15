@@ -8,16 +8,20 @@ using FIT_PONG.SharedModels;
 using Flurl.Http;
 using System.Windows.Forms;
 using System.Net.Configuration;
+using System.Diagnostics;
 
 namespace FIT_PONG.WinForms
 {
     public class APIService
     {
-        private string resurs;
+        public string resurs { get; set; }
         public string APIUrl = $"{Resources.ApiUrl}";
         public static string Username { get; set; }
         public static string Password { get; set; }
-
+        public APIService(string _resurs)
+        {
+            resurs = _resurs;
+        }
         public async Task<T> GetAll<T>(object searchRequest = null)
         {
             var query = "";

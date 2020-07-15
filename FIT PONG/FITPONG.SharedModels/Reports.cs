@@ -12,5 +12,6 @@ namespace FIT_PONG.SharedModels
         public string Sadrzaj { get; set; }
         public string Email { get; set; }
         public List<Attachmenti> Prilozi { get; set; }
+        public List<Fajl> RawPrilozi { get; set; }
     }
 }
