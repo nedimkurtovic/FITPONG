@@ -42,6 +42,7 @@ namespace FIT_PONG.WinForms
             var item = dataGridView1.SelectedRows[0].DataBoundItem as Reports;
             var RealReport = _reportsLista.Stavke.Where(x => x.ID == item.ID).FirstOrDefault();
             frmReportDetalji frd = new frmReportDetalji(RealReport);
+            frd.ShowDialog();
         }
 
         private async void btnNaredna_Click(object sender, EventArgs e)

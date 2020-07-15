@@ -16,8 +16,8 @@ namespace FIT_PONG.WinForms
     {
         public string resurs { get; set; }
         public string APIUrl = $"{Resources.ApiUrl}";
-        public static string Username { get; set; }
-        public static string Password { get; set; }
+        public static string Username { get; set; } 
+        public static string Password { get; set; } 
         public APIService(string _resurs)
         {
             resurs = _resurs;
@@ -46,12 +46,13 @@ namespace FIT_PONG.WinForms
             {
                 return await url.WithBasicAuth(Username, Password)
                     .PostJsonAsync(request).ReceiveJson<T>();
+
             }
             catch (FlurlHttpException ex)
             {
                 var errori = await ex.GetResponseJsonAsync<Dictionary<string, string[]>>();
                 var _stringbilder = new StringBuilder();
-                foreach(var i in errori)
+                foreach (var i in errori)
                 {
                     _stringbilder.AppendLine($"{i.Key},{string.Join(",", i.Value)}");
                 }

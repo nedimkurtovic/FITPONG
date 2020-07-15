@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FIT_PONG.Database;
 using FIT_PONG.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace FIT_PONG.Services.Services
 {
@@ -27,7 +28,15 @@ namespace FIT_PONG.Services.Services
                 throw ex;
             return true;
         }
-
+        public override List<Objave> Get(object objekatSearch)
+        {
+            var obj = objekatSearch as ObjaveSearch;
+            var query = db.Objave.AsQueryable();
+            if (!String.IsNullOrWhiteSpace(obj.Naziv))
+                query = query.Where(x => x.Naziv == obj.Naziv);
+            var rezult = query.OrderByDescending(x=>x.ID).ToList();
+            return mapko.Map<List<Objave>>(rezult);
+        }
         public Objave Add(int FeedID, ObjaveInsertUpdate obj)
         {
             Validiraj(FeedID);
@@ -70,7 +79,15 @@ namespace FIT_PONG.Services.Services
         {
             var bazaObj = mapko.Map<Database.DTOs.Objava>(obj);
             db.Objave.Add(bazaObj);
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+
+            }
+            catch (DbUpdateException)
+            {
+                throw new UserException("Greška prilikom spašavanja u bazu");
+            }
             var povratni = mapko.Map<SharedModels.Objave>(bazaObj);
             return povratni;
         }

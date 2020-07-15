@@ -52,7 +52,7 @@ namespace FIT_PONG.WinForms
 
         private void btnObjave_Click(object sender, EventArgs e)
         {
-            OtvoriChildFormu(new frmObjavaDodaj());
+            OtvoriChildFormu(new frmObjavePregled());
         }
 
         private void btnIzvjestaji_Click(object sender, EventArgs e)
