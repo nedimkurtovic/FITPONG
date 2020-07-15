@@ -22,7 +22,6 @@ namespace FIT_PONG.WebAPI.Controllers
         private readonly IGradoviAutorizator gradoviAutorizator;
 
 
-
         public GradoviController(IGradoviService gradoviService, IUsersService usersService, IGradoviAutorizator gradoviAutorizator)
         {
             this.gradoviService = gradoviService;
@@ -35,7 +34,15 @@ namespace FIT_PONG.WebAPI.Controllers
         {
             gradoviAutorizator.AuthorizeGet(usersService.GetRequestUserName(HttpContext.Request));
             return gradoviService.Get();
-        } 
+        }
+
+        [HttpGet("{id}")]
+        public Gradovi Get(int id)
+        {
+            gradoviAutorizator.AuthorizeGetById(usersService.GetRequestUserName(HttpContext.Request));
+            return gradoviService.GetById(id);
+        }
+
 
         [HttpPost]
         public Gradovi Add(GradoviInsertUpdate obj)
@@ -44,14 +51,14 @@ namespace FIT_PONG.WebAPI.Controllers
             return gradoviService.Add(obj);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public Gradovi Update(int id, GradoviInsertUpdate obj)
         {
             gradoviAutorizator.AuthorizeUpdate(usersService.GetRequestUserName(HttpContext.Request));
             return gradoviService.Update(id, obj);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public void Delete(int id)
         {
             gradoviAutorizator.AuthorizeDelete(usersService.GetRequestUserName(HttpContext.Request));

@@ -40,8 +40,5 @@ namespace FIT_PONG.Services.Services
 		string Postovanje(string loggedInUserName, int postovaniID);
 		string GetRequestUserName(HttpRequest Request);
 		int GetRequestUserID(HttpRequest Request);
-		//string GetPrikaznoIme(HttpRequest Request);
-		//int GetUserID(HttpRequest Request);
-		//string GetEmail(HttpRequest Request);
-	}
+    }
 }

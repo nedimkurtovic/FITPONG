@@ -10,6 +10,8 @@ namespace FIT_PONG.Services.Services.Autorizacija
         bool AuthorizeDelete(string loggedInUserEmail);
         bool AuthorizeUpdate(string loggedInUserEmail);
         bool AuthorizeGet(string loggedInUserEmail);
+        bool AuthorizeGetById(string loggedInUserEmail);
+
 
     }
 }

@@ -130,5 +130,11 @@ namespace FIT_PONG.WebAPI.Controllers
             return usersService.ResetProfilePicture(loggedInUserName, userId);
         }
 
+        [HttpGet("{id}/statistike")]
+        public List<Statistike> Statistike(int id)
+        {
+            return statistikeService.Get(id);
+        } 
+
     }
 }
