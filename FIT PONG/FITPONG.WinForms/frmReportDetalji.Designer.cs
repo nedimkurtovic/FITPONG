@@ -87,6 +87,7 @@
             // 
             // dTPDatum
             // 
+            this.dTPDatum.Enabled = false;
             this.dTPDatum.Location = new System.Drawing.Point(404, 61);
             this.dTPDatum.Name = "dTPDatum";
             this.dTPDatum.Size = new System.Drawing.Size(235, 20);
@@ -103,6 +104,7 @@
             // 
             // rtxtSadrzaj
             // 
+            this.rtxtSadrzaj.Enabled = false;
             this.rtxtSadrzaj.Location = new System.Drawing.Point(50, 221);
             this.rtxtSadrzaj.Name = "rtxtSadrzaj";
             this.rtxtSadrzaj.Size = new System.Drawing.Size(300, 206);

@@ -16,8 +16,10 @@ namespace FIT_PONG.WinForms
     {
         public string resurs { get; set; }
         public string APIUrl = $"{Resources.ApiUrl}";
-        public static string Username { get; set; } 
-        public static string Password { get; set; } 
+        //public static string Username { get; set; } 
+        //public static string Password { get; set; } 
+        public static string Username { get; set; } = "nedim.kurtovic@edu.fit.ba";
+        public static string Password { get; set; } = "nedim123.";
         public APIService(string _resurs)
         {
             resurs = _resurs;
@@ -27,8 +29,11 @@ namespace FIT_PONG.WinForms
             var query = "";
             if (searchRequest != null)
                 query = await searchRequest?.ToQueryString();
+            var url = $"{APIUrl}/{resurs}";
+            if (!String.IsNullOrEmpty(query))
+                url += $"?{query}";
 
-            var rezultatApija = await $"{APIUrl}/{resurs}"
+            var rezultatApija = await url
                 .WithBasicAuth(Username,Password).GetJsonAsync<T>();
 
             return rezultatApija;

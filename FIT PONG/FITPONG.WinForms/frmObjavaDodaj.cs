@@ -27,7 +27,12 @@ namespace FIT_PONG.WinForms
                 Naziv = txtNaslov.Text,
                 Content = txtSadrzaj.Text
             };
-
+            if (!ValidirajAdd(obj))
+            {
+                MessageBox.Show("Morate unijeti podatke", "Greška"
+                    , MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             var rezultat = await _apiServis.Insert<Objave>(obj);
             if (rezultat != default(Objave))
             {
@@ -35,8 +40,14 @@ namespace FIT_PONG.WinForms
                     , MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 this.Close();
             }
-
-
+        }
+        private bool ValidirajAdd(ObjaveInsertUpdate obj)
+        {
+            if (String.IsNullOrEmpty(obj.Naziv))
+                return false;
+            if (String.IsNullOrEmpty(obj.Content))
+                return false;
+            return true;
         }
     }
 }

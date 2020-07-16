@@ -1,6 +1,7 @@
 ﻿using FIT_PONG.SharedModels;
 using FIT_PONG.SharedModels.Requests;
 using FIT_PONG.SharedModels.Requests.Objave;
+using FIT_PONG.WinForms.PomocniObjekti;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,12 +14,7 @@ using System.Windows.Forms;
 
 namespace FIT_PONG.WinForms
 {
-    public class PomocniObjekat
-    {
-        public int ID { get; set; }
-        public string Naslov { get; set; }
-        public DateTime Datum { get; set; }
-    }
+    
     public partial class frmObjavePregled : Form
     {
         private APIService _apiServis = new APIService("objave");
@@ -94,5 +90,6 @@ namespace FIT_PONG.WinForms
             frmObjavaDodaj frm = new frmObjavaDodaj();
             frm.Show();
         }
+
     }
 }

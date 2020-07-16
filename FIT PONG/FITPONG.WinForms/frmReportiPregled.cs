@@ -1,6 +1,7 @@
 ﻿using FIT_PONG.SharedModels;
 using FIT_PONG.SharedModels.Requests;
 using FIT_PONG.SharedModels.Requests.Reports;
+using FIT_PONG.WinForms.PomocniObjekti;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,8 +21,8 @@ namespace FIT_PONG.WinForms
         public frmReportiPregled()
         {
             InitializeComponent();
-            dTPDatum.Value = new DateTime(1753, 1, 1);
-            dataGridView1.AutoGenerateColumns = false;
+            dTPDatum.Value = DateTime.Now;
+            dataGridView1.AutoGenerateColumns = true;
         }
 
         private async void btnDobavi_Click(object sender, EventArgs e)
@@ -30,16 +31,15 @@ namespace FIT_PONG.WinForms
                 Naslov = txtNaziv.Text,
                 Datum = dTPDatum.Value
             };
-
+            if (chkZanemari.Checked)
+                req.Datum = null;
             _reportsLista = await _apiServis.GetAll<PagedResponse<Reports>>(req);
-            var rezultat = _reportsLista.Stavke.Select(x => new
-            { ID = x.ID, Naslov = x.Naslov, Datum = x.DatumKreiranja }).ToList();
-            dataGridView1.DataSource = rezultat;
+            RegulisiDataSource();
         }
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            var item = dataGridView1.SelectedRows[0].DataBoundItem as Reports;
+            var item = dataGridView1.SelectedRows[0].DataBoundItem as PomocniObjekat;
             var RealReport = _reportsLista.Stavke.Where(x => x.ID == item.ID).FirstOrDefault();
             frmReportDetalji frd = new frmReportDetalji(RealReport);
             frd.ShowDialog();
@@ -49,10 +49,11 @@ namespace FIT_PONG.WinForms
         {
             if(_reportsLista.IducaStranica != null)
             {
-                int pozicija = _reportsLista.IducaStranica.ToString().LastIndexOf("/");
+                int pozicija = _reportsLista.IducaStranica.ToString().LastIndexOf("/") + 1;
                 string resurs = _reportsLista.IducaStranica.ToString().Substring(pozicija);
                 _apiServis = new APIService(resurs);
                 _reportsLista = await _apiServis.GetAll<PagedResponse<Reports>>();
+                RegulisiDataSource();
             }
             RegulisiButtone();
         }
@@ -61,10 +62,11 @@ namespace FIT_PONG.WinForms
         {
             if (_reportsLista.ProslaStranica != null)
             {
-                int pozicija = _reportsLista.ProslaStranica.ToString().LastIndexOf("/");
+                int pozicija = _reportsLista.ProslaStranica.ToString().LastIndexOf("/") + 1;
                 string resurs = _reportsLista.ProslaStranica.ToString().Substring(pozicija);
                 _apiServis = new APIService(resurs);
                 _reportsLista = await _apiServis.GetAll<PagedResponse<Reports>>();
+                RegulisiDataSource();
             }
             RegulisiButtone();
         }
@@ -74,6 +76,23 @@ namespace FIT_PONG.WinForms
                 btnPrethodna.Enabled = false;
             if (_reportsLista.IducaStranica == null)
                 btnNaredna.Enabled = false;
+        }
+        private void RegulisiDataSource()
+        {
+            dataGridView1.DataSource = _reportsLista.Stavke.Select(x => new PomocniObjekat
+            {
+                ID = x.ID,
+                Naslov = x.Naslov,
+                Datum = x.DatumKreiranja
+            }).ToList();
+        }
+
+        private void chkZanemari_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkZanemari.Checked)
+                dTPDatum.Enabled = false;
+            else
+                dTPDatum.Enabled = true;
         }
     }
 }

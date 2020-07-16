@@ -67,7 +67,7 @@ namespace FIT_PONG.WinForms
         //}
         private void NapuniSlike()
         {
-            if (report != null)
+            if (report != null && report.RawPrilozi != null)
             {
                 foreach (Fajl i in report.RawPrilozi)
                 {

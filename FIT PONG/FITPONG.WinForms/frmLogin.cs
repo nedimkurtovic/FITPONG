@@ -24,7 +24,7 @@ namespace FIT_PONG.WinForms
 
         private async void btnPrijava_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Debugger.Break();
+         
             Login obj = new Login()
             {
                 RememberMe = false,

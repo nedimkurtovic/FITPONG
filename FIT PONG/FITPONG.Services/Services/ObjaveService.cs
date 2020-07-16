@@ -33,7 +33,7 @@ namespace FIT_PONG.Services.Services
             var obj = objekatSearch as ObjaveSearch;
             var query = db.Objave.AsQueryable();
             if (!String.IsNullOrWhiteSpace(obj.Naziv))
-                query = query.Where(x => x.Naziv == obj.Naziv);
+                query = query.Where(x => x.Naziv.Contains(obj.Naziv));
             var rezult = query.OrderByDescending(x=>x.ID).ToList();
             return mapko.Map<List<Objave>>(rezult);
         }

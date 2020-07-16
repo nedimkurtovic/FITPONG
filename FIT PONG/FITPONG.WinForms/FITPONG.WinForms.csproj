@@ -149,6 +149,7 @@
     <Compile Include="frmTakmicenjaPregled.Designer.cs">
       <DependentUpon>frmTakmicenjaPregled.cs</DependentUpon>
     </Compile>
+    <Compile Include="PomocniObjekti\PomocniObjekat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmLogin.resx">

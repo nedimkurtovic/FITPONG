@@ -32,9 +32,9 @@ namespace FIT_PONG.Services.Services
         {
             var query = db.Reports.Include(x=>x.Prilozi).AsQueryable();
             if (!String.IsNullOrWhiteSpace(obj.Naslov))
-                query = query.Where(x => x.Naslov == obj.Naslov);
-            if (obj.Datum.Date != new DateTime(1975, 1, 1))
-                query = query.Where(x => x.DatumKreiranja.Date == obj.Datum.Date);
+                query = query.Where(x => x.Naslov.Contains(obj.Naslov));
+            if (obj.Datum != null)
+                query = query.Where(x => x.DatumKreiranja.Date == obj.Datum.GetValueOrDefault().Date);
 
             var rezultat = query.ToList();
             var povratni = mapko.Map<List<Reports>>(rezultat);

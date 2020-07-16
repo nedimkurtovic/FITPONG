@@ -36,6 +36,7 @@
             this.btnDobavi = new System.Windows.Forms.Button();
             this.btnPrethodna = new System.Windows.Forms.Button();
             this.btnNaredna = new System.Windows.Forms.Button();
+            this.chkZanemari = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -110,11 +111,23 @@
             this.btnNaredna.UseVisualStyleBackColor = true;
             this.btnNaredna.Click += new System.EventHandler(this.btnNaredna_Click);
             // 
+            // chkZanemari
+            // 
+            this.chkZanemari.AutoSize = true;
+            this.chkZanemari.Location = new System.Drawing.Point(275, 71);
+            this.chkZanemari.Name = "chkZanemari";
+            this.chkZanemari.Size = new System.Drawing.Size(102, 17);
+            this.chkZanemari.TabIndex = 8;
+            this.chkZanemari.Text = "Zanemari datum";
+            this.chkZanemari.UseVisualStyleBackColor = true;
+            this.chkZanemari.CheckedChanged += new System.EventHandler(this.chkZanemari_CheckedChanged);
+            // 
             // frmReportiPregled
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(573, 450);
+            this.Controls.Add(this.chkZanemari);
             this.Controls.Add(this.btnNaredna);
             this.Controls.Add(this.btnPrethodna);
             this.Controls.Add(this.btnDobavi);
@@ -141,5 +154,6 @@
         private System.Windows.Forms.Button btnDobavi;
         private System.Windows.Forms.Button btnPrethodna;
         private System.Windows.Forms.Button btnNaredna;
+        private System.Windows.Forms.CheckBox chkZanemari;
     }
 }

@@ -17,12 +17,12 @@ namespace FIT_PONG.WinForms
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var frmLog = new frmLogin();
-            Application.Run(frmLog);
-            if (frmLog.UspjesnoPrijavljen)
-            {
+            //var frmLog = new frmLogin();
+            //Application.Run(frmLog);
+            //if (frmLog.UspjesnoPrijavljen)
+            //{
                 Application.Run(new frmMain());
-            }
+            //}
         }
     }
 }

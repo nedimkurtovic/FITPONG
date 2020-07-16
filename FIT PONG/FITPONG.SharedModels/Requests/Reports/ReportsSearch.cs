@@ -8,7 +8,7 @@ namespace FIT_PONG.SharedModels.Requests.Reports
     public class ReportsSearch:SearchBase
     {
         public string Naslov { get; set; }
-        public DateTime Datum{ get; set; }
+        public DateTime? Datum{ get; set; }
 
         public ReportsSearch()
         {
