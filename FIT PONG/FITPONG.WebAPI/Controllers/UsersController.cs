@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using FIT_PONG.Services.Services;
+using FIT_PONG.Services.Services.Autorizacija;
 using FIT_PONG.SharedModels;
 using FIT_PONG.SharedModels.Requests.Account;
 using Microsoft.AspNetCore.Authorization;
@@ -20,11 +21,13 @@ namespace FIT_PONG.WebAPI.Controllers
     {
         private readonly IUsersService usersService;
         private readonly IStatistikeService statistikeService;
+        private readonly IUsersAutorizator usersAutorizator;
 
-        public UsersController(IUsersService usersService, IStatistikeService statistikeService)
+        public UsersController(IUsersService usersService, IStatistikeService statistikeService, IUsersAutorizator usersAutorizator)
         {
             this.usersService = usersService;
             this.statistikeService = statistikeService;
+            this.usersAutorizator = usersAutorizator;
         }
 
 
@@ -57,6 +60,15 @@ namespace FIT_PONG.WebAPI.Controllers
         public Task<Users> Login(Login obj)
         {
             return usersService.Login(obj);
+        }
+
+
+        [HttpPut("{id}")]
+        [AllowAnonymous]
+        public Users Edit(int id, AccountUpdate obj)
+        {
+            usersAutorizator.AuthorizeEditProfila(usersService.GetRequestUserID(HttpContext.Request), id);
+            return usersService.EditujProfil(id,obj);
         }
 
 

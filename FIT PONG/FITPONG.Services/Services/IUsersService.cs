@@ -31,6 +31,7 @@ namespace FIT_PONG.Services.Services
 		
 		//string Logout(int id || string username);
 		
+		SharedModels.Users EditujProfil(int id, SharedModels.Requests.Account.AccountUpdate obj);
 		Task<string> SendConfirmationEmail(SharedModels.Requests.Account.Email_Password_Request obj);
 		Task<string> ConfirmEmail(string userId, string token);
 		Task<string> SendPasswordChange(SharedModels.Requests.Account.Email_Password_Request obj);
