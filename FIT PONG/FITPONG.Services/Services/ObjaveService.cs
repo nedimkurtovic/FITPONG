@@ -91,5 +91,13 @@ namespace FIT_PONG.Services.Services
             var povratni = mapko.Map<SharedModels.Objave>(bazaObj);
             return povratni;
         }
+
+        public List<Objave> GetAll(int FeedID)
+        {
+            Validiraj(FeedID);
+            var feedsObjave = db.FeedsObjave.Include(x => x.Objava).Where(x => x.FeedID == FeedID)
+                .Select(x => x.Objava).ToList();
+            return mapko.Map<List<Objave>>(feedsObjave);
+        }
     }
 }

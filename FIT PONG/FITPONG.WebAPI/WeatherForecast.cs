@@ -1,6 +1,6 @@
 using System;
 
-namespace FITPONG.WebAPI
+namespace FIT_PONG.WebAPI
 {
     public class WeatherForecast
     {

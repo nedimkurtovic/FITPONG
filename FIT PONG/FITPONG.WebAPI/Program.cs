@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace FITPONG.WebAPI
+namespace FIT_PONG.WebAPI
 {
     public class Program
     {

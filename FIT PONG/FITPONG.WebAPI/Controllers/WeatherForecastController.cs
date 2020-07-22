@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace FITPONG.WebAPI.Controllers
+namespace FIT_PONG.WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]

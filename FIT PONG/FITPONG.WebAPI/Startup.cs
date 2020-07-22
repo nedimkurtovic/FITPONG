@@ -25,8 +25,9 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using FIT_PONG.WebAPI.Filters;
+using FIT_PONG.WebAPI.Services.Bazni;
 
-namespace FITPONG.WebAPI
+namespace FIT_PONG.WebAPI
 {
     public class BasicAuthDocumentFilter : Swashbuckle.AspNetCore.SwaggerGen.IDocumentFilter
     {
@@ -118,6 +119,19 @@ namespace FITPONG.WebAPI
             services.AddScoped<iEmailServis, FITPONGGmail>();
             services.AddScoped<ITakmicenjeService, TakmicenjeService>();
 
+            //combobox jarani
+            services.AddScoped<IBaseService<FIT_PONG.SharedModels.KategorijeTakmicenja,object>,
+                BaseService<SharedModels.KategorijeTakmicenja, Database.DTOs.Kategorija, object>>();
+            
+            services.AddScoped<IBaseService<FIT_PONG.SharedModels.VrsteTakmicenja, object>,
+                BaseService<SharedModels.VrsteTakmicenja, Database.DTOs.Vrsta_Takmicenja, object>>();
+            
+            services.AddScoped<IBaseService<FIT_PONG.SharedModels.SistemiTakmicenja, object>,
+                BaseService<SharedModels.SistemiTakmicenja, Database.DTOs.Sistem_Takmicenja, object>>();
+            
+            services.AddScoped<IBaseService<FIT_PONG.SharedModels.StatusiTakmicenja, object>,
+                BaseService<SharedModels.StatusiTakmicenja, Database.DTOs.Status_Takmicenja, object>>();
+            
             //SIPA
             services.AddScoped<ITakmicenjeAutorizator, TakmicenjeAutorizator>();
             services.AddScoped<IUsersAutorizator, UsersAutorizator>();
@@ -146,7 +160,7 @@ namespace FITPONG.WebAPI
 
             app.UseRouting();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();

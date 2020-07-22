@@ -35,6 +35,12 @@ namespace FIT_PONG.WebAPI.Profiles
             CreateMap<Database.DTOs.Takmicenje, SharedModels.Takmicenja>();
             CreateMap<SharedModels.Requests.Takmicenja.TakmicenjaUpdate, Database.DTOs.Takmicenje>();
             CreateMap<SharedModels.Requests.Takmicenja.TakmicenjaInsert, Database.DTOs.Takmicenje>();
+
+            //combos
+            CreateMap<Database.DTOs.Kategorija, SharedModels.KategorijeTakmicenja>();
+            CreateMap<Database.DTOs.Vrsta_Takmicenja, SharedModels.VrsteTakmicenja>();
+            CreateMap<Database.DTOs.Sistem_Takmicenja, SharedModels.SistemiTakmicenja>();
+            CreateMap<Database.DTOs.Status_Takmicenja, SharedModels.StatusiTakmicenja>();
         }
     }
 }

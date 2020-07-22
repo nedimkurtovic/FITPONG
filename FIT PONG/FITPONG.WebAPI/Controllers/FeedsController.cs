@@ -44,6 +44,11 @@ namespace FIT_PONG.WebAPI.Controllers
         public Objave Add(int id, ObjaveInsertUpdate obj)
         {
             return objaveService.Add(id, obj);
-        }   
+        }
+        [HttpGet("{id}/objave")]
+        public List<Objave> GetObjave(int id)
+        {
+            return objaveService.GetAll(id);
+        }
     }
 }
