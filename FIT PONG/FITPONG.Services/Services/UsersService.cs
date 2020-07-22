@@ -171,6 +171,27 @@ namespace FIT_PONG.Services.Services
         //    await signinmanager.SignOutAsync();
         //}
 
+        public Users EditujProfil(int id, AccountUpdate obj)
+        {
+            Igrac igrac = db.Igraci.Find(id);
+            if (igrac == null)
+                throw new UserException("Igrac ne postoji u bazi.");
+
+            if (obj.PrikaznoIme != igrac.PrikaznoIme && PostojiPrikaznoIme(obj.PrikaznoIme))
+                throw new UserException("Prikazno ime je zauzeto.");
+
+            igrac.JacaRuka = obj.JacaRuka;
+            igrac.Visina = obj.Visina;
+            igrac.PrikaznoIme = obj.PrikaznoIme;
+            if (obj.GradId != 0)
+                igrac.GradID = obj.GradId;
+            db.Update(igrac);
+            db.SaveChanges();
+
+            return mapper.Map<SharedModels.Users>(igrac);
+        }
+
+
         public async Task<string> SendConfirmationEmail(Email_Password_Request obj)
         {
             var user = await usermanager.FindByEmailAsync(obj.Email);
@@ -543,5 +564,6 @@ namespace FIT_PONG.Services.Services
             System.IO.File.Delete(filePutanja);
         }
 
+       
     }
 }

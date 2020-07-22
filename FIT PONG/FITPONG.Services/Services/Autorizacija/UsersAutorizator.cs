@@ -14,6 +14,11 @@ namespace FIT_PONG.Services.Services.Autorizacija
             this.db = db;
         }
 
+        public bool AuthorizeEditProfila(int logiraniKorisnikId, int userId)
+        {
+            return IsLogiraniKorisnik(logiraniKorisnikId, userId);
+        }
+
         public bool AuthorizeEditSlikuProfila(int logiraniKorisnikId, int userId)
         {
             return IsLogiraniKorisnik(logiraniKorisnikId, userId);
