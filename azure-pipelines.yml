@@ -43,9 +43,9 @@ steps:
 - task: FtpUpload@2
   inputs:
     credentialsOption: 'inputs'
-    serverUrl: 'ftp://p1869.app.fit.ba'
-    username: 'p1869'
-    password: 'yApwk7!'
+    serverUrl: 'hidden'
+    username: 'hidden'
+    password: 'hidden'
     rootDirectory: 'd:\a\1\a\FIT PONG'
     filePatterns: '**'
     remoteDirectory: '/httpdocs/'
