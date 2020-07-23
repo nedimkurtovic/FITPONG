@@ -1,8 +1,8 @@
 ﻿<Application
-    x:Class="FITPONG.Mobile.UWP.App"
+    x:Class="FIT_PONG.Mobile.UWP.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:FITPONG.Mobile.UWP"
+    xmlns:local="using:FIT_PONG.Mobile.UWP"
     RequestedTheme="Light">
 
 </Application>

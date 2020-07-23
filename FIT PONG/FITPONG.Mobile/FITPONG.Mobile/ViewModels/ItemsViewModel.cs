@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-using FITPONG.Mobile.Models;
-using FITPONG.Mobile.Views;
+using FIT_PONG.Mobile.Models;
+using FIT_PONG.Mobile.Views;
 
-namespace FITPONG.Mobile.ViewModels
+namespace FIT_PONG.Mobile.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {

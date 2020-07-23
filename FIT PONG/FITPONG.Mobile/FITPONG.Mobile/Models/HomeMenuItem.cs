@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FITPONG.Mobile.Models
+namespace FIT_PONG.Mobile.Models
 {
     public enum MenuItemType
     {

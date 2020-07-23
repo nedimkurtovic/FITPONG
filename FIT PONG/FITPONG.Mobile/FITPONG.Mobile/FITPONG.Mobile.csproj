@@ -27,9 +27,13 @@
   <ItemGroup>
     <Folder Include="ViewModels\Reports\" />
     <Folder Include="ViewModels\Takmicenja\" />
-    <Folder Include="ViewModels\Users\" />
     <Folder Include="Views\Reports\" />
-    <Folder Include="Views\Users\" />
     <Folder Include="Views\Takmicenja\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Views\Users\Login.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
