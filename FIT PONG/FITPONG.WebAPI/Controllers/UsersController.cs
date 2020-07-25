@@ -16,7 +16,7 @@ namespace FIT_PONG.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = "BasicAuthentication")] 
+    [Authorize(AuthenticationSchemes = "BasicAuthentication")]
     public class UsersController : Controller
     {
         private readonly IUsersService usersService;
@@ -68,12 +68,12 @@ namespace FIT_PONG.WebAPI.Controllers
         public Users Edit(int id, AccountUpdate obj)
         {
             usersAutorizator.AuthorizeEditProfila(usersService.GetRequestUserID(HttpContext.Request), id);
-            return usersService.EditujProfil(id,obj);
+            return usersService.EditujProfil(id, obj);
         }
 
 
         [HttpPost]
-        [Route("mailPonovnoSlanje")]
+        [Route("mail")]
         [AllowAnonymous]
         public Task<string> PonovoPosaljiMail(Email_Password_Request obj)
         {
@@ -82,7 +82,7 @@ namespace FIT_PONG.WebAPI.Controllers
 
 
         [HttpGet]
-        [Route("potvrdiMejl")]
+        [Route("mail-potvrda")]
         [AllowAnonymous]
         public Task<String> ConfirmEmail([FromQuery]string userId, [FromQuery]string token)
         {
@@ -91,14 +91,14 @@ namespace FIT_PONG.WebAPI.Controllers
 
 
         [HttpPost]
-        [Route("promjenaPassworda")]
+        [Route("password")]
         public Task<string> ResetujPassword(Email_Password_Request obj)
         {
             return usersService.SendPasswordChange(obj);
         }
 
         [HttpPost]
-        [Route("potvrdiPromjenuPassworda")]
+        [Route("password-potvrda")]
         public Task<String> ConfirmPasswordChange(PasswordPromjena obj)
         {
             var loggedInUserName = usersService.GetRequestUserName(HttpContext.Request);
@@ -117,8 +117,8 @@ namespace FIT_PONG.WebAPI.Controllers
         }
 
 
-        [HttpPost]
-        [Route("{userId}/akcije/promijeniSliku")]
+        [HttpPut]
+        [Route("{userId}/akcije/slika")]
         public string PromijeniSliku(int userId, SlikaPromjenaRequest obj)
         {
             var loggedInUserName = usersService.GetRequestUserName(HttpContext.Request);
@@ -126,7 +126,7 @@ namespace FIT_PONG.WebAPI.Controllers
             var fajl = new Fajl
             {
                 BinarniZapis = obj.Slika,
-                Naziv=obj.Naziv
+                Naziv = obj.Naziv
             };
 
             return usersService.UpdateProfilePicture(loggedInUserName, userId, fajl);
@@ -134,7 +134,7 @@ namespace FIT_PONG.WebAPI.Controllers
 
 
         [HttpPost]
-        [Route("{userId}/akcije/ukloniSliku")]
+        [Route("{userId}/akcije/slika")]
         public string UkloniSliku(int userId)
         {
             var loggedInUserName = usersService.GetRequestUserName(HttpContext.Request);
@@ -146,7 +146,7 @@ namespace FIT_PONG.WebAPI.Controllers
         public List<Statistike> Statistike(int id)
         {
             return statistikeService.Get(id);
-        } 
+        }
 
     }
 }
