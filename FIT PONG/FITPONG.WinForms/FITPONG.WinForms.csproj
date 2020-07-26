@@ -34,11 +34,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Flurl, Version=2.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Flurl.2.8.2\lib\net40\Flurl.dll</HintPath>
+    <Reference Include="Flurl, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Flurl.3.0.0-pre3\lib\net40\Flurl.dll</HintPath>
     </Reference>
-    <Reference Include="Flurl.Http, Version=2.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Flurl.Http.2.4.2\lib\net46\Flurl.Http.dll</HintPath>
+    <Reference Include="Flurl.Http, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Flurl.Http.3.0.0-pre3\lib\net46\Flurl.Http.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -49,6 +49,7 @@
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -152,6 +153,18 @@
     <Compile Include="PomocniObjekti\PomocniObjekat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmGenerisiIzvjestaj.resx">
+      <DependentUpon>frmGenerisiIzvjestaj.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIgracDetalji.resx">
+      <DependentUpon>frmIgracDetalji.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIgraciPregled.resx">
+      <DependentUpon>frmIgraciPregled.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIgracSuspenzija.resx">
+      <DependentUpon>frmIgracSuspenzija.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>
     </EmbeddedResource>
@@ -175,6 +188,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmReportiPregled.resx">
       <DependentUpon>frmReportiPregled.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmStatistikaStranice.resx">
+      <DependentUpon>frmStatistikaStranice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTakmicenjaDetalji.resx">
+      <DependentUpon>frmTakmicenjaDetalji.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTakmicenjaPregled.resx">
+      <DependentUpon>frmTakmicenjaPregled.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

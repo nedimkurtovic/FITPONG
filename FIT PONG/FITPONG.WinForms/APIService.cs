@@ -16,8 +16,8 @@ namespace FIT_PONG.WinForms
     {
         public string resurs { get; set; }
         public string APIUrl = $"{Resources.ApiUrl}";
-        public static string Username { get; set; }
-        public static string Password { get; set; }
+        public static string Username = "testni7";
+        public static string Password = "test123.";
 
         public APIService(string _resurs)
         {
