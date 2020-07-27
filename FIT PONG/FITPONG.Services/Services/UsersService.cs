@@ -138,7 +138,11 @@ namespace FIT_PONG.Services.Services
         {
             var korisnik = await usermanager.FindByEmailAsync(obj.UserName);
             if (korisnik == null)
-                throw new UserException("Neispravni podaci za login.");
+            {
+                UserException ex = new UserException();
+                ex.AddError("", "Neispravni podaci za login");
+                throw ex;
+            }
 
             var igrac = db.Igraci.Find(korisnik.Id);
 
