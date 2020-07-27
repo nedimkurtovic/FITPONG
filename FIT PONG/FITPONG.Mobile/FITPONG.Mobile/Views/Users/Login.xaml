@@ -5,17 +5,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewModelko="clr-namespace:FIT_PONG.Mobile.ViewModels.Users"
              mc:Ignorable="d"
              x:Class="FIT_PONG.Mobile.Views.Users.Login">
+    
     <ContentPage.BindingContext>
         <viewModelko:LoginViewModel />
     </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <Thickness x:Key="Margina">50,0</Thickness>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Email"
+        <StackLayout VerticalOptions="Center">
+            <Label Margin="{StaticResource Margina}"
+                Text="Email"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            <Entry Text="{Binding Username}" 
+            <Entry Margin="{StaticResource Margina}"
+                Text="{Binding Username}" 
                    VerticalOptions="CenterAndExpand"
-                   HorizontalOptions="CenterAndExpand"></Entry>
+                   HorizontalOptions="FillAndExpand"></Entry>
+            <Label Margin="{StaticResource Margina}"
+                Text="Password"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            <Entry Margin="{StaticResource Margina}"
+                Text="{Binding Password}" 
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="FillAndExpand"></Entry>
+            <Button Margin="100,0" Text="Login" VerticalOptions="Center"
+                    Command="{Binding LoginKomanda}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

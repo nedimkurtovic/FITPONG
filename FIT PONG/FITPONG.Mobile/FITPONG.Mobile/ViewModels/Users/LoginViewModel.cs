@@ -38,7 +38,8 @@ namespace FIT_PONG.Mobile.ViewModels.Users
             Login noviLogin = new Login
             {
                 UserName = this.Username,
-                Password = this.Password
+                Password = this.Password,
+                RememberMe = false
             };
             var rezultat = await _usersServis.Login(noviLogin);
             if(rezultat != (default(SharedModels.Users)))
