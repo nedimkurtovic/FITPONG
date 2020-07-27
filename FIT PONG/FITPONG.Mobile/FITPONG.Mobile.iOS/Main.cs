@@ -5,7 +5,7 @@ using System.Linq;
 using Foundation;
 using UIKit;
 
-namespace FITPONG.Mobile.iOS
+namespace FIT_PONG.Mobile.iOS
 {
     public class Application
     {

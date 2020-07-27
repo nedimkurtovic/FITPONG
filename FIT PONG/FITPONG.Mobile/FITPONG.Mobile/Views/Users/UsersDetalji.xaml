@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:FIT_PONG.Mobile.ViewModels.Users"
+             mc:Ignorable="d"
+             x:Class="FIT_PONG.Mobile.Views.Users.UsersDetalji">
+    <ContentPage.BindingContext>
+        <vm:UsersDetaljiViewModel></vm:UsersDetaljiViewModel>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <!--<StackLayout>
+            <StackLayout Spacing="20" Padding="15">
+                <Label Text="Naziv:" FontSize="Medium" />
+                <Label Text="{Binding User.PrikaznoIme}" x:Name="lblIme" d:Text="Item name" FontSize="Small"/>
+                <Label Text="ELO:" FontSize="Medium" />
+                <Label Text="{Binding }" x:Name="lblELO"  d:Text="Item description" FontSize="Small"/>
+            </StackLayout>
+        </StackLayout>-->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackLayout HorizontalOptions="Center" Grid.Row="0" Grid.Column="0">
+                <Label FontSize="Small" Text="Broj pobjeda"></Label>
+                <Label Text="{Binding BrojPobjeda}" FontSize="Large" />
+            </StackLayout>
+            <StackLayout HorizontalOptions="Center" Grid.Row="0" Grid.Column="2">
+                <Label FontSize="Small" Text="Broj poraza"></Label>
+                <Label Text="{Binding BrojPoraza}" FontSize="Large" />
+            </StackLayout>
+            <Label Grid.Row="1" HorizontalOptions="Center" Grid.Column="1" Text="{Binding User.PrikaznoIme}" FontSize="Large" />
+            <StackLayout HorizontalOptions="Center" Grid.Row="2" Grid.Column="1">
+                <Label  Text="ELO" FontSize="Small" />
+                <Label  Text="{Binding User.ELO}" FontSize="Medium" />
+            </StackLayout>
+            <StackLayout HorizontalOptions="Center" Grid.Row="3" Grid.Column="1">
+                <Label  Text="Jača ruka" FontSize="Small" />
+                <Label  Text="{Binding User.JacaRuka}" FontSize="Medium" />
+            </StackLayout>
+            <StackLayout  HorizontalOptions="Center" Grid.Row="4" Grid.Column="1">
+                <Label  Text="Visina" FontSize="Small" />
+                <Label  Text="{Binding User.Visina}" FontSize="Medium" />
+            </StackLayout>
+            <StackLayout  HorizontalOptions="Center" Grid.Row="5" Grid.Column="1">
+                <Label  Text="Grad" FontSize="Small" />
+                <Label Text="{Binding User.Grad}" FontSize="Medium" />
+            </StackLayout>
+            <StackLayout  HorizontalOptions="Center" Grid.Row="6" Grid.Column="1">
+                <Label  Text="Spol" FontSize="Small" />
+                <Label Text="{Binding User.Spol}" FontSize="Medium" />
+            </StackLayout>
+            <StackLayout  HorizontalOptions="Center" Grid.Row="6" Grid.Column="1">
+                <Label  Text="Spol" FontSize="Small" />
+                <Label Text="{Binding User.BrojPostovanja}" FontSize="Medium" />
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

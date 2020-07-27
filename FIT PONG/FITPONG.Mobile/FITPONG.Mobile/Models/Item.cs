@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FITPONG.Mobile.Models
+namespace FIT_PONG.Mobile.Models
 {
     public class Item
     {

@@ -1,6 +1,10 @@
 ﻿using FIT_PONG.Database;
 using FIT_PONG.Services.Services;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -32,9 +36,17 @@ namespace FIT_PONG.WebAPI.Security
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
+            var i = Context.GetEndpoint();
+            if (i?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
+            {
+                //postoji problem sa zaobilaskom authentifikacije sa allowanonymous atributom
+                //izgleda da ce se morati primijeniti obrnuta logika, tj citav kontroler staviti 
+                //na allowanonymous a akcije koje zahtijevaju autorizaciju na njih staviti onaj authorize
+                //atribut koji ce pozvati ovu metodu, npr to je za users kontroler karakteristicno
+                //dok vec takmicenje kontroler zahtijeva nad svakom akcijom autorizaciju
+            }
             if (!Request.Headers.ContainsKey("Authorization"))
                 return AuthenticateResult.Fail("Missing Authorization Header");
-
             FIT_PONG.SharedModels.Users user = null;
             try
             {

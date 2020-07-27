@@ -3,7 +3,7 @@ using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace FITPONG.Mobile.ViewModels
+namespace FIT_PONG.Mobile.ViewModels
 {
     public class AboutViewModel : BaseViewModel
     {

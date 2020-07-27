@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FITPONG.Mobile.Models;
+using FIT_PONG.Mobile.Models;
 
-namespace FITPONG.Mobile.Services
+namespace FIT_PONG.Mobile.Services
 {
     public class MockDataStore : IDataStore<Item>
     {
