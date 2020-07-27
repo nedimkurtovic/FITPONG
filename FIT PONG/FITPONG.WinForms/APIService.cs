@@ -32,15 +32,31 @@ namespace FIT_PONG.WinForms
             if (!String.IsNullOrEmpty(query))
                 url += $"?{query}";
 
-            var rezultatApija = await url
-                .WithBasicAuth(Username,Password).GetJsonAsync<T>();
-
-            return rezultatApija;
+            try
+            {
+                return await url
+                .WithBasicAuth(Username, Password).GetJsonAsync<T>();
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = await GetErrore(ex);
+                MessageBox.Show(errori, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return default(T);
+            }
         }
         public async Task<T> GetByID<T>(int id)
         {
             var url = $"{APIUrl}/{resurs}/{id}";
-            return await url.WithBasicAuth(Username, Password).GetJsonAsync<T>();
+            try
+            {
+                return await url.WithBasicAuth(Username, Password).GetJsonAsync<T>();
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = await GetErrore(ex);
+                MessageBox.Show(errori, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return default(T);
+            }
         }
         
         public async Task<T> Insert<T>(object request)
@@ -54,13 +70,8 @@ namespace FIT_PONG.WinForms
             }
             catch (FlurlHttpException ex)
             {
-                var errori = await ex.GetResponseJsonAsync<Dictionary<string, string[]>>();
-                var _stringbilder = new StringBuilder();
-                foreach (var i in errori)
-                {
-                    _stringbilder.AppendLine($"{i.Key},{string.Join(",", i.Value)}");
-                }
-                MessageBox.Show(_stringbilder.ToString(), "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                var errori = await GetErrore(ex);
+                MessageBox.Show(errori, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return default(T);
             }
         }
@@ -73,15 +84,24 @@ namespace FIT_PONG.WinForms
             }
             catch (FlurlHttpException ex)
             {
-                var errori = await ex.GetResponseJsonAsync<Dictionary<string, string[]>>();
-                var _stringBilder = new StringBuilder();
-                foreach(var i in errori)
-                {
-                    _stringBilder.AppendLine($"{i.Key}, {string.Join(",", i.Value)}");
-                }
-                MessageBox.Show(_stringBilder.ToString(), "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                var errori = await GetErrore(ex);
+                MessageBox.Show(errori, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return default(T);
             }
+        }
+        protected async Task<string> GetErrore(FlurlHttpException ex)
+        {
+            var errori = await ex.GetResponseJsonAsync<Dictionary<string, string[]>>();
+            if (errori != null)
+            {
+                var _stringBilder = new StringBuilder();
+                foreach (var i in errori)
+                {
+                    _stringBilder.AppendLine($"{string.Join("\n", i.Value)}");
+                }
+                return _stringBilder.ToString();
+            }
+            return "Greška prilikom povezivanja";
         }
     }
 }

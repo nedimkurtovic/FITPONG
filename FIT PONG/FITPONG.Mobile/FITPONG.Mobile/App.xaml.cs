@@ -1,10 +1,10 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using FITPONG.Mobile.Services;
-using FITPONG.Mobile.Views;
+using FIT_PONG.Mobile.Services;
+using FIT_PONG.Mobile.Views;
 
-namespace FITPONG.Mobile
+namespace FIT_PONG.Mobile
 {
     public partial class App : Application
     {
@@ -14,6 +14,7 @@ namespace FITPONG.Mobile
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
+            //MainPage = new Mobile.Views.Users.Login();
             MainPage = new MainPage();
         }
 

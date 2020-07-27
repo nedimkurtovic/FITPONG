@@ -5,10 +5,10 @@ using System.Runtime.CompilerServices;
 
 using Xamarin.Forms;
 
-using FITPONG.Mobile.Models;
-using FITPONG.Mobile.Services;
+using FIT_PONG.Mobile.Models;
+using FIT_PONG.Mobile.Services;
 
-namespace FITPONG.Mobile.ViewModels
+namespace FIT_PONG.Mobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

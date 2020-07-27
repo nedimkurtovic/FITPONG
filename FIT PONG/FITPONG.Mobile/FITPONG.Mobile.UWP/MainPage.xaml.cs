@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace FITPONG.Mobile.UWP
+namespace FIT_PONG.Mobile.UWP
 {
     public sealed partial class MainPage
     {
@@ -21,7 +21,7 @@ namespace FITPONG.Mobile.UWP
         {
             this.InitializeComponent();
 
-            LoadApplication(new FITPONG.Mobile.App());
+            LoadApplication(new FIT_PONG.Mobile.App());
         }
     }
 }

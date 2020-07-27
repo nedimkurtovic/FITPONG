@@ -7,7 +7,7 @@ namespace FIT_PONG.SharedModels.Requests
     public abstract class SearchBase:ICloneable
     {
         public int Page { get; set; }
-        private int _limit = 3;
+        private int _limit = 10;
         public int Limit { 
             get 
             {
@@ -20,11 +20,11 @@ namespace FIT_PONG.SharedModels.Requests
         }
 
 
-        private int maxLimit = 5; 
+        private int maxLimit = 30; 
         public SearchBase()
         {
             this.Page = 1;
-            this.Limit = 3;
+            this.Limit = 10;
         }
         public abstract object Clone();
     }

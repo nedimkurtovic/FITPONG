@@ -1,8 +1,8 @@
 ﻿using System;
 
-using FITPONG.Mobile.Models;
+using FIT_PONG.Mobile.Models;
 
-namespace FITPONG.Mobile.ViewModels
+namespace FIT_PONG.Mobile.ViewModels
 {
     public class ItemDetailViewModel : BaseViewModel
     {

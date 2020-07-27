@@ -21,8 +21,8 @@ namespace FIT_PONG.Mobile.APIServices
             var url = $"{APIUrl}/{resurs}/register";
             try
             {
-                var jsonString = obj.ToQueryString();
-                var rezult = await url.PostJsonAsync(jsonString).ReceiveJson<Users>();
+                //var jsonString = await obj.ToQueryString();
+                var rezult = await url.PostJsonAsync(obj).ReceiveJson<Users>();
                 return rezult;
             }
             catch (FlurlHttpException ex)
@@ -37,13 +37,13 @@ namespace FIT_PONG.Mobile.APIServices
             var url = $"{APIUrl}/{resurs}/login";
             try
             {
-                var jsonString = obj.ToQueryString();
-                var rezult = await url.PostJsonAsync(jsonString).ReceiveJson<Users>();
+                //var jsonString = await obj.ToQueryString();
+                var rezult = await url.PostJsonAsync(obj).ReceiveJson<Users>();
                 return rezult;
             }
             catch (FlurlHttpException ex)
             {
-                var errori = GetErrore(ex).Result;
+                var errori = await GetErrore(ex);
                 await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
                 return default(Users);
             }

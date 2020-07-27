@@ -61,7 +61,7 @@ namespace FIT_PONG.WinForms.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://localhost:44391/api.
+        ///   Looks up a localized string similar to http://localhost:5766/api.
         /// </summary>
         internal static string ApiUrl {
             get {

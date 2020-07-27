@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:vm="clr-namespace:FIT_PONG.Mobile.ViewModels.Takmicenja"
+             mc:Ignorable="d"
+             Title="Takmicenja"
+             x:Class="FIT_PONG.Mobile.Views.Takmicenja.TakmicenjaLista">
+    <ContentPage.BindingContext>
+        <vm:TakmicenjaListaViewModel></vm:TakmicenjaListaViewModel>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <SearchBar Text="{Binding NazivTakmicenja}" 
+                       SearchCommand="{Binding DobaviTakmicenja}" 
+                       Placeholder="Unesite naziv takmičenja" />
+            <ListView ItemsSource="{Binding ListaTakmicenja}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   FontAttributes="Bold"
+                                   Text="{Binding Naziv}" />
+                                <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   Text="Datum kreiranja" />
+                                <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   FontAttributes="Bold"
+                                   Text="{Binding DatumKreiranja}" />
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_Tapped">
+                                    </TapGestureRecognizer>
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

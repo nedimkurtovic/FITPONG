@@ -25,11 +25,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\Reports\" />
-    <Folder Include="ViewModels\Takmicenja\" />
-    <Folder Include="ViewModels\Users\" />
-    <Folder Include="Views\Reports\" />
-    <Folder Include="Views\Users\" />
-    <Folder Include="Views\Takmicenja\" />
+    <EmbeddedResource Update="Views\Reports\ReportsDodaj.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Takmicenja\TakmicenjaDetalji.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Takmicenja\TakmicenjaLista.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Users\Login.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Users\UsersDetalji.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Users\UsersLista.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
