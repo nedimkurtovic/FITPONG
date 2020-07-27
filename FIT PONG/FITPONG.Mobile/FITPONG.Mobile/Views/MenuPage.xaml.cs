@@ -1,4 +1,5 @@
-﻿using FIT_PONG.Mobile.Models;
+﻿using FIT_PONG.Mobile.APIServices;
+using FIT_PONG.Mobile.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,20 +22,39 @@ namespace FIT_PONG.Mobile.Views
             menuItems = new List<HomeMenuItem>
             {
                 new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" }
+                new HomeMenuItem {Id = MenuItemType.About, Title="About" },
+                new HomeMenuItem {Id = MenuItemType.Naslovnica, Title="Naslovnica" },
+                new HomeMenuItem {Id = MenuItemType.Profil, Title="Profil" },
+                new HomeMenuItem {Id = MenuItemType.Igrači, Title="Igrači" },
+                new HomeMenuItem {Id = MenuItemType.Takmičenja, Title="Takmičenja" },
+                new HomeMenuItem {Id = MenuItemType.Chat, Title="Chat" },
+                new HomeMenuItem {Id = MenuItemType.Reports, Title="Reports" },
+                new HomeMenuItem {Id = MenuItemType.Logout, Title="Logout" }
             };
 
             ListViewMenu.ItemsSource = menuItems;
 
             ListViewMenu.SelectedItem = menuItems[0];
+          
             ListViewMenu.ItemSelected += async (sender, e) =>
             {
                 if (e.SelectedItem == null)
                     return;
-
+                
                 var id = (int)((HomeMenuItem)e.SelectedItem).Id;
-                await RootPage.NavigateFromMenu(id);
+                if (id == (int)MenuItemType.Logout)
+                {
+                    BaseAPIService.Password = "";
+                    BaseAPIService.Username = "";
+                    Application.Current.MainPage = new Mobile.Views.Users.Login();
+                }
+                else
+                {
+                    await RootPage.NavigateFromMenu(id);
+                }
             };
+
+
         }
     }
 }

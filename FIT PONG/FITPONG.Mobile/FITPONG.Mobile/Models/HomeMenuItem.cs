@@ -7,7 +7,15 @@ namespace FIT_PONG.Mobile.Models
     public enum MenuItemType
     {
         Browse,
-        About
+        About,
+        Naslovnica,
+        Profil,
+        Igrači,
+        Takmičenja,
+        Chat,
+        Reports,
+        Logout
+
     }
     public class HomeMenuItem
     {
