@@ -64,9 +64,17 @@ namespace FIT_PONG.Services.Services
             foreach (var user in users)
             {
                 var u = mapper.Map<SharedModels.Users>(user);
+                
+                byte[] binarniZapis = File.ReadAllBytes(user.ProfileImagePath);
+                Fajl fajl = new Fajl
+                {
+                    Naziv = user.ProfileImagePath.Substring(user.ProfileImagePath.LastIndexOf("/")),
+                    BinarniZapis = binarniZapis
+                };
+
+                u.ProfileImage = fajl;
                 u.listaPrijava = GetPrijave(user.ID);
                 u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == user.ID).ToList());
-
                 list.Add(u);
             }
 
