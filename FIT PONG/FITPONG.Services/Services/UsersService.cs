@@ -64,15 +64,25 @@ namespace FIT_PONG.Services.Services
             foreach (var user in users)
             {
                 var u = mapper.Map<SharedModels.Users>(user);
-                
-                byte[] binarniZapis = File.ReadAllBytes(user.ProfileImagePath);
-                Fajl fajl = new Fajl
-                {
-                    Naziv = user.ProfileImagePath.Substring(user.ProfileImagePath.LastIndexOf("/")),
-                    BinarniZapis = binarniZapis
-                };
 
-                u.ProfileImage = fajl;
+                try
+                {
+                    byte[] binarniZapis = File.ReadAllBytes(user.ProfileImagePath);
+                    Fajl fajl = new Fajl
+                    {
+                        Naziv = user.ProfileImagePath.Substring(user.ProfileImagePath.LastIndexOf("/")),
+                        BinarniZapis = binarniZapis
+                    };
+
+                    u.ProfileImage = fajl;
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+
                 u.listaPrijava = GetPrijave(user.ID);
                 u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == user.ID).ToList());
                 list.Add(u);
@@ -576,6 +586,6 @@ namespace FIT_PONG.Services.Services
             System.IO.File.Delete(filePutanja);
         }
 
-       
+
     }
 }
