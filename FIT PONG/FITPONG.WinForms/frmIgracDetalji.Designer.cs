@@ -42,9 +42,9 @@
             this.lblBrojPostovanja = new System.Windows.Forms.Label();
             this.txtELO = new System.Windows.Forms.TextBox();
             this.lblELO = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pbxSlika = new System.Windows.Forms.PictureBox();
             this.btnSuspenduj = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSlika)).BeginInit();
             this.SuspendLayout();
             // 
             // lblPrikaznoIme
@@ -60,6 +60,7 @@
             // 
             this.txtPrikaznoIme.Location = new System.Drawing.Point(40, 51);
             this.txtPrikaznoIme.Name = "txtPrikaznoIme";
+            this.txtPrikaznoIme.ReadOnly = true;
             this.txtPrikaznoIme.Size = new System.Drawing.Size(182, 22);
             this.txtPrikaznoIme.TabIndex = 1;
             // 
@@ -67,6 +68,7 @@
             // 
             this.txtVisina.Location = new System.Drawing.Point(40, 115);
             this.txtVisina.Name = "txtVisina";
+            this.txtVisina.ReadOnly = true;
             this.txtVisina.Size = new System.Drawing.Size(182, 22);
             this.txtVisina.TabIndex = 3;
             // 
@@ -83,6 +85,7 @@
             // 
             this.txtJacaRuka.Location = new System.Drawing.Point(40, 186);
             this.txtJacaRuka.Name = "txtJacaRuka";
+            this.txtJacaRuka.ReadOnly = true;
             this.txtJacaRuka.Size = new System.Drawing.Size(182, 22);
             this.txtJacaRuka.TabIndex = 5;
             // 
@@ -99,6 +102,7 @@
             // 
             this.txtSpol.Location = new System.Drawing.Point(40, 258);
             this.txtSpol.Name = "txtSpol";
+            this.txtSpol.ReadOnly = true;
             this.txtSpol.Size = new System.Drawing.Size(182, 22);
             this.txtSpol.TabIndex = 7;
             // 
@@ -115,6 +119,7 @@
             // 
             this.txtGrad.Location = new System.Drawing.Point(40, 328);
             this.txtGrad.Name = "txtGrad";
+            this.txtGrad.ReadOnly = true;
             this.txtGrad.Size = new System.Drawing.Size(182, 22);
             this.txtGrad.TabIndex = 9;
             // 
@@ -131,6 +136,7 @@
             // 
             this.txtBrojPostovanja.Location = new System.Drawing.Point(40, 399);
             this.txtBrojPostovanja.Name = "txtBrojPostovanja";
+            this.txtBrojPostovanja.ReadOnly = true;
             this.txtBrojPostovanja.Size = new System.Drawing.Size(182, 22);
             this.txtBrojPostovanja.TabIndex = 11;
             // 
@@ -147,6 +153,7 @@
             // 
             this.txtELO.Location = new System.Drawing.Point(302, 51);
             this.txtELO.Name = "txtELO";
+            this.txtELO.ReadOnly = true;
             this.txtELO.Size = new System.Drawing.Size(182, 22);
             this.txtELO.TabIndex = 13;
             // 
@@ -159,13 +166,13 @@
             this.lblELO.TabIndex = 12;
             this.lblELO.Text = "ELO";
             // 
-            // pictureBox1
+            // pbxSlika
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(302, 95);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(182, 185);
-            this.pictureBox1.TabIndex = 14;
-            this.pictureBox1.TabStop = false;
+            this.pbxSlika.Location = new System.Drawing.Point(302, 95);
+            this.pbxSlika.Name = "pbxSlika";
+            this.pbxSlika.Size = new System.Drawing.Size(182, 185);
+            this.pbxSlika.TabIndex = 14;
+            this.pbxSlika.TabStop = false;
             // 
             // btnSuspenduj
             // 
@@ -185,7 +192,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(539, 450);
             this.Controls.Add(this.btnSuspenduj);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pbxSlika);
             this.Controls.Add(this.txtELO);
             this.Controls.Add(this.lblELO);
             this.Controls.Add(this.txtBrojPostovanja);
@@ -202,7 +209,7 @@
             this.Controls.Add(this.lblPrikaznoIme);
             this.Name = "frmIgracDetalji";
             this.Text = "frmIgracDetalji";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSlika)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -224,7 +231,7 @@
         private System.Windows.Forms.Label lblBrojPostovanja;
         private System.Windows.Forms.TextBox txtELO;
         private System.Windows.Forms.Label lblELO;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pbxSlika;
         private System.Windows.Forms.Button btnSuspenduj;
     }
 }

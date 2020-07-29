@@ -65,23 +65,23 @@ namespace FIT_PONG.Services.Services
             {
                 var u = mapper.Map<SharedModels.Users>(user);
 
-                try
-                {
-                    byte[] binarniZapis = File.ReadAllBytes(user.ProfileImagePath);
-                    Fajl fajl = new Fajl
-                    {
-                        Naziv = user.ProfileImagePath.Substring(user.ProfileImagePath.LastIndexOf("/")),
-                        BinarniZapis = binarniZapis
-                    };
+                //try
+                //{
+                //    byte[] binarniZapis = File.ReadAllBytes(user.ProfileImagePath);
+                //    Fajl fajl = new Fajl
+                //    {
+                //        Naziv = user.ProfileImagePath.Substring(user.ProfileImagePath.LastIndexOf("/")),
+                //        BinarniZapis = binarniZapis
+                //    };
 
-                    u.ProfileImage = fajl;
+                //    u.ProfileImage = fajl;
 
-                }
-                catch (Exception ex)
-                {
+                //}
+                //catch (Exception ex)
+                //{
 
-                    throw ex;
-                }
+                //    throw ex;
+                //}
 
                 u.listaPrijava = GetPrijave(user.ID);
                 u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == user.ID).ToList());

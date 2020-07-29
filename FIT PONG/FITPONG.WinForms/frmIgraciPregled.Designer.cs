@@ -30,10 +30,10 @@
         {
             this.lblPrikaznoIme = new System.Windows.Forms.Label();
             this.txtPrikaznoIme = new System.Windows.Forms.TextBox();
-            this.txtELO = new System.Windows.Forms.TextBox();
-            this.lblELO = new System.Windows.Forms.Label();
             this.btnFiltriraj = new System.Windows.Forms.Button();
             this.dgvIgraci = new System.Windows.Forms.DataGridView();
+            this.btnNext = new System.Windows.Forms.Button();
+            this.btnBack = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIgraci)).BeginInit();
             this.SuspendLayout();
             // 
@@ -53,30 +53,15 @@
             this.txtPrikaznoIme.Size = new System.Drawing.Size(179, 22);
             this.txtPrikaznoIme.TabIndex = 1;
             // 
-            // txtELO
-            // 
-            this.txtELO.Location = new System.Drawing.Point(255, 56);
-            this.txtELO.Name = "txtELO";
-            this.txtELO.Size = new System.Drawing.Size(157, 22);
-            this.txtELO.TabIndex = 3;
-            // 
-            // lblELO
-            // 
-            this.lblELO.AutoSize = true;
-            this.lblELO.Location = new System.Drawing.Point(252, 36);
-            this.lblELO.Name = "lblELO";
-            this.lblELO.Size = new System.Drawing.Size(36, 17);
-            this.lblELO.TabIndex = 2;
-            this.lblELO.Text = "ELO";
-            // 
             // btnFiltriraj
             // 
-            this.btnFiltriraj.Location = new System.Drawing.Point(474, 55);
+            this.btnFiltriraj.Location = new System.Drawing.Point(623, 46);
             this.btnFiltriraj.Name = "btnFiltriraj";
-            this.btnFiltriraj.Size = new System.Drawing.Size(142, 23);
+            this.btnFiltriraj.Size = new System.Drawing.Size(142, 32);
             this.btnFiltriraj.TabIndex = 4;
             this.btnFiltriraj.Text = "Filtriraj";
             this.btnFiltriraj.UseVisualStyleBackColor = true;
+            this.btnFiltriraj.Click += new System.EventHandler(this.btnFiltriraj_Click);
             // 
             // dgvIgraci
             // 
@@ -88,18 +73,39 @@
             this.dgvIgraci.ReadOnly = true;
             this.dgvIgraci.RowHeadersWidth = 51;
             this.dgvIgraci.RowTemplate.Height = 24;
-            this.dgvIgraci.Size = new System.Drawing.Size(727, 311);
+            this.dgvIgraci.Size = new System.Drawing.Size(727, 292);
             this.dgvIgraci.TabIndex = 5;
+            this.dgvIgraci.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvIgraci_CellDoubleClick);
+            // 
+            // btnNext
+            // 
+            this.btnNext.Location = new System.Drawing.Point(525, 415);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(87, 32);
+            this.btnNext.TabIndex = 6;
+            this.btnNext.Text = "Naprijed";
+            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            // 
+            // btnBack
+            // 
+            this.btnBack.Location = new System.Drawing.Point(193, 415);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(87, 32);
+            this.btnBack.TabIndex = 7;
+            this.btnBack.Text = "Nazad";
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
             // frmIgraciPregled
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnBack);
+            this.Controls.Add(this.btnNext);
             this.Controls.Add(this.dgvIgraci);
             this.Controls.Add(this.btnFiltriraj);
-            this.Controls.Add(this.txtELO);
-            this.Controls.Add(this.lblELO);
             this.Controls.Add(this.txtPrikaznoIme);
             this.Controls.Add(this.lblPrikaznoIme);
             this.Name = "frmIgraciPregled";
@@ -114,9 +120,9 @@
 
         private System.Windows.Forms.Label lblPrikaznoIme;
         private System.Windows.Forms.TextBox txtPrikaznoIme;
-        private System.Windows.Forms.TextBox txtELO;
-        private System.Windows.Forms.Label lblELO;
         private System.Windows.Forms.Button btnFiltriraj;
         private System.Windows.Forms.DataGridView dgvIgraci;
+        private System.Windows.Forms.Button btnNext;
+        private System.Windows.Forms.Button btnBack;
     }
 }

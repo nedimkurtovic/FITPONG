@@ -57,6 +57,7 @@
             // 
             this.txtNaziv.Location = new System.Drawing.Point(33, 49);
             this.txtNaziv.Name = "txtNaziv";
+            this.txtNaziv.ReadOnly = true;
             this.txtNaziv.Size = new System.Drawing.Size(147, 22);
             this.txtNaziv.TabIndex = 1;
             // 
@@ -64,6 +65,7 @@
             // 
             this.txtMinimalniELO.Location = new System.Drawing.Point(33, 108);
             this.txtMinimalniELO.Name = "txtMinimalniELO";
+            this.txtMinimalniELO.ReadOnly = true;
             this.txtMinimalniELO.Size = new System.Drawing.Size(147, 22);
             this.txtMinimalniELO.TabIndex = 3;
             // 
@@ -80,6 +82,7 @@
             // 
             this.txtKategorija.Location = new System.Drawing.Point(33, 168);
             this.txtKategorija.Name = "txtKategorija";
+            this.txtKategorija.ReadOnly = true;
             this.txtKategorija.Size = new System.Drawing.Size(147, 22);
             this.txtKategorija.TabIndex = 5;
             // 
@@ -96,6 +99,7 @@
             // 
             this.txtSistem.Location = new System.Drawing.Point(33, 233);
             this.txtSistem.Name = "txtSistem";
+            this.txtSistem.ReadOnly = true;
             this.txtSistem.Size = new System.Drawing.Size(147, 22);
             this.txtSistem.TabIndex = 7;
             // 
@@ -112,6 +116,7 @@
             // 
             this.txtVrsta.Location = new System.Drawing.Point(33, 297);
             this.txtVrsta.Name = "txtVrsta";
+            this.txtVrsta.ReadOnly = true;
             this.txtVrsta.Size = new System.Drawing.Size(147, 22);
             this.txtVrsta.TabIndex = 9;
             // 
@@ -128,6 +133,7 @@
             // 
             this.txtDatumPocetka.Location = new System.Drawing.Point(263, 49);
             this.txtDatumPocetka.Name = "txtDatumPocetka";
+            this.txtDatumPocetka.ReadOnly = true;
             this.txtDatumPocetka.Size = new System.Drawing.Size(147, 22);
             this.txtDatumPocetka.TabIndex = 13;
             // 
@@ -144,6 +150,7 @@
             // 
             this.txtDatumZavrsetka.Location = new System.Drawing.Point(263, 108);
             this.txtDatumZavrsetka.Name = "txtDatumZavrsetka";
+            this.txtDatumZavrsetka.ReadOnly = true;
             this.txtDatumZavrsetka.Size = new System.Drawing.Size(147, 22);
             this.txtDatumZavrsetka.TabIndex = 15;
             // 

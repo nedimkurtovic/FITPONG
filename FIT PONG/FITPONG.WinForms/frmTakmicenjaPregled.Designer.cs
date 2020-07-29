@@ -39,8 +39,10 @@
             this.cmbVrsta = new System.Windows.Forms.ComboBox();
             this.lblVrsta = new System.Windows.Forms.Label();
             this.btnFiltriraj = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.dgvTakmicenja = new System.Windows.Forms.DataGridView();
+            this.btnBack = new System.Windows.Forms.Button();
+            this.btnNext = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTakmicenja)).BeginInit();
             this.SuspendLayout();
             // 
             // lblNaziv
@@ -134,26 +136,50 @@
             this.btnFiltriraj.TabIndex = 10;
             this.btnFiltriraj.Text = "Filtriraj";
             this.btnFiltriraj.UseVisualStyleBackColor = true;
+            this.btnFiltriraj.Click += new System.EventHandler(this.btnFiltriraj_Click);
             // 
-            // dataGridView1
+            // dgvTakmicenja
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 151);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(776, 272);
-            this.dataGridView1.TabIndex = 11;
+            this.dgvTakmicenja.AllowUserToAddRows = false;
+            this.dgvTakmicenja.AllowUserToDeleteRows = false;
+            this.dgvTakmicenja.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTakmicenja.Location = new System.Drawing.Point(12, 151);
+            this.dgvTakmicenja.Name = "dgvTakmicenja";
+            this.dgvTakmicenja.ReadOnly = true;
+            this.dgvTakmicenja.RowHeadersWidth = 51;
+            this.dgvTakmicenja.RowTemplate.Height = 24;
+            this.dgvTakmicenja.Size = new System.Drawing.Size(776, 272);
+            this.dgvTakmicenja.TabIndex = 11;
+            this.dgvTakmicenja.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTakmicenja_CellDoubleClick);
+            // 
+            // btnBack
+            // 
+            this.btnBack.Location = new System.Drawing.Point(186, 447);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(98, 34);
+            this.btnBack.TabIndex = 12;
+            this.btnBack.Text = "Nazad";
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
+            // btnNext
+            // 
+            this.btnNext.Location = new System.Drawing.Point(519, 447);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(98, 34);
+            this.btnNext.TabIndex = 13;
+            this.btnNext.Text = "Naprijed";
+            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
             // frmTakmicenjaPregled
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.dataGridView1);
+            this.ClientSize = new System.Drawing.Size(807, 493);
+            this.Controls.Add(this.btnNext);
+            this.Controls.Add(this.btnBack);
+            this.Controls.Add(this.dgvTakmicenja);
             this.Controls.Add(this.btnFiltriraj);
             this.Controls.Add(this.cmbVrsta);
             this.Controls.Add(this.lblVrsta);
@@ -167,7 +193,7 @@
             this.Controls.Add(this.lblNaziv);
             this.Name = "frmTakmicenjaPregled";
             this.Text = "frmTakmicenjaPregled";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTakmicenja)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -186,6 +212,8 @@
         private System.Windows.Forms.ComboBox cmbVrsta;
         private System.Windows.Forms.Label lblVrsta;
         private System.Windows.Forms.Button btnFiltriraj;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgvTakmicenja;
+        private System.Windows.Forms.Button btnBack;
+        private System.Windows.Forms.Button btnNext;
     }
 }
