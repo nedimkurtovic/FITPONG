@@ -31,8 +31,8 @@ namespace FIT_PONG.SharedModels.Requests.Takmicenja
         [Display(Name = "Vrsta")]
         public int VrstaID { get; set; }
 
-        [Display(Name = "Status")]
-        public int StatusID { get; set; }
+        //[Display(Name = "Status")]
+        //public int StatusID { get; set; }
         [Display(Name = "Rucni unos prijava?(Trenutno samo za singleove dostupno, u suprotnom definisite registracije)")]
         public bool RucniOdabir { get; set; }
         [Display(Name = "Korisnicka imena igraca (format : @KorisnickoIme razmak)")]
