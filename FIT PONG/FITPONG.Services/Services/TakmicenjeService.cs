@@ -39,18 +39,38 @@ namespace FIT_PONG.Services.Services
             if (!string.IsNullOrWhiteSpace(obj.Naziv))
                 qry = qry.Where(x => x.Naziv.Contains(obj.Naziv));
             
-            var TakmicenjaPovratni = qry.OrderByDescending(x=>x.ID).ToList();
-            return mapko.Map<List<SharedModels.Takmicenja>>(TakmicenjaPovratni.Where(x=> 1==1));
+            var TakmicenjaPovratni = qry.Include(x=>x.Sistem).Include(x=>x.Status).Include(x=>x.Kategorija)
+                .Include(x=>x.Vrsta).OrderByDescending(x=>x.ID).ToList();
+            var povratnaLista = new List<SharedModels.Takmicenja>();
+            foreach(var i in TakmicenjaPovratni)
+            {
+                SharedModels.Takmicenja tak = mapko.Map<SharedModels.Takmicenja>(i);
+                tak.Sistem = i.Sistem.Opis;
+                tak.Kategorija = i.Kategorija.Opis;
+                tak.Vrsta = i.Vrsta.Naziv;
+                tak.Status = i.Status.Opis;
+                povratnaLista.Add(tak);
+            }
+            return povratnaLista;
         }
 
         public Takmicenja GetByID(int id)
         {
-            var obj = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
+            var obj = db.Takmicenja
+                .Include(x => x.Sistem)
+                .Include(x => x.Status)
+                .Include(x => x.Kategorija)
+                .Include(x => x.Vrsta).Where(x => x.ID == id).FirstOrDefault();
             if(obj == null)
             {
                 throw new UserException("Takmicenje ne postoji");
             }
-            return mapko.Map<SharedModels.Takmicenja>(obj);
+            SharedModels.Takmicenja tak = mapko.Map<SharedModels.Takmicenja>(obj);
+            tak.Sistem = obj.Sistem.Opis;
+            tak.Kategorija = obj.Kategorija.Opis;
+            tak.Vrsta = obj.Vrsta.Naziv;
+            tak.Status = obj.Status.Opis;
+            return tak;
         }
 
         public Takmicenja Add(TakmicenjaInsert objekat, int KreatorID)
