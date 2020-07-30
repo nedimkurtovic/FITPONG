@@ -124,7 +124,8 @@ namespace FIT_PONG.Services.Services
                         }
                     }
                     transakcija.Commit();
-                    return mapko.Map<Takmicenja>(novo);
+                    var povratni = GetByID(novo.ID); // zbog includeova i to lakse odozgo nego da ponavljam kod ovdje
+                    return povratni;
                 }
                 catch (Exception)
                 {
