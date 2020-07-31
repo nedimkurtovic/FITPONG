@@ -3,22 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using FIT_PONG.Database;
 using FIT_PONG.Database.DTOs;
 using FIT_PONG.SharedModels.Requests.Takmicenja;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace FIT_PONG.Services.BL
 {
     public class TakmicenjeValidator
     {
+        private readonly MyDb db;
+
         public List<string> _listaTakmicenja { get; set; } = new List<string>();
         public List<Igrac> _listaIgraca { get; set; } = new List<Igrac>();
-
-        public List<(string key, string error)> VratiListuErroraAkcijaDodaj(TakmicenjaInsert objekat,
-            List<string> ListaTakmicenja, List<Igrac> ListaIgraca)
+        public TakmicenjeValidator(MyDb _db)
         {
-            _listaTakmicenja = ListaTakmicenja;
-            _listaIgraca = ListaIgraca;
+            db = _db;
 
+            _listaTakmicenja = db.Takmicenja.Select(x => x.Naziv).ToList();
+            _listaIgraca = db.Igraci.ToList();
+        }
+        public List<(string key, string error)> VratiListuErroraAkcijaDodaj(TakmicenjaInsert objekat)
+        {
             List<(string key, string error)> listaErrora = new List<(string key, string error)>();
             if (PostojiTakmicenje(objekat.Naziv))
                 listaErrora.Add(("", "Već postoji takmičenje u bazi"));
@@ -40,8 +46,10 @@ namespace FIT_PONG.Services.BL
                     if (objekat.RucnoOdabraniIgraci.StartsWith(" "))
                         objekat.RucnoOdabraniIgraci = objekat.RucnoOdabraniIgraci.Substring(1);
                     //za sad je hardkodirana vrsta(predstavlja uslov da ne mogu doubleovi u rucnom unosu),ovo ionako ne bi trebalo nikad biti true osim ako je neko zaobisao frontend
-                    if (objekat.VrstaID == 2 ||
-                        objekat.RucnoOdabraniIgraci == "" ||
+                    var vrstaDouble = db.VrsteTakmicenja.Where(x => x.Naziv == "Double").FirstOrDefault();
+                    if (objekat.VrstaID == vrstaDouble.ID)
+                        listaErrora.Add((nameof(objekat.VrstaID), "Ne možete odabrati vrstu double sa ručnim odabirom"));
+                    if (objekat.RucnoOdabraniIgraci == "" ||
                         !ValidanUnosRegex(objekat.RucnoOdabraniIgraci) ||
                         !ValidnaKorisnickaImena(objekat.RucnoOdabraniIgraci)
                         )
@@ -58,8 +66,6 @@ namespace FIT_PONG.Services.BL
                     listaErrora.Add(("", "Molimo unesite ispravno imena igrača"));
                 }
             }
-            _listaTakmicenja = null;
-            _listaIgraca = null;
             return listaErrora;
         }
         private bool PostojiTakmicenje(string naziv)
@@ -148,9 +154,9 @@ namespace FIT_PONG.Services.BL
                 return true;
             return false;
         }
-        public List<(string key, string error)> VratiListuErroraAkcijaEdit(TakmicenjaUpdate objekat,int ID,
-            List<Takmicenje> ListaTakmicenja, Takmicenje bazaObj)
+        public List<(string key, string error)> VratiListuErroraAkcijaEdit(TakmicenjaUpdate objekat,int ID, Takmicenje bazaObj)
         {
+            var ListaTakmicenja = db.Takmicenja.ToList();
             List<(string key, string error)> listaErrora = new List<(string key, string error)>();
                                                 //OVDJE CE BITI PROSLIJEDJEN ID PARAMETAR OVOJ FUNKCIJI
             if (TakmicenjaViseOd(objekat.Naziv, ID, ListaTakmicenja))

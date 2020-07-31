@@ -27,6 +27,7 @@ namespace FIT_PONG.Controllers
         private readonly FIT_PONG.Services.BL.InitTakmicenja inicijalizator;
         private readonly FIT_PONG.Services.BL.ELOCalculator ELOCalculator;
         private readonly FIT_PONG.Services.BL.Evidentor evidentor;
+        private readonly FIT_PONG.Services.BL.TakmicenjeValidator validator;
         private readonly IHubContext<NotifikacijeHub> notifikacijeHub;
         private readonly IMapper mapko;
 
@@ -34,6 +35,7 @@ namespace FIT_PONG.Controllers
             FIT_PONG.Services.BL.InitTakmicenja instancaInita,
             FIT_PONG.Services.BL.ELOCalculator ELOCalculator,
             FIT_PONG.Services.BL.Evidentor _evidentor,
+            FIT_PONG.Services.BL.TakmicenjeValidator _validator,
             IHubContext<NotifikacijeHub> notifikacijeHub,
             IMapper _mapko)
         {
@@ -41,6 +43,7 @@ namespace FIT_PONG.Controllers
             inicijalizator = instancaInita;
             this.ELOCalculator = ELOCalculator;
             evidentor = _evidentor;
+            validator = _validator;
             evidentor.inicijalizator = instancaInita;//ne znam koliko je ovo sigurno i ima smisla, pokusat cu, samo jednu funkciju koristim 
             //ako bude frke izbacit cu ga skroz djeni zeve
             this.notifikacijeHub = notifikacijeHub;
@@ -111,11 +114,10 @@ namespace FIT_PONG.Controllers
         {
             if (ModelState.IsValid)
             {
-                TakmicenjeValidator validator = new TakmicenjeValidator();
+                
                 TakmicenjaInsert objekatValidator = mapko.Map<TakmicenjaInsert>(objekat);
-                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaDodaj(objekatValidator,
-                    db.Takmicenja.Select(x => x.Naziv).ToList(),
-                    db.Igraci.ToList());
+                List<(string key, string error)> listaerrora = validator
+                    .VratiListuErroraAkcijaDodaj(objekatValidator);
 
                 if (listaerrora.Count() == 0)
                 {
@@ -237,10 +239,9 @@ namespace FIT_PONG.Controllers
         {
             if (ModelState.IsValid)
             {
-                TakmicenjeValidator validator = new TakmicenjeValidator();
                 TakmicenjaUpdate objekatValidator = mapko.Map<TakmicenjaUpdate>(objekat);
                 Takmicenje objBaza = db.Takmicenja.Find(objekat.ID);
-                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaEdit(objekatValidator,objekat.ID ,db.Takmicenja.ToList(),objBaza);
+                List<(string key, string error)> listaerrora = validator.VratiListuErroraAkcijaEdit(objekatValidator,objekat.ID ,objBaza);
                 if (listaerrora.Count() == 0)
                 {
                     Takmicenje obj = db.Takmicenja.Find(objekat.ID);

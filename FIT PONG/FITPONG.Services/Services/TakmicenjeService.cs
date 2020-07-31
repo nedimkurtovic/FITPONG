@@ -92,6 +92,9 @@ namespace FIT_PONG.Services.Services
                     db.SaveChanges();
                     novo.FeedID = TakmicenjeFeed.ID;
 
+                    var statusKreiran = db.StatusiTakmicenja.Where(x => x.Opis == "Kreirano").FirstOrDefault();
+                    novo.StatusID = statusKreiran.ID;
+
                     db.Add(novo);
                     db.SaveChanges();
 
@@ -127,7 +130,7 @@ namespace FIT_PONG.Services.Services
                     var povratni = GetByID(novo.ID); // zbog includeova i to lakse odozgo nego da ponavljam kod ovdje
                     return povratni;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     transakcija.Rollback();
                     throw new UserException("Greška prilikom spašavanja u bazu");
@@ -381,12 +384,12 @@ namespace FIT_PONG.Services.Services
         #region Validacija
         private bool ValidirajAddTakmicenja(TakmicenjaInsert obj)
         {
-            var igraci = db.Igraci.ToList();
-            var listaTakmicenja = db.Takmicenja.Select(x => x.Naziv).ToList();
-            //ako ce biti prbolema onda ce biti kod provera gdje su hardkodirane 
-            //vrijednosti(unutar ovog ove funkcije u validatoru), vrstaID 
+            //var igraci = db.Igraci.ToList();
+            //var listaTakmicenja = db.Takmicenja.Select(x => x.Naziv).ToList();
+            ////ako ce biti prbolema onda ce biti kod provera gdje su hardkodirane 
+            ////vrijednosti(unutar ovog ove funkcije u validatoru), vrstaID 
 
-            var listaErrora = validator.VratiListuErroraAkcijaDodaj(obj, listaTakmicenja, igraci);
+            var listaErrora = validator.VratiListuErroraAkcijaDodaj(obj);
             RegulisiListuErrora(listaErrora);
             return true;
         }
@@ -399,9 +402,7 @@ namespace FIT_PONG.Services.Services
         }
         private bool ValidirajUpdateTakmicenja(TakmicenjaUpdate obj, int _takmicenjeid, Takmicenje objBaza)
         {
-
-            var listaTakmicenja = db.Takmicenja.ToList();
-            var listaErrora = validator.VratiListuErroraAkcijaEdit(obj, _takmicenjeid,listaTakmicenja,objBaza);
+            var listaErrora = validator.VratiListuErroraAkcijaEdit(obj, _takmicenjeid,objBaza);
             RegulisiListuErrora(listaErrora);
             return true;
         }
