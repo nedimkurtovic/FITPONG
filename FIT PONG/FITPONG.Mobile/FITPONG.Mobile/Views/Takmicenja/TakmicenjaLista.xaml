@@ -16,6 +16,7 @@
             <SearchBar Text="{Binding NazivTakmicenja}" 
                        SearchCommand="{Binding DobaviTakmicenja}" 
                        Placeholder="Unesite naziv takmičenja" />
+            <Button WidthRequest="200" HorizontalOptions="Center" Margin="0,50" Text="Dodaj novo takmičenje" Clicked="Dodaj_Clicked" BackgroundColor="#28a745"></Button>
             <ListView ItemsSource="{Binding ListaTakmicenja}">
                 <ListView.ItemTemplate>
                     <DataTemplate>

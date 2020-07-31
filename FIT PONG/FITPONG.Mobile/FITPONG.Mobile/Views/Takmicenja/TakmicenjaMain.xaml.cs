@@ -11,17 +11,19 @@ using Xamarin.Forms.Xaml;
 namespace FIT_PONG.Mobile.Views.Takmicenja
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class TakmicenjaDetalji : ContentPage
+    public partial class TakmicenjaMain : TabbedPage
     {
         TakmicenjaDetaljiViewModel viewModel;
-        public TakmicenjaDetalji(TakmicenjaDetaljiViewModel vm)
+        public TakmicenjaMain(TakmicenjaDetaljiViewModel model)
         {
             InitializeComponent();
-            BindingContext = viewModel = vm;
-        }
-        public TakmicenjaDetalji()
-        {
-            InitializeComponent();
+
+            BindingContext = viewModel = model;
+            var TakmicenjaDetaljiStranica = new TakmicenjaDetalji(model);
+            TakmicenjaDetaljiStranica.Title = "Detalji";
+            Children.Add(TakmicenjaDetaljiStranica);
+
+            Title = model.Takmicenje.Naziv;
         }
     }
 }
