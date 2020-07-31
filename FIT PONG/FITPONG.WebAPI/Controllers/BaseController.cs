@@ -20,7 +20,7 @@ namespace FIT_PONG.WebAPI.Controllers
             servis = _servis;
         }
         [HttpGet]
-        public virtual List<T> Get(TSearch SearchObj = default(TSearch))
+        public virtual List<T> Get([FromQuery] TSearch SearchObj)
         {
             return servis.Get(SearchObj);
         }
