@@ -29,9 +29,9 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
             InitializeComponent();
         }
 
-        private void btnEdit_Clicked(object sender, EventArgs e)
+        private async void btnEdit_Clicked(object sender, EventArgs e)
         {
-            
+            await Navigation.PushAsync(new TakmicenjaEdit(viewModel.Takmicenje));
         }
 
         private void btnGenerisiRaspored_Clicked(object sender, EventArgs e)

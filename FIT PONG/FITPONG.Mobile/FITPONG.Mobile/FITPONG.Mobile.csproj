@@ -34,6 +34,9 @@
     <EmbeddedResource Update="Views\Takmicenja\TakmicenjaDodaj.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Takmicenja\TakmicenjaEdit.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Takmicenja\TakmicenjaEvidentirajMec.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
