@@ -46,6 +46,7 @@ namespace FIT_PONG.Mobile.ViewModels.Users
             {
                 BaseAPIService.Username = noviLogin.UserName;
                 BaseAPIService.Password = noviLogin.Password;
+                BaseAPIService.ID = rezultat.ID;
                 await Application.Current.MainPage.DisplayAlert("Uspjeh", "Uspješna prijava", "OK");
                 //otvoriti mainpage
                 Application.Current.MainPage = new MainPage();
