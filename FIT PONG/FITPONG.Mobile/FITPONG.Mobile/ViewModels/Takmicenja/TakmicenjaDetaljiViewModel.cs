@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FIT_PONG.Mobile.APIServices;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
@@ -7,6 +8,22 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
 {
     public class TakmicenjaDetaljiViewModel:BaseViewModel
     {
+        public TakmicenjaDetaljiViewModel(SharedModels.Takmicenja _takmicenje = null)
+        {
+            Title = _takmicenje?.Naziv;
+            Takmicenje = _takmicenje;
+            datumP = Takmicenje.DatumPocetka != null ? Takmicenje.DatumPocetka.ToString() : "Nije postavljen";
+            datumZ = Takmicenje.DatumZavrsetka != null ? Takmicenje.DatumPocetka.ToString() : "Nije postavljen";
+            datumPP = Takmicenje.DatumPocetkaPrijava != null ? Takmicenje.DatumPocetkaPrijava.ToString() : "Nije postavljen";
+            datumZP = Takmicenje.DatumZavrsetkaPrijava != null ? Takmicenje.DatumZavrsetkaPrijava.ToString() : "Nije postavljen";
+            vidljiv = true;
+            promjena = new Command(async => { _vidljiv = !_vidljiv; });
+        }
+        public TakmicenjaDetaljiViewModel()
+        {
+            
+        }
+        public TakmicenjeAPIService takmicenjeAPIService { get; set; }
         public SharedModels.Takmicenja Takmicenje { get; set; }
         public string datumP { get; set; }
         public string datumZ { get; set; }
@@ -20,20 +37,9 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
                 _vidljiv = value;
                 OnPropertyChanged(nameof(vidljiv));
             } }
-        public TakmicenjaDetaljiViewModel(SharedModels.Takmicenja _takmicenje = null)
+       public bool Vlasnik()
         {
-            Title = _takmicenje?.Naziv;
-            Takmicenje = _takmicenje;
-            datumP = Takmicenje.DatumPocetka != null ? Takmicenje.DatumPocetka.ToString() : "Nije postavljen";
-            datumZ = Takmicenje.DatumZavrsetka != null ? Takmicenje.DatumPocetka.ToString() : "Nije postavljen";
-            datumPP = Takmicenje.DatumPocetkaPrijava != null ? Takmicenje.DatumPocetkaPrijava.ToString() : "Nije postavljen";
-            datumZP = Takmicenje.DatumZavrsetkaPrijava != null ? Takmicenje.DatumZavrsetkaPrijava.ToString() : "Nije postavljen";
-            vidljiv = true;
-            promjena = new Command(async => { _vidljiv = !_vidljiv; });
-        }
-         public TakmicenjaDetaljiViewModel()
-        {
-
+            return BaseAPIService.ID == Takmicenje.KreatorID;
         }
     }
 }

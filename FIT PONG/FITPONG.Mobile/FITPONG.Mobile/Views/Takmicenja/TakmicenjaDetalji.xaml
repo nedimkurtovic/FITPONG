@@ -2,12 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:FIT_PONG.Mobile.ViewModels.Takmicenja"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              mc:Ignorable="d"
              x:Class="FIT_PONG.Mobile.Views.Takmicenja.TakmicenjaDetalji">
-    <ContentPage.BindingContext>
-        <vm:TakmicenjaDetaljiViewModel></vm:TakmicenjaDetaljiViewModel>
-    </ContentPage.BindingContext>
+    
     <ContentPage.Content>
         <!--<StackLayout>
             <StackLayout Spacing="20" Padding="15">
@@ -72,11 +70,11 @@
                 <StackLayout HorizontalOptions="Center" Grid.Row="8" >
                     <Label  Text="Minimalni ELO" FontSize="Micro" />
                 <Label Text="{Binding Takmicenje.MinimalniELO}" FontSize="Medium" />
-                <Button Text="promijeni" Command="{Binding promjena}"></Button>
-                <Button Text="evo nesto" IsVisible="{Binding vidljiv}"></Button>
-            </StackLayout>
-            <StackLayout HorizontalOptions="Center" Grid.Row="9">
                 
+            </StackLayout>
+            <StackLayout x:Name="DodatneOpcijeLayout" HorizontalOptions="Center" Grid.Row="9">
+                <Button x:Name="btnEdit" Text="Edit" Clicked="btnEdit_Clicked"></Button>
+                <Button x:Name="btnGenerisiRaspored" Clicked="btnGenerisiRaspored_Clicked" Text="Generisi raspored"></Button>
             </StackLayout>
             </Grid>
     </ContentPage.Content>
