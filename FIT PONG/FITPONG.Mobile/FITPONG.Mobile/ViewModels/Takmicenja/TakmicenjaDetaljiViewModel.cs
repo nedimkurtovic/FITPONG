@@ -12,10 +12,10 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
         {
             Title = _takmicenje?.Naziv;
             Takmicenje = _takmicenje;
-            datumP = Takmicenje.DatumPocetka != null ? Takmicenje.DatumPocetka.ToString() : "Nije postavljen";
-            datumZ = Takmicenje.DatumZavrsetka != null ? Takmicenje.DatumPocetka.ToString() : "Nije postavljen";
-            datumPP = Takmicenje.DatumPocetkaPrijava != null ? Takmicenje.DatumPocetkaPrijava.ToString() : "Nije postavljen";
-            datumZP = Takmicenje.DatumZavrsetkaPrijava != null ? Takmicenje.DatumZavrsetkaPrijava.ToString() : "Nije postavljen";
+            datumP = Takmicenje.DatumPocetka != null ? Takmicenje.DatumPocetka.GetValueOrDefault().Date.ToString() : "Nije postavljen";
+            datumZ = Takmicenje.DatumZavrsetka != null ? Takmicenje.DatumPocetka.GetValueOrDefault().Date.ToString() : "Nije postavljen";
+            datumPP = Takmicenje.DatumPocetkaPrijava != null ? Takmicenje.DatumPocetkaPrijava.GetValueOrDefault().Date.ToString() : "Nije postavljen";
+            datumZP = Takmicenje.DatumZavrsetkaPrijava != null ? Takmicenje.DatumZavrsetkaPrijava.GetValueOrDefault().Date.ToString() : "Nije postavljen";
             vidljiv = true;
             promjena = new Command(async => { _vidljiv = !_vidljiv; });
         }
