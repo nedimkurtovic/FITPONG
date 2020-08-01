@@ -168,7 +168,8 @@ namespace FIT_PONG.Services.Services
             objBaza.RokZavrsetkaPrijave = obj.RokZavrsetkaPrijave ?? objBaza.RokZavrsetkaPrijave;
 
             db.SaveChanges();
-            return mapko.Map<Takmicenja>(objBaza);
+            var povratni = GetByID(objBaza.ID); // zbog includeova i to lakse odozgo nego da ponavljam kod ovdje
+            return povratni;
         }
 
         public Takmicenja Delete(int id)
@@ -245,8 +246,8 @@ namespace FIT_PONG.Services.Services
             {
                 throw new Exception("Došlo je do greške prilikom inicijalizovanja takmičenja");
             }
-            var objPovratni = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
-            return mapko.Map<Takmicenja>(objPovratni);
+            var povratni = GetByID(id); // zbog includeova i to lakse odozgo nego da ponavljam kod ovdje
+            return povratni;
         }
 
         public List<EvidencijaMeca> GetEvidencije(string KorisnikUsername, int takmid)
