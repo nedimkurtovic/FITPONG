@@ -40,6 +40,7 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
         {
             viewModel.rucnaVidljivost = !viewModel.rucnaVidljivost;
 
+            //a mogao sam ih sve fino u stacklayout stavit i jednom linijom rijesiti sve, ALI JOK!!!!
             lblKorisnicka.IsVisible = viewModel.rucnaVidljivost;
             editorKorisnicka.IsVisible = viewModel.rucnaVidljivost;
 
@@ -48,6 +49,10 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
 
             lblDatumZP.IsVisible = !viewModel.rucnaVidljivost;
             dtpDatumZP.IsVisible = !viewModel.rucnaVidljivost;
+
+            lblMinELO.IsVisible = !viewModel.rucnaVidljivost;
+            txtMinELO.IsVisible = !viewModel.rucnaVidljivost;
+
             if (viewModel.rucnaVidljivost)
             {
                 var vrs = viewModel.ListaVrsta.Where(x => x.Naziv == "Single").FirstOrDefault();

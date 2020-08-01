@@ -15,28 +15,6 @@
             <Label Text="Welcome to Xamarin.Forms!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            <!--<Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition> -->
-            <!--13-->
-            <!--
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>-->
 
             <Label Text="Naziv*" FontSize="Micro"></Label>
             <Entry Text="{Binding Naziv}" FontSize="Medium"></Entry>
@@ -52,6 +30,9 @@
 
             <Label x:Name="lblDatumZP" Text="Datum završetka prijava*" IsVisible="{Binding VidljivostPrijava}"></Label>
             <DatePicker x:Name="dtpDatumZP" Date="{Binding RokZavrsetkaPrijave}" IsVisible="{Binding VidljivostPrijava}"></DatePicker>
+
+            <Label x:Name="lblMinELO" Text="Minimalni ELO" FontSize="Micro" IsVisible="{Binding VidljivostPrijava}"></Label>
+            <Entry x:Name="txtMinELO" Text="{Binding MinimalniELO}" FontSize="Medium" IsVisible="{Binding VidljivostPrijava}"></Entry>
 
             <Label  Text="Rasporedi igrače na osnovu ELO?(prazno označava random)" FontSize="Micro"></Label>
             <CheckBox CheckedChanged="Seeded_CheckedChanged" IsChecked="{Binding Seeded}"></CheckBox>
