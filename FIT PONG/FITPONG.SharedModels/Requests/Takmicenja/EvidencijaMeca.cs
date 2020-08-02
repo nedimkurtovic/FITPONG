@@ -18,6 +18,7 @@ namespace FIT_PONG.SharedModels.Requests.Takmicenja
         public int? RezultatTim1 { get; set; }
         [Required(ErrorMessage = "Morate unijeti rezultat")]
         public int? RezultatTim2 { get; set; }
+        public int UtakmicaID { get; set; }
         //public int TakmicenjeID { get; set; } ovo je bilo u originalnom VM ali sad se ovo kupi preko takmicenja/{id}/..
     }
 }
