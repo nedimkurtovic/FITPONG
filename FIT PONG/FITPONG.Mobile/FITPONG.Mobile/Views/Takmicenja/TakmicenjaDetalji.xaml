@@ -2,17 +2,81 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:FIT_PONG.Mobile.ViewModels.Takmicenja"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              mc:Ignorable="d"
              x:Class="FIT_PONG.Mobile.Views.Takmicenja.TakmicenjaDetalji">
+    
     <ContentPage.Content>
-        <StackLayout>
+        <!--<StackLayout>
             <StackLayout Spacing="20" Padding="15">
                 <Label Text="Naziv:" FontSize="Medium" />
                 <Label Text="{Binding Takmicenje.Naziv}" d:Text="Naziv" FontSize="Small"/>
                 <Label Text="Datum pocetka:" FontSize="Medium" />
                 <Label Text="{Binding Takmicenje.DatumPocetka, StringFormat='{0:MMMM dd, yyyy}'}"></Label>
             </StackLayout>
-        </StackLayout>
+        </StackLayout>-->
+        <ScrollView HorizontalOptions="CenterAndExpand" VerticalOptions="FillAndExpand">
+            <Grid VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <StackLayout HorizontalOptions="Center" Grid.Row="0">
+                    <Label HorizontalTextAlignment="Start" FontSize="Micro" Text="Kategorija"></Label>
+                    <Label Text="{Binding Takmicenje.Kategorija}" FontSize="Medium" />
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="Center" Grid.Row="1" >
+                    <Label FontSize="Micro" Text="Vrsta"></Label>
+                    <Label Text="{Binding Takmicenje.Vrsta}" FontSize="Medium" />
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="Center" Grid.Row="2" >
+                    <Label  Text="Sistem" FontSize="Micro" />
+                    <Label  Text="{Binding Takmicenje.Sistem}" FontSize="Medium" />
+                </StackLayout>
+                <StackLayout HorizontalOptions="Center" Grid.Row="3" >
+                    <Label  Text="Status" FontSize="Micro" />
+                    <Label  Text="{Binding Takmicenje.Status}" FontSize="Medium" />
+                </StackLayout>
+                <StackLayout  HorizontalOptions="Center" Grid.Row="4" >
+                    <Label  Text="Datum početka" FontSize="Micro" />
+                    <Label Text="{Binding datumP}" FontSize="Medium" />
+                </StackLayout>
+                <StackLayout  HorizontalOptions="Center" Grid.Row="5">
+                    <Label  Text="Datum završetka" FontSize="Micro" />
+                    <Label  Text="{Binding datumZ}" FontSize="Medium" />
+                </StackLayout>
+                <StackLayout  HorizontalOptions="Center" Grid.Row="6" >
+                    <Label  Text="Datum početka prijava" FontSize="Micro" />
+                    <Label  Text="{Binding datumPP}" FontSize="Medium" />
+                </StackLayout>
+                <StackLayout HorizontalOptions="Center" Grid.Row="7">
+                    <Label  Text="Datum završetka prijava" FontSize="Micro" />
+                    <Label Text="{Binding datumZP}" FontSize="Medium" />
+                </StackLayout>
+                <StackLayout HorizontalOptions="Center" Grid.Row="8" >
+                    <Label  Text="Minimalni ELO" FontSize="Micro" />
+                    <Label Text="{Binding Takmicenje.MinimalniELO}" FontSize="Medium" />
+
+                </StackLayout>
+                <StackLayout x:Name="DodatneOpcijeLayout" Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="9">
+                    <Button x:Name="btnEdit" Text="Edit" HorizontalOptions="Start" Clicked="btnEdit_Clicked"></Button>
+                    <Button x:Name="btnGenerisiRaspored" HorizontalOptions="End" Clicked="btnGenerisiRaspored_Clicked" Text="Generisi raspored"></Button>
+                </StackLayout>
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

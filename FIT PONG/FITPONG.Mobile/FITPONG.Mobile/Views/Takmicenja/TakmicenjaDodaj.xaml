@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             
+             mc:Ignorable="d"
+             Title="{Binding Title}"
+             x:Class="FIT_PONG.Mobile.Views.Takmicenja.TakmicenjaDodaj">
+    <!--<ContentPage.BindingContext>
+        <vm:TakmicenjaDodajViewModel></vm:TakmicenjaDodajViewModel>
+    </ContentPage.BindingContext>-->
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="CenterAndExpand">
+            <Label Text="Welcome to Xamarin.Forms!"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+
+            <Label Text="Naziv*" FontSize="Micro"></Label>
+            <Entry Text="{Binding Naziv}" FontSize="Medium"></Entry>
+
+            <Label  Text="Ručni unos prijava?(Trenutno samo za singleove dostupno, u suprotnom definišite registracije)" FontSize="Micro"></Label>
+            <CheckBox CheckedChanged="RucniOdabir_CheckedChanged" IsChecked="{Binding RucniOdabir}"></CheckBox>
+
+            <Label x:Name="lblKorisnicka" Text="Korisnička imena igrača (format :KorisnickoIme razmak)*" IsVisible="{Binding rucnaVidljivost}" FontSize="Micro"></Label>
+            <Editor x:Name="editorKorisnicka" HeightRequest="100" Text="{Binding RucnoOdabraniIgraci}" IsVisible="{Binding rucnaVidljivost}"></Editor>
+
+            <Label x:Name="lblDatumPP" Text="Datum početka prijava*" IsVisible="{Binding VidljivostPrijava}"></Label>
+            <DatePicker x:Name="dtpDatumPP" Date="{Binding RokPocetkaPrijave}" IsVisible="{Binding VidljivostPrijava}"></DatePicker>
+
+            <Label x:Name="lblDatumZP" Text="Datum završetka prijava*" IsVisible="{Binding VidljivostPrijava}"></Label>
+            <DatePicker x:Name="dtpDatumZP" Date="{Binding RokZavrsetkaPrijave}" IsVisible="{Binding VidljivostPrijava}"></DatePicker>
+
+            <Label x:Name="lblMinELO" Text="Minimalni ELO" FontSize="Micro" IsVisible="{Binding VidljivostPrijava}"></Label>
+            <Entry x:Name="txtMinELO" Text="{Binding MinimalniELO}" FontSize="Medium" IsVisible="{Binding VidljivostPrijava}"></Entry>
+
+            <Label  Text="Rasporedi igrače na osnovu ELO?(prazno označava random)" FontSize="Micro"></Label>
+            <CheckBox CheckedChanged="Seeded_CheckedChanged" IsChecked="{Binding Seeded}"></CheckBox>
+
+            <Picker x:Name="katPiker" Title="Odaberi kategoriju" SelectedIndexChanged="Kategorija_SelectedIndexChanged" ItemsSource="{Binding ListaKategorija}"></Picker>
+
+            <Picker x:Name="vrsPiker" Title="Odaberi vrstu" SelectedIndexChanged="Vrsta_SelectedIndexChanged" ItemsSource="{Binding ListaVrsta}" ItemDisplayBinding="{Binding Naziv}"></Picker>
+
+            <Picker x:Name="sisPiker" Title="Odaberi sistem" SelectedIndexChanged="Sistem_SelectedIndexChanged" ItemsSource="{Binding ListaSistema}" ItemDisplayBinding="{Binding Opis}"></Picker>
+
+            <Label Text="Datum početka"></Label>
+            <DatePicker Date="{Binding RokPocetkaPrijave}"></DatePicker>
+
+            <Button Text="Dodaj" Clicked="Dodaj_Clicked"></Button>
+            <!--</Grid>-->
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

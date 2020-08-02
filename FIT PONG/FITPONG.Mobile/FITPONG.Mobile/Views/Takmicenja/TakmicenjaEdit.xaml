@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Title="Edit podataka"
+             x:Class="FIT_PONG.Mobile.Views.Takmicenja.TakmicenjaEdit">
+    <ContentPage.Content>
+        <ScrollView HorizontalOptions="CenterAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout Margin="0,100"  HorizontalOptions="CenterAndExpand">
+                <Label Text="Naziv" FontSize="Micro"></Label>
+                <Entry Text="{Binding Naziv}" FontSize="Medium"></Entry>
+
+                <StackLayout x:Name="datumiPrijavaLayout">
+                    <Label x:Name="lblDatumPP" Text="Datum početka prijava"></Label>
+                    <DatePicker x:Name="dtpDatumPP" Date="{Binding RokPocetkaPrijave}" IsVisible="{Binding VidljivostPrijava}"></DatePicker>
+                    <StackLayout Orientation="Horizontal">
+                        <CheckBox x:Name="cbDatumPP" HorizontalOptions="Start" CheckedChanged="cbDatumPP_CheckedChanged" ></CheckBox>
+                        <Label Text="Nema promjene" HorizontalOptions="End"></Label>
+                    </StackLayout>
+                    <Label x:Name="lblDatumZP" Text="Datum završetka prijava"></Label>
+                    <DatePicker x:Name="dtpDatumZP" Date="{Binding RokZavrsetkaPrijave}"></DatePicker>
+                    <StackLayout Orientation="Horizontal">
+                        <CheckBox  x:Name="cbDatumZP" HorizontalOptions="Start" CheckedChanged="cbDatumZP_CheckedChanged" ></CheckBox>
+                        <Label Text="Nema promjene" HorizontalOptions="End"></Label>
+                    </StackLayout>
+
+                    <Label x:Name="lblMinELO" Text="Minimalni ELO" FontSize="Micro" IsVisible="{Binding VidljivostPrijava}"></Label>
+                    <Entry x:Name="txtMinELO" Text="{Binding MinimalniELO}" FontSize="Medium" IsVisible="{Binding VidljivostPrijava}"></Entry>
+                </StackLayout>
+
+                <Label Text="Datum početka"></Label>
+                <DatePicker x:Name="dtpDatumP" Date="{Binding DatumPocetka}"></DatePicker>
+                <StackLayout Orientation="Horizontal">
+                    <CheckBox  x:Name="cbDatumP" HorizontalOptions="Start" CheckedChanged="cbDatumP_CheckedChanged" ></CheckBox>
+                    <Label Text="Nema promjene" HorizontalOptions="End"></Label>
+                </StackLayout>
+
+                <Button x:Name="btnSpasi" Margin="0,50" Text="Spasi" BackgroundColor="#81DEE2" Clicked="btnSpasi_Clicked"></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

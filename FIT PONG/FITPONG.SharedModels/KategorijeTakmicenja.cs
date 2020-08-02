@@ -7,6 +7,6 @@ namespace FIT_PONG.SharedModels
     public class KategorijeTakmicenja
     {
         public int ID { get; set; }
-        public string Naziv { get; set; }
+        public string Opis { get; set; }
     }
 }

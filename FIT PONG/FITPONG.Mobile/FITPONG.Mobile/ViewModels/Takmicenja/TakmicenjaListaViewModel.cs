@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -12,7 +13,7 @@ using Xamarin.Forms;
 
 namespace FIT_PONG.Mobile.ViewModels.Takmicenja
 {
-    public class TakmicenjaListaViewModel:BaseViewModel
+    public class TakmicenjaListaViewModel:BaseViewModel,INotifyPropertyChanged
     {
         public TakmicenjaListaViewModel()
         {
@@ -22,6 +23,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             DobaviJosTakmicenja = new Command(async () => await DobaviJos());
             iducaStranica = "";
         }
+        
         public TakmicenjeAPIService takmicenjeServis { get; set; } = new TakmicenjeAPIService();
         private string _nazivTakmicenja;
         public string NazivTakmicenja { get => _nazivTakmicenja; set { SetProperty(ref _nazivTakmicenja, value); } }
@@ -30,8 +32,11 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
 
         private string iducaStranica;
         public bool btnDobaviJosVisible { get; set; } = true;
+
+
         public ICommand DobaviTakmicenja { get; set; }
         public ICommand DobaviJosTakmicenja { get; set; }
+        public ICommand DodajTakmicenjeKomanda{ get; set; }
         async Task PozoviApi()
         {
             ListaTakmicenja.Clear();

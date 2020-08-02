@@ -39,18 +39,38 @@ namespace FIT_PONG.Services.Services
             if (!string.IsNullOrWhiteSpace(obj.Naziv))
                 qry = qry.Where(x => x.Naziv.Contains(obj.Naziv));
             
-            var TakmicenjaPovratni = qry.OrderByDescending(x=>x.ID).ToList();
-            return mapko.Map<List<SharedModels.Takmicenja>>(TakmicenjaPovratni.Where(x=> 1==1));
+            var TakmicenjaPovratni = qry.Include(x=>x.Sistem).Include(x=>x.Status).Include(x=>x.Kategorija)
+                .Include(x=>x.Vrsta).OrderByDescending(x=>x.ID).ToList();
+            var povratnaLista = new List<SharedModels.Takmicenja>();
+            foreach(var i in TakmicenjaPovratni)
+            {
+                SharedModels.Takmicenja tak = mapko.Map<SharedModels.Takmicenja>(i);
+                tak.Sistem = i.Sistem.Opis;
+                tak.Kategorija = i.Kategorija.Opis;
+                tak.Vrsta = i.Vrsta.Naziv;
+                tak.Status = i.Status.Opis;
+                povratnaLista.Add(tak);
+            }
+            return povratnaLista;
         }
 
         public Takmicenja GetByID(int id)
         {
-            var obj = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
+            var obj = db.Takmicenja
+                .Include(x => x.Sistem)
+                .Include(x => x.Status)
+                .Include(x => x.Kategorija)
+                .Include(x => x.Vrsta).Where(x => x.ID == id).FirstOrDefault();
             if(obj == null)
             {
                 throw new UserException("Takmicenje ne postoji");
             }
-            return mapko.Map<SharedModels.Takmicenja>(obj);
+            SharedModels.Takmicenja tak = mapko.Map<SharedModels.Takmicenja>(obj);
+            tak.Sistem = obj.Sistem.Opis;
+            tak.Kategorija = obj.Kategorija.Opis;
+            tak.Vrsta = obj.Vrsta.Naziv;
+            tak.Status = obj.Status.Opis;
+            return tak;
         }
 
         public Takmicenja Add(TakmicenjaInsert objekat, int KreatorID)
@@ -71,6 +91,9 @@ namespace FIT_PONG.Services.Services
                     db.Feeds.Add(TakmicenjeFeed);
                     db.SaveChanges();
                     novo.FeedID = TakmicenjeFeed.ID;
+
+                    var statusKreiran = db.StatusiTakmicenja.Where(x => x.Opis == "Kreirano").FirstOrDefault();
+                    novo.StatusID = statusKreiran.ID;
 
                     db.Add(novo);
                     db.SaveChanges();
@@ -104,9 +127,10 @@ namespace FIT_PONG.Services.Services
                         }
                     }
                     transakcija.Commit();
-                    return mapko.Map<Takmicenja>(novo);
+                    var povratni = GetByID(novo.ID); // zbog includeova i to lakse odozgo nego da ponavljam kod ovdje
+                    return povratni;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     transakcija.Rollback();
                     throw new UserException("Greška prilikom spašavanja u bazu");
@@ -144,7 +168,8 @@ namespace FIT_PONG.Services.Services
             objBaza.RokZavrsetkaPrijave = obj.RokZavrsetkaPrijave ?? objBaza.RokZavrsetkaPrijave;
 
             db.SaveChanges();
-            return mapko.Map<Takmicenja>(objBaza);
+            var povratni = GetByID(objBaza.ID); // zbog includeova i to lakse odozgo nego da ponavljam kod ovdje
+            return povratni;
         }
 
         public Takmicenja Delete(int id)
@@ -221,8 +246,8 @@ namespace FIT_PONG.Services.Services
             {
                 throw new Exception("Došlo je do greške prilikom inicijalizovanja takmičenja");
             }
-            var objPovratni = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
-            return mapko.Map<Takmicenja>(objPovratni);
+            var povratni = GetByID(id); // zbog includeova i to lakse odozgo nego da ponavljam kod ovdje
+            return povratni;
         }
 
         public List<EvidencijaMeca> GetEvidencije(string KorisnikUsername, int takmid)
@@ -360,12 +385,12 @@ namespace FIT_PONG.Services.Services
         #region Validacija
         private bool ValidirajAddTakmicenja(TakmicenjaInsert obj)
         {
-            var igraci = db.Igraci.ToList();
-            var listaTakmicenja = db.Takmicenja.Select(x => x.Naziv).ToList();
-            //ako ce biti prbolema onda ce biti kod provera gdje su hardkodirane 
-            //vrijednosti(unutar ovog ove funkcije u validatoru), vrstaID 
+            //var igraci = db.Igraci.ToList();
+            //var listaTakmicenja = db.Takmicenja.Select(x => x.Naziv).ToList();
+            ////ako ce biti prbolema onda ce biti kod provera gdje su hardkodirane 
+            ////vrijednosti(unutar ovog ove funkcije u validatoru), vrstaID 
 
-            var listaErrora = validator.VratiListuErroraAkcijaDodaj(obj, listaTakmicenja, igraci);
+            var listaErrora = validator.VratiListuErroraAkcijaDodaj(obj);
             RegulisiListuErrora(listaErrora);
             return true;
         }
@@ -378,9 +403,7 @@ namespace FIT_PONG.Services.Services
         }
         private bool ValidirajUpdateTakmicenja(TakmicenjaUpdate obj, int _takmicenjeid, Takmicenje objBaza)
         {
-
-            var listaTakmicenja = db.Takmicenja.ToList();
-            var listaErrora = validator.VratiListuErroraAkcijaEdit(obj, _takmicenjeid,listaTakmicenja,objBaza);
+            var listaErrora = validator.VratiListuErroraAkcijaEdit(obj, _takmicenjeid,objBaza);
             RegulisiListuErrora(listaErrora);
             return true;
         }

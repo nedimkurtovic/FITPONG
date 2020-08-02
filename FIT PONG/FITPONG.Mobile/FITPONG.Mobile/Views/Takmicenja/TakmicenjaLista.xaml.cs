@@ -23,7 +23,7 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
         {
             var gridlejaut = (BindableObject)sender;
             var _takmicenje = (SharedModels.Takmicenja)gridlejaut.BindingContext;
-            await Navigation.PushAsync(new TakmicenjaDetalji(new TakmicenjaDetaljiViewModel(_takmicenje)));
+            await Navigation.PushAsync(new TakmicenjaMain(new TakmicenjaDetaljiViewModel(_takmicenje)));
         }
         protected override void OnAppearing()
         {
@@ -33,6 +33,10 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
                 viewModel.IsBusy = true;
             
         }
-        
+
+        private async void Dodaj_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new TakmicenjaDodaj());
+        }
     }
 }

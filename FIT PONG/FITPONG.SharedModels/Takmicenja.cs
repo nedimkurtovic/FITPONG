@@ -23,6 +23,7 @@ namespace FIT_PONG.SharedModels
         public string Status { get; set; }
         public int BrojPrijavljenih { get; set; }
         public int FeedID { get; set; }
+        public int KreatorID { get; set; }
         public bool? Inicirano { get; set; }
         public List<Prijava> Prijave { get; set; }
         public List<Bracket> Bracketi { get; set; }
