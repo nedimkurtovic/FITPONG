@@ -20,8 +20,7 @@ namespace FIT_PONG.Services.Services
 		EvidencijaMeca EvidentirajMec(int takmid, EvidencijaMeca obj);//ovo treba autorizovati ali mislim da 
 		//bi dobro bilo izdvojiti tu autorizaciju u authorizeAttribute klasu neku custom i stavit je iznad akcije
 		List<TabelaStavka> GetTabela(int takmid);
-
-
+		EvidencijaMeca GetIgraceZaEvidenciju(EvidencijaMeca obj, int takmid);
 
 	
 	}

@@ -169,7 +169,7 @@ namespace FIT_PONG.Services.BL
                 if (objekat.DatumPocetka != null && objekat.RokZavrsetkaPrijave != null && objekat.DatumPocetka < objekat.RokZavrsetkaPrijave)
                     listaErrora.Add((nameof(objekat.DatumPocetka), "Datum početka ne može biti prije završetka prijava"));
             }
-            else
+            else if(bazaObj.Inicirano && (objekat.RokPocetkaPrijave != null || objekat.RokZavrsetkaPrijave != null))
                 listaErrora.Add(("", "Takmičenje je već inicirano, nije moguće mijenjati datume prijava"));
             if (objekat.DatumPocetka != null && objekat.DatumZavrsetka != null && objekat.DatumZavrsetka < objekat.DatumPocetka)
                 listaErrora.Add((nameof(objekat.DatumZavrsetka), "Datum početka takmičenja ne može biti prije završetka"));

@@ -46,6 +46,10 @@ namespace FIT_PONG.Services.BL
             {
                 try
                 {
+                    //obzirom da se implementacije razlikuju za web app i web api, i zbog problema sa serijalizacijom
+                    //i dubinom, ovdje cu dodati jednu mini funkciju koja ce provjeriti da li su List<Igrac_Utakmica> za tim1 i 
+                    //tim2 prazne, ako jesu na osnovu imena timova(tj prijava) ce dobaviti igrac utakmice i setovati
+
 
                     int pobjednik = (obj.RezultatTim1.GetValueOrDefault() > obj.RezultatTim2.GetValueOrDefault()) ? 1 : 2;
                     UpdateIgracUtakmicaZapis(obj, pobjednik);
@@ -609,6 +613,53 @@ namespace FIT_PONG.Services.BL
 
             }
             return povratne;
+        }
+        public EvidencijaMeca DobaviIgraceZaEvidencijuMeca(EvidencijaMeca obj, int takmid)
+        {
+            var povratnaEvidencija = new EvidencijaMeca
+            {
+                NazivTim1 = obj.NazivTim1,
+                NazivTim2 = obj.NazivTim2,
+                RezultatTim1 = obj.RezultatTim1,
+                RezultatTim2 = obj.RezultatTim2,
+                UtakmicaID = obj.UtakmicaID,
+                Tim1 = obj.Tim1,
+                Tim2 = obj.Tim2
+            };
+
+            var tekmaID = obj.UtakmicaID;
+            var utakmica = db.Utakmice.Include(x=>x.UcescaNaUtakmici).Where(x => x.ID == tekmaID).FirstOrDefault();
+            if (utakmica == null)
+                return null;
+
+            var nazivTim1 = obj.NazivTim1;
+            var prijavaTim1 = db.Prijave.Where(x => x.Naziv == nazivTim1 && x.TakmicenjeID == takmid).FirstOrDefault();
+            if (prijavaTim1 == null)
+                return null;
+            povratnaEvidencija.Tim1 = VratiUcescaNaUtakmiciZaPrijavu(prijavaTim1, utakmica, takmid);
+
+            var nazivTim2 = obj.NazivTim2;
+            var prijavaTim2 = db.Prijave.Where(x => x.Naziv == nazivTim2 && x.TakmicenjeID == takmid).FirstOrDefault();
+            if(prijavaTim2 == null)
+                return null;
+
+            povratnaEvidencija.Tim2 = VratiUcescaNaUtakmiciZaPrijavu(prijavaTim2, utakmica, takmid);
+
+            foreach (var i in povratnaEvidencija.Tim1)
+                DetachajIgracUtakmicu(i.IgID);
+            foreach (var i in povratnaEvidencija.Tim2)
+                DetachajIgracUtakmicu(i.IgID);
+
+            return povratnaEvidencija;
+        }
+        private void DetachajIgracUtakmicu(int igID)
+        {
+            var local = db.Set<Igrac_Utakmica>()
+                            .Local
+                            .FirstOrDefault(x => x.IgID.Equals(igID));
+            if (local != null)
+                db.Entry(local).State = EntityState.Detached;
+            db.SaveChanges();
         }
         //ovo za sad na apiju ne znam da li ima smisla, tj ima sigurno samo onda treba skontati gdje bi klasa TopIgraci
         //tj u koji bi se folder smjestila, da li to pripada takmicenju ili nekom ipak drugom servisu? Jer getnajboljiovesedmice

@@ -280,6 +280,10 @@ namespace FIT_PONG.Services.Services
 
                 nova.RezultatTim1 = null;
                 nova.RezultatTim1 = null;
+
+                //ovo ne bi trebalo smetati webappu obzirom da nece ovaj atribut nigdje koristit a webapiju je bitno
+                //zbog ponovnog dobavljanja liste igraca
+                nova.UtakmicaID = TimoviFinalni.Tim1[0].UtakmicaID;
                 model.Add(nova);
             }
             return model;   
@@ -315,7 +319,8 @@ namespace FIT_PONG.Services.Services
                     Tim1 = par.tim1,
                     Tim2 = par.tim2,
                     RezultatTim1 = par.rez1,
-                    RezultatTim2 = par.rez2
+                    RezultatTim2 = par.rez2,
+                    Runda = i.Runda.BrojRunde
                 };
                 parovi.Add(nova);
             }
@@ -344,6 +349,14 @@ namespace FIT_PONG.Services.Services
             parovi = parovi.OrderByDescending(x => x.Pobjeda).ToList();
             return parovi;
         }
+        public EvidencijaMeca GetIgraceZaEvidenciju(EvidencijaMeca obj, int takmid)
+        {
+            var rezultat = evidentor.DobaviIgraceZaEvidencijuMeca(obj, takmid);
+            if (rezultat == null)
+                throw new UserException("Neispravni podaci poslani");
+            return rezultat;
+        }
+
         #endregion
 
         #region Pomagaci
@@ -436,6 +449,7 @@ namespace FIT_PONG.Services.Services
             }
         }
 
+       
         #endregion
     }
 }
