@@ -23,6 +23,7 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
                 DodatneOpcijeLayout.IsVisible = true;
             else
                 DodatneOpcijeLayout.IsVisible = false;
+            btnGenerisiRaspored.IsVisible = !vm.Takmicenje.Inicirano ?? true;
         }
         public TakmicenjaDetalji()
         {
@@ -34,9 +35,30 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
             await Navigation.PushAsync(new TakmicenjaEdit(viewModel.Takmicenje));
         }
 
-        private void btnGenerisiRaspored_Clicked(object sender, EventArgs e)
+        private async void btnGenerisiRaspored_Clicked(object sender, EventArgs e)
         {
+            var rezultat = await viewModel.InicirajTakmicenje();
+            if(rezultat != default(SharedModels.Takmicenja))
+            {
+                var mainStranica = Navigation.NavigationStack[1];
+                Navigation.InsertPageBefore(new TakmicenjaMain(new TakmicenjaDetaljiViewModel(rezultat)), mainStranica);
+                bool brisi = false;
 
+                List<Page> listaBrisanja = new List<Page>();
+                foreach (var i in Navigation.NavigationStack)
+                {
+                    if (brisi)
+                        listaBrisanja.Add(i);
+                    if (i is TakmicenjaMain && !brisi)
+                        brisi = true;
+                }
+                //kad naleti na prvu main stavlja na true i sve ostale stranice brise poslije
+                var a = Navigation.NavigationStack[0].BindingContext as TakmicenjaListaViewModel;
+                if (a.DobaviTakmicenja.CanExecute(null))
+                    a.DobaviTakmicenja.Execute(null);
+                foreach (var i in listaBrisanja)
+                    Navigation.RemovePage(i);
+            }
         }
     }
 }

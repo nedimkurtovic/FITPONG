@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace FIT_PONG.Mobile.ViewModels.Takmicenja
@@ -23,7 +25,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
         {
             
         }
-        public TakmicenjeAPIService takmicenjeAPIService { get; set; }
+        public TakmicenjeAPIService takmicenjeAPIService { get; set; } = new TakmicenjeAPIService();
         public SharedModels.Takmicenja Takmicenje { get; set; }
         public string datumP { get; set; }
         public string datumZ { get; set; }
@@ -40,6 +42,15 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
        public bool Vlasnik()
         {
             return BaseAPIService.ID == Takmicenje.KreatorID;
+        }
+        public async Task<SharedModels.Takmicenja> InicirajTakmicenje()
+        {
+            var rezultat = await takmicenjeAPIService.Init(Takmicenje.ID);
+            if(rezultat != default(SharedModels.Takmicenja))
+            {
+                await Application.Current.MainPage.DisplayAlert("Uspjeh", "Uspješno inicirano takmičenje", "OK");
+            }
+            return rezultat;
         }
     }
 }
