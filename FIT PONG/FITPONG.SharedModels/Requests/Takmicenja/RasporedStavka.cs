@@ -10,5 +10,6 @@ namespace FIT_PONG.SharedModels.Requests.Takmicenja
         public string Tim2 { get; set; }
         public int? RezultatTim1{ get; set; }
         public int? RezultatTim2 { get; set; }
+        public int Runda { get; set; }
     }
 }
