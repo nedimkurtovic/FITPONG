@@ -23,6 +23,18 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
             TakmicenjaDetaljiStranica.Title = "Detalji";
             Children.Add(TakmicenjaDetaljiStranica);
 
+            var TakmicenjaRezultatiStranica = new TakmicenjaRezultati(model.Takmicenje);
+            TakmicenjaRezultatiStranica.Title = "Rezultati";
+            Children.Add(TakmicenjaRezultatiStranica);
+
+            var TakmicenjaTabelaStranica = new TakmicenjaTabela(model.Takmicenje);
+            TakmicenjaTabelaStranica.Title = "Tabela";
+            Children.Add(TakmicenjaTabelaStranica);
+
+            var TakmicenjaEvidentirajMecStranica = new TakmicenjaEvidencije(model.Takmicenje);
+            TakmicenjaEvidentirajMecStranica.Title = "Evidentiraj meč";
+            Children.Add(TakmicenjaEvidentirajMecStranica);
+
             Title = model.Takmicenje.Naziv;
         }
     }

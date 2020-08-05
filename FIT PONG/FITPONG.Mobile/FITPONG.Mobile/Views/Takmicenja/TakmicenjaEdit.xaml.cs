@@ -51,18 +51,7 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
                 var mainStranica = Navigation.NavigationStack[1];
                 Navigation.InsertPageBefore(new TakmicenjaMain(new TakmicenjaDetaljiViewModel(rezultat)), mainStranica);
                 bool brisi = false;
-                //int brObrisanih = 0;
-                //for (int i = 0; i < Navigation.NavigationStack.Count+brObrisanih; i++)
-                //{
-                //    if (brisi)
-                //    {
-                //        Navigation.RemovePage(Navigation.NavigationStack[i]);
-                //        brObrisanih++;
-                //    }
-                //    if (Navigation.NavigationStack[i] is TakmicenjaMain && !brisi)
-                //        brisi = true;
 
-                //}
                 List<Page> listaBrisanja = new List<Page>();
                 foreach(var i in Navigation.NavigationStack)
                 {

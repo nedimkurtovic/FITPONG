@@ -105,19 +105,36 @@ namespace FIT_PONG.WebAPI.Controllers
                 //sto odgovara prvoj linij koda u GetEvidencije(dobavlja igraca na osnovu prikaznog imena)
                 //u slucaju da GetPrikaznoIme vraca username iz usera(iako nema nikakve logike da to uradi)
                 //bice belaj
-            return takmicenjeService.GetEvidencije(userName, id);
+
+            //ovdje prije povratka treba nulirati igrace utakmica zbog problema sa json serijalizacijom,rekurzijom
+            //i nemogucnosti limitiranja dubine json serijalizacije.
+            //na web appu zbog ne koristenja jsona ostaje sve kako jest, tj prvenstveno ovo ovdje radim zato sto 
+            //ne zelim mijenjati postojece stanje na webappu jer njemu trebaju list<igrac_utakmica> tim1 i tim2
+            //zato cu tamo u evidentoru na evidenciji meca ponovo dobaviti List<Igrac_Utakmica> tim1 i tim2 ako su null
+            var rezultat = takmicenjeService.GetEvidencije(userName, id);
+            foreach(var i in rezultat)
+            {
+                i.Tim1 = null;
+                i.Tim2 = null;
+            }
+
+            return rezultat;
         }
 
         [HttpPost("{id}/evidencije")]
-        public List<EvidencijaMeca> EvidentirajMec(int id, [FromBody]EvidencijaMeca obj)
+        public EvidencijaMeca EvidentirajMec(int id, [FromBody]EvidencijaMeca obj)
         {
+            var napunjeniObjekat = takmicenjeService.GetIgraceZaEvidenciju(obj, id);
             var userId = usersService.GetRequestUserID(HttpContext.Request);
-            takmicenjeAutorizator.AuthorizeEvidencijaMeca(userId, obj);
-            takmicenjeService.EvidentirajMec(id, obj);
+            takmicenjeAutorizator.AuthorizeEvidencijaMeca(userId, napunjeniObjekat);
+            var rezultat = takmicenjeService.EvidentirajMec(id, napunjeniObjekat);
+            rezultat.Tim1 = null;
+            rezultat.Tim2 = null;
             //i dalje je mozda upitno da li vracati sve moguce evidencije odma ili samo ovaj mec koji 
             //se upravo evidentirao
-            var userName = usersService.GetRequestUserName(HttpContext.Request);
-            return takmicenjeService.GetEvidencije(userName, id);
+            //var userName = usersService.GetRequestUserName(HttpContext.Request);
+            //return takmicenjeService.GetEvidencije(userName, id);
+            return rezultat;
         }
         
         [HttpGet("{id}/tabela")]

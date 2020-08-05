@@ -23,7 +23,7 @@ namespace FIT_PONG.Mobile.APIServices
         //podataka potrebnih za rad formi kao sto su comboboxovi 
         public async Task<Takmicenja> Init(int id)
         {
-            var url = $"{APIUrl}/{resurs}/{id}/init";
+            var url = $"{APIUrl}/{resurs}/{id}/akcije/init";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync("").ReceiveJson<Takmicenja>();
@@ -67,14 +67,13 @@ namespace FIT_PONG.Mobile.APIServices
             }
         }
 
-        public async Task<List<EvidencijaMeca>> EvidentirajMec(int id,EvidencijaMeca obj)
+        public async Task<EvidencijaMeca> EvidentirajMec(int id,EvidencijaMeca obj)
         {
             var url = $"{APIUrl}/{resurs}/{id}/evidencije";
             try
             {
-                var qryString = obj.ToQueryString();
-                var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync(qryString)
-                    .ReceiveJson<List<EvidencijaMeca>>();
+                var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync(obj)
+                    .ReceiveJson<EvidencijaMeca>();
                 return rezult; // trebalo bi promisliti, mozda je ipak pametnije vratiti konkretnu evidenciju
                 //koja se evidentirala
             }
@@ -82,7 +81,7 @@ namespace FIT_PONG.Mobile.APIServices
             {
                 var errori = GetErrore(ex).Result;
                 await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
-                return new List<EvidencijaMeca>();
+                return default(EvidencijaMeca);
             }
         }
         public async Task<List<TabelaStavka>> GetTabela(int id)
