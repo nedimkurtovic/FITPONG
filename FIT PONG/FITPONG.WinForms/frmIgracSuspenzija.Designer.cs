@@ -36,8 +36,6 @@
             this.lblPocetak = new System.Windows.Forms.Label();
             this.lblKraj = new System.Windows.Forms.Label();
             this.dtpKraj = new System.Windows.Forms.DateTimePicker();
-            this.rtxtPoruka = new System.Windows.Forms.RichTextBox();
-            this.lblPoruka = new System.Windows.Forms.Label();
             this.btnSuspenduj = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -54,6 +52,7 @@
             // 
             this.txtPrikaznoIme.Location = new System.Drawing.Point(45, 47);
             this.txtPrikaznoIme.Name = "txtPrikaznoIme";
+            this.txtPrikaznoIme.ReadOnly = true;
             this.txtPrikaznoIme.Size = new System.Drawing.Size(141, 22);
             this.txtPrikaznoIme.TabIndex = 1;
             // 
@@ -106,34 +105,18 @@
             this.dtpKraj.Size = new System.Drawing.Size(255, 22);
             this.dtpKraj.TabIndex = 8;
             // 
-            // rtxtPoruka
-            // 
-            this.rtxtPoruka.Location = new System.Drawing.Point(45, 246);
-            this.rtxtPoruka.Name = "rtxtPoruka";
-            this.rtxtPoruka.Size = new System.Drawing.Size(547, 112);
-            this.rtxtPoruka.TabIndex = 10;
-            this.rtxtPoruka.Text = "";
-            // 
-            // lblPoruka
-            // 
-            this.lblPoruka.AutoSize = true;
-            this.lblPoruka.Location = new System.Drawing.Point(42, 226);
-            this.lblPoruka.Name = "lblPoruka";
-            this.lblPoruka.Size = new System.Drawing.Size(53, 17);
-            this.lblPoruka.TabIndex = 11;
-            this.lblPoruka.Text = "Poruka";
-            // 
             // btnSuspenduj
             // 
             this.btnSuspenduj.BackColor = System.Drawing.Color.Red;
             this.btnSuspenduj.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSuspenduj.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnSuspenduj.Location = new System.Drawing.Point(257, 375);
+            this.btnSuspenduj.Location = new System.Drawing.Point(226, 292);
             this.btnSuspenduj.Name = "btnSuspenduj";
-            this.btnSuspenduj.Size = new System.Drawing.Size(141, 43);
+            this.btnSuspenduj.Size = new System.Drawing.Size(167, 60);
             this.btnSuspenduj.TabIndex = 12;
             this.btnSuspenduj.Text = "Suspenduj";
             this.btnSuspenduj.UseVisualStyleBackColor = false;
+            this.btnSuspenduj.Click += new System.EventHandler(this.btnSuspenduj_Click);
             // 
             // frmIgracSuspenzija
             // 
@@ -141,8 +124,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(638, 450);
             this.Controls.Add(this.btnSuspenduj);
-            this.Controls.Add(this.lblPoruka);
-            this.Controls.Add(this.rtxtPoruka);
             this.Controls.Add(this.dtpKraj);
             this.Controls.Add(this.lblKraj);
             this.Controls.Add(this.lblPocetak);
@@ -168,8 +149,6 @@
         private System.Windows.Forms.Label lblPocetak;
         private System.Windows.Forms.Label lblKraj;
         private System.Windows.Forms.DateTimePicker dtpKraj;
-        private System.Windows.Forms.RichTextBox rtxtPoruka;
-        private System.Windows.Forms.Label lblPoruka;
         private System.Windows.Forms.Button btnSuspenduj;
     }
 }

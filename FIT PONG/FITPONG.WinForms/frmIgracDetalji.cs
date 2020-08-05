@@ -27,5 +27,11 @@ namespace FIT_PONG.WinForms
             txtJacaRuka.Text= this.user.JacaRuka;
             txtGrad.Text = this.user.Grad;
         }
+
+        private void btnSuspenduj_Click(object sender, EventArgs e)
+        {
+            frmIgracSuspenzija frmIgracSuspenzija = new frmIgracSuspenzija(this.user);
+            frmIgracSuspenzija.ShowDialog();
+        }
     }
 }

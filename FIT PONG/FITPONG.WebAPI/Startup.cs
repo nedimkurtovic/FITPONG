@@ -87,7 +87,7 @@ namespace FIT_PONG.WebAPI
             });
 
             services.AddAutoMapper(typeof(Startup));
-            services.AddDbContext<FIT_PONG.Database.MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Netza")));
+            services.AddDbContext<FIT_PONG.Database.MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
             services.AddAuthentication("BasicAuthentication")
                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
@@ -131,7 +131,10 @@ namespace FIT_PONG.WebAPI
             
             services.AddScoped<IBaseService<FIT_PONG.SharedModels.StatusiTakmicenja, object>,
                 BaseService<SharedModels.StatusiTakmicenja, Database.DTOs.Status_Takmicenja, object>>();
-            
+
+            services.AddScoped<IBaseService<FIT_PONG.SharedModels.VrsteSuspenzija, object>,
+                BaseService<SharedModels.VrsteSuspenzija, Database.DTOs.VrstaSuspenzije, object>>();
+
             //SIPA
             services.AddScoped<ITakmicenjeAutorizator, TakmicenjeAutorizator>();
             services.AddScoped<IUsersAutorizator, UsersAutorizator>();

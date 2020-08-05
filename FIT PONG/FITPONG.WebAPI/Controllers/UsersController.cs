@@ -146,6 +146,17 @@ namespace FIT_PONG.WebAPI.Controllers
         {
             return statistikeService.Get(id);
         }
+
+        [Authorize(AuthenticationSchemes = "BasicAuthentication")]
+        [HttpPost]
+        [Route("{userId}/akcije/suspenduj")]
+        public Users Suspenduj(int userId, SuspenzijaRequest obj)
+        {
+            usersAutorizator.AuthorizeSuspenziju(usersService.GetRequestUserName(HttpContext.Request));
+
+            return usersService.Suspenduj(userId, obj);
+        }
+
         private PagedResponse<Users> GetPagedResponse(AccountSearchRequest obj)
         {
             var listaUsera = usersService.Get(obj);

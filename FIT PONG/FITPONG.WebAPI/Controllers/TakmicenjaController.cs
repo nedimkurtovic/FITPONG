@@ -126,6 +126,7 @@ namespace FIT_PONG.WebAPI.Controllers
             return takmicenjeService.GetTabela(id);
         }
 
+
         private PagedResponse<Takmicenja> GetPagedResponse(TakmicenjeSearch obj)
         {
             var listaTakmicenja = takmicenjeService.Get(obj);

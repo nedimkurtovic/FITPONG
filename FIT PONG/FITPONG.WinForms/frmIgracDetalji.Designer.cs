@@ -185,6 +185,7 @@
             this.btnSuspenduj.TabIndex = 15;
             this.btnSuspenduj.Text = "Suspenduj";
             this.btnSuspenduj.UseVisualStyleBackColor = false;
+            this.btnSuspenduj.Click += new System.EventHandler(this.btnSuspenduj_Click);
             // 
             // frmIgracDetalji
             // 

@@ -16,21 +16,73 @@ namespace FIT_PONG.WinForms
 {
     public partial class frmTakmicenjaPregled : Form
     {
+        //servisi
         private APIService apiService = new APIService("takmicenja");
+        private APIService apiServiceSistemi = new APIService("sistemi-takmicenja");
+        private APIService apiServiceVrste = new APIService("vrste-takmicenja");
+        private APIService apiServiceKategorije = new APIService("kategorije-takmicenja");
+        //
+
+        //liste
         private PagedResponse<Takmicenja> takmicenja = null;
+        private List<SistemiTakmicenja> sistemi = null;
+        private List<VrsteTakmicenja> vrste = null;
+        private List<KategorijeTakmicenja> kategorije = null;
+        //
 
         public frmTakmicenjaPregled()
         {
             InitializeComponent();
             dgvTakmicenja.AutoGenerateColumns = true;
+            InitCombos();
+        }
+
+        private async void InitCombos()
+        {
+            sistemi = await apiServiceSistemi.GetAll<List<SistemiTakmicenja>>();
+            vrste = await apiServiceVrste.GetAll<List<VrsteTakmicenja>>();
+            kategorije = await apiServiceKategorije.GetAll<List<KategorijeTakmicenja>>();
+            InitComboValues();
+        }
+
+        private void InitComboValues()
+        {
+            cmbSistem.Items.Add(" ");
+            cmbVrsta.Items.Add(" ");
+            cmbKategorija.Items.Add(" ");
+
+            foreach (var sistem in sistemi)
+                cmbSistem.Items.Add(sistem.Opis);
+
+            foreach (var vrsta in vrste)
+                cmbVrsta.Items.Add(vrsta.Naziv);
+
+            foreach (var kategorija in kategorije)
+                cmbKategorija.Items.Add(kategorija.Opis);
+
         }
 
         private async void btnFiltriraj_Click(object sender, EventArgs e)
         {
+
             TakmicenjeSearch obj = new TakmicenjeSearch
             {
-                Naziv = txtNaziv.Text
+                Naziv = txtNaziv.Text,
+                Kategorija = cmbKategorija.SelectedItem != null && 
+                             cmbKategorija.SelectedItem.ToString() != " " ? 
+                             cmbKategorija.SelectedItem.ToString() : null,
+                
+                Sistem = cmbSistem.SelectedItem != null &&
+                         cmbSistem.SelectedItem.ToString() != " "  ? 
+                         cmbSistem.SelectedItem.ToString() : null,
+                
+                Vrsta = cmbVrsta.SelectedItem != null &&
+                        cmbVrsta.SelectedItem.ToString() != " " ? 
+                        cmbVrsta.SelectedItem.ToString() : null,
             };
+            if (!string.IsNullOrEmpty(txtMinimalniELO.Text))
+                obj.MinimalniELO = int.Parse(txtMinimalniELO.Text);
+            
             takmicenja = await apiService.GetAll<PagedResponse<Takmicenja>>(obj);
             PrikaziPodatke();
         }

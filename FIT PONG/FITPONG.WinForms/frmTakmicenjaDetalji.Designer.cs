@@ -167,7 +167,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(446, 450);
+            this.ClientSize = new System.Drawing.Size(446, 452);
             this.Controls.Add(this.txtDatumZavrsetka);
             this.Controls.Add(this.lblDatumZavrsetka);
             this.Controls.Add(this.txtDatumPocetka);
