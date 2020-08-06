@@ -34,6 +34,12 @@
     <EmbeddedResource Update="Views\Reports\ReportsDodaj.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Takmicenja\Objave\TakmicenjaObjavaEdit.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Takmicenja\Objave\TakmicenjaObjaveDodaj.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Takmicenja\TakmicenjaDetalji.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -55,7 +61,10 @@
     <EmbeddedResource Update="Views\Takmicenja\TakmicenjaMain.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Takmicenja\TakmicenjaObjave.xaml">
+    <EmbeddedResource Update="Views\Takmicenja\Objave\TakmicenjaObjave.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Takmicenja\Objave\TakmicenjaObjaveDetalji.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Takmicenja\TakmicenjaRezultati.xaml">
