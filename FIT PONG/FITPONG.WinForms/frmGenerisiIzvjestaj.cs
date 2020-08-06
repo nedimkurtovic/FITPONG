@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FIT_PONG.WinForms.Izvjestaji;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -39,7 +40,8 @@ namespace FIT_PONG.WinForms
             }
             else if (cmbIzvjestaj.SelectedItem.ToString() == "Takmicenja")
             {
-                MessageBox.Show("Takmicenja report ...");
+                frmIzvjestajTakmicenja izvjestajTakmicenja = new frmIzvjestajTakmicenja(txtNaziv.Text);
+                izvjestajTakmicenja.ShowDialog();
             };
         }
     }

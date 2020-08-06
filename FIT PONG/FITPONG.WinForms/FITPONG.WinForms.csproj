@@ -113,6 +113,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DSIgraci.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Izvjestaji\DSTakmicenja.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DSTakmicenja.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Izvjestaji\frmIzvjestajIgraci.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,6 +188,12 @@
     <Compile Include="frmTakmicenjaPregled.Designer.cs">
       <DependentUpon>frmTakmicenjaPregled.cs</DependentUpon>
     </Compile>
+    <Compile Include="Izvjestaji\frmIzvjestajTakmicenja.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Izvjestaji\frmIzvjestajTakmicenja.Designer.cs">
+      <DependentUpon>frmIzvjestajTakmicenja.cs</DependentUpon>
+    </Compile>
     <Compile Include="PomocniObjekti\IgraciObjekat.cs" />
     <Compile Include="PomocniObjekti\PomocniObjekat.cs" />
     <Compile Include="PomocniObjekti\TakmicenjeObjekat.cs" />
@@ -237,6 +248,12 @@
     <EmbeddedResource Include="frmTakmicenjaPregled.resx">
       <DependentUpon>frmTakmicenjaPregled.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Izvjestaji\frmIzvjestajTakmicenja.resx">
+      <DependentUpon>frmIzvjestajTakmicenja.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Izvjestaji\rptTakmicenja.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -260,6 +277,17 @@
     </None>
     <None Include="Izvjestaji\DSIgraci.xss">
       <DependentUpon>DSIgraci.xsd</DependentUpon>
+    </None>
+    <None Include="Izvjestaji\DSTakmicenja.xsc">
+      <DependentUpon>DSTakmicenja.xsd</DependentUpon>
+    </None>
+    <None Include="Izvjestaji\DSTakmicenja.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DSTakmicenja.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Izvjestaji\DSTakmicenja.xss">
+      <DependentUpon>DSTakmicenja.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
