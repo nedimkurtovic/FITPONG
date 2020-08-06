@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FIT_PONG.Services.Services;
 using FIT_PONG.SharedModels;
+using FIT_PONG.SharedModels.Requests;
 using FIT_PONG.SharedModels.Requests.Objave;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -46,9 +47,30 @@ namespace FIT_PONG.WebAPI.Controllers
             return objaveService.Add(id, obj);
         }
         [HttpGet("{id}/objave")]
-        public List<Objave> GetObjave(int id)
+        public PagedResponse<Objave> GetObjave(int id,[FromQuery]ObjaveSearch obj)
         {
-            return objaveService.GetAll(id);
+            var rezultat = GetPagedResponse(id, obj);
+            return rezultat;
+        }
+        private PagedResponse<SharedModels.Objave> GetPagedResponse(int feedid,ObjaveSearch obj)
+        {
+            var listaTakmicenja = objaveService.GetAll(feedid,obj);
+            PagedResponse<SharedModels.Objave> respons = new PagedResponse<SharedModels.Objave>();
+
+            respons.TotalPageCount = (int)Math.Ceiling((double)listaTakmicenja.Count() / (double)obj.Limit);
+            respons.Stavke = listaTakmicenja.Skip((obj.Page - 1) * obj.Limit).Take(obj.Limit).ToList();
+
+            ObjaveSearch iducaKlon = obj.Clone() as ObjaveSearch;
+            iducaKlon.Page = (iducaKlon.Page + 1) > respons.TotalPageCount ? -1 : iducaKlon.Page + 1;
+            String iduciUrl = iducaKlon.Page == -1 ? null : this.Url.Action("Get", null, iducaKlon, Request.Scheme);
+
+            ObjaveSearch proslaKlon = obj.Clone() as ObjaveSearch;
+            proslaKlon.Page = (proslaKlon.Page - 1) < 0 ? -1 : proslaKlon.Page - 1;
+            String prosliUrl = proslaKlon.Page == -1 ? null : this.Url.Action("Get", null, proslaKlon, Request.Scheme);
+
+            respons.IducaStranica = !String.IsNullOrWhiteSpace(iduciUrl) ? new Uri(iduciUrl) : null;
+            respons.ProslaStranica = !String.IsNullOrWhiteSpace(prosliUrl) ? new Uri(prosliUrl) : null;
+            return respons;
         }
     }
 }

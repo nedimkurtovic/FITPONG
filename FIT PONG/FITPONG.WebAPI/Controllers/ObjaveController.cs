@@ -58,16 +58,16 @@ namespace FIT_PONG.WebAPI.Controllers
         //}
 
 
-        [HttpPut]
-        public Objave Edit(int id, ObjaveInsertUpdate obj)
+        [HttpPut("{id}")]
+        public Objave Edit(int id,[FromBody] ObjaveInsertUpdate obj)
         {
             return objaveService.Update(id, obj);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public SharedModels.Objave Delete(int id)
         {
-            objaveService.Delete(id);
+            return objaveService.Delete(id);
         }
         private PagedResponse<Objave> GetPagedResponse(ObjaveSearch obj)
         {
