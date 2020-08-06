@@ -66,17 +66,38 @@ namespace FIT_PONG.Mobile.APIServices
                 return default(T);
             }
         }
-        public virtual async Task<T> Update<T>(int id, object request)
+        public virtual async Task<T> Update<T>(int id, object request,string metoda = "POST")
         {
             var url = $"{APIUrl}/{resurs}/{id}";
             try
             {
+                switch (metoda)
+                {
+                    case "POST": return await url.WithBasicAuth(Username, Password).PostJsonAsync(request).ReceiveJson<T>();
+                    case "PUT": return await url.WithBasicAuth(Username, Password).PutJsonAsync(request).ReceiveJson<T>();
+                    case "PATCH": return await url.WithBasicAuth(Username, Password).PatchJsonAsync(request).ReceiveJson<T>();
+                    default: break;
+                }
                 return await url.WithBasicAuth(Username, Password).PostJsonAsync(request).ReceiveJson<T>();
             }
             catch (FlurlHttpException ex)
             {
                 var errori = GetErrore(ex).Result;
                 await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");             
+                return default(T);
+            }
+        }
+        public async Task<T> Delete<T>(int id)
+        {
+            var url = $"{APIUrl}/{resurs}/{id}";
+            try
+            {
+                return await url.WithBasicAuth(Username, Password).DeleteAsync().ReceiveJson<T>();
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = GetErrore(ex).Result;
+                await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
                 return default(T);
             }
         }

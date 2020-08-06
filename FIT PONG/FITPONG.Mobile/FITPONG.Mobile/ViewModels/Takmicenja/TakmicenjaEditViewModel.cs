@@ -46,7 +46,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
                 RokPocetkaPrijave = this.RokPocetkaPrijave,
                 RokZavrsetkaPrijave = this.RokZavrsetkaPrijave
             };
-            var rezultat = await takmicenjeAPIService.Update<SharedModels.Takmicenja>(Takmicenje.ID, obj);
+            var rezultat = await takmicenjeAPIService.Update<SharedModels.Takmicenja>(Takmicenje.ID, obj,"PATCH");
             return rezultat;
         }
     }
