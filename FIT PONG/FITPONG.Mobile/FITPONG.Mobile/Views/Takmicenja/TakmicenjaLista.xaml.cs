@@ -29,14 +29,30 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
         {
             base.OnAppearing();
 
-            if (viewModel.ListaTakmicenja.Count == 0)
-                viewModel.IsBusy = true;
-            
+            //if (viewModel.ListaTakmicenja.Count == 0)
+            //    viewModel.IsBusy = true;
+
         }
 
         private async void Dodaj_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new TakmicenjaDodaj());
         }
+
+        private void btnDobaviJos_Clicked(object sender, EventArgs e)
+        {
+
+            if (viewModel.DobaviJosTakmicenja.CanExecute(null))
+                viewModel.DobaviJosTakmicenja.Execute(null);
+
+        }
+
+        private void SearchBar_SearchButtonPressed(object sender, EventArgs e)
+        {
+            if (viewModel.DobaviTakmicenja.CanExecute(null))
+                viewModel.DobaviTakmicenja.Execute(null);
+
+        }
+
     }
 }

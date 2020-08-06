@@ -3,20 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:vm="clr-namespace:FIT_PONG.Mobile.ViewModels.Takmicenja"
              mc:Ignorable="d"
              Title="Takmicenja"
              x:Class="FIT_PONG.Mobile.Views.Takmicenja.TakmicenjaLista">
-    <ContentPage.BindingContext>
-        <vm:TakmicenjaListaViewModel></vm:TakmicenjaListaViewModel>
-    </ContentPage.BindingContext>
-    
     <ContentPage.Content>
         <StackLayout>
-            <SearchBar Text="{Binding NazivTakmicenja}" 
-                       SearchCommand="{Binding DobaviTakmicenja}" 
+            <SearchBar Text="{Binding NazivTakmicenja}"
+                       SearchButtonPressed="SearchBar_SearchButtonPressed"
                        Placeholder="Unesite naziv takmičenja" />
-            <Button WidthRequest="200" HorizontalOptions="Center" Margin="0,50" Text="Dodaj novo takmičenje" Clicked="Dodaj_Clicked" BackgroundColor="#28a745"></Button>
+            <Button WidthRequest="200" HorizontalOptions="Center" Margin="0,20" Text="Dodaj novo takmičenje" Clicked="Dodaj_Clicked" BackgroundColor="#28a745"></Button>
+            <Label HorizontalOptions="CenterAndExpand" FontSize="Medium" FontAttributes="Bold" Text="Dobavljam takmičenja..." IsVisible="{Binding IsBusy}"></Label>
             <ListView ItemsSource="{Binding ListaTakmicenja}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -49,6 +45,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button x:Name="btnDobaviJosTakm" IsVisible="{Binding btnDobaviJosVisible}" Text="Učitaj još" Clicked="btnDobaviJos_Clicked"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

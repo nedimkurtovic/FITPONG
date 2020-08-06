@@ -22,6 +22,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             DobaviTakmicenja = new Command(async () => await PozoviApi());
             DobaviJosTakmicenja = new Command(async () => await DobaviJos());
             iducaStranica = "";
+            btnDobaviJosVisible = false;
         }
         
         public TakmicenjeAPIService takmicenjeServis { get; set; } = new TakmicenjeAPIService();
@@ -31,7 +32,8 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
         public ObservableCollection<SharedModels.Takmicenja> ListaTakmicenja{ get; set; }
 
         private string iducaStranica;
-        public bool btnDobaviJosVisible { get; set; } = true;
+        private bool _btnDobaviJosVisible; 
+        public bool btnDobaviJosVisible { get=>_btnDobaviJosVisible; set { SetProperty(ref _btnDobaviJosVisible, value); OnPropertyChanged(nameof(btnDobaviJosVisible)); } }
 
 
         public ICommand DobaviTakmicenja { get; set; }
@@ -39,6 +41,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
         public ICommand DodajTakmicenjeKomanda{ get; set; }
         async Task PozoviApi()
         {
+            IsBusy = true;
             ListaTakmicenja.Clear();
             var rqst = new TakmicenjeSearch
             {
@@ -49,6 +52,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             {
                 dodajUListu(rezultat);
             }
+            IsBusy = false;
         }
         async Task DobaviJos()
         {
@@ -58,6 +62,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             {
                 dodajUListu(rezultat);
             }
+            IsBusy = false;
         }
         private void dodajUListu(PagedResponse<SharedModels.Takmicenja> rez)
         {
