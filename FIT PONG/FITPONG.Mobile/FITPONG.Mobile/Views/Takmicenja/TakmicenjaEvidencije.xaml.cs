@@ -21,9 +21,22 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
             BindingContext = viewModel = new TakmicenjaEvidencijeViewModel(_takmicenje);
             if (viewModel.GetEvidencije.CanExecute(null))
                 viewModel.GetEvidencije.Execute(null);
-            lblNemaDostupnih.IsVisible = viewModel.ListaEvidencija.Count == 0;
+        
         }
-
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            if (viewModel.ListaEvidencija.Count == 0)
+            {
+                lblNemaDostupnih.IsVisible = true;
+                listViewEvidencija.IsVisible = false;
+            }
+            else
+            {
+                lblNemaDostupnih.IsVisible = false;
+                listViewEvidencija.IsVisible = true;
+            }
+        }
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             var grid = (BindableObject)sender;

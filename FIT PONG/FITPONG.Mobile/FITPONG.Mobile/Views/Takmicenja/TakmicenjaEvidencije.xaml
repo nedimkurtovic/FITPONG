@@ -7,6 +7,7 @@
              x:Class="FIT_PONG.Mobile.Views.Takmicenja.TakmicenjaEvidencije">
     <ContentPage.Content>
         <StackLayout>
+            <Label  x:Name="lblNemaDostupnih" HorizontalOptions="CenterAndExpand" FontSize="Large" FontAttributes="Bold" Text="Trenutno nema dostupnih mečeva za evidenciju"></Label>
             <ListView x:Name="listViewEvidencija" ItemsSource="{Binding ListaEvidencija}">
                 <ListView.Header>
                     <Grid>
@@ -51,7 +52,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Label x:Name="lblNemaDostupnih" Text="Trenutno nema dostupnih mečeva za evidenciju"></Label>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
