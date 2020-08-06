@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="FIT_PONG.Mobile.Views.Takmicenja.Objave.TakmicenjaObjaveDetalji">
+    <ContentPage.Content>
+        <ScrollView Margin="40,30" HorizontalOptions="CenterAndExpand" >
+            <StackLayout HorizontalOptions="CenterAndExpand" >
+                <Frame BorderColor="Black">
+                    <Label Text="{Binding Objava.Naziv}" FontSize="Large"></Label>
+                </Frame>
+
+                <Label Text="Sadržaj" FontSize="Micro"></Label>
+                <Frame BorderColor="Black">
+                    <Label Text="{Binding Objava.Content}" ></Label>
+                </Frame>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Datum izmjene" FontSize="Micro" HorizontalOptions="Start"></Label>
+                    <Label Text="{Binding Objava.DatumIzmjene}" HorizontalOptions="End"></Label>
+                </StackLayout>
+
+                <StackLayout x:Name="dodatniLayout" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                    <Button x:Name="btnEdit" Text="Edit" HorizontalOptions="Start" Clicked="btnEdit_Clicked"></Button>
+                    <Button x:Name="btnObrisi" HorizontalOptions="Center" Clicked="btnObrisi_Clicked" Text="Obriši"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
