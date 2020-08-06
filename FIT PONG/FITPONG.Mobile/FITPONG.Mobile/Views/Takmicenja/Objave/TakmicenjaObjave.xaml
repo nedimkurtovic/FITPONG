@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="FIT_PONG.Mobile.Views.Takmicenja.Objave.TakmicenjaObjave">
+    <ContentPage.Content>
+        <ScrollView Margin="40,30" HorizontalOptions="CenterAndExpand">
+            <StackLayout HorizontalOptions="CenterAndExpand">
+                <SearchBar Text="{Binding Naziv}"
+                       SearchButtonPressed="SearchBar_SearchButtonPressed"
+                       Placeholder="Unesite naziv objave" />
+                <Button x:Name="btnDodaj" WidthRequest="200" HorizontalOptions="Center" Margin="0,30" Text="Dodaj novu objavu" Clicked="btnDodaj_Clicked" BackgroundColor="#28a745"></Button>
+
+                <ListView ItemsSource="{Binding ListaObjava}">
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout>
+                                    <Label Text="{Binding Naziv}" FontSize="Medium" FontAttributes="Bold"></Label>
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_Tapped" />
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button x:Name="btnDobaviJos" Text="Učitaj još" Clicked="btnDobaviJos_Clicked"></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
