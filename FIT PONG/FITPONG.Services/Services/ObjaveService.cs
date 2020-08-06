@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using FIT_PONG.Database;
 using FIT_PONG.Services;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper.Configuration.Annotations;
 
 namespace FIT_PONG.Services.Services
 {
@@ -41,6 +42,7 @@ namespace FIT_PONG.Services.Services
         {
             Validiraj(FeedID);
             var bazaObj = mapko.Map<Database.DTOs.Objava>(obj);
+            bazaObj.DatumKreiranja = bazaObj.DatumIzmjene = DateTime.Now;
             db.Objave.Add(bazaObj);
 
             var FidObjava = new Database.DTOs.FeedObjava();
@@ -61,23 +63,33 @@ namespace FIT_PONG.Services.Services
                 throw new UserException("Objekat ne postoji");
             
             mapko.Map(obj, bazaObjekat);
+            bazaObjekat.DatumIzmjene = DateTime.Now;
             db.SaveChanges();
             var povratni = mapko.Map<SharedModels.Objave>(bazaObjekat);
             return povratni;
         }
 
-        public void Delete(int id)
+        public SharedModels.Objave Delete(int id)
         {
             var bazaObjekat = db.Objave.Find(id);
             if (bazaObjekat == null)
                 throw new UserException("Objekat ne postoji");
+            var temp = mapko.Map<SharedModels.Objave>(bazaObjekat);
+            var feedsObjaveVeza = db.FeedsObjave.Where(x => x.ObjavaID == id).ToList();
+            foreach (var i in feedsObjaveVeza)
+                db.Remove(i);
+
             db.Objave.Remove(bazaObjekat);
+            
             db.SaveChanges();
+            
+            return temp;
         }
 
         public Objave Add(ObjaveInsertUpdate obj)//ovo za adminstratore kad hoce na glavnu stranicu da dodaju objave
         {
             var bazaObj = mapko.Map<Database.DTOs.Objava>(obj);
+            bazaObj.DatumKreiranja = bazaObj.DatumIzmjene = DateTime.Now;
             db.Objave.Add(bazaObj);
             try
             {
@@ -92,12 +104,16 @@ namespace FIT_PONG.Services.Services
             return povratni;
         }
 
-        public List<Objave> GetAll(int FeedID)
+        public List<Objave> GetAll(int FeedID, SharedModels.Requests.Objave.ObjaveSearch obj)
         {
             Validiraj(FeedID);
-            var feedsObjave = db.FeedsObjave.Include(x => x.Objava).Where(x => x.FeedID == FeedID)
-                .Select(x => x.Objava).ToList();
-            return mapko.Map<List<Objave>>(feedsObjave);
+            var query = db.FeedsObjave.Include(x => x.Objava).Where(x => x.FeedID == FeedID).Select(x => x.Objava).OrderByDescending(x=>x.ID).AsQueryable();
+            if (!String.IsNullOrWhiteSpace(obj.Naziv) || !String.IsNullOrEmpty(obj.Naziv))
+                query = query.Where(x => x.Naziv.Contains(obj.Naziv));
+
+            var rezultat = query.ToList();
+
+            return mapko.Map<List<Objave>>(rezultat);
         }
     }
 }

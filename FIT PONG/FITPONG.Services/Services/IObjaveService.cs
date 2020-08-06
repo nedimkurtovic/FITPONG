@@ -12,7 +12,7 @@ namespace FIT_PONG.Services.Services
         SharedModels.Objave Add(int FeedID, SharedModels.Requests.Objave.ObjaveInsertUpdate obj);
         SharedModels.Objave Add(SharedModels.Requests.Objave.ObjaveInsertUpdate obj);
         SharedModels.Objave Update(int id, SharedModels.Requests.Objave.ObjaveInsertUpdate obj);
-        void Delete(int id);
-        List<SharedModels.Objave> GetAll(int FeedID);
+        SharedModels.Objave Delete(int id);
+        List<SharedModels.Objave> GetAll(int FeedID,SharedModels.Requests.Objave.ObjaveSearch obj);
     }
 }
