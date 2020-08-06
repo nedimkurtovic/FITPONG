@@ -39,6 +39,11 @@ namespace FIT_PONG.Services.Services.Autorizacija
             throw new NotImplementedException();
         }
 
+        public bool AuthorizeSuspenziju(string loggedInUsername)
+        {
+            return IsAdministrator(loggedInUsername);
+        }
+
         public bool AuthorizeUkloniSlikuProfila(int logiraniKorisnikId, int userId)
         {
             return IsLogiraniKorisnik(logiraniKorisnikId, userId);
@@ -48,6 +53,13 @@ namespace FIT_PONG.Services.Services.Autorizacija
         {
             if (logiraniKorisnikId != userId)
                 throw new AuthorizeException("Niste autorizovani za takvu radnju.");
+            return true;
+        }
+
+        private bool IsAdministrator(string loggedInUsername)
+        {
+            if (loggedInUsername != "aldin.talic@edu.fit.ba" && loggedInUsername != "nedim.kurtovic@edu.fit.ba")
+                throw new AuthorizeException("Samo administrator je autorizovan za ovu radnju.");
             return true;
         }
     }

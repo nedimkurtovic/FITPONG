@@ -39,8 +39,14 @@ namespace FIT_PONG.Services.Services
             if (!string.IsNullOrWhiteSpace(obj.Naziv))
                 qry = qry.Where(x => x.Naziv.Contains(obj.Naziv));
             
-            var TakmicenjaPovratni = qry.Include(x=>x.Sistem).Include(x=>x.Status).Include(x=>x.Kategorija)
-                .Include(x=>x.Vrsta).OrderByDescending(x=>x.ID).ToList();
+            var TakmicenjaPovratni = qry
+                .Include(x=>x.Sistem).Include(x=>x.Status)
+                .Include(x=>x.Kategorija).Include(x=>x.Vrsta)
+                .Where(x=>x.Kategorija.Opis == obj.Kategorija || obj.Kategorija == null)
+                .Where(x => x.Vrsta.Naziv == obj.Vrsta || obj.Vrsta == null)
+                .Where(x => x.Sistem.Opis == obj.Sistem || obj.Sistem == null)
+                .Where(x=>x.MinimalniELO == obj.MinimalniELO || obj.MinimalniELO == null)
+                .OrderByDescending(x=>x.ID).ToList();
             var povratnaLista = new List<SharedModels.Takmicenja>();
             foreach(var i in TakmicenjaPovratni)
             {
@@ -137,6 +143,7 @@ namespace FIT_PONG.Services.Services
                 }
             }
         }
+       
         public Takmicenja Update(int id, TakmicenjaUpdate obj)
         {
             var objBaza = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
@@ -299,6 +306,7 @@ namespace FIT_PONG.Services.Services
                 throw new UserException("Greška prilikom spašavanja zapisa");
             return obj;
         }
+      
         public List<RasporedStavka> GetRaspored(int id)
         {
             Takmicenje obj = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();
@@ -327,6 +335,7 @@ namespace FIT_PONG.Services.Services
             
             return parovi;
         }
+       
         public List<TabelaStavka> GetTabela(int id)
         {
             Takmicenje obj = db.Takmicenja.Where(x => x.ID == id).FirstOrDefault();

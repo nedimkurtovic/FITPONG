@@ -41,5 +41,6 @@ namespace FIT_PONG.Services.Services
 		string Postovanje(string loggedInUserName, int postovaniID);
 		string GetRequestUserName(HttpRequest Request);
 		int GetRequestUserID(HttpRequest Request);
+		SharedModels.Users Suspenduj(int userId, SuspenzijaRequest obj);
     }
 }

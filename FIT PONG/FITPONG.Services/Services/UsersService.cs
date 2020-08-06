@@ -64,9 +64,27 @@ namespace FIT_PONG.Services.Services
             foreach (var user in users)
             {
                 var u = mapper.Map<SharedModels.Users>(user);
+
+                //try
+                //{
+                //    byte[] binarniZapis = File.ReadAllBytes(user.ProfileImagePath);
+                //    Fajl fajl = new Fajl
+                //    {
+                //        Naziv = user.ProfileImagePath.Substring(user.ProfileImagePath.LastIndexOf("/")),
+                //        BinarniZapis = binarniZapis
+                //    };
+
+                //    u.ProfileImage = fajl;
+
+                //}
+                //catch (Exception ex)
+                //{
+
+                //    throw ex;
+                //}
+
                 u.listaPrijava = GetPrijave(user.ID);
                 u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == user.ID).ToList());
-
                 list.Add(u);
             }
 
@@ -369,6 +387,33 @@ namespace FIT_PONG.Services.Services
             }
         }
 
+        public Users Suspenduj(int userId, SuspenzijaRequest obj)
+        {
+            Igrac igrac = db.Igraci.Find(userId);
+            if (igrac == null)
+                throw new UserException("Igrac ne postoji u bazi.");
+
+            VrstaSuspenzije vrsta = db.VrsteSuspenzije.Where(d => d.Opis == obj.VrstaSuspenzije).SingleOrDefault();
+            if (vrsta == null)
+                throw new UserException("Vrsta suspenzije nije validna.");
+
+            if (obj.DatumPocetka > obj.DatumZavrsetka)
+                throw new UserException("Datum pocetka mora biti prije datuma zavrsetka suspenzije.");
+
+            var suspenzija = new Suspenzija
+            {
+                IgracID = userId,
+                DatumPocetka = obj.DatumPocetka,
+                DatumZavrsetka = obj.DatumZavrsetka,
+                VrstaSuspenzijeID = vrsta.ID
+            };
+
+            db.Add(suspenzija);
+            db.SaveChanges();
+
+            return mapper.Map<SharedModels.Users>(igrac);
+        }
+
 
         //*********************************************************
         //              POMOCNE FUNKCIJE                           
@@ -568,6 +613,6 @@ namespace FIT_PONG.Services.Services
             System.IO.File.Delete(filePutanja);
         }
 
-       
+        
     }
 }

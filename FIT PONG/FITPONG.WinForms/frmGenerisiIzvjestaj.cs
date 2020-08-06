@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FIT_PONG.WinForms.Izvjestaji;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,33 @@ namespace FIT_PONG.WinForms
         public frmGenerisiIzvjestaj()
         {
             InitializeComponent();
+            InitComboValues();
+        }
+
+        private void InitComboValues()
+        {
+            cmbIzvjestaj.Items.Add("Igraci");
+            cmbIzvjestaj.Items.Add("Takmicenja");
+        }
+
+        private void btnGenerisiIzvjestaj_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(txtNaziv.Text) || cmbIzvjestaj.SelectedItem == null)
+            {
+                MessageBox.Show("Polja su obavezna.");
+                return;
+            }
+
+            if (cmbIzvjestaj.SelectedItem.ToString() == "Igraci")
+            {
+                frmIzvjestajIgraci izvjestajIgraci = new frmIzvjestajIgraci(txtNaziv.Text);
+                izvjestajIgraci.ShowDialog();
+            }
+            else if (cmbIzvjestaj.SelectedItem.ToString() == "Takmicenja")
+            {
+                frmIzvjestajTakmicenja izvjestajTakmicenja = new frmIzvjestajTakmicenja(txtNaziv.Text);
+                izvjestajTakmicenja.ShowDialog();
+            };
         }
     }
 }
