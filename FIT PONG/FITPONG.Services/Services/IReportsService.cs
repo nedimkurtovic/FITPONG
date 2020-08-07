@@ -7,6 +7,6 @@ namespace FIT_PONG.Services.Services
 {
     public interface IReportsService : IBaseService<SharedModels.Reports,object>
     {
-        SharedModels.Reports Add(SharedModels.Requests.Reports.ReportsInsert obj, string rootPathAplikacije);
+        SharedModels.Reports Add(SharedModels.Requests.Reports.ReportsInsert obj, string rootFolder);
     }
 }

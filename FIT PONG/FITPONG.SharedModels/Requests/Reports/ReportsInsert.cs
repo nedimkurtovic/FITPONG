@@ -17,7 +17,7 @@ namespace FIT_PONG.SharedModels.Requests.Reports
         [Required(ErrorMessage = "Ovo polje je obavezno")]
         public string Sadrzaj { get; set; }
 
-        [RegularExpression(@"\w+\.\w+@edu\.fit\.ba", ErrorMessage = "Email mora biti u formatu ime.prezime@edu.fit.ba")]
+        //[RegularExpression(@"\w+\.\w+@edu\.fit\.ba", ErrorMessage = "Email mora biti u formatu ime.prezime@edu.fit.ba")]
         [Required(ErrorMessage = "Ovo polje je obavezno")]
         public string Email { get; set; }
 

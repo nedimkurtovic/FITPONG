@@ -28,7 +28,7 @@ namespace FIT_PONG.Mobile.Views
                 new HomeMenuItem {Id = MenuItemType.Igrači, Title="Igrači" },
                 new HomeMenuItem {Id = MenuItemType.Takmičenja, Title="Takmičenja" },
                 new HomeMenuItem {Id = MenuItemType.Chat, Title="Chat" },
-                new HomeMenuItem {Id = MenuItemType.Reports, Title="Reports" },
+                new HomeMenuItem {Id = MenuItemType.Reports, Title="Prijavi grešku" },
                 new HomeMenuItem {Id = MenuItemType.Logout, Title="Logout" }
             };
 

@@ -3,13 +3,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:FIT_PONG.Mobile.Converters"
              mc:Ignorable="d"
              x:Class="FIT_PONG.Mobile.Views.Reports.ReportsDodaj">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ImageConverter x:Key="imgConv"></converters:ImageConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView  Margin="40,30" HorizontalOptions="CenterAndExpand">
+            <StackLayout HorizontalOptions="CenterAndExpand" >
+
+                <Label Text="Naslov*" FontSize="Micro"></Label>
+                <Entry Text="{Binding Naslov}" FontSize="Medium"></Entry>
+
+                <Label Text="Sadržaj(opis problema)*" FontSize="Micro"></Label>
+                <Editor Text="{Binding Sadrzaj}" WidthRequest="400" HeightRequest="300"></Editor>
+
+                <Frame BorderColor="Black" >
+                    <StackLayout>
+                        <ListView HeightRequest="250" ItemsSource="{Binding Prilozi}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout Orientation="Vertical">
+                                            <StackLayout>
+                                                <Image Source="{Binding BinarniZapis, Converter={StaticResource imgConv}}" WidthRequest="50" HeightRequest="50"></Image>
+                                            </StackLayout>
+                                            <StackLayout>
+                                                <Label Text="{Binding Naziv}"></Label>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackLayout>
+                </Frame>
+                <Button x:Name="btnDodajSlike" Text="Dodaj slike" Clicked="btnDodajSlike_Clicked"/>
+                <Button Text="Pošalji" Clicked="Posalji_Clicked"></Button>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

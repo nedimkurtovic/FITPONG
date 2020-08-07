@@ -39,9 +39,9 @@ namespace FIT_PONG.WebAPI.Controllers
         }
 
         [HttpPost]
-        public Reports Add(ReportsInsert obj)
+        public Reports Add([FromBody]ReportsInsert obj)
         {
-            return reportsService.Add(obj,"~"); 
+            return reportsService.Add(obj, "content"); 
         }
         private PagedResponse<Reports> GetPagedResponse(ReportsSearch obj)
         {

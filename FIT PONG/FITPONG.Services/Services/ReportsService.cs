@@ -51,8 +51,11 @@ namespace FIT_PONG.Services.Services
 
 
 
-        public SharedModels.Reports Add(ReportsInsert obj , string rootPathAplikacije = "~") // razmisliti da se iz httpcontext. izvuce root path aplikacije kako bi se
+        public SharedModels.Reports Add(ReportsInsert obj , string rootFolder = "content") // razmisliti da se iz httpcontext. izvuce root path aplikacije kako bi se
          //uploadovo fajl tj da se ovoj metodi posalje taj parametar a ne ovako da ovaj nagadja sa ~/reports
+         // kad se stavi ~ frajer napravi folder koji se zove ~ i onda u njemu reports, ne valja, ne moze tako, dakle on po defaultu kad ides create
+         //directory pravi u ovom svom folderu gdje se pokrece web api, tako da stavit cu content da je folder a u njega reports, pa tamo za igrace
+         //ce biti 
         {
             Validiraj(obj);
             using (var transakcija = db.Database.BeginTransaction())
@@ -60,7 +63,14 @@ namespace FIT_PONG.Services.Services
                 List<string> bekapPlan = new List<string>();
                 try
                 {
-                    var bazaObj = mapko.Map<Database.DTOs.Report>(obj);
+                    //var bazaObj = mapko.Map<Database.DTOs.Report>(obj);
+                    var bazaObj = new Database.DTOs.Report
+                    {
+                        DatumKreiranja = obj.DatumKreiranja ?? DateTime.Now,
+                        Email = obj.Email,
+                        Naslov = obj.Naslov,
+                        Sadrzaj = obj.Sadrzaj
+                    };
                     bazaObj.Prilozi = new List<Database.DTOs.Attachment>();
                     db.Reports.Add(bazaObj);
                     db.SaveChanges();
@@ -71,21 +81,33 @@ namespace FIT_PONG.Services.Services
                             using (MemoryStream ms = new MemoryStream(i.BinarniZapis))
                             {
                                 //valja istraziti tj kako spremiti u zajednicki folder za webapp i webapi
-                                Directory.CreateDirectory(Path.Combine(rootPathAplikacije,"reports"));
+                                Directory.CreateDirectory(Path.Combine(rootFolder, "reports"));
                                 string ImeFajla = Guid.NewGuid().ToString() + "_" + i.Naziv;
-                                string pathSpremanja = Path.Combine(rootPathAplikacije, "reports", ImeFajla);
+                                string pathSpremanja = Path.Combine(rootFolder, "reports", ImeFajla);
                                 using (FileStream strim = new FileStream(pathSpremanja, FileMode.Create))
                                     ms.CopyTo(strim);
                                 bekapPlan.Add(pathSpremanja);
                                 Attachment noviAttachment = new Attachment { DatumUnosa = DateTime.Now, Path = pathSpremanja };
                                 db.Attachments.Add(noviAttachment);
+                                bazaObj.Prilozi.Add(noviAttachment);
                             }
                         }
                         db.SaveChanges();
                         transakcija.Commit();
                         //ovdje treba pozvati email servis i obavijestiti adminsitratora o novom reportu
                         emailServis.PosaljiMejlReport(bazaObj);
-                        return mapko.Map<SharedModels.Reports>(bazaObj);
+                        var povratni = new SharedModels.Reports
+                        {
+                            ID = bazaObj.ID,
+                            Email = bazaObj.Email,
+                            DatumKreiranja = bazaObj.DatumKreiranja,
+                            Naslov = bazaObj.Naslov,
+                            Sadrzaj = bazaObj.Sadrzaj
+                        };
+                        //mapko ovdje ne moze osvojit,  zbog problema Prilozi su u klasi database.dtos.reports
+                        //tipa list<attachment> dok su u sharedmodels.requests.reportsinsert zbog potrebe prenosa binarnih fajlova u formi list<Fajl>
+                        //tako da ovdje svakako ne treba slat fajlove, mada se mogu 
+                        return povratni;
                     }
                 }
                 catch (DbUpdateException)
@@ -117,9 +139,9 @@ namespace FIT_PONG.Services.Services
                 return true;
             foreach (Fajl i in prilozi)
             {
-                int poz = i.Naziv.LastIndexOf(".");
+                int poz = i.Naziv.LastIndexOf(".") + 1; // + 1 zbog ovih dole uslova, ili sam mogao samo dodati tacku u uslove dole svejedno
                 string ekstenzija = i.Naziv.Substring(poz);
-                if (ekstenzija != "png" || ekstenzija != "jpg")
+                if (ekstenzija != "png" && ekstenzija != "jpg")
                     return false;
             }
             return true;

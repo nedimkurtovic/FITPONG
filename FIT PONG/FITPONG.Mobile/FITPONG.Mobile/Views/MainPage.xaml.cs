@@ -38,6 +38,9 @@ namespace FIT_PONG.Mobile.Views
                     case (int)MenuItemType.About:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));
                         break;
+                    case (int)MenuItemType.Naslovnica:
+                        MenuPages.Add(id, new NavigationPage(new Views.Naslovnica()));
+                        break;
                     case (int)MenuItemType.Igrači:
                         MenuPages.Add(id, new NavigationPage(new Views.Users.UsersLista()));
                         break;
@@ -47,6 +50,7 @@ namespace FIT_PONG.Mobile.Views
                     case (int)MenuItemType.Reports:
                         MenuPages.Add(id, new NavigationPage(new Views.Reports.ReportsDodaj()));
                         break;
+                    
                 }
             }
 
