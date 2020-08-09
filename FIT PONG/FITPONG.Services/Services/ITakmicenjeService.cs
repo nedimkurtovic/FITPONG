@@ -1,4 +1,6 @@
-﻿using FIT_PONG.SharedModels.Requests.Takmicenja;
+﻿using FIT_PONG.Database.DTOs;
+using FIT_PONG.SharedModels;
+using FIT_PONG.SharedModels.Requests.Takmicenja;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +23,7 @@ namespace FIT_PONG.Services.Services
 		//bi dobro bilo izdvojiti tu autorizaciju u authorizeAttribute klasu neku custom i stavit je iznad akcije
 		List<TabelaStavka> GetTabela(int takmid);
 		EvidencijaMeca GetIgraceZaEvidenciju(EvidencijaMeca obj, int takmid);
-
-	
+		List<Users> GetBlokiraneIgrace(int takmId);
+		Prijave BlokirajPrijavu(int takmId, int prijavaId);
 	}
 }

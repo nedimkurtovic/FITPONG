@@ -1,4 +1,5 @@
-﻿using FIT_PONG.Mobile.ViewModels.Takmicenja;
+﻿    using FIT_PONG.Mobile.ViewModels.Takmicenja;
+using FIT_PONG.SharedModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
                 DodatneOpcijeLayout.IsVisible = true;
             else
                 DodatneOpcijeLayout.IsVisible = false;
+
+            lblEmpty.IsVisible = viewModel.listaPrijava.Count == 0;
             btnGenerisiRaspored.IsVisible = !vm.Takmicenje.Inicirano ?? true;
         }
         public TakmicenjaDetalji()
@@ -59,6 +62,18 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
                 foreach (var i in listaBrisanja)
                     Navigation.RemovePage(i);
             }
+        }
+
+        private void btnPrijava_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new TakmicenjaLista());
+        }
+
+        private async void btnBlokiraj_Clicked(object sender, EventArgs e)
+        {
+            var x = ((Button)sender).BindingContext;
+
+            await viewModel.BlokirajPrijavu(int.Parse(x.ToString()));
         }
     }
 }
