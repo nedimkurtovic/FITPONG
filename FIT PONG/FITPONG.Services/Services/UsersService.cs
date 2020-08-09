@@ -161,7 +161,7 @@ namespace FIT_PONG.Services.Services
                 ex.AddError("", "Neispravni podaci za login");
                 throw ex;
             }
-
+            
             var igrac = db.Igraci.Find(korisnik.Id);
 
             var rezultat = await signinmanager.PasswordSignInAsync(obj.UserName, obj.Password, obj.RememberMe, false);
@@ -185,7 +185,21 @@ namespace FIT_PONG.Services.Services
             }
 
         }
-
+        public async Task<SharedModels.Users> CheckValidanLogin(Login obj)
+        {
+            var korisnik = await usermanager.FindByEmailAsync(obj.UserName);
+            if (korisnik == null)
+            {
+                UserException ex = new UserException();
+                ex.AddError("", "Neispravni podaci za login");
+                throw ex;
+            }
+            var igrac = db.Igraci.Find(korisnik.Id);
+            var rezultat = await usermanager.CheckPasswordAsync(korisnik, obj.Password);
+            if (rezultat)
+                return mapper.Map<SharedModels.Users>(igrac);
+            return null;
+        }
         //OVO OSTAJE ZA RAZMISLJANJE...
 
         //public async void Logout(int id, string username)

@@ -26,6 +26,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using FIT_PONG.WebAPI.Filters;
 using FIT_PONG.WebAPI.Services.Bazni;
+using FIT_PONG.WebAPI.Hubs;
 
 namespace FIT_PONG.WebAPI
 {
@@ -143,6 +144,15 @@ namespace FIT_PONG.WebAPI
 
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            //{
+            //    builder.AllowAnyMethod()
+            //        .AllowAnyHeader()
+            //        .WithOrigins("http://localhost:4260")
+            //        .AllowCredentials();
+            //}));
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -165,12 +175,16 @@ namespace FIT_PONG.WebAPI
 
             //app.UseHttpsRedirection();
 
+
+
             app.UseAuthentication();
             app.UseAuthorization();
-
+            //app.UseCors();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("ChatHub");
             });
 
         }

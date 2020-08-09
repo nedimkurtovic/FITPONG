@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="FIT_PONG.Mobile.Views.Chat.ChatKonverzacija">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <!--<RowDefinition Height="80" />-->
+                <RowDefinition Height="*" />
+                <RowDefinition Height="70" />
+            </Grid.RowDefinitions>
+            <Frame BorderColor="Black" Grid.Row="0"
+                        Grid.ColumnSpan="2" 
+                   HorizontalOptions="FillAndExpand">
+                <ListView x:Name="LVPoruke" ItemsSource="{Binding Poruke}" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout>
+                                    <Label Text="{Binding MessageFinal}"></Label>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
+            <Frame Grid.Row="1" Grid.ColumnSpan="2" Padding="0" Margin="0" HorizontalOptions="FillAndExpand">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="60" />
+                    </Grid.ColumnDefinitions>
+                    <Entry
+                    Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    Placeholder="Message"
+                    Text="{Binding PorukaTextbox}" />
+                    <Frame Grid.Column="1"
+                           Margin="0"
+                           HeightRequest="70"
+                           WidthRequest="60"
+                           Padding="0"
+                           HorizontalOptions="End"
+                           VerticalOptions="CenterAndExpand">
+                        <!--<Button Text="Send" Command="{Binding PosaljiPorukuCommand}"
+                        HorizontalOptions="Center"></Button>-->
+                        <ImageButton  Command="{Binding PosaljiPorukuCommand}"
+                        HorizontalOptions="Center" Source="{OnPlatform UWP='Assets/ic_send.png',
+                            Android='ic_send.png'}"
+                        VerticalOptions="Center" >
+                            
+                        </ImageButton>
+                    </Frame>
+                </Grid>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

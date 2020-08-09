@@ -42,5 +42,7 @@ namespace FIT_PONG.Services.Services
 		string GetRequestUserName(HttpRequest Request);
 		int GetRequestUserID(HttpRequest Request);
 		SharedModels.Users Suspenduj(int userId, SuspenzijaRequest obj);
-    }
+		Task<SharedModels.Users> CheckValidanLogin(Login obj);
+
+	}
 }

@@ -1,4 +1,5 @@
 ﻿var konekcija = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
+//var konekcija = new signalR.HubConnectionBuilder().withUrl("http://localhost:5766/ChatHub").build();
 
 document.addEventListener("DOMContentLoaded", function () {
     konekcija.start();
