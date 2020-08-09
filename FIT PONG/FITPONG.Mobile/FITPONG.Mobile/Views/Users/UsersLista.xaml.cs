@@ -26,11 +26,16 @@ namespace FIT_PONG.Mobile.Views.Users
         {
             var gridlejaut = (BindableObject)sender;
             var _user = (SharedModels.Users)gridlejaut.BindingContext;
-            await Navigation.PushAsync(new UsersDetalji(new UsersDetaljiViewModel(_user)));
+            await Navigation.PushAsync(new UsersMain(_user));
         }
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
+        }
+
+        private void SearchBar_SearchButtonPressed(object sender, EventArgs e)
+        {
+
         }
     }
 }

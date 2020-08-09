@@ -7,13 +7,13 @@
              Title="{Binding Title}"
              x:Class="FIT_PONG.Mobile.Views.Users.UsersLista"
              x:Name="ListaUseraPage">
-    
+
     <StackLayout HorizontalOptions="FillAndExpand">
         <SearchBar Text="{Binding PrikaznoIme}"
-                           SearchCommand="{Binding DobaviUsere}"
+                   SearchCommand="{Binding DobaviUsere}"
                            Placeholder="Unesite ime usera"/>
-        <ListView x:Name="nekoImeCollection"
-                ItemsSource="{Binding ListaUsera}">
+        <Label HorizontalOptions="CenterAndExpand" FontSize="Medium" FontAttributes="Bold" Text="Dobavljam korisnike..." IsVisible="{Binding IsBusy}"></Label>
+        <ListView ItemsSource="{Binding ListaUsera}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -41,19 +41,16 @@
                                    Text="{Binding ELO}" 
                                    HorizontalTextAlignment="Center"/>
                             <Grid.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_Tapped">
-
-                                </TapGestureRecognizer>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_Tapped" />
                             </Grid.GestureRecognizers>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.Footer>
-                <Button VerticalOptions="End" IsVisible="{Binding btnDobaviJosVisible}" Text="Ucitaj jos" Command="{Binding DobaviJosUsera}"></Button>
-            </ListView.Footer>
+
         </ListView>
-        
-        </StackLayout>
+        <Button VerticalOptions="End" IsVisible="{Binding btnDobaviJosVisible}" Text="Ucitaj jos" Command="{Binding DobaviJosUsera}"></Button>
+
+    </StackLayout>
 
 </ContentPage>
