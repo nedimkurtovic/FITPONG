@@ -1,6 +1,9 @@
-﻿using FIT_PONG.Mobile.APIServices;
+﻿using FIT_PONG.Database.DTOs;
+using FIT_PONG.Mobile.APIServices;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -8,7 +11,7 @@ using Xamarin.Forms;
 
 namespace FIT_PONG.Mobile.ViewModels.Takmicenja
 {
-    public class TakmicenjaDetaljiViewModel:BaseViewModel
+    public class TakmicenjaDetaljiViewModel : BaseViewModel
     {
         public TakmicenjaDetaljiViewModel(SharedModels.Takmicenja _takmicenje = null)
         {
@@ -20,10 +23,12 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             datumZP = Takmicenje.DatumZavrsetkaPrijava != null ? Takmicenje.DatumZavrsetkaPrijava.GetValueOrDefault().Date.ToString() : "Nije postavljen";
             vidljiv = true;
             promjena = new Command(async => { _vidljiv = !_vidljiv; });
+            prijaveVisible = !_takmicenje.Inicirano??default(bool);
+            DodajPrijave(_takmicenje.Prijave);
         }
         public TakmicenjaDetaljiViewModel()
         {
-            
+
         }
         public TakmicenjeAPIService takmicenjeAPIService { get; set; } = new TakmicenjeAPIService();
         public SharedModels.Takmicenja Takmicenje { get; set; }
@@ -31,25 +36,46 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
         public string datumZ { get; set; }
         public string datumPP { get; set; }
         public string datumZP { get; set; }
-
+        public ObservableCollection<Prijava> listaPrijava { get; set; } = new ObservableCollection<Prijava>();
+        public ICommand initCommandPrijave { get; set; }
         public Command promjena { get; set; }
+        public bool prijaveVisible { get; set; }
         private bool _vidljiv;
-        public bool vidljiv { get=>_vidljiv; set 
+        public bool vidljiv
+        {
+            get => _vidljiv; set
             {
                 _vidljiv = value;
                 OnPropertyChanged(nameof(vidljiv));
-            } }
-       public bool Vlasnik()
+            }
+        }
+        public bool Vlasnik()
         {
             return BaseAPIService.ID == Takmicenje.KreatorID;
         }
         public async Task<SharedModels.Takmicenja> InicirajTakmicenje()
         {
             var rezultat = await takmicenjeAPIService.Init(Takmicenje.ID);
-            if(rezultat != default(SharedModels.Takmicenja))
+            if (rezultat != default(SharedModels.Takmicenja))
             {
                 await Application.Current.MainPage.DisplayAlert("Uspjeh", "Uspješno inicirano takmičenje", "OK");
             }
+            return rezultat;
+        }
+
+        private void DodajPrijave(List<Prijava> prijave)
+        {
+            foreach (var item in prijave)
+                listaPrijava.Add(item);
+        }
+
+        public async Task<SharedModels.Prijave> BlokirajPrijavu(int id)
+        {
+            var rezultat = await takmicenjeAPIService.BlokirajPrijavu(Takmicenje.ID, id);
+            var p = listaPrijava.Where(d => d.ID == id).Single();
+
+            listaPrijava.Remove(p);
+
             return rezultat;
         }
     }

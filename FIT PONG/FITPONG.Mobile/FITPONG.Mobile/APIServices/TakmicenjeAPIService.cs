@@ -99,6 +99,21 @@ namespace FIT_PONG.Mobile.APIServices
                 return new List<TabelaStavka>();
             }
         }
+        public async Task<Prijave> BlokirajPrijavu(int id, int prijavaId)
+        {
+            var url = $"{APIUrl}/{resurs}/{id}/prijava/{prijavaId}/bloklista";
+            try
+            {
+                var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync("").ReceiveJson<Prijave>();
+                return rezult;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = GetErrore(ex).Result;
+                await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
+                return default(Prijave);
+            }
+        }
         //public override async Task<T> Update<T>(int id, object request)
         //{
         //    var url = $"{APIUrl}/{resurs}/{id}";

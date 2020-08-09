@@ -18,64 +18,100 @@
         <ScrollView HorizontalOptions="CenterAndExpand" VerticalOptions="FillAndExpand">
             <Grid VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height= "auto"></RowDefinition>
+                    <RowDefinition Height= "auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <StackLayout HorizontalOptions="Center" Grid.Row="0">
-                    <Label HorizontalTextAlignment="Start" FontSize="Micro" Text="Kategorija"></Label>
-                    <Label Text="{Binding Takmicenje.Kategorija}" FontSize="Medium" />
+                <StackLayout Grid.Column="1">
+                    <StackLayout HorizontalOptions="Center" Grid.Row="0">
+                        <Label HorizontalTextAlignment="Start" FontSize="Micro" Text="Kategorija"></Label>
+                        <Label Text="{Binding Takmicenje.Kategorija}" FontSize="Medium" />
+                    </StackLayout>
+
+                    <StackLayout HorizontalOptions="Center" Grid.Row="1" >
+                        <Label FontSize="Micro" Text="Vrsta"></Label>
+                        <Label Text="{Binding Takmicenje.Vrsta}" FontSize="Medium" />
+                    </StackLayout>
+
+                    <StackLayout HorizontalOptions="Center" Grid.Row="2">
+                        <Label  Text="Sistem" FontSize="Micro" />
+                        <Label  Text="{Binding Takmicenje.Sistem}" FontSize="Medium" />
+                    </StackLayout>
+                    <StackLayout HorizontalOptions="Center" Grid.Row="3" >
+                        <Label  Text="Status" FontSize="Micro" />
+                        <Label  Text="{Binding Takmicenje.Status}" FontSize="Medium" />
+                    </StackLayout>
+                    <StackLayout  HorizontalOptions="Center" Grid.Row="4" >
+                        <Label  Text="Datum početka" FontSize="Micro" />
+                        <Label Text="{Binding datumP}" FontSize="Medium" />
+                    </StackLayout>
+                    <StackLayout  HorizontalOptions="Center" Grid.Row="5" >
+                        <Label  Text="Datum završetka" FontSize="Micro" />
+                        <Label  Text="{Binding datumZ}" FontSize="Medium" />
+                    </StackLayout>
+                    <StackLayout  HorizontalOptions="Center" Grid.Row="6" >
+                        <Label  Text="Datum početka prijava" FontSize="Micro" />
+                        <Label  Text="{Binding datumPP}" FontSize="Medium" />
+                    </StackLayout>
+                    <StackLayout HorizontalOptions="Center" Grid.Row="7" >
+                        <Label  Text="Datum završetka prijava" FontSize="Micro" />
+                        <Label Text="{Binding datumZP}" FontSize="Medium" />
+                    </StackLayout>
+                    <StackLayout HorizontalOptions="Center" Grid.Row="8" >
+                        <Label  Text="Minimalni ELO" FontSize="Micro" />
+                        <Label Text="{Binding Takmicenje.MinimalniELO}" FontSize="Medium" />
+                    </StackLayout>
+
+                    <StackLayout x:Name="DodatneOpcijeLayout" Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="9">
+                        <Button x:Name="btnEdit" Text="Edit" HorizontalOptions="Start" Clicked="btnEdit_Clicked"></Button>
+                        <Button x:Name="btnGenerisiRaspored" HorizontalOptions="End" Clicked="btnGenerisiRaspored_Clicked" Text="Generisi raspored"></Button>
+                    </StackLayout>
                 </StackLayout>
 
-                <StackLayout HorizontalOptions="Center" Grid.Row="1" >
-                    <Label FontSize="Micro" Text="Vrsta"></Label>
-                    <Label Text="{Binding Takmicenje.Vrsta}" FontSize="Medium" />
+                <StackLayout Grid.Column="0" IsVisible="{Binding prijaveVisible}">
+                    <Label Text="PRIJAVE" HorizontalTextAlignment="Center" FontSize="Medium" />
+                    <Label x:Name="lblEmpty" Text="Trenutno nema prijava" HorizontalTextAlignment="Center" FontSize="Small"/>
+                    <ListView ItemsSource="{Binding listaPrijava}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Row="0"
+                                               Grid.Column="0"
+                                               FontAttributes="Bold"
+                                                Text="{Binding Naziv}" Margin="5"/>
+                                        <Button x:Name="btnBlokiraj" Text="Blokiraj" Grid.Row="0" Grid.Column="1" Margin="5" 
+                                                Clicked="btnBlokiraj_Clicked"
+                                                BindingContext="{Binding ID}"></Button>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </StackLayout>
 
-                <StackLayout HorizontalOptions="Center" Grid.Row="2" >
-                    <Label  Text="Sistem" FontSize="Micro" />
-                    <Label  Text="{Binding Takmicenje.Sistem}" FontSize="Medium" />
-                </StackLayout>
-                <StackLayout HorizontalOptions="Center" Grid.Row="3" >
-                    <Label  Text="Status" FontSize="Micro" />
-                    <Label  Text="{Binding Takmicenje.Status}" FontSize="Medium" />
-                </StackLayout>
-                <StackLayout  HorizontalOptions="Center" Grid.Row="4" >
-                    <Label  Text="Datum početka" FontSize="Micro" />
-                    <Label Text="{Binding datumP}" FontSize="Medium" />
-                </StackLayout>
-                <StackLayout  HorizontalOptions="Center" Grid.Row="5">
-                    <Label  Text="Datum završetka" FontSize="Micro" />
-                    <Label  Text="{Binding datumZ}" FontSize="Medium" />
-                </StackLayout>
-                <StackLayout  HorizontalOptions="Center" Grid.Row="6" >
-                    <Label  Text="Datum početka prijava" FontSize="Micro" />
-                    <Label  Text="{Binding datumPP}" FontSize="Medium" />
-                </StackLayout>
-                <StackLayout HorizontalOptions="Center" Grid.Row="7">
-                    <Label  Text="Datum završetka prijava" FontSize="Micro" />
-                    <Label Text="{Binding datumZP}" FontSize="Medium" />
-                </StackLayout>
-                <StackLayout HorizontalOptions="Center" Grid.Row="8" >
-                    <Label  Text="Minimalni ELO" FontSize="Micro" />
-                    <Label Text="{Binding Takmicenje.MinimalniELO}" FontSize="Medium" />
-
-                </StackLayout>
-                <StackLayout x:Name="DodatneOpcijeLayout" Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="9">
-                    <Button x:Name="btnEdit" Text="Edit" HorizontalOptions="Start" Clicked="btnEdit_Clicked"></Button>
-                    <Button x:Name="btnGenerisiRaspored" HorizontalOptions="End" Clicked="btnGenerisiRaspored_Clicked" Text="Generisi raspored"></Button>
-                </StackLayout>
+                <!--<StackLayout Grid.Column="0" Grid.Row="1">
+                    <Button x:Name="btnPrijava" HorizontalOptions="Center" Text="Prijavi se" Clicked="btnPrijava_Clicked"/>
+                </StackLayout>-->
             </Grid>
         </ScrollView>
     </ContentPage.Content>

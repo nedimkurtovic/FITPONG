@@ -102,7 +102,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
                 Naziv = this.Naziv,
                 RokPocetkaPrijave = this.RokPocetkaPrijave,
                 RokZavrsetkaPrijave = this.RokZavrsetkaPrijave,
-                RucniOdabir = this.RucniOdabir,
+                RucniOdabir = this.RucniOdabir, 
                 RucnoOdabraniIgraci = this.RucnoOdabraniIgraci,
                 DatumPocetka = this.DatumPocetka,
                 DatumZavrsetka = this.DatumZavrsetka,

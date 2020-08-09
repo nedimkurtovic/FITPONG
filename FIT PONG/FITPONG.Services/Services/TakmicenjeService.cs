@@ -42,6 +42,7 @@ namespace FIT_PONG.Services.Services
             var TakmicenjaPovratni = qry
                 .Include(x=>x.Sistem).Include(x=>x.Status)
                 .Include(x=>x.Kategorija).Include(x=>x.Vrsta)
+                .Include(x=>x.Prijave)
                 .Where(x=>x.Kategorija.Opis == obj.Kategorija || obj.Kategorija == null)
                 .Where(x => x.Vrsta.Naziv == obj.Vrsta || obj.Vrsta == null)
                 .Where(x => x.Sistem.Opis == obj.Sistem || obj.Sistem == null)
@@ -55,6 +56,7 @@ namespace FIT_PONG.Services.Services
                 tak.Kategorija = i.Kategorija.Opis;
                 tak.Vrsta = i.Vrsta.Naziv;
                 tak.Status = i.Status.Opis;
+                tak.Prijave = i.Prijave;
                 povratnaLista.Add(tak);
             }
             return povratnaLista;
@@ -66,6 +68,7 @@ namespace FIT_PONG.Services.Services
                 .Include(x => x.Sistem)
                 .Include(x => x.Status)
                 .Include(x => x.Kategorija)
+                .Include(x => x.Prijave)
                 .Include(x => x.Vrsta).Where(x => x.ID == id).FirstOrDefault();
             if(obj == null)
             {
@@ -76,6 +79,7 @@ namespace FIT_PONG.Services.Services
             tak.Kategorija = obj.Kategorija.Opis;
             tak.Vrsta = obj.Vrsta.Naziv;
             tak.Status = obj.Status.Opis;
+            tak.Prijave = obj.Prijave;
             return tak;
         }
 
@@ -366,6 +370,62 @@ namespace FIT_PONG.Services.Services
             return rezultat;
         }
 
+        public List<Users> GetBlokiraneIgrace(int takmId)
+        {
+            var takmicenje = db.Takmicenja.Find(takmId);
+
+            if (takmicenje == null)
+                throw new UserException("Takmicenje ne postoji u bazi.");
+
+            var blokLista = db.BlokListe.Where(b => b.TakmicenjeID == takmId).Include(b=>b.Igrac).Select(b=>b.Igrac).ToList();
+
+            return mapko.Map<List<SharedModels.Users>>(blokLista);
+        }
+
+        public Prijave BlokirajPrijavu(int takmId, int prijavaId)
+        {
+
+            Prijava p = db.Prijave.Include(d => d.Takmicenje).Where(x => x.ID == prijavaId && x.TakmicenjeID==takmId).SingleOrDefault();
+
+            if (p == null)
+                throw new UserException("Ne postoji prijava u bazi.");
+
+            Stanje_Prijave sp = db.StanjaPrijave.Where(x => x.PrijavaID == prijavaId).SingleOrDefault();
+            if (sp != null)
+                db.Remove(sp);
+            
+            List<Prijava_igrac> pi = db.PrijaveIgraci.Where(x => x.PrijavaID == prijavaId).ToList();
+
+            if (pi != null)
+            {
+                BlokLista blok1 = new BlokLista
+                {
+                    IgracID = pi[0].IgracID,
+                    TakmicenjeID = p.TakmicenjeID
+                };
+
+                db.Add(blok1);
+
+                if (pi != null && pi.Count > 1)
+                {
+                    BlokLista blok2 = new BlokLista
+                    {
+                        IgracID = pi[1].IgracID,
+                        TakmicenjeID = p.TakmicenjeID
+                    };
+
+                    db.Add(blok2);
+                    db.Remove(pi[1]);
+                }
+
+                db.Remove(pi[0]);
+                db.Remove(p);
+                db.SaveChanges();
+
+                return mapko.Map<Prijave>(p);
+            }
+            throw new UserException("Ne postoji zapis u tabeli Prijava_Igrac.");
+        }
         #endregion
 
         #region Pomagaci

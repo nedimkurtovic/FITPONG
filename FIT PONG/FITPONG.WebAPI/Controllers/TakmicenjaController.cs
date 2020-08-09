@@ -144,6 +144,20 @@ namespace FIT_PONG.WebAPI.Controllers
         }
 
 
+        [HttpGet("{id}/bloklista")]
+        public List<Users> GetBlokLista(int id)
+        {
+            return takmicenjeService.GetBlokiraneIgrace(id);
+        }
+
+
+        [HttpPost("{id}/prijava/{prijavaid}/bloklista")]
+        public Prijave BlokirajPrijavu(int id, int prijavaId)
+        {
+            return takmicenjeService.BlokirajPrijavu(id, prijavaId);
+        }
+
+
         private PagedResponse<Takmicenja> GetPagedResponse(TakmicenjeSearch obj)
         {
             var listaTakmicenja = takmicenjeService.Get(obj);
