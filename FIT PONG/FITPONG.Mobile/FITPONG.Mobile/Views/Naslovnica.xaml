@@ -6,10 +6,54 @@
              mc:Ignorable="d"
              x:Class="FIT_PONG.Mobile.Views.Naslovnica">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
+       
+        <ScrollView HorizontalOptions="CenterAndExpand">
+            <Frame BorderColor="Black" HorizontalOptions="FillAndExpand">
+                <StackLayout HorizontalOptions="FillAndExpand">
+                    <StackLayout Margin="0,50" HorizontalOptions="FillAndExpand">
+                        <Label FontSize="Title" FontAttributes="Bold" Text="DOBRODOŠLI NA FITPONG"
+                VerticalOptions="StartAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <ImageButton HeightRequest="150" WidthRequest="150"
+                                 Source="{OnPlatform UWP='Assets/lampicaoff2.jpg',
+                                 Android='lampicaoff2.jpg'}" x:Name="SlikaLampica"
+                                 Command="{Binding PromijeniSliku}"></ImageButton>
+                        <Label VerticalOptions="CenterAndExpand" x:Name="lblPoruka"></Label>
+                    </StackLayout>
+                    <StackLayout HorizontalOptions="FillAndExpand">
+                        <Label Text="Zadnje obavijesti" HorizontalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                        <Frame BorderColor="Black">
+                            <CarouselView x:Name="KaruselObavijesti" ItemsSource="{Binding ListaPoruka}">
+                                <CarouselView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <Label Text="{Binding}"></Label>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </CarouselView.ItemTemplate>
+                            </CarouselView>
+                        </Frame>
+                    </StackLayout>
+                    <StackLayout HorizontalOptions="FillAndExpand">
+                        <Label Text="Zadnji rezultati" HorizontalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                        <Frame BorderColor="Black">
+                            <CarouselView>
+                                <CarouselView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </CarouselView.ItemTemplate>
+                            </CarouselView>
+                        </Frame>
+                    </StackLayout>
+                </StackLayout>
+                
+            </Frame>
+        </ScrollView>
+
     </ContentPage.Content>
 </ContentPage>
