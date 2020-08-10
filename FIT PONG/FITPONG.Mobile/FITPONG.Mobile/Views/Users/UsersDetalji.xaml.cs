@@ -22,18 +22,10 @@ namespace FIT_PONG.Mobile.Views.Users
             InitializeComponent();
             BindingContext = viewModel = model;
         }
-        public UsersDetalji()
+
+        private void btnEdit_Clicked(object sender, EventArgs e)
         {
-            InitializeComponent();
 
-            var user = new SharedModels.Users
-            {
-                PrikaznoIme = "Item 1",
-                ELO = 1000
-            };
-
-            viewModel = new UsersDetaljiViewModel(user);
-            BindingContext = viewModel;
         }
     }
 }

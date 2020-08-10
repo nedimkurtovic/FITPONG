@@ -1,8 +1,6 @@
-﻿using FIT_PONG.Services.BL;
-using FIT_PONG.Services.Services;
+﻿using FIT_PONG.Services.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -11,65 +9,10 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FIT_PONG.Hubs
+namespace FIT_PONG.WebAPI.Hubs
 {
-    //public class ChatHub:Hub
-    //{
-    //    private readonly SignInManager<IdentityUser<int>> SignIn;
-    //    private readonly FIT_PONG.Services.BL.Evidentor _evidentor;
-    //    private static List<(string username, string connectionid)> ListaKonekcija = new List<(string username,string connectionid)>();
-
-    //    public ChatHub(SignInManager<IdentityUser<int>> menadjer, FIT_PONG.Services.BL.Evidentor evidentor)
-    //    {
-    //        SignIn = menadjer;
-    //        _evidentor = evidentor;
-    //    }
-    //    public override Task OnConnectedAsync()
-    //    {
-    //        string username = "anonim";
-    //        if (SignIn.IsSignedIn(Context.User))
-    //            username = _evidentor.NadjiIgraca(Context.User.Identity.Name).PrikaznoIme;
-    //        string connid = Context.ConnectionId;
-    //        ListaKonekcija.Add((username,connid));
-
-    //        //Clients.Caller.SendAsync("GetKonekcije", GetAktivneKonekcije());
-    //        Clients.All.SendAsync("GetKonekcije", GetAktivneKonekcije());
-
-    //        return base.OnConnectedAsync();
-    //    }
-    //    public override Task OnDisconnectedAsync(Exception exception)
-    //    {
-    //        (string username, string connid) nadjeni = ListaKonekcija
-    //            .Where(x => x.connectionid == Context.ConnectionId).FirstOrDefault();
-    //        ListaKonekcija.Remove(nadjeni);
-
-    //        Clients.All.SendAsync("GetKonekcije", GetAktivneKonekcije());
-    //        return base.OnDisconnectedAsync(exception);
-    //    }
-    //    public List<string> GetAktivneKonekcije()
-    //    {
-    //        return ListaKonekcija.Select(x => x.username).ToList();
-    //    }
-    //    public async Task PosaljiPoruku(string poruka, string Primatelj)
-    //    {
-    //        string posiljateljevoIme = _evidentor.NadjiIgraca(Context.User.Identity.Name).PrikaznoIme;
-    //        string posiljatelj = ListaKonekcija.Where(x => x.username == posiljateljevoIme).FirstOrDefault().username;
-    //        string vrijeme = DateTime.UtcNow.AddHours(1).ToString("hh:mm:ss");
-    //        if (Primatelj != "Main")
-    //        {
-    //            string primatelj = ListaKonekcija.Where(x => x.username == Primatelj).FirstOrDefault().connectionid;
-    //            //await Clients.Client().SendAsync("PrimiPoruku",poruka,posiljatelj, posiljatelj);
-    //            await Clients.Clients(primatelj).SendAsync("PrimiPoruku", poruka, posiljatelj, posiljatelj,vrijeme);
-    //            await Clients.Caller.SendAsync("PrimiPoruku", poruka, posiljatelj, Primatelj, vrijeme);
-    //        }
-    //        else
-    //        {
-    //            await Clients.All.SendAsync("PrimiPoruku", poruka, posiljatelj, "Main", vrijeme);
-    //        }
-    //    }
-    //}
     [EnableCors("CorsPolicy")]
-    public class ChatHub : Hub
+    public class ChatHub:Hub
     {
         private readonly IUsersService _userService;
         private readonly FIT_PONG.Services.BL.Evidentor _evidentor;
@@ -92,8 +35,8 @@ namespace FIT_PONG.Hubs
             //ako jest onda postavi username na to sto vrati i to je to , ako nije dobar provjeri da li je "web user" kako ces to znat?
             //zato sto koristimo user identity tamo na web appu i logujemo sesije koje se spremaju u Context.User.Identity
 
-
-            if (Context.User.Identity.Name == null)
+            
+            if(Context.User.Identity.Name == null)
             {
                 var rezultatAuth = await ProvjeriAuth(Context.GetHttpContext().Request);
                 if (rezultatAuth == null)
@@ -111,7 +54,7 @@ namespace FIT_PONG.Hubs
 
             string connid = Context.ConnectionId;
             ListaKonekcija.Add((username, connid));
-
+            
             //Clients.Caller.SendAsync("GetKonekcije", GetAktivneKonekcije());
             await Clients.All.SendAsync("GetKonekcije", GetAktivneKonekcije());
             await base.OnConnectedAsync();
@@ -166,9 +109,9 @@ namespace FIT_PONG.Hubs
                     UserName = username,
                     Password = password
                 });
-
+                
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return null;
             }

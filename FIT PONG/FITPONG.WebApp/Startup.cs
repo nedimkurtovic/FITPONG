@@ -20,6 +20,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ReflectionIT.Mvc.Paging;
+using FIT_PONG.Services.Services;
+using FIT_PONG.Services.Services.Autorizacija;
 
 namespace FIT_PONG
 {
@@ -67,6 +69,18 @@ namespace FIT_PONG
             })
                 .AddEntityFrameworkStores<FIT_PONG.Database.MyDb>()
                 .AddDefaultTokenProviders();
+
+
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IUsersAutorizator, UsersAutorizator>();
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithOrigins("http://localhost:5766")
+                    .AllowCredentials();
+            }));
+
             services.AddSignalR();
             services.AddPaging(x =>
             {
@@ -98,7 +112,7 @@ namespace FIT_PONG
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseCors();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<LampicaHub>("/lampica");

@@ -17,6 +17,7 @@ namespace FIT_PONG.Mobile.Views
     public partial class MainPage : MasterDetailPage
     {
         Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
+        BaseAPIService apiServis = new BaseAPIService("users");
         public MainPage()
         {
             InitializeComponent();
@@ -50,7 +51,16 @@ namespace FIT_PONG.Mobile.Views
                     case (int)MenuItemType.Reports:
                         MenuPages.Add(id, new NavigationPage(new Views.Reports.ReportsDodaj()));
                         break;
-                    
+                    case (int)MenuItemType.Profil:
+                        {
+                            var idUsr = BaseAPIService.ID;
+                            var usr = await apiServis.GetByID<SharedModels.Users>(idUsr);
+                            MenuPages.Add(id, new NavigationPage(new UsersMain(usr)));
+                            break;
+                        }
+                    case (int)MenuItemType.Chat:
+                        MenuPages.Add(id, new NavigationPage(new Views.Chat.ChatMain()));
+                        break;
                 }
             }
 

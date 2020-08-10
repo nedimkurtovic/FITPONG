@@ -21,13 +21,16 @@ namespace FIT_PONG.Mobile.ViewModels.Users
             DobaviUsere = new Command(async () => await PozoviApi());
             DobaviJosUsera = new Command(async () => await DobaviJos());
             iduciPage = "";
+            btnDobaviJosVisible = false;
         }
         private string iduciPage;
+
         private bool btnvisible;
         public bool btnDobaviJosVisible { get => btnvisible; set { SetProperty(ref btnvisible, value); } }
+
         private UsersAPIService _apiServis = new UsersAPIService();
         public ObservableCollection<SharedModels.Users> ListaUsera { get; set; }
-        public List<SharedModels.Users> ListaUsera1 { get; set; }
+
         private string _prikaznoIme;
         public string PrikaznoIme{ get => _prikaznoIme; set{SetProperty(ref _prikaznoIme, value);} }
 
@@ -39,11 +42,9 @@ namespace FIT_PONG.Mobile.ViewModels.Users
             var rezultat = await _apiServis.GetAllPaged<PagedResponse<SharedModels.Users>>(iduciPage);
             if(rezultat != default(PagedResponse<SharedModels.Users>))
             {
-                foreach (var i in rezultat.Stavke)
-                    ListaUsera.Add(i);
-                iduciPage = rezultat.IducaStranica?.ToString();
-                btnDobaviJosVisible = iduciPage == null ? false : true;
+                dodajUListu(rezultat);
             }
+            IsBusy = false;
         }
         async Task PozoviApi()
         {
@@ -54,40 +55,20 @@ namespace FIT_PONG.Mobile.ViewModels.Users
                 PrikaznoIme = _prikaznoIme
             };
             var rezultat = await _apiServis.GetAll<PagedResponse<SharedModels.Users>>(novi);
-            if(rezultat != null)
+            if(rezultat != default(PagedResponse<SharedModels.Users>))
             {
-                foreach (var i in rezultat.Stavke)
-                    ListaUsera.Add(i);
-                iduciPage = rezultat.IducaStranica?.ToString();
+                dodajUListu(rezultat);
             }
-            
+            IsBusy = false;
         }
-        public ObservableCollection<SharedModels.Users> DummyLista { get; set; } = new ObservableCollection<SharedModels.Users>
+
+        private void dodajUListu(PagedResponse<SharedModels.Users> rez)
         {
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni007"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni008"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni009"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0010"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0011"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0012"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0013"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0014"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0015"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0016"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0017"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0018"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0019"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0020"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0021"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0022"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0023"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0024"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0025"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0026"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0027"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0028"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0029"},
-            new SharedModels.Users{ELO=1000,PrikaznoIme="Testni0030"},
-        };
+            foreach (var i in rez.Stavke)
+                ListaUsera.Add(i);
+            iduciPage = rez.IducaStranica?.ToString();
+            btnDobaviJosVisible = iduciPage == null ? false : true;
+        }
+       
     }
 }

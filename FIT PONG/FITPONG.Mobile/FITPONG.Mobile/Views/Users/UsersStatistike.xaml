@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="FIT_PONG.Mobile.Views.Users.UsersStatistike">
+    <ContentPage.Content>
+        <ListView ItemsSource="{Binding ListaStatistika}">
+            <ListView.Header>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Label Text="Akademska godina" Grid.Column="0" FontAttributes="Bold" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                    <Label Text="Single pobjeda" Grid.Column="1" FontAttributes="Bold" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                    <Label Text="Timskih pobjeda" Grid.Column="2" FontAttributes="Bold" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                    <Label Text="Osvojenih turnira" Grid.Column="3" FontAttributes="Bold" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                    <Label Text="Osvojenih liga" Grid.Column="4" FontAttributes="Bold" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                    <Label Text="Odigranih meceva" Grid.Column="5" FontAttributes="Bold" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                </Grid>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="{Binding AkademskaGodina}" Grid.Column="0" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                            <Label Text="{Binding BrojSinglePobjeda}" Grid.Column="1" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                            <Label Text="{Binding BrojTimskihPobjeda}" Grid.Column="2" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                            <Label Text="{Binding BrojOsvojenihTurnira}" Grid.Column="3" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                            <Label Text="{Binding BrojOsvojenihLiga }" Grid.Column="4" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                            <Label Text="{Binding BrojOdigranihMeceva }" Grid.Column="5" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

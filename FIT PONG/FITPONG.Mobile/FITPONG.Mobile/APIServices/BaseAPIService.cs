@@ -16,7 +16,7 @@ namespace FIT_PONG.Mobile.APIServices
         //public static string Password { get; set; }
         public static string Username { get; set; } = "testni1";
         public static string Password { get; set; } = "test123.";
-        public static int ID { get; set; } = 12;
+        public static int ID { get; set; } = 7;
 
 
 #if DEBUG
