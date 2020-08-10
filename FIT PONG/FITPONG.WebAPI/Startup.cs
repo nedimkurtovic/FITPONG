@@ -118,6 +118,7 @@ namespace FIT_PONG.WebAPI
             services.AddScoped<IStatistikeService, StatistikeService>();
             services.AddScoped<iEmailServis, FITPONGGmail>();
             services.AddScoped<ITakmicenjeService, TakmicenjeService>();
+            services.AddScoped<IPrijaveService, PrijaveService>();
 
             //combobox jarani
             services.AddScoped<IBaseService<FIT_PONG.SharedModels.KategorijeTakmicenja,object>,

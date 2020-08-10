@@ -64,9 +64,10 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
             }
         }
 
-        private void btnPrijava_Clicked(object sender, EventArgs e)
+        private async void btnPrijava_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new TakmicenjaLista());
+
+            await Navigation.PushAsync(new TakmicenjePrijava(viewModel.Takmicenje));
         }
 
         private async void btnBlokiraj_Clicked(object sender, EventArgs e)

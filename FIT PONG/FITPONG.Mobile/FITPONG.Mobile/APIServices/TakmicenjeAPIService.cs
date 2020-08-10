@@ -114,6 +114,38 @@ namespace FIT_PONG.Mobile.APIServices
                 return default(Prijave);
             }
         }
+        public async Task<Prijave> Prijava(int id, PrijavaInsert obj)
+        {
+            var url = $"{APIUrl}/{resurs}/{id}/prijava";
+            try
+            {
+                var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync(obj).ReceiveJson<Prijave>();
+                return rezult;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = GetErrore(ex).Result;
+                await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
+                return default(Prijave);
+            }
+        }
+
+        public async Task<List<Prijave>> GetPrijave(int id)
+        {
+            var url = $"{APIUrl}/{resurs}/{id}/prijave";
+            try
+            {
+                var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync("").ReceiveJson<List<Prijave>>();
+                return rezult;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = GetErrore(ex).Result;
+                await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
+                return default(List<Prijave>);
+            }
+        }
+
         //public override async Task<T> Update<T>(int id, object request)
         //{
         //    var url = $"{APIUrl}/{resurs}/{id}";

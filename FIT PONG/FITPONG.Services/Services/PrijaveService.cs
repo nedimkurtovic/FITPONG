@@ -10,12 +10,12 @@ using System.Text;
 
 namespace FIT_PONG.Services.Services
 {
-    class PrijaveService : IPrijaveService
+    public class PrijaveService : IPrijaveService
     {
         private readonly MyDb db;
-        private readonly Mapper mapper;
+        private readonly IMapper mapper;
 
-        public PrijaveService(MyDb db, Mapper mapper)
+        public PrijaveService(MyDb db, IMapper mapper)
         {
             this.db = db;
             this.mapper = mapper;

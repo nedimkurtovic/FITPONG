@@ -61,6 +61,13 @@ namespace FIT_PONG.Services.Services.Autorizacija
 
         }
 
+        public void AuthorizePrijava(int UserId, PrijavaInsert obj)
+        {
+            if (UserId != obj.Igrac1ID && UserId != obj.Igrac2ID)
+                throw new AuthorizeException("Niste autorizovani za takvu radnju.");
+        }
+
+
         private bool KreatorUslov(int UserId, int TakmicenjeId)
         {
             var takmicenje = db.Takmicenja.Include(x => x.Kreator)
