@@ -24,6 +24,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using FIT_PONG.Services.Services.Autorizacija;
+using Microsoft.ML;
+using Microsoft.ML.Trainers;
+using FIT_PONG.Services.ML;
 
 namespace FIT_PONG.Services.Services
 {
@@ -35,7 +38,8 @@ namespace FIT_PONG.Services.Services
         private readonly iEmailServis mailservis;
         private readonly IMapper mapper;
         private readonly IUsersAutorizator usersAutorizator;
-
+        static MLContext mlContext = null;
+        static ITransformer model = null;
         public UsersService(MyDb db,
                             SignInManager<IdentityUser<int>> singinmanager,
                             UserManager<IdentityUser<int>> usermanager,
@@ -627,6 +631,153 @@ namespace FIT_PONG.Services.Services
             System.IO.File.Delete(filePutanja);
         }
 
-        
+        public List<SharedModels.Users> RecommendPostovanja(int id)
+        {
+            if (mlContext == null)
+            {
+                //STEP 1: Create MLContext to be shared across the model creation workflow objects 
+                mlContext = new MLContext();
+
+                var SviUseriSaPostovanjima = GetUserePostovanja();
+
+                var data = new List<UserEntry>();
+                foreach(var i in SviUseriSaPostovanjima)
+                {
+                    if(i.Postovanja.Count > 1)
+                    {
+                        var SviKojiPostujuFrajera = i.Postovanja.Select(x => x.PostivalacID).ToList();
+                        SviKojiPostujuFrajera.ForEach(x =>
+                        {
+                            var povezaniBezNjega = i.Postovanja.Where(z => z.PostivalacID != x).ToList();
+                            povezaniBezNjega.ForEach(z =>
+                            {
+                                data.Add(new UserEntry
+                                {
+                                    UserID = (uint)x,
+                                    CoPostovanjeUserID = (uint)z.PostivalacID
+                                });
+                            });
+                        });
+                    }
+                }
+
+                var traindata = mlContext.Data.LoadFromEnumerable(data);
+                //STEP 3: Your data is already encoded so all you need to do is specify options for MatrxiFactorizationTrainer with a few extra hyperparameters
+                //        LossFunction, Alpa, Lambda and a few others like K and C as shown below and call the trainer. 
+                MatrixFactorizationTrainer.Options options = new MatrixFactorizationTrainer.Options();
+                options.MatrixColumnIndexColumnName = nameof(UserEntry.UserID);
+                options.MatrixRowIndexColumnName = nameof(UserEntry.CoPostovanjeUserID);
+                options.LabelColumnName = "Label";
+                options.LossFunction = MatrixFactorizationTrainer.LossFunctionType.SquareLossOneClass;
+                options.Alpha = 0.01;
+                options.Lambda = 0.025;
+                // For better results use the following parameters
+                //options.K = 100;
+                options.C = 0.00001;
+
+                //Step 4: Call the MatrixFactorization trainer by passing options.
+                var est = mlContext.Recommendation().Trainers.MatrixFactorization(options);
+
+                //STEP 5: Train the model fitting to the DataSet
+                //Please add Amazon0302.txt dataset from https://snap.stanford.edu/data/amazon0302.html to Data folder if FileNotFoundException is thrown.
+                model = est.Fit(traindata);
+            }
+
+
+            var sviUseri = db.Igraci.Where(x=>x.ID != id).ToList();
+            var rezultati = new List<Tuple<Database.DTOs.Igrac, float>>();
+            foreach(var i in sviUseri)
+            {
+                //STEP 6: Create prediction engine and predict the score for Product 63 being co-purchased with Product 3.
+                //        The higher the score the higher the probability for this particular productID being co-purchased 
+                var predictionengine = mlContext.Model.CreatePredictionEngine<UserEntry, CoPostovanje_prediction>(model);
+                var prediction = predictionengine.Predict(
+                                         new UserEntry()
+                                         {
+                                             UserID = (uint)id,
+                                             CoPostovanjeUserID =(uint) i.ID
+                                         });
+                rezultati.Add(new Tuple<Igrac, float>(i, prediction.Score));
+            }
+
+            var poluFinalnaLista = rezultati.OrderByDescending(x => x.Item2).Select(x => x.Item1).Take(3).ToList();
+            if(poluFinalnaLista.Count() < 3)
+            {
+                var pomozi = IgraciIzGrada(id, 3 - poluFinalnaLista.Count());
+                poluFinalnaLista.AddRange(pomozi);
+            }
+
+            var finalnaLista = new List<SharedModels.Users>();
+            foreach(var i in poluFinalnaLista)
+            {
+                finalnaLista.Add(Get(i.ID));
+            }
+
+            return finalnaLista;
+        }
+
+
+        private List<PomocniModelUserPostovanja> GetUserePostovanja()
+        {
+            var SviUseri = db.Igraci.ToList();
+            var UseriSaPostovanjima = new List<PomocniModelUserPostovanja>();
+            foreach (var i in SviUseri)
+            {
+                var postovanja = db.Postovanja.Where(x => x.PostovaniID == i.ID).ToList();
+                UseriSaPostovanjima.Add(new PomocniModelUserPostovanja { Igrac = i, Postovanja = postovanja });
+            }
+            return UseriSaPostovanjima;
+        }
+        private List<Database.DTOs.Igrac> IgraciIzGrada(int id, int BrojIgraca)
+        {
+            var podaci = db.Igraci.Include(x => x.Grad).ToList();
+
+            var konkretanIgrac = podaci.Where(x => x.ID == id).FirstOrDefault();
+
+            var gradPoKojemSeTrazi = konkretanIgrac.Grad.Naziv;
+
+            Random _random = new Random();
+            var listaIstihPoGradu = new List<Database.DTOs.Igrac>();
+            foreach(var i in podaci)
+            {
+                if (i.Grad.Naziv == gradPoKojemSeTrazi)
+                    listaIstihPoGradu.Add(i);
+            }
+
+            var Oduzeti = listaIstihPoGradu.Take(BrojIgraca).ToList();
+            return Oduzeti;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
