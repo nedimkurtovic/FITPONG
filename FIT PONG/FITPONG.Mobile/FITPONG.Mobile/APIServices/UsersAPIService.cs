@@ -11,7 +11,7 @@ namespace FIT_PONG.Mobile.APIServices
 {
     public class UsersAPIService:BaseAPIService
     {
-        public UsersAPIService() : base("users")
+        public UsersAPIService(string resurs="users") : base(resurs)
         {
 
         }

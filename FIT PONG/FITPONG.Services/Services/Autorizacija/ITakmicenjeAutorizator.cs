@@ -13,5 +13,7 @@ namespace FIT_PONG.Services.Services.Autorizacija
         bool AuthorizePrijavaDelete(int UserId, int PrijavaId);
         bool AuthorizePrijavaBlok(int UserId, int PrijavaId);
         bool AuthorizeEvidencijaMeca(int UserId, EvidencijaMeca obj);
+        void AuthorizePrijava(int UserId, PrijavaInsert obj);
+
     }
 }

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FIT_PONG.Mobile.Views.Takmicenja.TakmicenjePrijava">
+    <ContentPage.Content>
+        <StackLayout >
+            <Label Padding="10" Text="PRIJAVA NA TAKMIČENJE" TextColor="#000" FontSize="Large" HorizontalTextAlignment="Center"/>
+
+            <FlexLayout Margin="20" AlignItems="Center" JustifyContent="Center">
+                <Label Text="Igrac" Margin="20" TextColor="#000"/>
+                <Picker x:Name="igrac1Picker" SelectedIndexChanged="igrac1Picker_SelectedIndexChanged"/>
+            </FlexLayout>
+
+            <FlexLayout AlignItems="Center" JustifyContent="Center" IsVisible="{Binding isTim}">
+                <Label Text="Igrac" TextColor="#000" Margin="20" />
+                <Picker x:Name="igrac2Picker"  SelectedIndexChanged="igrac2Picker_SelectedIndexChanged"/>
+            </FlexLayout>
+
+            <FlexLayout Margin="40" AlignItems="Center" JustifyContent="Center" Direction="Column" IsVisible="{Binding isTim}">
+                <Label Text="Naziv tima" TextColor="#000" />
+                <Entry x:Name="inputNazivTima" Text="{Binding Naziv}" WidthRequest="200" HorizontalTextAlignment="Center"/>
+            </FlexLayout>
+            
+            <Button x:Name="btnPrijava" Text="Prijava" Clicked="btnPrijava_Clicked" />
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

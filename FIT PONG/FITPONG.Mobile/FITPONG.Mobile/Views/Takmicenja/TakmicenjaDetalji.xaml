@@ -28,6 +28,7 @@
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height= "auto"></RowDefinition>
                     <RowDefinition Height= "auto"></RowDefinition>
+                    <RowDefinition Height= "auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -74,9 +75,13 @@
                         <Label Text="{Binding Takmicenje.MinimalniELO}" FontSize="Medium" />
                     </StackLayout>
 
-                    <StackLayout x:Name="DodatneOpcijeLayout" Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="9">
+                    <StackLayout x:Name="DodatneOpcijeLayout" Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="9" Grid.Column="1">
                         <Button x:Name="btnEdit" Text="Edit" HorizontalOptions="Start" Clicked="btnEdit_Clicked"></Button>
                         <Button x:Name="btnGenerisiRaspored" HorizontalOptions="End" Clicked="btnGenerisiRaspored_Clicked" Text="Generisi raspored"></Button>
+                    </StackLayout>
+                    
+                    <StackLayout Grid.Row="10">
+                        <Button x:Name="btnPrijava" WidthRequest="100" HorizontalOptions="Center" Text="Prijavi se" Clicked="btnPrijava_Clicked"/>
                     </StackLayout>
                 </StackLayout>
 
@@ -109,9 +114,7 @@
                     </ListView>
                 </StackLayout>
 
-                <!--<StackLayout Grid.Column="0" Grid.Row="1">
-                    <Button x:Name="btnPrijava" HorizontalOptions="Center" Text="Prijavi se" Clicked="btnPrijava_Clicked"/>
-                </StackLayout>-->
+                
             </Grid>
         </ScrollView>
     </ContentPage.Content>

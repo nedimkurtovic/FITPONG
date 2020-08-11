@@ -22,6 +22,7 @@ namespace FIT_PONG.WebAPI.Controllers
     {
         private readonly ITakmicenjeService takmicenjeService;
         private readonly IUsersService usersService;
+        private readonly IPrijaveService prijaveService;
         private readonly ITakmicenjeAutorizator takmicenjeAutorizator;
 
         //treba razdvojiti logiku, tj valjalo bi imati TakmicenjeAutorizacijaService, koji ce se iskljucivo
@@ -38,11 +39,12 @@ namespace FIT_PONG.WebAPI.Controllers
             //ALI Treba voditi ogromnog racuna o ovome : DA LI SE SALJE PRIKAZNOIME(Igrac) ILI USERNAME(User)
             //u auth headeru kao username, potrebno sto prije rijesiti tu dilemu
         public TakmicenjaController(ITakmicenjeService _takmicenjeService, IUsersService _usersService,
-            ITakmicenjeAutorizator _takmicenjeAutorizator)
+            ITakmicenjeAutorizator _takmicenjeAutorizator, IPrijaveService prijaveService)
         {
             takmicenjeService = _takmicenjeService;
             usersService = _usersService;
             takmicenjeAutorizator = _takmicenjeAutorizator;
+            this.prijaveService = prijaveService;
         }
 
         [HttpGet]
@@ -155,6 +157,22 @@ namespace FIT_PONG.WebAPI.Controllers
         public Prijave BlokirajPrijavu(int id, int prijavaId)
         {
             return takmicenjeService.BlokirajPrijavu(id, prijavaId);
+        }
+
+
+        [HttpGet("{id}/prijave")]
+        public List<Prijave> Prijava(int id)
+        {
+            return prijaveService.Get(id);
+        }
+
+
+        [HttpPost("{id}/prijava")]
+        public Prijave Prijava(int id, PrijavaInsert obj)
+        {
+            var userId = usersService.GetRequestUserID(HttpContext.Request);
+            takmicenjeAutorizator.AuthorizePrijava(userId, obj);
+            return prijaveService.Add(id, obj);
         }
 
 
