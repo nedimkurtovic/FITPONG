@@ -2,36 +2,68 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewModelko="clr-namespace:FIT_PONG.Mobile.ViewModels.Users"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="FIT_PONG.Mobile.Views.Users.Login">
     
-    <ContentPage.BindingContext>
-        <viewModelko:LoginViewModel />
-    </ContentPage.BindingContext>
     <ContentPage.Resources>
         <Thickness x:Key="Margina">50,0</Thickness>
     </ContentPage.Resources>
     <ContentPage.Content>
+        
         <StackLayout VerticalOptions="Center">
-            <Label Margin="{StaticResource Margina}"
+            <StackLayout HorizontalOptions="CenterAndExpand">
+                <Image Source="{OnPlatform UWP='Assets/homelogo.jpg' , Android='homelogo.jpg'}"></Image>
+            </StackLayout>
+            <StackLayout>
+                <Label Margin="{StaticResource Margina}"
                 Text="Email"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            <Entry Margin="{StaticResource Margina}"
+                <Entry Margin="{StaticResource Margina}"
                 Text="{Binding Username}" 
                    VerticalOptions="CenterAndExpand"
                    HorizontalOptions="FillAndExpand"></Entry>
-            <Label Margin="{StaticResource Margina}"
+                <Label Margin="{StaticResource Margina}"
                 Text="Password"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            <Entry Margin="{StaticResource Margina}"
+                <Entry Margin="{StaticResource Margina}"
                 Text="{Binding Password}" 
                    VerticalOptions="CenterAndExpand"
                    HorizontalOptions="FillAndExpand"></Entry>
-            <Button Margin="100,0" Text="Login" VerticalOptions="Center"
-                    Command="{Binding LoginKomanda}"></Button>
+                <Button WidthRequest="200" 
+                        Margin="{StaticResource Margina}"
+                        Text="Login" 
+                        VerticalOptions="Center"
+                    Command="{Binding LoginKomanda}" HorizontalOptions="CenterAndExpand"></Button>
+
+                <StackLayout HorizontalOptions="CenterAndExpand" Margin="0,20,0,0">
+                    <StackLayout Orientation="Vertical">
+                        <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"
+                               Text="Nemate account? Registrujte se"></Label>
+                        <Button WidthRequest="200" Margin="{StaticResource Margina}" Text="Registracija" VerticalOptions="Center"
+                    Command="{Binding LoginKomanda}" HorizontalOptions="CenterAndExpand"></Button>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <StackLayout HorizontalOptions="Start" Orientation="Vertical">
+                            <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"
+                               Text="Zaboravili password?"></Label>
+                            <Button WidthRequest="120" HeightRequest="80" Text="Reset password" VerticalOptions="Center"
+                    Command="{Binding LoginKomanda}" HorizontalOptions="CenterAndExpand"></Button>
+                        </StackLayout>
+                        <StackLayout HorizontalOptions="End" Orientation="Vertical">
+                            <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"
+                               Text="Nije stigao verifikacijski mail?"></Label>
+                            <Button WidthRequest="120" HeightRequest="80" Text="Resend mail" VerticalOptions="Center"
+                    Command="{Binding LoginKomanda}" HorizontalOptions="CenterAndExpand"></Button>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout HorizontalOptions="Center">
+                <Label Text="Pokušavam login.." FontSize="Large" FontAttributes="Bold" IsVisible="{Binding IsBusy}"></Label>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -181,7 +181,8 @@ namespace FIT_PONG.Services.Services
             }
             else if (rezultat.Succeeded)
             {
-                return mapper.Map<SharedModels.Users>(igrac);
+                var povratni = Get(igrac.ID);
+                return povratni;
             }
             else if (await signinmanager.UserManager.CheckPasswordAsync(korisnik, obj.Password))
             {

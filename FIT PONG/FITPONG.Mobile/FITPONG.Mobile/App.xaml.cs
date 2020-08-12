@@ -14,8 +14,8 @@ namespace FIT_PONG.Mobile
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
-            //MainPage = new Mobile.Views.Users.Login();
-            MainPage = new MainPage();
+            MainPage = new Mobile.Views.Users.Login();
+            //MainPage = new MainPage();
         }
 
         protected override void OnStart()

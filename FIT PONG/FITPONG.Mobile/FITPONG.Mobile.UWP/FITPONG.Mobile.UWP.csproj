@@ -104,6 +104,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\homelogo.jpg" />
     <Content Include="Assets\ic_send.png" />
     <Content Include="Assets\lampicaoff2.jpg" />
     <Content Include="Assets\lampicaon2.png" />
