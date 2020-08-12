@@ -64,5 +64,22 @@ namespace FIT_PONG.Mobile.APIServices
                 return new List<Statistike>();
             }
         }
+
+        public async Task<List<SharedModels.Users>> GetRecommended(int id)
+        {
+            var url = $"{APIUrl}/{resurs}/{id}/recommend";
+            try
+            {
+                var rezult = await url.WithBasicAuth(Username, Password)
+                    .GetJsonAsync<List<SharedModels.Users>>();
+                return rezult;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = GetErrore(ex).Result;
+                await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
+                return new List<SharedModels.Users>();
+            }
+        }
     }
 }

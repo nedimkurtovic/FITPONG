@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:converters="clr-namespace:FIT_PONG.Mobile.Converters"
              mc:Ignorable="d"
+             Title="{Binding Title}"
              x:Class="FIT_PONG.Mobile.Views.Users.UsersDetalji">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -12,8 +13,11 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Margin="20,20">
+        <ScrollView HorizontalOptions="CenterAndExpand">
+            <StackLayout HorizontalOptions="CenterAndExpand" Margin="20,15">
+                <StackLayout HorizontalOptions="CenterAndExpand" >
+                    <Image WidthRequest="250" HeightRequest="250" Source="{Binding User.ProfileImage.BinarniZapis, Converter={StaticResource imgConv}}" />
+                </StackLayout>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
@@ -29,60 +33,85 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="2" Grid.Column="0">
+                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="0" Grid.Column="0">
                         <Label HorizontalOptions="Start" FontSize="Medium" Text="Broj pobjeda"></Label>
                         <Frame BorderColor="LightSlateGray" HorizontalOptions="FillAndExpand">
                             <Label Text="{Binding BrojPobjeda}" FontSize="Medium" />
                         </Frame>
                     </StackLayout>
-                    <StackLayout HorizontalOptions="Center" Grid.Row="0" Grid.Column="1">
-                        <Image Source="{Binding User.ProfileImage.BinarniZapis, Converter={StaticResource imgConv}}" />
-                    </StackLayout>
-                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="2" Grid.Column="2">
+      
+                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="0" Grid.Column="2">
                         <Label HorizontalOptions="Start" FontSize="Medium" Text="Broj poraza"></Label>
                         <Frame BorderColor="LightSlateGray" HorizontalOptions="FillAndExpand">
                             <Label Text="{Binding BrojPoraza}" FontSize="Medium" />
                         </Frame>
                     </StackLayout>
-                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="2" Grid.Column="1">
+                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="0" Grid.Column="1">
                         <Label HorizontalOptions="Start" HorizontalTextAlignment="Start" FontSize="Medium" Text="ELO" />
                         <Frame BorderColor="LightSlateGray" HorizontalOptions="FillAndExpand">
                             <Label  Text="{Binding User.ELO}" FontSize="Medium" />
                         </Frame>
                     </StackLayout>
-                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="3" Grid.Column="1">
+                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="1">
                         <Label HorizontalOptions="Start" HorizontalTextAlignment="Start" FontSize="Medium" Text="Jača ruka"/>
                         <Frame BorderColor="LightSlateGray" HorizontalOptions="FillAndExpand">
                             <Label  Text="{Binding User.JacaRuka}" FontSize="Medium" />
                         </Frame>
                     </StackLayout>
-                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="4" Grid.Column="1">
+                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="2" Grid.Column="1">
                         <Label HorizontalOptions="Start" Text="Visina" FontSize="Medium"/>
                         <Frame BorderColor="LightSlateGray" HorizontalOptions="FillAndExpand">
                             <Label HorizontalOptions="FillAndExpand" Text="{Binding User.Visina}" FontSize="Medium" />
                         </Frame>
                     </StackLayout>
-                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="5" Grid.Column="1">
+                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="3" Grid.Column="1">
                         <Label HorizontalOptions="Start" Text="Grad" FontSize="Medium"  />
                         <Frame BorderColor="LightSlateGray" HorizontalOptions="FillAndExpand" >
                             <Label  Text="{Binding User.Grad}" FontSize="Medium" />
                         </Frame>
                     </StackLayout>
-                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="6" Grid.Column="1">
+                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="4" Grid.Column="1">
                         <Label HorizontalOptions="Start" Text="Spol" FontSize="Medium"  />
                         <Frame BorderColor="LightSlateGray" HorizontalOptions="FillAndExpand">
                             <Label Text="{Binding User.Spol}" FontSize="Medium" />
                         </Frame>
                     </StackLayout>
-                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="7" Grid.Column="1">
+                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="5" Grid.Column="1">
                         <Label HorizontalOptions="Start" Text="Poštovanja" FontSize="Medium" />
                         <Frame BorderColor="LightSlateGray" HorizontalOptions="FillAndExpand" >
                             <Label Text="{Binding User.BrojPostovanja}" FontSize="Medium" />
                         </Frame>
                     </StackLayout>
+                    <StackLayout  x:Name="DodatneOpcijeLayout"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand"  Grid.Row="6" Grid.Column="1">
+                        <Button WidthRequest="100" x:Name="btnEdit" Clicked="btnEdit_Clicked" Text="Edit" HorizontalOptions="StartAndExpand"></Button>
+                        <Button  WidthRequest="100" x:Name="btnPostovanje" Clicked="btnEdit_Clicked" Text="Poštuj" HorizontalOptions="EndAndExpand"></Button>
+                    </StackLayout>
+
                 </Grid>
-                <StackLayout x:Name="DodatneOpcijeLayout" Orientation="Horizontal" HorizontalOptions="Center">
-                    <Button x:Name="btnEdit" Clicked="btnEdit_Clicked" Text="Edit" HorizontalOptions="CenterAndExpand"></Button>
+                
+                <StackLayout Margin="0,30,0,0" Orientation="Vertical" HorizontalOptions="Center">
+                    <Label HorizontalOptions="CenterAndExpand" FontSize="Large" FontAttributes="Bold" Text="Pogledajte i ove igrače!"></Label>
+                    <CollectionView  WidthRequest="250" HorizontalOptions="CenterAndExpand" ItemsSource="{Binding ListaPreporucenihKorisnika}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BorderColor="Gray">
+                                    <StackLayout Orientation="Vertical">
+                                        <StackLayout HorizontalOptions="CenterAndExpand">
+                                            <Image WidthRequest="100" HeightRequest="100" Source="{Binding ProfileImage.BinarniZapis, Converter={StaticResource imgConv}}" ></Image>
+                                        </StackLayout>
+                                        <StackLayout HorizontalOptions="CenterAndExpand">
+                                            <Label FontSize="Small" Text="{Binding PrikaznoIme}" ></Label>
+                                        </StackLayout>
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_Tapped">
+
+                                            </TapGestureRecognizer>
+                                        </StackLayout.GestureRecognizers>
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

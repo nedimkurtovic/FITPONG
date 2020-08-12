@@ -27,6 +27,7 @@ using FIT_PONG.Services.Services.Autorizacija;
 using Microsoft.ML;
 using Microsoft.ML.Trainers;
 using FIT_PONG.Services.ML;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace FIT_PONG.Services.Services
 {
@@ -68,6 +69,7 @@ namespace FIT_PONG.Services.Services
             foreach (var user in users)
             {
                 var u = mapper.Map<SharedModels.Users>(user);
+                u.ProfileImage = ProcesDobavljanjaSlike(user.ProfileImagePath);
 
                 //try
                 //{
@@ -102,6 +104,8 @@ namespace FIT_PONG.Services.Services
                 throw new UserException("Korisnik ne postoji u bazi.");
 
             var u = mapper.Map<SharedModels.Users>(user);
+            u.ProfileImage = ProcesDobavljanjaSlike(user.ProfileImagePath);
+
             u.listaPrijava = GetPrijave(user.ID);
             u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == user.ID).ToList());
 
@@ -622,6 +626,20 @@ namespace FIT_PONG.Services.Services
 
                 return imeFajla;
             }
+        }
+        private Fajl ProcesDobavljanjaSlike(string Path)
+        {
+            Fajl povratni = new Fajl();
+            if (File.Exists(Path))
+            {
+                byte[] binZapis = File.ReadAllBytes(Path);
+                var ime = Path.Substring(Path.LastIndexOf("/") + 1);
+                povratni.BinarniZapis = binZapis;
+                povratni.Naziv = ime;
+                return povratni;
+            }
+            return null;
+
         }
         private void ProcesBrisanjaSlike(string putanja)
         {

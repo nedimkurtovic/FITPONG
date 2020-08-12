@@ -15,7 +15,6 @@ namespace FIT_PONG.Mobile.Views.Users
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class UsersMain : TabbedPage
     {
-        BaseAPIService apiServis = new BaseAPIService("users");
         public UsersMain(SharedModels.Users _user)
         {
             InitializeComponent();
