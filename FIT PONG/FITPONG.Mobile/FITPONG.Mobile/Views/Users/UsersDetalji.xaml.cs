@@ -1,4 +1,5 @@
 ﻿using FIT_PONG.Mobile.ViewModels.Users;
+using Org.BouncyCastle.Asn1.Crmf;
 using Org.BouncyCastle.Crypto.Tls;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,20 @@ namespace FIT_PONG.Mobile.Views.Users
         {
             InitializeComponent();
             BindingContext = viewModel = model;
+            if (viewModel.GetPreporuceneCommand.CanExecute(null))
+                viewModel.GetPreporuceneCommand.Execute(null);
         }
 
         private void btnEdit_Clicked(object sender, EventArgs e)
         {
 
+        }
+
+        private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            var steklejaut = (BindableObject)sender;
+            var usr = (SharedModels.Users)steklejaut.BindingContext;
+            await Navigation.PushAsync(new UsersDetalji(new UsersDetaljiViewModel(usr)));
         }
     }
 }

@@ -12,11 +12,14 @@ namespace FIT_PONG.Mobile.APIServices
     {
         public string resurs { get; set; }
         //public string APIUrl = $"{Resources.ApiUrl}";
-        //public static string Username { get; set; }
-        //public static string Password { get; set; }
-        public static string Username { get; set; } = "testni1";
-        public static string Password { get; set; } = "test123.";
-        public static int ID { get; set; } = 7;
+        public static string Username { get; set; }
+        public static string Password { get; set; }
+        public static int ID { get; set; }
+        public static SharedModels.Users User { get; set; }
+
+        //public static string Username { get; set; } = "testni1";
+        //public static string Password { get; set; } = "test123.";
+        //public static int ID { get; set; } = 7;
 
 
 #if DEBUG

@@ -53,8 +53,9 @@ namespace FIT_PONG.Mobile.Views
                         break;
                     case (int)MenuItemType.Profil:
                         {
-                            var idUsr = BaseAPIService.ID;
-                            var usr = await apiServis.GetByID<SharedModels.Users>(idUsr);
+                            //var idUsr = BaseAPIService.ID;
+                            //var usr = await apiServis.GetByID<SharedModels.Users>(idUsr);
+                            var usr = BaseAPIService.User;
                             MenuPages.Add(id, new NavigationPage(new UsersMain(usr)));
                             break;
                         }

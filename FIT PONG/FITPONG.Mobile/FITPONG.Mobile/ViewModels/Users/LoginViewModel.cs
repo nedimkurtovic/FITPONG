@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using FIT_PONG.SharedModels;
 
 namespace FIT_PONG.Mobile.ViewModels.Users
 {
@@ -32,6 +33,7 @@ namespace FIT_PONG.Mobile.ViewModels.Users
             IsBusy = true;
             if (!RegulisiPrazneInpute())
             {
+                IsBusy = false;
                 await Application.Current.MainPage.DisplayAlert("Greška", "Molimo popunite polja", "OK");
                 return;
             }
@@ -47,11 +49,14 @@ namespace FIT_PONG.Mobile.ViewModels.Users
                 BaseAPIService.Username = noviLogin.UserName;
                 BaseAPIService.Password = noviLogin.Password;
                 BaseAPIService.ID = rezultat.ID;
+                BaseAPIService.User = rezultat;
+                IsBusy = false;
                 await Application.Current.MainPage.DisplayAlert("Uspjeh", "Uspješna prijava", "OK");
                 //otvoriti mainpage
                 Application.Current.MainPage = new MainPage();
             }
-            
+            IsBusy = false;
+
         }
         private bool RegulisiPrazneInpute()
         {

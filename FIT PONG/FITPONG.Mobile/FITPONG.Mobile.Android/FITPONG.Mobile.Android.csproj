@@ -102,6 +102,7 @@
     <AndroidResource Include="Resources\drawable\ic_send.png" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\drawable\homelogo.jpg" />
     <Content Include="Resources\drawable\lampicaoff2.jpg" />
     <Content Include="Resources\drawable\lampicaon2.png" />
   </ItemGroup>

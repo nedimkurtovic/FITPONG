@@ -157,6 +157,13 @@ namespace FIT_PONG.WebAPI.Controllers
             return usersService.Suspenduj(userId, obj);
         }
 
+        [Authorize(AuthenticationSchemes = "BasicAuthentication")]
+        [HttpGet]
+        [Route("{id}/recommend")]
+        public List<SharedModels.Users> Recommend(int id)
+        {
+            return usersService.RecommendPostovanja(id);
+        }
         private PagedResponse<Users> GetPagedResponse(AccountSearchRequest obj)
         {
             var listaUsera = usersService.Get(obj);
