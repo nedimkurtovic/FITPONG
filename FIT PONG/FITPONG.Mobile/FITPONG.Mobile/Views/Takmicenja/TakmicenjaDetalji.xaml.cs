@@ -27,6 +27,8 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
 
             lblEmpty.IsVisible = viewModel.listaPrijava.Count == 0;
             btnGenerisiRaspored.IsVisible = !vm.Takmicenje.Inicirano ?? true;
+            btnPrijava.IsVisible = !vm.Takmicenje.Inicirano ?? true;
+
         }
         public TakmicenjaDetalji()
         {

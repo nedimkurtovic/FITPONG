@@ -23,7 +23,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             datumZP = Takmicenje.DatumZavrsetkaPrijava != null ? Takmicenje.DatumZavrsetkaPrijava.GetValueOrDefault().Date.ToString() : "Nije postavljen";
             vidljiv = true;
             promjena = new Command(async => { _vidljiv = !_vidljiv; });
-            prijaveVisible = !_takmicenje.Inicirano??default(bool);
+            prijaveVisible = _takmicenje.Inicirano == false && BaseAPIService.ID == _takmicenje.KreatorID ? true:false;
             DodajPrijave(_takmicenje.Prijave);
         }
         public TakmicenjaDetaljiViewModel()
