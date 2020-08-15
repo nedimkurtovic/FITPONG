@@ -59,6 +59,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0">
       <PrivateAssets>all</PrivateAssets>
@@ -75,6 +76,12 @@
     <ProjectReference Include="..\FITPONG.Database\FITPONG.Database.csproj" />
     <ProjectReference Include="..\FITPONG.Services\FITPONG.Services.csproj" />
     <ProjectReference Include="..\FITPONG.SharedModels\FITPONG.SharedModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
