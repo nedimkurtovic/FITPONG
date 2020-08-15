@@ -142,8 +142,8 @@ namespace FIT_PONG.Services.Services
                     igrac.ProfileImagePath = "~/igraci/" + ProcesSpremanjaSlike(obj.Slika);
 
                 var userTemp = mapper.Map<SharedModels.Users>(obj);
-                
-                if(user.Id != 0)
+
+                if (user.Id != 0)
                     userTemp.ID = user.Id;
 
                 db.Add(igrac);
@@ -174,7 +174,7 @@ namespace FIT_PONG.Services.Services
                 ex.AddError("", "Neispravni podaci za login");
                 throw ex;
             }
-            
+
             var igrac = db.Igraci.Find(korisnik.Id);
 
             var rezultat = await signinmanager.PasswordSignInAsync(obj.UserName, obj.Password, obj.RememberMe, false);
@@ -261,7 +261,7 @@ namespace FIT_PONG.Services.Services
 
         }
 
-        public async Task<string> SendPasswordChange(Email_Password_Request obj)
+        public async Task<SharedModels.Users> SendPasswordChange(Email_Password_Request obj)
         {
             var user = await usermanager.FindByEmailAsync(obj.Email);
             if (user != null && user.EmailConfirmed)
@@ -271,7 +271,8 @@ namespace FIT_PONG.Services.Services
                 try
                 {
                     mailservis.PosaljiResetPassword(token, obj.Email, "api");
-                    return "Poslan mail za promjenu passworda.";
+                    var i = db.Igraci.Find(user.Id);
+                    return mapper.Map<SharedModels.Users>(i);
                 }
                 catch (Exception)
                 {
@@ -300,34 +301,33 @@ namespace FIT_PONG.Services.Services
                 throw new UserException("Doslo je do greske prilikom potvrde mejla.");
 
             var igrac = db.Igraci.Find(userId);
-            
+
             return mapper.Map<SharedModels.Users>(igrac);
         }
 
-        public async Task<string> ConfirmPasswordChange(string loggedInUserName, PasswordPromjena obj)
+        public async Task<SharedModels.Users> ConfirmPasswordChange(string loggedInUserName, PasswordPromjena obj)
         {
-            var u = db.Igraci.Where(d => d.PrikaznoIme == loggedInUserName).FirstOrDefault();
+            var user = await usermanager.FindByEmailAsync(loggedInUserName);
 
-            if (u != null)
+            if (user != null)
             {
-                var user = await usermanager.FindByIdAsync(u.ID.ToString());
-                if (user != null)
+                if (obj.password != obj.potvrdaPassword)
+                    throw new UserException("Passwordi se ne slazu.");
+
+                var rezultat = await usermanager.ResetPasswordAsync(user, obj.token, obj.password);
+                if (rezultat.Succeeded)
                 {
-                    if (obj.password != obj.potvrdaPassword)
-                        throw new UserException("Passwordi se ne slazu.");
+                    var i = db.Igraci.Find(user.Id);
+                    return mapper.Map<SharedModels.Users>(i);
+                }
+                else
+                {
+                    UserException exception = new UserException();
 
-                    var rezultat = await usermanager.ResetPasswordAsync(user, obj.token, obj.password);
-                    if (rezultat.Succeeded)
-                        return "Password je uspjesno resetovan.";
-                    else
-                    {
-                        UserException exception = new UserException();
+                    foreach (var error in rezultat.Errors)
+                        exception.AddError("", error.Description);
 
-                        foreach (var error in rezultat.Errors)
-                            exception.AddError("", error.Description);
-
-                        throw exception;
-                    }
+                    throw exception;
                 }
             }
             throw new UserException("User ne postoji u bazi.");
@@ -668,9 +668,9 @@ namespace FIT_PONG.Services.Services
                 var SviUseriSaPostovanjima = GetUserePostovanja();
 
                 var data = new List<UserEntry>();
-                foreach(var i in SviUseriSaPostovanjima)
+                foreach (var i in SviUseriSaPostovanjima)
                 {
-                    if(i.Postovanja.Count > 1)
+                    if (i.Postovanja.Count > 1)
                     {
                         var SviKojiPostujuFrajera = i.Postovanja.Select(x => x.PostivalacID).ToList();
                         SviKojiPostujuFrajera.ForEach(x =>
@@ -711,9 +711,9 @@ namespace FIT_PONG.Services.Services
             }
 
 
-            var sviUseri = db.Igraci.Where(x=>x.ID != id).ToList();
+            var sviUseri = db.Igraci.Where(x => x.ID != id).ToList();
             var rezultati = new List<Tuple<Database.DTOs.Igrac, float>>();
-            foreach(var i in sviUseri)
+            foreach (var i in sviUseri)
             {
                 //STEP 6: Create prediction engine and predict the score for Product 63 being co-purchased with Product 3.
                 //        The higher the score the higher the probability for this particular productID being co-purchased 
@@ -722,20 +722,20 @@ namespace FIT_PONG.Services.Services
                                          new UserEntry()
                                          {
                                              UserID = (uint)id,
-                                             CoPostovanjeUserID =(uint) i.ID
+                                             CoPostovanjeUserID = (uint)i.ID
                                          });
                 rezultati.Add(new Tuple<Igrac, float>(i, prediction.Score));
             }
 
             var poluFinalnaLista = rezultati.OrderByDescending(x => x.Item2).Select(x => x.Item1).Take(3).ToList();
-            if(poluFinalnaLista.Count() < 3)
+            if (poluFinalnaLista.Count() < 3)
             {
                 var pomozi = IgraciIzGrada(id, 3 - poluFinalnaLista.Count());
                 poluFinalnaLista.AddRange(pomozi);
             }
 
             var finalnaLista = new List<SharedModels.Users>();
-            foreach(var i in poluFinalnaLista)
+            foreach (var i in poluFinalnaLista)
             {
                 finalnaLista.Add(Get(i.ID));
             }
@@ -765,7 +765,7 @@ namespace FIT_PONG.Services.Services
 
             Random _random = new Random();
             var listaIstihPoGradu = new List<Database.DTOs.Igrac>();
-            foreach(var i in podaci)
+            foreach (var i in podaci)
             {
                 if (i.Grad.Naziv == gradPoKojemSeTrazi)
                     listaIstihPoGradu.Add(i);

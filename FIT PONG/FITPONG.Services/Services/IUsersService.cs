@@ -34,8 +34,8 @@ namespace FIT_PONG.Services.Services
 		SharedModels.Users EditujProfil(int id, SharedModels.Requests.Account.AccountUpdate obj);
 		Task<SharedModels.Users> SendConfirmationEmail(SharedModels.Requests.Account.Email_Password_Request obj);
 		Task<SharedModels.Users> ConfirmEmail(int userId, string token);
-		Task<string> SendPasswordChange(SharedModels.Requests.Account.Email_Password_Request obj);
-		Task<string> ConfirmPasswordChange(string loggedInUserName, PasswordPromjena obj);
+		Task<SharedModels.Users> SendPasswordChange(SharedModels.Requests.Account.Email_Password_Request obj);
+		Task<SharedModels.Users> ConfirmPasswordChange(string loggedInUserName, PasswordPromjena obj);
 		string ResetProfilePicture(string loggedInUserName, int id);//autorizovat
 		string UpdateProfilePicture(string loggedInUserName, int id, Fajl Slika);//klasa slika umjesto niz byteova //autorizovat
 		string Postovanje(string loggedInUserName, int postovaniID);

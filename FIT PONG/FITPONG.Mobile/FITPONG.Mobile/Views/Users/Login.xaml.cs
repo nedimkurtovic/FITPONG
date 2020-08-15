@@ -28,7 +28,12 @@ namespace FIT_PONG.Mobile.Views.Users
 
         private void btnResendMail_Clicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new UnesiMejl();
+            Application.Current.MainPage = new UnesiMejl("resetMail");
+        }
+
+        private void btnResetPassword_Clicked(object sender, EventArgs e)
+        {
+            Application.Current.MainPage = new UnesiMejl("resetPassword");
         }
     }
 }

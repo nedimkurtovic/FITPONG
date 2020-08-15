@@ -19,5 +19,8 @@ namespace FIT_PONG.SharedModels.Requests.Account
         [DataType(DataType.Password)]
         [Compare("password", ErrorMessage = "Password se mora podudarati")]
         public string potvrdaPassword { get; set; }
+
+        [RegularExpression(pattern: "[a-zA-Z0-9.]+@edu\\.fit\\.ba", ErrorMessage = "Email mora biti u obliku ime.prezime@edu.fit.ba")]
+        public string Email { get; set; }
     }
 }

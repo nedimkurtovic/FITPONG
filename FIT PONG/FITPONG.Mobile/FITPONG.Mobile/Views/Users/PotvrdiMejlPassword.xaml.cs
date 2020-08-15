@@ -11,13 +11,13 @@ using Xamarin.Forms.Xaml;
 namespace FIT_PONG.Mobile.Views.Users
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PotvrdiMejl : ContentPage
+    public partial class PotvrdiMejlPassword : ContentPage
     {
-        PotvrdiMejlViewModel viewModel;
+        PotvrdiMejlPasswordViewModel viewModel;
 
-        public PotvrdiMejl(int userId)
+        public PotvrdiMejlPassword(int userId,string tip, string email)
         {
-            BindingContext = viewModel = new PotvrdiMejlViewModel(userId);
+            BindingContext = viewModel = new PotvrdiMejlPasswordViewModel(userId, tip, email);
             InitializeComponent();
         }
     }

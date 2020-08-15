@@ -15,9 +15,9 @@ namespace FIT_PONG.Mobile.Views.Users
     {
         UnesiMejlViewModel viewModel;
 
-        public UnesiMejl()
+        public UnesiMejl(string tip)
         {
-            BindingContext = viewModel = new UnesiMejlViewModel();
+            BindingContext = viewModel = new UnesiMejlViewModel(tip);
             InitializeComponent();
         }
     }
