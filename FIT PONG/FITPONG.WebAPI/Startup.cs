@@ -88,7 +88,7 @@ namespace FIT_PONG.WebAPI
             });
 
             services.AddAutoMapper(typeof(Startup));
-            services.AddDbContext<FIT_PONG.Database.MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
+            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
             services.AddAuthentication("BasicAuthentication")
                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
@@ -99,7 +99,7 @@ namespace FIT_PONG.WebAPI
                  opcije.Password.RequireDigit = false;
                  opcije.SignIn.RequireConfirmedEmail = true;
              })
-                .AddEntityFrameworkStores<MyDb>()
+                .AddEntityFrameworkStores<FIT_PONG.Database.MyDb>()
                 .AddDefaultTokenProviders();
 
             

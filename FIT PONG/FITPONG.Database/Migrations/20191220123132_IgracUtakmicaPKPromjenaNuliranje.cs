@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FIT_PONG.Migrations
 {
@@ -44,7 +45,7 @@ namespace FIT_PONG.Migrations
                 table: "IgraciUtakmice",
                 nullable: false,
                 defaultValue: 0)
-                .Annotation("SqlServer:Identity", "1, 1");
+                .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_IgraciUtakmice",

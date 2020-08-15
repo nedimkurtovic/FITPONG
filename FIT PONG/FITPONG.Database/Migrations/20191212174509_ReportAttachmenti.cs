@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FIT_PONG.Migrations
@@ -38,7 +39,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Path = table.Column<string>(nullable: false),
                     DatumUnosa = table.Column<DateTime>(nullable: false),
                     ReportID = table.Column<int>(nullable: true)
