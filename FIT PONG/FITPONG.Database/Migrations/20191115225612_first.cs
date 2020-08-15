@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FIT_PONG.Migrations
@@ -12,7 +13,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Naziv = table.Column<string>(maxLength: 40, nullable: true)
                 },
                 constraints: table =>
@@ -25,7 +26,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Naziv = table.Column<string>(nullable: true),
                     DatumModifikacije = table.Column<DateTime>(nullable: false)
                 },
@@ -39,7 +40,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Naziv = table.Column<string>(maxLength: 40, nullable: false)
                 },
                 constraints: table =>
@@ -52,7 +53,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Opis = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -65,7 +66,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DatumKreiranja = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -78,7 +79,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Username = table.Column<string>(maxLength: 50, nullable: false),
                     PasswordHash = table.Column<string>(nullable: false),
                     PasswordSalt = table.Column<string>(nullable: false)
@@ -93,7 +94,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Naziv = table.Column<string>(nullable: true),
                     Content = table.Column<string>(nullable: true),
                     DatumKreiranja = table.Column<DateTime>(nullable: false),
@@ -109,7 +110,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Naziv = table.Column<string>(maxLength: 25, nullable: false)
                 },
                 constraints: table =>
@@ -122,7 +123,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Opis = table.Column<string>(maxLength: 40, nullable: true)
                 },
                 constraints: table =>
@@ -135,7 +136,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Opis = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -148,7 +149,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Opis = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -161,7 +162,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Naziv = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -174,7 +175,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Naziv = table.Column<string>(maxLength: 15, nullable: false)
                 },
                 constraints: table =>
@@ -187,7 +188,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Naziv = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -200,7 +201,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Naziv = table.Column<string>(maxLength: 20, nullable: false),
                     Opis = table.Column<string>(maxLength: 50, nullable: true)
                 },
@@ -214,7 +215,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Naziv = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
@@ -227,7 +228,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     BrojRunde = table.Column<int>(nullable: false),
                     DatumPocetka = table.Column<DateTime>(nullable: false),
                     BracketID = table.Column<int>(nullable: false)
@@ -248,7 +249,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Ime = table.Column<string>(maxLength: 30, nullable: false),
                     Prezime = table.Column<string>(maxLength: 30, nullable: false),
                     DatumRodjenja = table.Column<DateTime>(nullable: false),
@@ -284,7 +285,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     FeedID = table.Column<int>(nullable: false),
                     ObjavaID = table.Column<int>(nullable: false)
                 },
@@ -310,7 +311,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DatumVrijeme = table.Column<DateTime>(nullable: false),
                     Text = table.Column<string>(nullable: true),
                     KonverzacijaID = table.Column<int>(nullable: false),
@@ -363,7 +364,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Naziv = table.Column<string>(maxLength: 50, nullable: false),
                     DatumPocetka = table.Column<DateTime>(nullable: false),
                     DatumZavrsetka = table.Column<DateTime>(nullable: false),
@@ -411,7 +412,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     BrojUtakmice = table.Column<int>(nullable: false),
                     DatumVrijeme = table.Column<DateTime>(nullable: false),
                     Rezultat = table.Column<string>(maxLength: 10, nullable: true),
@@ -471,7 +472,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Opis = table.Column<string>(nullable: true),
                     DatumKreiranja = table.Column<DateTime>(nullable: false),
                     Sadrzaj = table.Column<string>(nullable: true),
@@ -493,7 +494,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     BrojOdigranihMeceva = table.Column<int>(nullable: false),
                     BrojSinglePobjeda = table.Column<int>(nullable: false),
                     BrojOsvojenihTurnira = table.Column<int>(nullable: false),
@@ -568,7 +569,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DatumPrijave = table.Column<DateTime>(nullable: false),
                     isTim = table.Column<bool>(nullable: false),
                     Naziv = table.Column<string>(maxLength: 50, nullable: true),
@@ -648,7 +649,7 @@ namespace FIT_PONG.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     BrojOdigranihMeceva = table.Column<int>(nullable: false),
                     BrojPobjeda = table.Column<int>(nullable: false),
                     BrojIzgubljenih = table.Column<int>(nullable: false),
