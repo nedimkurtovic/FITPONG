@@ -49,7 +49,7 @@ namespace FIT_PONG.WebAPI.Controllers
 
         [HttpPost]
         [Route("registracija")]
-        public async Task<Users> Register(AccountInsert obj)
+        public async Task<Users> Register([FromBody]AccountInsert obj)
         {
             return await usersService.Register(obj);
         }
@@ -74,15 +74,15 @@ namespace FIT_PONG.WebAPI.Controllers
 
         [HttpPost]
         [Route("mail")]
-        public async Task<string> PonovoPosaljiMail(Email_Password_Request obj)
+        public async Task<SharedModels.Users> PonovoPosaljiMail(Email_Password_Request obj)
         {
             return await usersService.SendConfirmationEmail(obj);
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("mail-potvrda")]
-        public async Task<String> ConfirmEmail([FromQuery]string userId, [FromQuery]string token)
+        public async Task<SharedModels.Users> ConfirmEmail([FromQuery]int userId, [FromQuery]string token)
         {
             return await usersService.ConfirmEmail(userId, token);
         }

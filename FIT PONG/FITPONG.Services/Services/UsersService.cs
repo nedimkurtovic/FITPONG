@@ -141,12 +141,17 @@ namespace FIT_PONG.Services.Services
                 if (obj.Slika != null)
                     igrac.ProfileImagePath = "~/igraci/" + ProcesSpremanjaSlike(obj.Slika);
 
+                var userTemp = mapper.Map<SharedModels.Users>(obj);
+                
+                if(user.Id != 0)
+                    userTemp.ID = user.Id;
+
                 db.Add(igrac);
                 db.SaveChanges();
 
                 var token = await usermanager.GenerateEmailConfirmationTokenAsync(user);
                 mailservis.PosaljiKonfirmacijskiMejl(token, user.Email, "api");
-                return mapper.Map<SharedModels.Users>(obj);
+                return userTemp;
             }
             else
             {
@@ -237,7 +242,7 @@ namespace FIT_PONG.Services.Services
         }
 
 
-        public async Task<string> SendConfirmationEmail(Email_Password_Request obj)
+        public async Task<SharedModels.Users> SendConfirmationEmail(Email_Password_Request obj)
         {
             var user = await usermanager.FindByEmailAsync(obj.Email);
 
@@ -245,7 +250,9 @@ namespace FIT_PONG.Services.Services
             {
                 var token = await usermanager.GenerateEmailConfirmationTokenAsync(user);
                 mailservis.PosaljiKonfirmacijskiMejl(token, user.Email, "api");
-                return "Konfirmacijski mail uspjesno poslan.";
+
+                var i = db.Igraci.Find(user.Id);
+                return mapper.Map<SharedModels.Users>(i);
             }
             else
             {
@@ -275,12 +282,13 @@ namespace FIT_PONG.Services.Services
 
         }
 
-        public async Task<string> ConfirmEmail(string userId, string token)
+        public async Task<Users> ConfirmEmail(int userId, string token)
         {
-            if (userId == null || token == null)
+
+            if (userId == 0 || token == null)
                 throw new UserException("UserID i token ne smiju biti null.");
 
-            var user = await usermanager.FindByIdAsync(userId);
+            var user = await usermanager.FindByIdAsync(userId.ToString());
             if (user == null)
                 throw new UserException("User ne postoji u bazi");
 
@@ -291,9 +299,9 @@ namespace FIT_PONG.Services.Services
             if (!rezultat.Succeeded)
                 throw new UserException("Doslo je do greske prilikom potvrde mejla.");
 
-
-
-            return "Uspjesno ste potvrdili mail.";
+            var igrac = db.Igraci.Find(userId);
+            
+            return mapper.Map<SharedModels.Users>(igrac);
         }
 
         public async Task<string> ConfirmPasswordChange(string loggedInUserName, PasswordPromjena obj)

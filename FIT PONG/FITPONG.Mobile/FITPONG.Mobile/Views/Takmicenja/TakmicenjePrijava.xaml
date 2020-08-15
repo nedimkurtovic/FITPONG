@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FIT_PONG.Mobile.Views.Takmicenja.TakmicenjePrijava">
     <ContentPage.Content>
-        <StackLayout >
+        <StackLayout>
             <Label Padding="10" Text="PRIJAVA NA TAKMIČENJE" TextColor="#000" FontSize="Large" HorizontalTextAlignment="Center"/>
 
             <FlexLayout Margin="20" AlignItems="Center" JustifyContent="Center">

@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:converters="clr-namespace:FIT_PONG.Mobile.Converters"
+             x:Class="FIT_PONG.Mobile.Views.Users.Registracija">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ImageConverter x:Key="imgConv"></converters:ImageConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout x:Name="container">
+            <Label Padding="10" Text="REGISTRACIJA" TextColor="#000" FontSize="Large" HorizontalTextAlignment="Center"/>
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Email" Margin="20" TextColor="#000"/>
+                <Entry x:Name="email" WidthRequest="150" Text="{Binding Email}"/>
+            </FlexLayout>
+
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Prikazno ime" Margin="20" TextColor="#000"/>
+                <Entry x:Name="prikaznoIme" WidthRequest="150" Text="{Binding PrikaznoIme}" />
+            </FlexLayout>
+
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Password" Margin="20" TextColor="#000"/>
+                <Entry x:Name="password" WidthRequest="150" Text="{Binding Password}" />
+            </FlexLayout>
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Potvrda passworda" Margin="20" TextColor="#000"/>
+                <Entry x:Name="potvrdaPassworda" WidthRequest="150" Text="{Binding PotvrdaPassworda}" />
+            </FlexLayout>
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Jaca ruka" Margin="20" TextColor="#000"/>
+                <Picker x:Name="jacarukaPicker" WidthRequest="100" ItemsSource="{Binding JacaRukaLista}" SelectedIndexChanged="jacarukaPicker_SelectedIndexChanged"/>
+            </FlexLayout>
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Visina" Margin="20" TextColor="#000"/>
+                <Entry x:Name="visina" WidthRequest="150" Text="{Binding Visina}" />
+            </FlexLayout>
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Spol" Margin="20" TextColor="#000"/>
+                <Picker x:Name="spolPicker" WidthRequest="100" ItemsSource="{Binding Spolovi}" SelectedIndexChanged="spolPicker_SelectedIndexChanged"/>
+            </FlexLayout>
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Grad" Margin="20" TextColor="#000"/>
+                <Picker x:Name="gradPicker" WidthRequest="100" ItemsSource="{Binding Gradovi}" SelectedIndexChanged="gradPicker_SelectedIndexChanged"
+                        ItemDisplayBinding="{Binding Naziv}"/>
+            </FlexLayout>
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Button Margin="20" x:Name="btnDodajSliku" Text="Dodaj sliku profila" Clicked="btnDodajSliku_Clicked"/>
+                <Image Source="{Binding SlikaProfila.BinarniZapis, Converter={StaticResource imgConv}}" 
+                       WidthRequest="100" HeightRequest="100"/>
+            </FlexLayout>
+
+            <Button x:Name="btnRegistracija" Text="Registruj se" Command="{Binding RegistracijaKomanda}" />
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

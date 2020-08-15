@@ -14,7 +14,7 @@ namespace FIT_PONG.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "BasicAuthentication")]
+    //[Authorize(AuthenticationSchemes = "BasicAuthentication")]
     public class GradoviController : ControllerBase
     {
         private readonly IGradoviService gradoviService;
@@ -32,19 +32,20 @@ namespace FIT_PONG.WebAPI.Controllers
         [HttpGet]
         public List<Gradovi> Get()
         {
-            gradoviAutorizator.AuthorizeGet(usersService.GetRequestUserName(HttpContext.Request));
+            //gradoviAutorizator.AuthorizeGet(usersService.GetRequestUserName(HttpContext.Request));
             return gradoviService.Get();
         }
 
         [HttpGet("{id}")]
         public Gradovi Get(int id)
         {
-            gradoviAutorizator.AuthorizeGetById(usersService.GetRequestUserName(HttpContext.Request));
+            //gradoviAutorizator.AuthorizeGetById(usersService.GetRequestUserName(HttpContext.Request));
             return gradoviService.GetById(id);
         }
 
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "BasicAuthentication")]
         public Gradovi Add(GradoviInsertUpdate obj)
         {
             gradoviAutorizator.AuthorizeAdd(usersService.GetRequestUserName(HttpContext.Request));
@@ -52,6 +53,7 @@ namespace FIT_PONG.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = "BasicAuthentication")]
         public Gradovi Update(int id, GradoviInsertUpdate obj)
         {
             gradoviAutorizator.AuthorizeUpdate(usersService.GetRequestUserName(HttpContext.Request));
@@ -59,6 +61,7 @@ namespace FIT_PONG.WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = "BasicAuthentication")]
         public void Delete(int id)
         {
             gradoviAutorizator.AuthorizeDelete(usersService.GetRequestUserName(HttpContext.Request));

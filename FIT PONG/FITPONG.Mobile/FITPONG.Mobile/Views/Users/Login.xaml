@@ -42,8 +42,8 @@
                     <StackLayout Orientation="Vertical">
                         <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"
                                Text="Nemate account? Registrujte se"></Label>
-                        <Button WidthRequest="200" Margin="{StaticResource Margina}" Text="Registracija" VerticalOptions="Center"
-                    Command="{Binding LoginKomanda}" HorizontalOptions="CenterAndExpand"></Button>
+                        <Button x:Name="btnRegistracija" WidthRequest="200" Margin="{StaticResource Margina}" Text="Registracija" VerticalOptions="Center" 
+                                HorizontalOptions="CenterAndExpand" Clicked="btnRegistracija_Clicked"></Button>
                     </StackLayout>
                     <StackLayout Orientation="Horizontal">
                         <StackLayout HorizontalOptions="Start" Orientation="Vertical">
@@ -55,8 +55,8 @@
                         <StackLayout HorizontalOptions="End" Orientation="Vertical">
                             <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"
                                Text="Nije stigao verifikacijski mail?"></Label>
-                            <Button WidthRequest="120" HeightRequest="80" Text="Resend mail" VerticalOptions="Center"
-                    Command="{Binding LoginKomanda}" HorizontalOptions="CenterAndExpand"></Button>
+                            <Button x:Name="btnResendMail" WidthRequest="120" HeightRequest="80" Text="Resend mail" VerticalOptions="Center"
+                             HorizontalOptions="CenterAndExpand" Clicked="btnResendMail_Clicked"></Button>
                         </StackLayout>
                     </StackLayout>
                 </StackLayout>

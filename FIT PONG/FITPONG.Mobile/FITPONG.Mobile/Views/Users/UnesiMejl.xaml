@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FIT_PONG.Mobile.Views.Users.UnesiMejl">
+    <ContentPage.Content>
+        <StackLayout x:Name="container" Padding="20">
+            <Label Padding="10" Text="UNESI MEJL" TextColor="#000" FontSize="Large" HorizontalTextAlignment="Center"/>
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Email" Margin="20" TextColor="#000"/>
+                <Entry x:Name="email" WidthRequest="150" Text="{Binding Email}"/>
+            </FlexLayout>
+
+            <FlexLayout AlignItems="Center" JustifyContent="Center">
+                <Button x:Name="btnPotvrdi" Text="Potvrdi" Command="{Binding PotvrdiKomanda}" />
+            </FlexLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

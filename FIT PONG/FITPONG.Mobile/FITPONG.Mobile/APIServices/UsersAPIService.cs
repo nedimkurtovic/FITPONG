@@ -4,7 +4,9 @@ using Flurl.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using System.Web;
 using Xamarin.Forms;
 
 namespace FIT_PONG.Mobile.APIServices
@@ -18,7 +20,7 @@ namespace FIT_PONG.Mobile.APIServices
 
         public async Task<Users> Registracija(AccountInsert obj)
         {
-            var url = $"{APIUrl}/{resurs}/register";
+            var url = $"{APIUrl}/{resurs}/registracija";
             try
             {
                 //var jsonString = await obj.ToQueryString();
@@ -81,5 +83,40 @@ namespace FIT_PONG.Mobile.APIServices
                 return new List<SharedModels.Users>();
             }
         }
+
+        public async Task<SharedModels.Users> PotvrdiMejl(int userId, string token)
+        {
+
+            var url = $"{APIUrl}/{resurs}/mail-potvrda?userId={userId}&token={HttpUtility.UrlEncode(token)}";
+            try
+            {   
+                var rezult = await url.PostJsonAsync("").ReceiveJson<SharedModels.Users>();
+                return rezult;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = GetErrore(ex).Result;
+                await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
+                return default(SharedModels.Users);
+            }
+        }
+
+        public async Task<SharedModels.Users> PosaljiKonfirmacijskiMejl(Email_Password_Request obj)
+        {
+
+            var url = $"{APIUrl}/{resurs}/mail";
+            try
+            {
+                var rezult = await url.PostJsonAsync(obj).ReceiveJson<SharedModels.Users>();
+                return rezult;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = GetErrore(ex).Result;
+                await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
+                return default(SharedModels.Users);
+            }
+        }
+
     }
 }

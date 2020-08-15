@@ -1,4 +1,5 @@
 ﻿using FIT_PONG.Mobile.ViewModels.Users;
+using FIT_PONG.Mobile.Views.Takmicenja;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,16 @@ namespace FIT_PONG.Mobile.Views.Users
         {
             InitializeComponent();
             BindingContext = viewModel = new LoginViewModel();
+        }
+
+        private void btnRegistracija_Clicked(object sender, EventArgs e)
+        {
+            Application.Current.MainPage = new Registracija();
+        }
+
+        private void btnResendMail_Clicked(object sender, EventArgs e)
+        {
+            Application.Current.MainPage = new UnesiMejl();
         }
     }
 }
