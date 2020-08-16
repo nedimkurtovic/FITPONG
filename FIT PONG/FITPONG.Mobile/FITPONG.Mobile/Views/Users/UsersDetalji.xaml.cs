@@ -24,6 +24,8 @@ namespace FIT_PONG.Mobile.Views.Users
             BindingContext = viewModel = model;
             if (viewModel.GetPreporuceneCommand.CanExecute(null))
                 viewModel.GetPreporuceneCommand.Execute(null);
+            btnEdit.IsVisible = viewModel.Vlasnik();
+
         }
 
         private async void btnEdit_Clicked(object sender, EventArgs e)

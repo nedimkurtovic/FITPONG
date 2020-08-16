@@ -21,8 +21,8 @@ namespace FIT_PONG.Mobile.Views.Users
         {
             BindingContext = viewModel = new RegistracijaViewModel();
             InitializeComponent();
-            container.Margin = new Thickness(20, 0);
-            container.Padding = new Thickness(40, 0);
+            //container.Margin = new Thickness(20, 0);
+            //container.Padding = new Thickness(40, 0);
         }
 
         private void spolPicker_SelectedIndexChanged(object sender, EventArgs e)

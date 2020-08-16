@@ -21,8 +21,6 @@ namespace FIT_PONG.Mobile.Views
 
             menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" },
                 new HomeMenuItem {Id = MenuItemType.Naslovnica, Title="Naslovnica" },
                 new HomeMenuItem {Id = MenuItemType.Profil, Title="Profil" },
                 new HomeMenuItem {Id = MenuItemType.Igrači, Title="Igrači" },

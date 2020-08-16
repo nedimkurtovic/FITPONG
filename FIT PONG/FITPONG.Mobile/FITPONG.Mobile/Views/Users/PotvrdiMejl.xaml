@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FIT_PONG.Mobile.Views.Users.UnesiMejl">
+             x:Class="FIT_PONG.Mobile.Views.Users.PotvrdiMejl">
     <ContentPage.Content>
         <ScrollView Padding="20,0"  HorizontalOptions="CenterAndExpand" >
             <StackLayout  HorizontalOptions="CenterAndExpand">
-                <Label Padding="10" Text="UNESI MEJL" TextColor="#000" FontSize="Large" HorizontalTextAlignment="Center"/>
+                <Label Padding="10" Text="POTVRDI MEJL" TextColor="#000" FontSize="Large" HorizontalTextAlignment="Center"/>
 
-                <Label Text="Email" Margin="0,20,0,0" TextColor="#000"/>
-                    <Entry x:Name="email" WidthRequest="300" Text="{Binding Email}"/>
+                <Label Text="Token" Margin="0,20,0,0" TextColor="#000"/>
+                <Entry x:Name="token" WidthRequest="300" Text="{Binding Token}"/>
 
                 <Button Margin="0,20" x:Name="btnPotvrdi" Text="Potvrdi" Command="{Binding PotvrdiKomanda}" />
             </StackLayout>
