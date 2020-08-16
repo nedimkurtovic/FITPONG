@@ -3,17 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FIT_PONG.Mobile.Views.Users.UnesiMejl">
     <ContentPage.Content>
-        <StackLayout x:Name="container" Padding="20">
-            <Label Padding="10" Text="UNESI MEJL" TextColor="#000" FontSize="Large" HorizontalTextAlignment="Center"/>
+        <ScrollView Padding="20,0"  HorizontalOptions="CenterAndExpand" >
+            <StackLayout  HorizontalOptions="CenterAndExpand">
+                <Label Padding="10" Text="UNESI MEJL" TextColor="#000" FontSize="Large" HorizontalTextAlignment="Center"/>
 
-            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
-                <Label Text="Email" Margin="20" TextColor="#000"/>
-                <Entry x:Name="email" WidthRequest="150" Text="{Binding Email}"/>
-            </FlexLayout>
+                <Label Text="Email" Margin="0,20,0,0" TextColor="#000"/>
+                    <Entry x:Name="email" WidthRequest="300" Text="{Binding Email}"/>
 
-            <FlexLayout AlignItems="Center" JustifyContent="Center">
-                <Button x:Name="btnPotvrdi" Text="Potvrdi" Command="{Binding PotvrdiKomanda}" />
-            </FlexLayout>
-        </StackLayout>
+                <Button Margin="0,20" x:Name="btnPotvrdi" Text="Potvrdi" Command="{Binding PotvrdiKomanda}" />
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
