@@ -93,6 +93,7 @@ namespace FIT_PONG.Services.Services
 
                 u.listaPrijava = GetPrijave(user.ID);
                 u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == user.ID).ToList());
+                u.BrojPostovanja = db.Postovanja.Count(x => x.PostovaniID == u.ID);
                 list.Add(u);
             }
 
@@ -111,7 +112,8 @@ namespace FIT_PONG.Services.Services
 
             u.listaPrijava = GetPrijave(user.ID);
             u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == user.ID).ToList());
-
+            u.BrojPostovanja = db.Postovanja.Count(x => x.PostovaniID == u.ID);
+            
             return mapper.Map<SharedModels.Users>(u);
         }
 
@@ -247,6 +249,8 @@ namespace FIT_PONG.Services.Services
             u.ProfileImage = ProcesDobavljanjaSlike(igrac.ProfileImagePath);
             var grad  = db.Gradovi.Find(obj.GradId);
             u.Grad = grad != null ? grad.Naziv : null;
+            u.BrojPostovanja = db.Postovanja.Count(x => x.PostovaniID == u.ID);
+
 
             return u;
         }
@@ -343,7 +347,7 @@ namespace FIT_PONG.Services.Services
             throw new UserException("User ne postoji u bazi.");
         }
 
-        public string Postovanje(string loggedInUserName, int postovaniID)
+        public SharedModels.Users Postovanje(string loggedInUserName, int postovaniID)
         {
             var user1 = db.Users.Where(d => d.Email == loggedInUserName).FirstOrDefault();
             var user2 = db.Igraci.Find(postovaniID);
@@ -364,7 +368,16 @@ namespace FIT_PONG.Services.Services
 
             db.SaveChanges();
 
-            return "Postovanje uspjesno azurirano.";
+            var u = mapper.Map<SharedModels.Users>(user2);
+            u.listaPrijava = GetPrijave(user2.ID);
+            u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == u.ID).ToList());
+            u.ProfileImage = ProcesDobavljanjaSlike(user2.ProfileImagePath);
+            var grad = db.Gradovi.Find(user2.GradID);
+            u.Grad = grad != null ? grad.Naziv : null;
+            u.BrojPostovanja = db.Postovanja.Count(x => x.PostovaniID == u.ID);
+
+
+            return u;
         }
 
         public SharedModels.Users ResetProfilePicture(string loggedInUserName, int id)
@@ -433,6 +446,8 @@ namespace FIT_PONG.Services.Services
                 u.ProfileImage = ProcesDobavljanjaSlike(igrac.ProfileImagePath);
                 var grad = db.Gradovi.Find(igrac.GradID);
                 u.Grad = grad != null ? grad.Naziv : null;
+                u.BrojPostovanja = db.Postovanja.Count(x => x.PostovaniID == u.ID);
+
 
                 return u;
             }

@@ -38,7 +38,7 @@ namespace FIT_PONG.Services.Services
 		Task<SharedModels.Users> ConfirmPasswordChange(string loggedInUserName, PasswordPromjena obj);
 		SharedModels.Users ResetProfilePicture(string loggedInUserName, int id);//autorizovat
 		SharedModels.Users UpdateProfilePicture(string loggedInUserName, int id, Fajl Slika);//klasa slika umjesto niz byteova //autorizovat
-		string Postovanje(string loggedInUserName, int postovaniID);
+		SharedModels.Users Postovanje(string loggedInUserName, int postovaniID);
 		string GetRequestUserName(HttpRequest Request);
 		int GetRequestUserID(HttpRequest Request);
 		SharedModels.Users Suspenduj(int userId, SuspenzijaRequest obj);

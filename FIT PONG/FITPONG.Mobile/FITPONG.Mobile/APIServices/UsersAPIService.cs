@@ -186,5 +186,22 @@ namespace FIT_PONG.Mobile.APIServices
             }
         }
 
+        public async Task<SharedModels.Users> Postovanje(int id)
+        {
+
+            var url = $"{APIUrl}/{resurs}/{id}/akcije/postovanje";
+            try
+            {
+                var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync("").ReceiveJson<SharedModels.Users>();
+                return rezult;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = GetErrore(ex).Result;
+                await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
+                return default(SharedModels.Users);
+            }
+        }
+
     }
 }

@@ -107,7 +107,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [Authorize(AuthenticationSchemes = "BasicAuthentication")]
         [HttpPost]
         [Route("{postovaniId}/akcije/postovanje")]
-        public string Postovanje(int postovaniId)
+        public SharedModels.Users Postovanje(int postovaniId)
         {
             var loggedInUserName = usersService.GetRequestUserName(HttpContext.Request);
 

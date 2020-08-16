@@ -68,6 +68,12 @@ namespace FIT_PONG.Mobile.ViewModels.Users
             });
            
         }
+        public async Task<SharedModels.Users> Postovanje()
+        {
+            var rezultat = await _UsersAPIService.Postovanje(this.User.ID);
+
+            return rezultat;
+        }
         public bool Vlasnik()
         {
             if (User != null)

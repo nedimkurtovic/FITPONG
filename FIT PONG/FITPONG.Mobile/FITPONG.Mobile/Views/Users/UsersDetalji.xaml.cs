@@ -40,9 +40,31 @@ namespace FIT_PONG.Mobile.Views.Users
             await Navigation.PushAsync(new UsersDetalji(new UsersDetaljiViewModel(usr)));
         }
 
-        private void btnPostovanje_Clicked(object sender, EventArgs e)
+        private async void btnPostovanje_Clicked(object sender, EventArgs e)
         {
+            var rezultat = await viewModel.Postovanje();
+            
+            if(rezultat != default(SharedModels.Users))
+            {
+                var mainStranica = Navigation.NavigationStack[0];
+                Navigation.InsertPageBefore(new UsersMain(rezultat), mainStranica);
+                bool brisi = false;
 
+                List<Page> listaBrisanja = new List<Page>();
+                foreach (var i in Navigation.NavigationStack)
+                {
+                    if (brisi)
+                        listaBrisanja.Add(i);
+                    if (i is UsersMain && !brisi)
+                        brisi = true;
+                }
+                //kad naleti na prvu main stavlja na true i sve ostale stranice brise poslije
+                var a = Navigation.NavigationStack[0].BindingContext as UsersListaViewModel;
+                if (a != null && a.DobaviUsere.CanExecute(null))
+                    a.DobaviUsere.Execute(null);
+                foreach (var i in listaBrisanja)
+                    Navigation.RemovePage(i);
+            }
         }
     }
 }
