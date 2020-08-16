@@ -26,9 +26,9 @@ namespace FIT_PONG.Mobile.Views.Users
                 viewModel.GetPreporuceneCommand.Execute(null);
         }
 
-        private void btnEdit_Clicked(object sender, EventArgs e)
+        private async void btnEdit_Clicked(object sender, EventArgs e)
         {
-
+            await Navigation.PushAsync(new UsersEdit(viewModel.User));
         }
 
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
@@ -36,6 +36,11 @@ namespace FIT_PONG.Mobile.Views.Users
             var steklejaut = (BindableObject)sender;
             var usr = (SharedModels.Users)steklejaut.BindingContext;
             await Navigation.PushAsync(new UsersDetalji(new UsersDetaljiViewModel(usr)));
+        }
+
+        private void btnPostovanje_Clicked(object sender, EventArgs e)
+        {
+
         }
     }
 }

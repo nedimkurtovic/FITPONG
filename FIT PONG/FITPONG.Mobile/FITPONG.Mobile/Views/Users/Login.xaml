@@ -28,7 +28,7 @@
                 Text="Password"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-                <Entry Margin="{StaticResource Margina}"
+                <Entry IsPassword="True" Margin="{StaticResource Margina}"
                 Text="{Binding Password}" 
                    VerticalOptions="CenterAndExpand"
                    HorizontalOptions="FillAndExpand"></Entry>

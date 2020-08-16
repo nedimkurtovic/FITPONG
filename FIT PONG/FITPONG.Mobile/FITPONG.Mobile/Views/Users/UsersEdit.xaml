@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:converters="clr-namespace:FIT_PONG.Mobile.Converters"
+             x:Class="FIT_PONG.Mobile.Views.Users.UsersEdit">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ImageConverter x:Key="imgConv"></converters:ImageConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout Padding="20">
+            <Label Padding="10" Text="EDITUJ PROFIL" TextColor="#000" FontSize="Large" HorizontalTextAlignment="Center"/>
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween" Direction="Column">
+                <Image Source="{Binding SlikaProfila.BinarniZapis, Converter={StaticResource imgConv}}" 
+                       WidthRequest="200" HeightRequest="200"/>
+            </FlexLayout>
+
+            <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="Center">
+                <Button Margin="20" x:Name="btnEditSliku" Text="Edituj sliku" Clicked="btnEditSliku_Clicked" CornerRadius="10"/>
+                <Button Margin="20" x:Name="btnResetSliku" Text="Ukloni sliku" Clicked="btnResetSliku_Clicked" CornerRadius="10"/>
+            </FlexLayout>
+            
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Prikazno ime" Margin="20" TextColor="#000"/>
+                <Entry x:Name="prikaznoIme" WidthRequest="150" Text="{Binding PrikaznoIme}"/>
+            </FlexLayout>
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Jaca ruka" Margin="20" TextColor="#000"/>
+                <Picker x:Name="jacarukaPicker" WidthRequest="100" ItemsSource="{Binding JacaRukaLista}" SelectedIndexChanged="jacarukaPicker_SelectedIndexChanged"/>
+            </FlexLayout>
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Visina" Margin="20" TextColor="#000"/>
+                <Entry x:Name="visina" WidthRequest="150" Text="{Binding Visina}"/>
+            </FlexLayout>
+
+            <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween">
+                <Label Text="Grad" Margin="20" TextColor="#000"/>
+                <Picker x:Name="gradPicker" WidthRequest="100" ItemsSource="{Binding Gradovi}" SelectedIndexChanged="gradPicker_SelectedIndexChanged"
+                        ItemDisplayBinding="{Binding Naziv}"  SelectedItem="{Binding SelectedGrad}" />
+            </FlexLayout>
+
+            <FlexLayout AlignItems="Center" JustifyContent="Center"> 
+                <Button x:Name="btnSpasi" BackgroundColor="Aqua" CornerRadius="10" Text="Spasi izmjene" Clicked="btnSpasi_Clicked"/>
+            </FlexLayout>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
