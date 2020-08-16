@@ -7,7 +7,7 @@
              x:Class="FIT_PONG.Mobile.Views.Naslovnica">
     <ContentPage.Content>
        
-        <ScrollView HorizontalOptions="CenterAndExpand">
+        <ScrollView HorizontalOptions="CenterAndExpand" Padding="15,0">
             <Frame BorderColor="Black" HorizontalOptions="FillAndExpand">
                 <StackLayout HorizontalOptions="FillAndExpand">
                     <StackLayout Margin="0,50" HorizontalOptions="FillAndExpand">
@@ -22,32 +22,36 @@
                                  Command="{Binding PromijeniSliku}"></ImageButton>
                         <Label VerticalOptions="CenterAndExpand" x:Name="lblPoruka"></Label>
                     </StackLayout>
-                    <StackLayout HorizontalOptions="FillAndExpand">
+                    <StackLayout HeightRequest="300" HorizontalOptions="FillAndExpand">
                         <Label Text="Zadnje obavijesti" HorizontalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
                         <Frame BorderColor="Black">
-                            <CarouselView x:Name="KaruselObavijesti" ItemsSource="{Binding ListaPoruka}">
-                                <CarouselView.ItemTemplate>
+                            <ListView x:Name="Obavijesti" ItemsSource="{Binding Objave}">
+                                <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
-                                            <Label Text="{Binding}"></Label>
+                                            <StackLayout HorizontalOptions="CenterAndExpand">
+                                                <Label FontSize="Large" Text="{Binding Naziv}"></Label>
+                                            </StackLayout>
                                         </ViewCell>
                                     </DataTemplate>
-                                </CarouselView.ItemTemplate>
-                            </CarouselView>
+                                </ListView.ItemTemplate>
+                            </ListView>
                         </Frame>
                     </StackLayout>
-                    <StackLayout HorizontalOptions="FillAndExpand">
+                    <StackLayout HeightRequest="300"  HorizontalOptions="FillAndExpand">
                         <Label Text="Zadnji rezultati" HorizontalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
                         <Frame BorderColor="Black">
-                            <CarouselView>
-                                <CarouselView.ItemTemplate>
+                            <ListView x:Name="Rezultati" ItemsSource="{Binding Rezultati}">
+                                <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
-
+                                            <StackLayout>
+                                                <Label Text="{Binding}"></Label>
+                                            </StackLayout>
                                         </ViewCell>
                                     </DataTemplate>
-                                </CarouselView.ItemTemplate>
-                            </CarouselView>
+                                </ListView.ItemTemplate>
+                            </ListView>
                         </Frame>
                     </StackLayout>
                 </StackLayout>
