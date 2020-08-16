@@ -90,16 +90,16 @@ namespace FIT_PONG.WebAPI.Controllers
 
         [HttpPost]
         [Route("password")]
-        public async Task<string> ResetujPassword(Email_Password_Request obj)
+        public async Task<SharedModels.Users> ResetujPassword(Email_Password_Request obj)
         {
             return await usersService.SendPasswordChange(obj);
         }
 
         [HttpPost]
         [Route("password-potvrda")]
-        public async Task<String> ConfirmPasswordChange(PasswordPromjena obj)
+        public async Task<SharedModels.Users> ConfirmPasswordChange(PasswordPromjena obj)
         {
-            var loggedInUserName = usersService.GetRequestUserName(HttpContext.Request);
+            var loggedInUserName = obj.Email!=null ? obj.Email : usersService.GetRequestUserName(HttpContext.Request);
 
             return await usersService.ConfirmPasswordChange(loggedInUserName, obj);
         }

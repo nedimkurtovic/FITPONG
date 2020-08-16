@@ -49,8 +49,8 @@
                         <StackLayout HorizontalOptions="Start" Orientation="Vertical">
                             <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"
                                Text="Zaboravili password?"></Label>
-                            <Button WidthRequest="120" HeightRequest="80" Text="Reset password" VerticalOptions="Center"
-                    Command="{Binding LoginKomanda}" HorizontalOptions="CenterAndExpand"></Button>
+                            <Button x:Name="btnResetPassword" WidthRequest="120" HeightRequest="80" Text="Reset password" VerticalOptions="Center"
+                             HorizontalOptions="CenterAndExpand" Clicked="btnResetPassword_Clicked"></Button>
                         </StackLayout>
                         <StackLayout HorizontalOptions="End" Orientation="Vertical">
                             <Label HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"

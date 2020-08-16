@@ -51,7 +51,7 @@ namespace FIT_PONG.Mobile.ViewModels.Users
                 BaseAPIService.ID = rezultat.ID;
                 BaseAPIService.User = rezultat;
                 IsBusy = false;
-                await Application.Current.MainPage.DisplayAlert("Uspjeh", "Uspješna prijava", "OK");
+                //await Application.Current.MainPage.DisplayAlert("Uspjeh", "Uspješna prijava", "OK");
                 //otvoriti mainpage
                 Application.Current.MainPage = new MainPage();
             }

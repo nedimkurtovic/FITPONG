@@ -118,5 +118,39 @@ namespace FIT_PONG.Mobile.APIServices
             }
         }
 
+        public async Task<SharedModels.Users> PosaljiMailZaPassword(Email_Password_Request obj)
+        {
+
+            var url = $"{APIUrl}/{resurs}/password";
+            try
+            {
+                var rezult = await url.PostJsonAsync(obj).ReceiveJson<SharedModels.Users>();
+                return rezult;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = GetErrore(ex).Result;
+                await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
+                return default(SharedModels.Users);
+            }
+        }
+
+        public async Task<SharedModels.Users> PotvrdiPassword(PasswordPromjena obj)
+        {
+
+            var url = $"{APIUrl}/{resurs}/password-potvrda";
+            try
+            {
+                var rezult = await url.PostJsonAsync(obj).ReceiveJson<SharedModels.Users>();
+                return rezult;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = GetErrore(ex).Result;
+                await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
+                return default(SharedModels.Users);
+            }
+        }
+
     }
 }

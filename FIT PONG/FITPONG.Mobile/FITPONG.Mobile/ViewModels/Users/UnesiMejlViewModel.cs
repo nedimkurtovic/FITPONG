@@ -14,13 +14,15 @@ namespace FIT_PONG.Mobile.ViewModels.Users
     {
         private readonly UsersAPIService usersService = new UsersAPIService();
 
-        public UnesiMejlViewModel()
+        public UnesiMejlViewModel(string tip)
         {
             PotvrdiKomanda = new Command(() => PosaljiKonfirmacijskiMejl());
+            Tip = tip;
         }
 
         private string _email;
         public string Email { get => _email; set => SetProperty(ref _email, value); }
+        private string Tip { get; set; }
         public ICommand PotvrdiKomanda { get; set; }
 
 
@@ -33,12 +35,25 @@ namespace FIT_PONG.Mobile.ViewModels.Users
                     Email = this.Email
                 };
 
-                var rezultat = await usersService.PosaljiKonfirmacijskiMejl(obj);
+                if (Tip == "resetMail")
+                {
+                    var rezultat = await usersService.PosaljiKonfirmacijskiMejl(obj);
 
-                if (rezultat == default(SharedModels.Users))
-                    await Application.Current.MainPage.DisplayAlert("Greska", "Doslo je do greske prilikom slanja mejla.", "OK");
+                    if (rezultat == default(SharedModels.Users))
+                        await Application.Current.MainPage.DisplayAlert("Greska", "Doslo je do greske prilikom slanja mejla.", "OK");
+                    else
+                        Application.Current.MainPage = new PotvrdiMejlPassword(rezultat.ID, "resetMail", null);
+                }
+                else if (Tip == "resetPassword")
+                {
+                    var rezultat = await usersService.PosaljiMailZaPassword(obj);
 
-                Application.Current.MainPage = new PotvrdiMejl(rezultat.ID);
+                    if (rezultat == default(SharedModels.Users))
+                        await Application.Current.MainPage.DisplayAlert("Greska", "Doslo je do greske prilikom slanja mejla.", "OK");
+                    else
+                        Application.Current.MainPage = new PotvrdiMejlPassword(rezultat.ID, "resetPassword", Email);
+                }
+
             }
         }
 
@@ -56,7 +71,7 @@ namespace FIT_PONG.Mobile.ViewModels.Users
                 if (!match.Success)
                     listaErrora.Add("Email mora biti u formatu ime.prezime@edu.fit.ba");
             }
-            
+
             if (listaErrora.Count == 0)
                 return true;
 
