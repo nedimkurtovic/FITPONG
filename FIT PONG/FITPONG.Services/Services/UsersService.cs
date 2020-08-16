@@ -62,7 +62,7 @@ namespace FIT_PONG.Services.Services
             if (obj.PrikaznoIme == null)
                 users = db.Igraci.ToList();
             else
-                users = db.Igraci.Where(x => x.PrikaznoIme.Contains(obj.PrikaznoIme)).ToList();
+                users = db.Igraci.Where(x => x.PrikaznoIme.Contains(obj.PrikaznoIme)).Include(d=>d.Grad).ToList();
 
             var list = new List<SharedModels.Users>();
 
@@ -70,6 +70,8 @@ namespace FIT_PONG.Services.Services
             {
                 var u = mapper.Map<SharedModels.Users>(user);
                 u.ProfileImage = ProcesDobavljanjaSlike(user.ProfileImagePath);
+                var grad = db.Gradovi.Find(user.GradID);
+                u.Grad = grad != null ? grad.Naziv : null;
 
                 //try
                 //{
@@ -99,12 +101,13 @@ namespace FIT_PONG.Services.Services
 
         public Users Get(int ID)
         {
-            var user = db.Igraci.Find(ID);
+            var user = db.Igraci.Where(d => d.ID == ID).Include(d => d.Grad).SingleOrDefault();
             if (user == null)
                 throw new UserException("Korisnik ne postoji u bazi.");
 
             var u = mapper.Map<SharedModels.Users>(user);
             u.ProfileImage = ProcesDobavljanjaSlike(user.ProfileImagePath);
+            u.Grad = user.Grad!= null ? user.Grad.Naziv : null;
 
             u.listaPrijava = GetPrijave(user.ID);
             u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == user.ID).ToList());
@@ -139,7 +142,7 @@ namespace FIT_PONG.Services.Services
                     TwoFactorEnabled = false
                 };
                 if (obj.Slika != null)
-                    igrac.ProfileImagePath = "~/igraci/" + ProcesSpremanjaSlike(obj.Slika);
+                    igrac.ProfileImagePath = "content/igraci/" + ProcesSpremanjaSlike(obj.Slika);
 
                 var userTemp = mapper.Map<SharedModels.Users>(obj);
 
@@ -238,7 +241,14 @@ namespace FIT_PONG.Services.Services
             db.Update(igrac);
             db.SaveChanges();
 
-            return mapper.Map<SharedModels.Users>(igrac);
+            var u = mapper.Map<SharedModels.Users>(igrac);
+            u.listaPrijava = GetPrijave(igrac.ID);
+            u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == u.ID).ToList());
+            u.ProfileImage = ProcesDobavljanjaSlike(igrac.ProfileImagePath);
+            var grad  = db.Gradovi.Find(obj.GradId);
+            u.Grad = grad != null ? grad.Naziv : null;
+
+            return u;
         }
 
 
@@ -357,7 +367,7 @@ namespace FIT_PONG.Services.Services
             return "Postovanje uspjesno azurirano.";
         }
 
-        public string ResetProfilePicture(string loggedInUserName, int id)
+        public SharedModels.Users ResetProfilePicture(string loggedInUserName, int id)
         {
             var user = db.Users.Where(u => u.Email == loggedInUserName).FirstOrDefault();
             if (user == null)
@@ -373,16 +383,23 @@ namespace FIT_PONG.Services.Services
             //    return VratiNijeAutorizovan();
             try
             {
-                if (igrac.ProfileImagePath != "/profile_picture_default.png")
+                if (igrac.ProfileImagePath != "content/igraci/profile_picture_default.png")
                 {
                     ProcesBrisanjaSlike(igrac.ProfileImagePath);
-                    igrac.ProfileImagePath = "/profile_picture_default.png";
+                    igrac.ProfileImagePath = "content/igraci/profile_picture_default.png";
                     db.SaveChanges();
 
-                    return "Slika profila uspjesno uklonjena.";
+                    var u = mapper.Map<SharedModels.Users>(igrac);
+                    u.listaPrijava = GetPrijave(igrac.ID);
+                    u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == u.ID).ToList());
+                    u.ProfileImage = ProcesDobavljanjaSlike(igrac.ProfileImagePath);
+                    var grad = db.Gradovi.Find(igrac.GradID);
+                    u.Grad = grad != null ? grad.Naziv : null;
+
+                    return u;
                 }
 
-                return "Ne mozete ukloniti defaultnu sliku.";
+                throw new UserException("Ne mozete ukloniti defaultnu sliku.");
             }
             catch (Exception)
             {
@@ -392,7 +409,7 @@ namespace FIT_PONG.Services.Services
 
         }
 
-        public string UpdateProfilePicture(string loggedInUserName, int id, Fajl Slika)
+        public SharedModels.Users UpdateProfilePicture(string loggedInUserName, int id, Fajl Slika)
         {
             var user = db.Users.Where(u => u.Email == loggedInUserName).FirstOrDefault();
             if (user == null)
@@ -405,12 +422,19 @@ namespace FIT_PONG.Services.Services
 
             try
             {
-                if (igrac.ProfileImagePath != null && igrac.ProfileImagePath != "/profile_picture_default.png")
+                if (igrac.ProfileImagePath != null && igrac.ProfileImagePath != "content/igraci/profile_picture_default.png")
                     ProcesBrisanjaSlike(igrac.ProfileImagePath);
-                igrac.ProfileImagePath = "~/igraci/" + ProcesSpremanjaSlike(Slika);
+                igrac.ProfileImagePath = "content/igraci/" + ProcesSpremanjaSlike(Slika);
                 db.SaveChanges();
 
-                return "Slika uspjesno promjenjena.";
+                var u = mapper.Map<SharedModels.Users>(igrac);
+                u.listaPrijava = GetPrijave(igrac.ID);
+                u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == u.ID).ToList());
+                u.ProfileImage = ProcesDobavljanjaSlike(igrac.ProfileImagePath);
+                var grad = db.Gradovi.Find(igrac.GradID);
+                u.Grad = grad != null ? grad.Naziv : null;
+
+                return u;
             }
             catch (Exception)
             {
@@ -616,14 +640,14 @@ namespace FIT_PONG.Services.Services
         private bool IsDozvoljenTip(Fajl file)
         {
             int index = file.Naziv.LastIndexOf(".");
-            string ekstenzija = file.Naziv.Substring(index);
-            if (ekstenzija != "png" || ekstenzija != "jpg" || ekstenzija != "jpeg")
+            string ekstenzija = file.Naziv.Substring(index + 1);
+            if (ekstenzija != "png" && ekstenzija != "jpg" && ekstenzija != "jpeg")
                 return false;
             return true;
         }
         private string ProcesSpremanjaSlike(Fajl file)
         {
-            var rootPathAplikacije = "~"; //istraziti kako izvuci root path aplikacije !!!
+            var rootPathAplikacije = "content"; 
 
             using (MemoryStream ms = new MemoryStream(file.BinarniZapis))
             {
@@ -652,9 +676,8 @@ namespace FIT_PONG.Services.Services
         }
         private void ProcesBrisanjaSlike(string putanja)
         {
-            var rootPathAplikacije = "~"; //istraziti kako izvuci root path aplikacije !!!
 
-            string filePutanja = Path.Combine(rootPathAplikacije, putanja.Substring(putanja.IndexOf("/") + 1));
+            string filePutanja = Path.Combine(putanja.Substring(putanja.LastIndexOf("/") + 1));
             System.IO.File.Delete(filePutanja);
         }
 

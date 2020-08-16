@@ -28,9 +28,9 @@ namespace FIT_PONG.Mobile.Views.Users
 
         }
 
-        private void btnEdit_Clicked(object sender, EventArgs e)
+        private async void btnEdit_Clicked(object sender, EventArgs e)
         {
-
+            await Navigation.PushAsync(new UsersEdit(viewModel.User));
         }
 
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)

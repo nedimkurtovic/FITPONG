@@ -83,7 +83,7 @@
                         </Frame>
                     </StackLayout>
                     <StackLayout  x:Name="DodatneOpcijeLayout"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand"  Grid.Row="6" Grid.Column="1">
-                        <Button WidthRequest="100" x:Name="btnEdit" Clicked="btnEdit_Clicked" Text="Edit" HorizontalOptions="StartAndExpand"></Button>
+                        <Button WidthRequest="100" x:Name="btnEdit" Clicked="btnEdit_Clicked" Text="Edit" HorizontalOptions="StartAndExpand" IsVisible="{Binding isEditVisible}"></Button>
                         <Button  WidthRequest="100" x:Name="btnPostovanje" Clicked="btnPostovanje_Clicked" Text="Poštuj" HorizontalOptions="EndAndExpand"></Button>
                     </StackLayout>
 

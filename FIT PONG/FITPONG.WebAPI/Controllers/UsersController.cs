@@ -117,7 +117,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [Authorize(AuthenticationSchemes = "BasicAuthentication")]
         [HttpPut]
         [Route("{userId}/akcije/slika")]
-        public string PromijeniSliku(int userId, SlikaPromjenaRequest obj)
+        public SharedModels.Users PromijeniSliku(int userId, SlikaPromjenaRequest obj)
         {
             var loggedInUserName = usersService.GetRequestUserName(HttpContext.Request);
 
@@ -133,7 +133,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [Authorize(AuthenticationSchemes = "BasicAuthentication")]
         [HttpPost]
         [Route("{userId}/akcije/slika")]
-        public string UkloniSliku(int userId)
+        public SharedModels.Users UkloniSliku(int userId)
         {
             var loggedInUserName = usersService.GetRequestUserName(HttpContext.Request);
 

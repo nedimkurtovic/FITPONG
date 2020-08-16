@@ -20,6 +20,7 @@ namespace FIT_PONG.Mobile.ViewModels.Users
         public SharedModels.Users User { get; set; }
         public int BrojPobjeda { get; set; }
         public int BrojPoraza { get; set; }
+        public bool isEditVisible { get; set; }
         public UsersDetaljiViewModel(SharedModels.Users _user = null)
         {
             _UsersAPIService = new UsersAPIService();
@@ -29,6 +30,7 @@ namespace FIT_PONG.Mobile.ViewModels.Users
             BrojPobjeda = GetBrojPobjeda();
             BrojPoraza = GetBrojPoraza();
             GetPreporuceneCommand = new Command(async () => await UnesiPreporucene());
+            isEditVisible = _user.ID == BaseAPIService.ID;
         }
         public UsersDetaljiViewModel()
         {

@@ -73,7 +73,6 @@ namespace FIT_PONG.Mobile.ViewModels.Users
 
                 if (result != default(SharedModels.Users))
                 {
-                    //prikazati view za unos konfirmacijskog koda ...
                     Application.Current.MainPage = new PotvrdiMejlPassword(result.ID, "resetMail", null);
                     return;
                 }

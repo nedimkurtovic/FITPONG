@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:converters="clr-namespace:FIT_PONG.Mobile.Converters"
+             x:Class="FIT_PONG.Mobile.Views.Users.UsersEdit">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ImageConverter x:Key="imgConv"></converters:ImageConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView Padding="20,0"  HorizontalOptions="CenterAndExpand" >
+            <StackLayout Padding="20">
+                <Label Padding="10" Text="EDITUJ PROFIL" TextColor="#000" FontSize="Large" HorizontalTextAlignment="Center"/>
+
+                <FlexLayout AlignItems="Center" JustifyContent="SpaceBetween" Direction="Column">
+                    <Image Source="{Binding SlikaProfila.BinarniZapis, Converter={StaticResource imgConv}}" 
+                       WidthRequest="200" HeightRequest="200"/>
+                </FlexLayout>
+
+                <Button x:Name="btnEditSliku" Text="Edituj sliku" Clicked="btnEditSliku_Clicked" CornerRadius="10"/>
+                <Button x:Name="btnResetSliku" Text="Ukloni sliku" Clicked="btnResetSliku_Clicked" CornerRadius="10" />
+
+                <Label Text="Prikazno ime" TextColor="#000"/>
+                <Entry x:Name="prikaznoIme" Text="{Binding PrikaznoIme}"/>
+
+                <Label Text="Jaca ruka" TextColor="#000"/>
+                <Picker x:Name="jacarukaPicker" ItemsSource="{Binding JacaRukaLista}" SelectedIndexChanged="jacarukaPicker_SelectedIndexChanged"/>
+
+                <Label Text="Visina" TextColor="#000"/>
+                <Entry x:Name="visina" Text="{Binding Visina}"/>
+
+                <Label Text="Grad" TextColor="#000"/>
+                <Picker x:Name="gradPicker" ItemsSource="{Binding Gradovi}" SelectedIndexChanged="gradPicker_SelectedIndexChanged"
+                        ItemDisplayBinding="{Binding Naziv}"  SelectedItem="{Binding SelectedGrad}" />
+
+                <FlexLayout AlignItems="Center" JustifyContent="Center">
+                    <Button x:Name="btnSpasi" BackgroundColor="Aqua" CornerRadius="10" Text="Spasi izmjene" Clicked="btnSpasi_Clicked"/>
+                </FlexLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
