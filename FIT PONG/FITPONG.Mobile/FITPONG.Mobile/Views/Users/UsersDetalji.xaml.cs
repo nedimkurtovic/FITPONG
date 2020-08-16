@@ -24,6 +24,8 @@ namespace FIT_PONG.Mobile.Views.Users
             BindingContext = viewModel = model;
             if (viewModel.GetPreporuceneCommand.CanExecute(null))
                 viewModel.GetPreporuceneCommand.Execute(null);
+            btnEdit.IsVisible = viewModel.Vlasnik();
+
         }
 
         private void btnEdit_Clicked(object sender, EventArgs e)
@@ -36,6 +38,11 @@ namespace FIT_PONG.Mobile.Views.Users
             var steklejaut = (BindableObject)sender;
             var usr = (SharedModels.Users)steklejaut.BindingContext;
             await Navigation.PushAsync(new UsersDetalji(new UsersDetaljiViewModel(usr)));
+        }
+
+        private void btnPostovanje_Clicked(object sender, EventArgs e)
+        {
+
         }
     }
 }
