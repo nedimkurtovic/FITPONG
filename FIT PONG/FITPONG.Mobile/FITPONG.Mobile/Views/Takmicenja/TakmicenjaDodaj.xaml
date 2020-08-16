@@ -11,12 +11,10 @@
         <vm:TakmicenjaDodajViewModel></vm:TakmicenjaDodajViewModel>
     </ContentPage.BindingContext>-->
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="CenterAndExpand">
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <ScrollView HorizontalOptions="CenterAndExpand" Margin="20" Padding="10">
+            <StackLayout HorizontalOptions="CenterAndExpand">
 
-            <Label Text="Naziv*" FontSize="Micro"></Label>
+                <Label Text="Naziv*" FontSize="Micro"></Label>
             <Entry Text="{Binding Naziv}" FontSize="Medium"></Entry>
 
             <Label  Text="Ručni unos prijava?(Trenutno samo za singleove dostupno, u suprotnom definišite registracije)" FontSize="Micro"></Label>
@@ -49,5 +47,6 @@
             <Button Text="Dodaj" Clicked="Dodaj_Clicked"></Button>
             <!--</Grid>-->
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

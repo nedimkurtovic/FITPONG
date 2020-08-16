@@ -24,12 +24,7 @@ namespace FIT_PONG.Mobile.Views
             viewModel.lampicaServis.StigloTrenutnoStanje += LampicaServis_StigloTrenutnoStanje;
             viewModel.lampicaServis.PromijenjenaSlika += LampicaServis_PromijenjenaSlika;
             viewModel.lampicaServis.PromijenjenaPoruka += LampicaServis_PromijenjenaPoruka;
-
-            //Device.StartTimer(TimeSpan.FromSeconds(5), (Func<bool>)(() =>
-            //{
-            //    KaruselObavijesti.Position = (KaruselObavijesti.Position + 1) % viewModel.ListaPoruka.Count;
-            //    return true;
-            //}));
+            
         }
         protected async override void OnAppearing()
         {
@@ -67,5 +62,6 @@ namespace FIT_PONG.Mobile.Views
                 viewModel.lampicaServis.TrenutnaSlika = e.Message;
             });
         }
+
     }
 }
