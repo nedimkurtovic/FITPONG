@@ -11,32 +11,32 @@ namespace FIT_PONG.Mobile.ViewModels
 {
     public class NaslovnicaViewModel:BaseViewModel
     {
-        public LampicaService lampicaServis { get; }
+        public LampicaService LampicaServis { get; }
         public ObservableCollection<string> ListaPoruka { get; set; }
-        public BaseAPIService apiServis { get; set; }
+        public BaseAPIService ApiServis { get; set; }
         public SharedModels.Naslovnica NaslovnicaModel { get; set; }
         public ObservableCollection<SharedModels.Objave> Objave { get; set; }
         public ObservableCollection<string> Rezultati { get; set; }
         public NaslovnicaViewModel()
         {
-            lampicaServis = new LampicaService();
-            lampicaServis.Init();
+            LampicaServis = new LampicaService();
+            LampicaServis.Init();
             ListaPoruka = new ObservableCollection<string>();
-            apiServis = new BaseAPIService("naslovnica");
+            ApiServis = new BaseAPIService("naslovnica");
             Objave = new ObservableCollection<SharedModels.Objave>();
             Rezultati = new ObservableCollection<string>();
             PromijeniSliku = new Command(async () => await PromijeniSlikuFunkcija());
-            GetNaslovnicaModel();
+            _ = GetNaslovnicaModel();
         }
 
         public Command PromijeniSliku { get; set; }
         async Task PromijeniSlikuFunkcija()
         {
-            await lampicaServis.PromijeniStanjeAsync(lampicaServis.TrenutnaSlika);
+            await LampicaServis.PromijeniStanjeAsync(LampicaServis.TrenutnaSlika);
         }
         async Task GetNaslovnicaModel()
         {
-            var rezultat = await apiServis.GetAll<SharedModels.Naslovnica>();
+            var rezultat = await ApiServis.GetAll<SharedModels.Naslovnica>();
             if(rezultat != default(SharedModels.Naslovnica))
             {
                 Device.BeginInvokeOnMainThread(() =>

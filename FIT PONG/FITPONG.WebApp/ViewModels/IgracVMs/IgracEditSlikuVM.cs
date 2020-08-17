@@ -9,8 +9,10 @@ namespace FIT_PONG.ViewModels.IgracVMs
 {
     public class IgracEditSlikuVM:IgracDodajVM
     {
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
         public int ID { get; set; }
-        //public IFormFile Slika { get; set; }
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+                              //public IFormFile Slika { get; set; }
         public string ExistingProfileImagePath { get; set; }
     }
 }

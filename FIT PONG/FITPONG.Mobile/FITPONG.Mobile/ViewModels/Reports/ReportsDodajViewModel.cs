@@ -14,11 +14,11 @@ namespace FIT_PONG.Mobile.ViewModels.Reports
     {
         public ReportsDodajViewModel()
         {
-            reportsAPIService = new BaseAPIService("reports");
+            ReportsAPIService = new BaseAPIService("reports");
             Prilozi = new ObservableCollection<Fajl>();
         }
 
-        public BaseAPIService reportsAPIService { get; set; }
+        public BaseAPIService ReportsAPIService { get; set; }
 
         private string _naslov;
         public string Naslov { get => _naslov; set=>SetProperty(ref _naslov,value); }
@@ -51,7 +51,7 @@ namespace FIT_PONG.Mobile.ViewModels.Reports
                 noviRequest.Prilozi.Add(i);
             //vjerovatno moze i prilozi = this.prilozi.tolist();
 
-            var rezultat = await reportsAPIService.Insert<SharedModels.Reports>(noviRequest);
+            var rezultat = await ReportsAPIService.Insert<SharedModels.Reports>(noviRequest);
             return rezultat;
         }
         private bool Validacija()

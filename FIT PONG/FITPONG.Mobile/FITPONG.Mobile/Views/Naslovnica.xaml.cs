@@ -13,22 +13,22 @@ namespace FIT_PONG.Mobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Naslovnica : ContentPage
     {
-        NaslovnicaViewModel viewModel;
+        readonly NaslovnicaViewModel viewModel;
         public Naslovnica()
         {
             InitializeComponent();
             BindingContext = viewModel = new NaslovnicaViewModel();
-            viewModel.lampicaServis.ConnectAsync();
+            _ = viewModel.LampicaServis.ConnectAsync();
             
 
-            viewModel.lampicaServis.StigloTrenutnoStanje += LampicaServis_StigloTrenutnoStanje;
-            viewModel.lampicaServis.PromijenjenaSlika += LampicaServis_PromijenjenaSlika;
-            viewModel.lampicaServis.PromijenjenaPoruka += LampicaServis_PromijenjenaPoruka;
+            viewModel.LampicaServis.StigloTrenutnoStanje += LampicaServis_StigloTrenutnoStanje;
+            viewModel.LampicaServis.PromijenjenaSlika += LampicaServis_PromijenjenaSlika;
+            viewModel.LampicaServis.PromijenjenaPoruka += LampicaServis_PromijenjenaPoruka;
             
         }
         protected async override void OnAppearing()
         {
-            await viewModel.lampicaServis.GetTrenutnuSlikuAsync();
+            await viewModel.LampicaServis.GetTrenutnuSlikuAsync();
             base.OnAppearing();
         }
         private void LampicaServis_PromijenjenaPoruka(object sender, APIServices.MessageEventArgs e)
@@ -47,7 +47,7 @@ namespace FIT_PONG.Mobile.Views
                 if (DeviceInfo.Platform == DevicePlatform.UWP)
                     sours = "Assets/" + e.Message;
                 SlikaLampica.Source = sours;
-                viewModel.lampicaServis.TrenutnaSlika = e.Message;
+                viewModel.LampicaServis.TrenutnaSlika = e.Message;
             });
         }
 
@@ -59,7 +59,7 @@ namespace FIT_PONG.Mobile.Views
                 if (DeviceInfo.Platform == DevicePlatform.UWP)
                     sours = "Assets/" + e.Message;
                 SlikaLampica.Source = sours;
-                viewModel.lampicaServis.TrenutnaSlika = e.Message;
+                viewModel.LampicaServis.TrenutnaSlika = e.Message;
             });
         }
 

@@ -10,7 +10,7 @@ namespace FIT_PONG.Mobile.APIServices
 {
     public class BaseAPIService
     {
-        public string resurs { get; set; }
+        public string Resurs { get; set; }
         //public string APIUrl = $"{Resources.ApiUrl}";
         public static string Username { get; set; }
         public static string Password { get; set; }
@@ -30,14 +30,14 @@ namespace FIT_PONG.Mobile.APIServices
 #endif
         public BaseAPIService(string _resurs)
         {
-            resurs = _resurs;
+            Resurs = _resurs;
         }
         public async Task<T> GetAll<T>(object searchRequest = null)
         {
             var query = "";
             if (searchRequest != null)
                 query = await searchRequest?.ToQueryString();
-            var url = $"{APIUrl}/{resurs}";
+            var url = $"{APIUrl}/{Resurs}";
             if (!String.IsNullOrEmpty(query))
                 url += $"?{query}";
 
@@ -48,13 +48,13 @@ namespace FIT_PONG.Mobile.APIServices
         }
         public async Task<T> GetByID<T>(int id)
         {
-            var url = $"{APIUrl}/{resurs}/{id}";
+            var url = $"{APIUrl}/{Resurs}/{id}";
             return await url.WithBasicAuth(Username, Password).GetJsonAsync<T>();
         }
 
         public async Task<T> Insert<T>(object request)
         {
-            var url = $"{APIUrl}/{resurs}";
+            var url = $"{APIUrl}/{Resurs}";
             try
             {
                 return await url.WithBasicAuth(Username, Password)
@@ -66,12 +66,12 @@ namespace FIT_PONG.Mobile.APIServices
                 var errori = GetErrore(ex).Result;
                 await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
  
-                return default(T);
+                return default;
             }
         }
         public virtual async Task<T> Update<T>(int id, object request,string metoda = "POST")
         {
-            var url = $"{APIUrl}/{resurs}/{id}";
+            var url = $"{APIUrl}/{Resurs}/{id}";
             try
             {
                 switch (metoda)
@@ -87,12 +87,12 @@ namespace FIT_PONG.Mobile.APIServices
             {
                 var errori = GetErrore(ex).Result;
                 await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");             
-                return default(T);
+                return default;
             }
         }
         public async Task<T> Delete<T>(int id)
         {
-            var url = $"{APIUrl}/{resurs}/{id}";
+            var url = $"{APIUrl}/{Resurs}/{id}";
             try
             {
                 return await url.WithBasicAuth(Username, Password).DeleteAsync().ReceiveJson<T>();
@@ -101,13 +101,13 @@ namespace FIT_PONG.Mobile.APIServices
             {
                 var errori = GetErrore(ex).Result;
                 await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
-                return default(T);
+                return default;
             }
         }
         public async Task<T> GetAllPaged<T>(string _url)
         {
             if (String.IsNullOrEmpty(_url) || String.IsNullOrWhiteSpace(_url))
-                return default(T);
+                return default;
             var url = _url;
 
             try
@@ -118,7 +118,7 @@ namespace FIT_PONG.Mobile.APIServices
             {
                 var errori = GetErrore(ex).Result;
                 await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
-                return default(T);
+                return default;
             }
         }
         protected async Task<string> GetErrore(FlurlHttpException ex)

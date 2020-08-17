@@ -74,7 +74,7 @@ namespace FIT_PONG.Controllers
                         db.SaveChanges();
                         return Redirect("/Feed/Prikaz/" + FidObjekat.ID);
                     }
-                    catch(DbUpdateException er)
+                    catch(DbUpdateException)
                     {
                         ModelState.AddModelError("","Problem u kreiranju");
                     }
@@ -168,7 +168,7 @@ namespace FIT_PONG.Controllers
                     db.SaveChanges();
                     return Redirect("/Feed/Prikaz/" + fidID);
                 }
-                catch(DbUpdateException er)
+                catch(DbUpdateException)
                 {
                 }
             }

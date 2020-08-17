@@ -84,9 +84,11 @@ namespace FIT_PONG.Hubs
         [EnableCors("CorsPolicy")]
         public async override Task OnConnectedAsync()
         {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             string username = "anonim";
-            //if (SignIn.IsSignedIn(Context.User))
-            //    username = _evidentor.NadjiIgraca(Context.User.Identity.Name).PrikaznoIme;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+                               //if (SignIn.IsSignedIn(Context.User))
+                               //    username = _evidentor.NadjiIgraca(Context.User.Identity.Name).PrikaznoIme;
 
             //moram skontat kako logiku napravit takvu da prvo provjerim da li je web api user, tj da li je slao request header,
             //ako jest onda postavi username na to sto vrati i to je to , ako nije dobar provjeri da li je "web user" kako ces to znat?
@@ -168,7 +170,7 @@ namespace FIT_PONG.Hubs
                 });
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

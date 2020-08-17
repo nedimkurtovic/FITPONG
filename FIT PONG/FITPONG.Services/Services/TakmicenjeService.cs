@@ -140,7 +140,7 @@ namespace FIT_PONG.Services.Services
                     var povratni = GetByID(novo.ID); // zbog includeova i to lakse odozgo nego da ponavljam kod ovdje
                     return povratni;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     transakcija.Rollback();
                     throw new UserException("Greška prilikom spašavanja u bazu");

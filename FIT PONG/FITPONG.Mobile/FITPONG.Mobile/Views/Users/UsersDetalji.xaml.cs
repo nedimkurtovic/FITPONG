@@ -17,7 +17,7 @@ namespace FIT_PONG.Mobile.Views.Users
     [DesignTimeVisible(false)]
     public partial class UsersDetalji : ContentPage
     {
-        UsersDetaljiViewModel viewModel;
+        readonly UsersDetaljiViewModel viewModel;
         public UsersDetalji(UsersDetaljiViewModel model)
         {
             InitializeComponent();
@@ -46,7 +46,7 @@ namespace FIT_PONG.Mobile.Views.Users
             
             if(rezultat != default(SharedModels.Users))
             {
-                var mainStranica = Navigation.NavigationStack[0];
+                var mainStranica = Navigation.NavigationStack[1];
                 Navigation.InsertPageBefore(new UsersMain(rezultat), mainStranica);
                 bool brisi = false;
 

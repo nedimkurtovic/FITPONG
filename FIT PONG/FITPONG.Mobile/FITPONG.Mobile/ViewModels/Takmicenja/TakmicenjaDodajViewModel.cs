@@ -31,7 +31,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             VrstaID = -1;
             SistemID = -1;
         }
-        public TakmicenjeAPIService takmicenjeAPIService { get; set; } = new TakmicenjeAPIService();
+        public TakmicenjeAPIService TakmicenjeAPIService { get; set; } = new TakmicenjeAPIService();
         public ObservableCollection<SharedModels.KategorijeTakmicenja> ListaKategorija { get; set; }
         public List<string> ListaKat { get; set; } = new List<string> { "necko","Pecko","stasad","RadiLi" };
         public ObservableCollection<SharedModels.VrsteTakmicenja> ListaVrsta { get; set; }
@@ -75,24 +75,23 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
 
         public ICommand DodajNovoTakmicenje { get; set; }
         private bool _vidljivost;
-        public bool rucnaVidljivost
+        public bool RucnaVidljivost
         {
             get { return _vidljivost; }
             set
             {
                 _vidljivost = value;
-                NotifyPropertyChanged(nameof(rucnaVidljivost));
+                NotifyPropertyChanged(nameof(RucnaVidljivost));
             }
         }
         public bool VidljivostPrijava { get => !_vidljivost;}
         private void NotifyPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
         public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
         public async Task<SharedModels.Takmicenja> DodajTakmicenjeFunkcija()
         {
             if (!Validacija())
@@ -112,7 +111,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
                 SistemID = this.SistemID,
                 VrstaID = this.VrstaID
             };
-            var rezultat = await takmicenjeAPIService.Insert<SharedModels.Takmicenja>(obj);
+            var rezultat = await TakmicenjeAPIService.Insert<SharedModels.Takmicenja>(obj);
             return rezultat;
 
         }

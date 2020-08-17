@@ -23,14 +23,14 @@ namespace FIT_PONG.Controllers
         private readonly FIT_PONG.Database.MyDb db;
         private readonly IWebHostEnvironment _host;
 
-        public FIT_PONG.Services.BL.iEmailServis emailServis { get; }
+        public FIT_PONG.Services.BL.iEmailServis EmailServis { get; }
 
         public ReportController(FIT_PONG.Database.MyDb instanca,IWebHostEnvironment _webhost,
             FIT_PONG.Services.BL.iEmailServis imejlovi)
         {
             db = instanca;
             _host = _webhost;
-            emailServis = imejlovi;
+            EmailServis = imejlovi;
         }
         public IActionResult Dodaj()
         {
@@ -48,7 +48,9 @@ namespace FIT_PONG.Controllers
                 }
                 else
                 {
+#pragma warning disable IDE0063 // Use simple 'using' statement
                     using (var transakcija = db.Database.BeginTransaction())
+#pragma warning restore IDE0063 // Use simple 'using' statement
                     {
                         List<string> zluNetrebalo = new List<string>();
                         try
@@ -90,15 +92,15 @@ namespace FIT_PONG.Controllers
                             transakcija.Commit();
                             try
                             {
-                               emailServis.PosaljiMejlReport(noviReport);
+                               EmailServis.PosaljiMejlReport(noviReport);
                             }
-                            catch(Exception err)
+                            catch(Exception)
                             {
 
                             }
                             return Redirect("/Home/Index");
                         }
-                        catch(DbUpdateException err)
+                        catch(DbUpdateException)
                         {
                             transakcija.Rollback();
                             foreach(string x in zluNetrebalo)

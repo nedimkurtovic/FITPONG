@@ -30,7 +30,6 @@ namespace FIT_PONG.Mobile.APIServices
 #endif
 
         public event EventHandler<FIT_PONG.Mobile.ViewModels.Chat.ChatPoruka> StiglaPoruka;
-        public event EventHandler<MessageEventArgs> OnEnteredOrExited;
         public event EventHandler<MessageEventArgs> OnConnectionClosed;
 
         public ObservableCollection<string> ListaKonekcija { get; set; }
@@ -63,7 +62,7 @@ namespace FIT_PONG.Mobile.APIServices
                 {
                     await ConnectAsync();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Exception!
                 }
