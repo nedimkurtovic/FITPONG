@@ -1,4 +1,5 @@
 ﻿using FIT_PONG.Database;
+using FIT_PONG.SharedModels;
 using FIT_PONG.SharedModels.Requests.Takmicenja;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -64,6 +65,12 @@ namespace FIT_PONG.Services.Services.Autorizacija
         public void AuthorizePrijava(int UserId, PrijavaInsert obj)
         {
             if (UserId != obj.Igrac1ID && UserId != obj.Igrac2ID)
+                throw new AuthorizeException("Niste autorizovani za takvu radnju.");
+        }
+
+        public void AuthorizeOtkaziPrijavu(int UserId, Prijave p)
+        {   
+            if(p!=null && p.Igrac1ID != null && p.Igrac1ID != UserId && p.Igrac2ID != -1 && p.Igrac2ID != UserId)
                 throw new AuthorizeException("Niste autorizovani za takvu radnju.");
         }
 

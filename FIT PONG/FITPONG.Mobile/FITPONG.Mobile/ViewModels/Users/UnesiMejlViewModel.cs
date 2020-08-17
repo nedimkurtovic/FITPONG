@@ -53,7 +53,6 @@ namespace FIT_PONG.Mobile.ViewModels.Users
                     else
                         Application.Current.MainPage = new PotvrdiMejlPassword(rezultat.ID, "resetPassword", Email);
                 }
-
             }
         }
 

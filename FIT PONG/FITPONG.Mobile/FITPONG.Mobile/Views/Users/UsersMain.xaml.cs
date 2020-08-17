@@ -29,7 +29,7 @@ namespace FIT_PONG.Mobile.Views.Users
             statistikeStranica.Title = "Statistike";
             Children.Add(statistikeStranica);
 
-            var prijaveStranica = new UsersPrijave();
+            var prijaveStranica = new UsersPrijave(_user);
             prijaveStranica.Title = "Prijave";
             Children.Add(prijaveStranica);
         }
