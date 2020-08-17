@@ -49,9 +49,11 @@ namespace FIT_PONG.Services.Services
             bazaObj.DatumKreiranja = bazaObj.DatumIzmjene = DateTime.Now;
             db.Objave.Add(bazaObj);
 
-            var FidObjava = new Database.DTOs.FeedObjava();
-            FidObjava.ObjavaID = bazaObj.ID;
-            FidObjava.FeedID = FeedID;
+            var FidObjava = new Database.DTOs.FeedObjava
+            {
+                ObjavaID = bazaObj.ID,
+                FeedID = FeedID
+            };
 
             db.FeedsObjave.Add(FidObjava);
             db.SaveChanges();

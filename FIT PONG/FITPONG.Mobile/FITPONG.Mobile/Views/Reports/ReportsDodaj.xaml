@@ -12,7 +12,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <ScrollView  Margin="40,30" HorizontalOptions="CenterAndExpand">
+        <ScrollView Padding="15,0" Margin="40,30" HorizontalOptions="CenterAndExpand">
             <StackLayout HorizontalOptions="CenterAndExpand" >
 
                 <Label Text="Naslov*" FontSize="Micro"></Label>

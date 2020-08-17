@@ -32,7 +32,7 @@ namespace FIT_PONG.Mobile.APIServices
 
             hubKonekcija = new HubConnectionBuilder()
                 .WithUrl(hubUrl).Build();
-
+            
             hubKonekcija.Closed += async (error) =>
             {
                 UgasenaKonekcija?.Invoke(this, new MessageEventArgs("Disconnected.."));
@@ -42,7 +42,7 @@ namespace FIT_PONG.Mobile.APIServices
                 {
                     await ConnectAsync();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Exception!
                 }

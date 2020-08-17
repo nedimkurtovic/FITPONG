@@ -14,7 +14,7 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TakmicenjaDetalji : ContentPage
     {
-        TakmicenjaDetaljiViewModel viewModel;
+        readonly TakmicenjaDetaljiViewModel viewModel;
         
         public TakmicenjaDetalji(TakmicenjaDetaljiViewModel vm)
         {

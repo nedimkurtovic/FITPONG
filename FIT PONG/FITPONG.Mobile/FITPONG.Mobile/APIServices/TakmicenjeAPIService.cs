@@ -23,7 +23,7 @@ namespace FIT_PONG.Mobile.APIServices
         //podataka potrebnih za rad formi kao sto su comboboxovi 
         public async Task<Takmicenja> Init(int id)
         {
-            var url = $"{APIUrl}/{resurs}/{id}/akcije/init";
+            var url = $"{APIUrl}/{Resurs}/{id}/akcije/init";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync("").ReceiveJson<Takmicenja>();
@@ -33,12 +33,14 @@ namespace FIT_PONG.Mobile.APIServices
             {
                 var errori = GetErrore(ex).Result;
                 await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
+#pragma warning disable IDE0034 // Simplify 'default' expression
                 return default(Takmicenja);
+#pragma warning restore IDE0034 // Simplify 'default' expression
             }
         }
         public async Task<List<RasporedStavka>> GetRaspored(int id)
         {
-            var url = $"{APIUrl}/{resurs}/{id}/raspored";
+            var url = $"{APIUrl}/{Resurs}/{id}/raspored";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).GetJsonAsync<List<RasporedStavka>>();
@@ -53,7 +55,7 @@ namespace FIT_PONG.Mobile.APIServices
         }
         public async Task<List<EvidencijaMeca>> GetEvidencije(int id)
         {
-            var url = $"{APIUrl}/{resurs}/{id}/evidencije";
+            var url = $"{APIUrl}/{Resurs}/{id}/evidencije";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).GetJsonAsync<List<EvidencijaMeca>>();
@@ -69,7 +71,7 @@ namespace FIT_PONG.Mobile.APIServices
 
         public async Task<EvidencijaMeca> EvidentirajMec(int id,EvidencijaMeca obj)
         {
-            var url = $"{APIUrl}/{resurs}/{id}/evidencije";
+            var url = $"{APIUrl}/{Resurs}/{id}/evidencije";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync(obj)
@@ -86,7 +88,7 @@ namespace FIT_PONG.Mobile.APIServices
         }
         public async Task<List<TabelaStavka>> GetTabela(int id)
         {
-            var url = $"{APIUrl}/{resurs}/{id}/tabela";
+            var url = $"{APIUrl}/{Resurs}/{id}/tabela";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).GetJsonAsync<List<TabelaStavka>>();
@@ -101,7 +103,7 @@ namespace FIT_PONG.Mobile.APIServices
         }
         public async Task<Prijave> BlokirajPrijavu(int id, int prijavaId)
         {
-            var url = $"{APIUrl}/{resurs}/{id}/prijava/{prijavaId}/bloklista";
+            var url = $"{APIUrl}/{Resurs}/{id}/prijava/{prijavaId}/bloklista";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync("").ReceiveJson<Prijave>();
@@ -116,7 +118,7 @@ namespace FIT_PONG.Mobile.APIServices
         }
         public async Task<Prijave> Prijava(int id, PrijavaInsert obj)
         {
-            var url = $"{APIUrl}/{resurs}/{id}/prijava";
+            var url = $"{APIUrl}/{Resurs}/{id}/prijava";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync(obj).ReceiveJson<Prijave>();
@@ -132,7 +134,7 @@ namespace FIT_PONG.Mobile.APIServices
 
         public async Task<List<Prijave>> GetPrijave(int id)
         {
-            var url = $"{APIUrl}/{resurs}/{id}/prijave";
+            var url = $"{APIUrl}/{Resurs}/{id}/prijave";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync("").ReceiveJson<List<Prijave>>();

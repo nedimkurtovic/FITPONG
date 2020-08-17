@@ -27,16 +27,18 @@ namespace FIT_PONG.WebAPI.Hubs
         [EnableCors("CorsPolicy")]
         public async override Task OnConnectedAsync()
         {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             string username = "anonim";
-            //if (SignIn.IsSignedIn(Context.User))
-            //    username = _evidentor.NadjiIgraca(Context.User.Identity.Name).PrikaznoIme;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+                               //if (SignIn.IsSignedIn(Context.User))
+                               //    username = _evidentor.NadjiIgraca(Context.User.Identity.Name).PrikaznoIme;
 
             //moram skontat kako logiku napravit takvu da prvo provjerim da li je web api user, tj da li je slao request header,
             //ako jest onda postavi username na to sto vrati i to je to , ako nije dobar provjeri da li je "web user" kako ces to znat?
             //zato sto koristimo user identity tamo na web appu i logujemo sesije koje se spremaju u Context.User.Identity
 
-            
-            if(Context.User.Identity.Name == null)
+
+            if (Context.User.Identity.Name == null)
             {
                 var rezultatAuth = await ProvjeriAuth(Context.GetHttpContext().Request);
                 if (rezultatAuth == null)
@@ -95,7 +97,9 @@ namespace FIT_PONG.WebAPI.Hubs
         {
             if (!Request.Headers.ContainsKey("Authorization"))
                 return null;
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             FIT_PONG.SharedModels.Users user = null;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
             try
             {
                 var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
@@ -111,7 +115,7 @@ namespace FIT_PONG.WebAPI.Hubs
                 });
                 
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return null;
             }

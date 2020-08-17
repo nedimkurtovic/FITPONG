@@ -173,7 +173,7 @@ namespace FIT_PONG.Controllers
                             transakcija.Commit();
                             return Redirect("/Takmicenje/Prikaz/" + novo.ID);
                         }
-                        catch (DbUpdateException er)
+                        catch (DbUpdateException)
                         {
                             transakcija.Rollback();
                             ModelState.AddModelError("", "Doslo je do greške prilikom spašavanja u bazu");
@@ -276,7 +276,7 @@ namespace FIT_PONG.Controllers
                                 transakcija.Commit();
                                 return Redirect("/Takmicenje/Prikaz/" + obj.ID);
                             }
-                            catch (DbUpdateException er)
+                            catch (DbUpdateException)
                             {
                                 transakcija.Rollback();
                             }
@@ -364,7 +364,7 @@ namespace FIT_PONG.Controllers
                         transakcija.Commit();
                         return Redirect("/Takmicenje/Index");
                     }
-                    catch (DbUpdateException err)
+                    catch (DbUpdateException)
                     {
                         transakcija.Rollback();
                     }
@@ -725,7 +725,7 @@ namespace FIT_PONG.Controllers
                             ModelState.AddModelError("", "Došlo je do nepredviđene greške, pokusajte opet");
                         }
                         }
-                        catch(Exception err)
+                        catch(Exception)
                         {
                             //mislim da se ovaj blok nikad nece hittat obzirom da imam try catch u evidentoru ali eto
                             ModelState.AddModelError("", "Došlo je do greške");

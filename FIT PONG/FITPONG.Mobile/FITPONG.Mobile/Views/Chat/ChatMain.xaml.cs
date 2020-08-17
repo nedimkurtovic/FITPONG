@@ -19,7 +19,7 @@ namespace FIT_PONG.Mobile.Views.Chat
         {
             InitializeComponent();
             BindingContext = viewModel = new ChatMainViewModel();
-            viewModel.ChatServis.ConnectAsync();
+            _ = viewModel.ChatServis.ConnectAsync();
 
             var ChatGrupeStranica = new ChatGrupe(viewModel.ChatServis);
             ChatGrupeStranica.Title = "Aktivni kanali";

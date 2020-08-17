@@ -20,7 +20,7 @@ namespace FIT_PONG.Mobile.APIServices
 
         public async Task<Users> Registracija(AccountInsert obj)
         {
-            var url = $"{APIUrl}/{resurs}/registracija";
+            var url = $"{APIUrl}/{Resurs}/registracija";
             try
             {
                 //var jsonString = await obj.ToQueryString();
@@ -36,7 +36,7 @@ namespace FIT_PONG.Mobile.APIServices
         }
         public async Task<Users> Login(Login obj)
         {
-            var url = $"{APIUrl}/{resurs}/login";
+            var url = $"{APIUrl}/{Resurs}/login";
             try
             {
                 //var jsonString = await obj.ToQueryString();
@@ -52,7 +52,7 @@ namespace FIT_PONG.Mobile.APIServices
         }
         public async Task<List<Statistike>> GetStatistike(int id)
         {
-            var url = $"{APIUrl}/{resurs}/{id}/statistike";
+            var url = $"{APIUrl}/{Resurs}/{id}/statistike";
             try
             {             
                 var rezult = await url.WithBasicAuth(Username, Password)
@@ -69,7 +69,7 @@ namespace FIT_PONG.Mobile.APIServices
 
         public async Task<List<SharedModels.Users>> GetRecommended(int id)
         {
-            var url = $"{APIUrl}/{resurs}/{id}/recommend";
+            var url = $"{APIUrl}/{Resurs}/{id}/recommend";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password)
@@ -87,7 +87,7 @@ namespace FIT_PONG.Mobile.APIServices
         public async Task<SharedModels.Users> PotvrdiMejl(int userId, string token)
         {
 
-            var url = $"{APIUrl}/{resurs}/mail-potvrda?userId={userId}&token={HttpUtility.UrlEncode(token)}";
+            var url = $"{APIUrl}/{Resurs}/mail-potvrda?userId={userId}&token={HttpUtility.UrlEncode(token)}";
             try
             {   
                 var rezult = await url.PostJsonAsync("").ReceiveJson<SharedModels.Users>();
@@ -104,7 +104,7 @@ namespace FIT_PONG.Mobile.APIServices
         public async Task<SharedModels.Users> PosaljiKonfirmacijskiMejl(Email_Password_Request obj)
         {
 
-            var url = $"{APIUrl}/{resurs}/mail";
+            var url = $"{APIUrl}/{Resurs}/mail";
             try
             {
                 var rezult = await url.PostJsonAsync(obj).ReceiveJson<SharedModels.Users>();
@@ -121,7 +121,7 @@ namespace FIT_PONG.Mobile.APIServices
         public async Task<SharedModels.Users> PosaljiMailZaPassword(Email_Password_Request obj)
         {
 
-            var url = $"{APIUrl}/{resurs}/password";
+            var url = $"{APIUrl}/{Resurs}/password";
             try
             {
                 var rezult = await url.PostJsonAsync(obj).ReceiveJson<SharedModels.Users>();
@@ -138,7 +138,7 @@ namespace FIT_PONG.Mobile.APIServices
         public async Task<SharedModels.Users> PotvrdiPassword(PasswordPromjena obj)
         {
 
-            var url = $"{APIUrl}/{resurs}/password-potvrda";
+            var url = $"{APIUrl}/{Resurs}/password-potvrda";
             try
             {
                 var rezult = await url.PostJsonAsync(obj).ReceiveJson<SharedModels.Users>();
@@ -155,7 +155,7 @@ namespace FIT_PONG.Mobile.APIServices
         public async Task<SharedModels.Users> UpdateProfilePicture(int id, SlikaPromjenaRequest obj)
         {
 
-            var url = $"{APIUrl}/{resurs}/{id}/akcije/slika";
+            var url = $"{APIUrl}/{Resurs}/{id}/akcije/slika";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).PutJsonAsync(obj).ReceiveJson<SharedModels.Users>();
@@ -172,7 +172,7 @@ namespace FIT_PONG.Mobile.APIServices
         public async Task<SharedModels.Users> ResetProfilePicture(int id)
         {
 
-            var url = $"{APIUrl}/{resurs}/{id}/akcije/slika";
+            var url = $"{APIUrl}/{Resurs}/{id}/akcije/slika";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync("").ReceiveJson<SharedModels.Users>();
@@ -189,7 +189,7 @@ namespace FIT_PONG.Mobile.APIServices
         public async Task<SharedModels.Users> Postovanje(int id)
         {
 
-            var url = $"{APIUrl}/{resurs}/{id}/akcije/postovanje";
+            var url = $"{APIUrl}/{Resurs}/{id}/akcije/postovanje";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).PostJsonAsync("").ReceiveJson<SharedModels.Users>();

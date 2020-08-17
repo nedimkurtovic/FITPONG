@@ -41,7 +41,8 @@ namespace FIT_PONG.Mobile.ViewModels.Chat
             }
         }
         public ObservableCollection<ChatPoruka> Poruke { get; set; }
-        Random random;
+
+        readonly Random random;
 
         string _porukaTextBox;
         public string PorukaTextbox { get => _porukaTextBox; set => SetProperty(ref _porukaTextBox, value); }
@@ -131,11 +132,6 @@ namespace FIT_PONG.Mobile.ViewModels.Chat
         {
 
         }
-        string nesto;
-        public string MessageFinal { get 
-            {
-                return Vrijeme + " | " + Posiljatelj + " : " + Sadrzaj;
-            } 
-        }
+        public string MessageFinal => Vrijeme + " | " + Posiljatelj + " : " + Sadrzaj;
     }
 }

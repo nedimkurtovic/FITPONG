@@ -21,7 +21,9 @@ namespace FIT_PONG.Controllers
     public class AccountController : Controller
     {
         private readonly FIT_PONG.Database.MyDb db;
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
         private readonly SignInManager<IdentityUser<int>> SignIn;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
         private readonly UserManager<IdentityUser<int>> UserM;
         public FIT_PONG.Services.BL.iEmailServis EmailServis { get; }
 
@@ -137,7 +139,7 @@ namespace FIT_PONG.Controllers
 
                 if (rezultat.IsLockedOut)
                 {
-                    TimeSpan t = (korisnik.LockoutEnd - DateTime.Now) ?? default(TimeSpan);
+                    TimeSpan t = (korisnik.LockoutEnd - DateTime.Now) ?? default;
                     ModelState.AddModelError("Lockout", "Vaš profil je zaključan još " + t.Minutes + " minuta i " + t.Seconds + " sekundi.");
                 }
                 else if (rezultat.Succeeded)

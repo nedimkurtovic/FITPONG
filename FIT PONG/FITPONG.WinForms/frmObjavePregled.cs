@@ -71,10 +71,8 @@ namespace FIT_PONG.WinForms
         }
         private void RegulisiButtone()
         {
-            btnPrethodna.Enabled = (_ObjaveLista.ProslaStranica == null) 
-                ? false : true;
-            btnNaredna.Enabled = (_ObjaveLista.IducaStranica == null) 
-                ? false : true;
+            btnPrethodna.Enabled = _ObjaveLista.ProslaStranica != null;
+            btnNaredna.Enabled = _ObjaveLista.IducaStranica != null;
         }
         private void RegulisiDataSource()
         {

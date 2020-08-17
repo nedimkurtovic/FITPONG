@@ -19,12 +19,6 @@ namespace FIT_PONG.WinForms
         List<string> ImenaFajlova = new List<string>();
         public frmReportDetalji(Reports _report)
         {
-
-            //TODOS
-            //[]GEtbyid na api servis?
-            //[]prikazati osnovne info
-            //[]ucitati slike na listview
-            //[]dodati event na itemactive na pojedinacnu stavku listviewa
             
             InitializeComponent();
             report = _report;

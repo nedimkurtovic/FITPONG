@@ -72,10 +72,11 @@ namespace FIT_PONG.WebAPI.Controllers
         private PagedResponse<Objave> GetPagedResponse(ObjaveSearch obj)
         {
             var listaObjava = objaveService.Get(obj);
-            PagedResponse<Objave> respons = new PagedResponse<Objave>();
-
-            respons.TotalPageCount = (int)Math.Ceiling((double)listaObjava.Count() / (double)obj.Limit);
-            respons.Stavke = listaObjava.Skip((obj.Page - 1) * obj.Limit).Take(obj.Limit).ToList();
+            PagedResponse<Objave> respons = new PagedResponse<Objave>
+            {
+                TotalPageCount = (int)Math.Ceiling((double)listaObjava.Count() / (double)obj.Limit),
+                Stavke = listaObjava.Skip((obj.Page - 1) * obj.Limit).Take(obj.Limit).ToList()
+            };
 
             ObjaveSearch iducaKlon = obj.Clone() as ObjaveSearch;
             iducaKlon.Page = (iducaKlon.Page + 1) > respons.TotalPageCount ? -1 : iducaKlon.Page + 1;

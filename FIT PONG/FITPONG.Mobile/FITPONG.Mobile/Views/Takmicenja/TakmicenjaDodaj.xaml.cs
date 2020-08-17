@@ -14,7 +14,7 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TakmicenjaDodaj : ContentPage
     {
-        TakmicenjaDodajViewModel viewModel;
+        readonly TakmicenjaDodajViewModel viewModel;
         public TakmicenjaDodaj()
         {
             BindingContext = viewModel = new TakmicenjaDodajViewModel();
@@ -38,22 +38,22 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
 
         private void RucniOdabir_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
-            viewModel.rucnaVidljivost = !viewModel.rucnaVidljivost;
+            viewModel.RucnaVidljivost = !viewModel.RucnaVidljivost;
 
             //a mogao sam ih sve fino u stacklayout stavit i jednom linijom rijesiti sve, ALI JOK!!!!
-            lblKorisnicka.IsVisible = viewModel.rucnaVidljivost;
-            editorKorisnicka.IsVisible = viewModel.rucnaVidljivost;
+            lblKorisnicka.IsVisible = viewModel.RucnaVidljivost;
+            editorKorisnicka.IsVisible = viewModel.RucnaVidljivost;
 
-            lblDatumPP.IsVisible = !viewModel.rucnaVidljivost;
-            dtpDatumPP.IsVisible = !viewModel.rucnaVidljivost;
+            lblDatumPP.IsVisible = !viewModel.RucnaVidljivost;
+            dtpDatumPP.IsVisible = !viewModel.RucnaVidljivost;
 
-            lblDatumZP.IsVisible = !viewModel.rucnaVidljivost;
-            dtpDatumZP.IsVisible = !viewModel.rucnaVidljivost;
+            lblDatumZP.IsVisible = !viewModel.RucnaVidljivost;
+            dtpDatumZP.IsVisible = !viewModel.RucnaVidljivost;
 
-            lblMinELO.IsVisible = !viewModel.rucnaVidljivost;
-            txtMinELO.IsVisible = !viewModel.rucnaVidljivost;
+            lblMinELO.IsVisible = !viewModel.RucnaVidljivost;
+            txtMinELO.IsVisible = !viewModel.RucnaVidljivost;
 
-            if (viewModel.rucnaVidljivost)
+            if (viewModel.RucnaVidljivost)
             {
                 var vrs = viewModel.ListaVrsta.Where(x => x.Naziv == "Single").FirstOrDefault();
                 var index = vrsPiker.ItemsSource.IndexOf(vrs);

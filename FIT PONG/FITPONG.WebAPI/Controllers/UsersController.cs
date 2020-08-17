@@ -99,7 +99,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [Route("password-potvrda")]
         public async Task<SharedModels.Users> ConfirmPasswordChange(PasswordPromjena obj)
         {
-            var loggedInUserName = obj.Email!=null ? obj.Email : usersService.GetRequestUserName(HttpContext.Request);
+            var loggedInUserName = obj.Email ?? usersService.GetRequestUserName(HttpContext.Request);
 
             return await usersService.ConfirmPasswordChange(loggedInUserName, obj);
         }
