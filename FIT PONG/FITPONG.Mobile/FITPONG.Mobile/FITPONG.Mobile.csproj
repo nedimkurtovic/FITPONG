@@ -93,6 +93,9 @@
     <EmbeddedResource Update="Views\Takmicenja\Objave\TakmicenjaObjaveDetalji.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Takmicenja\TakmicenjaPrijave.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Takmicenja\TakmicenjaRezultati.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

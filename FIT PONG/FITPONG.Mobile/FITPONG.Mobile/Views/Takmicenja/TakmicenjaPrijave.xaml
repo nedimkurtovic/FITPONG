@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="FIT_PONG.Mobile.Views.Takmicenja.TakmicenjaPrijave">
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="CenterAndExpand">
+            <Label Text="PRIJAVE" HorizontalTextAlignment="Center" FontSize="Medium" />
+            <Label x:Name="lblEmpty" Text="Trenutno nema prijava" HorizontalTextAlignment="Center" FontSize="Small"/>
+            <ListView ItemsSource="{Binding ListaPrijava}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0"
+                                               Grid.Column="0"
+                                               FontAttributes="Bold"
+                                                Text="{Binding Naziv}" Margin="5"/>
+                                <Button x:Name="btnBlokiraj" Text="Blokiraj" Grid.Row="0" Grid.Column="1" Margin="5" 
+                                                Clicked="btnBlokiraj_Clicked"
+                                                BindingContext="{Binding ID}"></Button>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -40,6 +40,13 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
             var TakmicenjaObjaveStranica = new TakmicenjaObjave(model.Takmicenje);
             TakmicenjaObjaveStranica.Title = "Objave";
             Children.Add(TakmicenjaObjaveStranica);
+            
+            if(viewModel.Vlasnik() && model.Takmicenje.Inicirano == false)
+            {
+                var TakmicenjaPrijaveStranica = new TakmicenjaPrijave(model.Takmicenje);
+                TakmicenjaPrijaveStranica.Title = "Prijave";
+                Children.Add(TakmicenjaPrijaveStranica);
+            }
 
             Title = model.Takmicenje.Naziv;
         }
