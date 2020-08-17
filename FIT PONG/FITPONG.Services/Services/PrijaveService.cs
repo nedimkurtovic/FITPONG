@@ -52,6 +52,17 @@ namespace FIT_PONG.Services.Services
             if (prijava == null)
                 throw new UserException("Prijava ne postoji u bazi.");
 
+            var sp = db.StanjaPrijave.Where(x => x.PrijavaID == id).SingleOrDefault();
+            if (sp != null)
+                db.Remove(sp);
+            
+            var pi = db.PrijaveIgraci.Where(x => x.PrijavaID == id).ToList();
+            if (pi != null && pi.Count > 1)
+            {
+                db.Remove(pi[1]);
+            }
+            db.Remove(pi[0]);
+
             db.Remove(prijava);
             db.SaveChanges();
             ObrisiPrijavuIgrac(id);
@@ -78,7 +89,12 @@ namespace FIT_PONG.Services.Services
             if (prijava == null)
                 throw new UserException("Prijava ne postoji u bazi.");
 
-            return mapper.Map<SharedModels.Prijave>(prijava);
+            var p = mapper.Map<SharedModels.Prijave>(prijava);
+            var pi = db.PrijaveIgraci.Where(d => d.PrijavaID == id).Select(d => d.IgracID).ToList();
+            p.Igrac1ID = pi[0];
+            p.Igrac2ID = pi.Count > 1 ? pi[1] : -1;
+
+            return p;
         }
 
 

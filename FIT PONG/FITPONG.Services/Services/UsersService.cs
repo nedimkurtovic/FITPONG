@@ -68,10 +68,7 @@ namespace FIT_PONG.Services.Services
 
             foreach (var user in users)
             {
-                var u = mapper.Map<SharedModels.Users>(user);
-                u.ProfileImage = ProcesDobavljanjaSlike(user.ProfileImagePath);
-                var grad = db.Gradovi.Find(user.GradID);
-                u.Grad = grad != null ? grad.Naziv : null;
+                var u = Get(user.ID);
 
                 //try
                 //{
@@ -91,9 +88,6 @@ namespace FIT_PONG.Services.Services
                 //    throw ex;
                 //}
 
-                u.listaPrijava = GetPrijave(user.ID);
-                u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == user.ID).ToList());
-                u.BrojPostovanja = db.Postovanja.Count(x => x.PostovaniID == u.ID);
                 list.Add(u);
             }
 
@@ -109,7 +103,6 @@ namespace FIT_PONG.Services.Services
             var u = mapper.Map<SharedModels.Users>(user);
             u.ProfileImage = ProcesDobavljanjaSlike(user.ProfileImagePath);
             u.Grad = user.Grad!= null ? user.Grad.Naziv : null;
-
             u.listaPrijava = GetPrijave(user.ID);
             u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == user.ID).ToList());
             u.BrojPostovanja = db.Postovanja.Count(x => x.PostovaniID == u.ID);
@@ -182,7 +175,7 @@ namespace FIT_PONG.Services.Services
 
             var igrac = db.Igraci.Find(korisnik.Id);
 
-            var rezultat = await signinmanager.PasswordSignInAsync(obj.UserName, obj.Password, obj.RememberMe, false);
+            var rezultat = await signinmanager.CheckPasswordSignInAsync(korisnik, obj.Password, false);
 
             if (rezultat.IsLockedOut)
             {
@@ -243,13 +236,7 @@ namespace FIT_PONG.Services.Services
             db.Update(igrac);
             db.SaveChanges();
 
-            var u = mapper.Map<SharedModels.Users>(igrac);
-            u.listaPrijava = GetPrijave(igrac.ID);
-            u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == u.ID).ToList());
-            u.ProfileImage = ProcesDobavljanjaSlike(igrac.ProfileImagePath);
-            var grad  = db.Gradovi.Find(obj.GradId);
-            u.Grad = grad != null ? grad.Naziv : null;
-            u.BrojPostovanja = db.Postovanja.Count(x => x.PostovaniID == u.ID);
+            var u = Get(id);
 
 
             return u;
@@ -368,13 +355,7 @@ namespace FIT_PONG.Services.Services
 
             db.SaveChanges();
 
-            var u = mapper.Map<SharedModels.Users>(user2);
-            u.listaPrijava = GetPrijave(user2.ID);
-            u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == u.ID).ToList());
-            u.ProfileImage = ProcesDobavljanjaSlike(user2.ProfileImagePath);
-            var grad = db.Gradovi.Find(user2.GradID);
-            u.Grad = grad != null ? grad.Naziv : null;
-            u.BrojPostovanja = db.Postovanja.Count(x => x.PostovaniID == u.ID);
+            var u = Get(user2.ID);
 
 
             return u;
@@ -402,12 +383,7 @@ namespace FIT_PONG.Services.Services
                     igrac.ProfileImagePath = "content/igraci/profile_picture_default.png";
                     db.SaveChanges();
 
-                    var u = mapper.Map<SharedModels.Users>(igrac);
-                    u.listaPrijava = GetPrijave(igrac.ID);
-                    u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == u.ID).ToList());
-                    u.ProfileImage = ProcesDobavljanjaSlike(igrac.ProfileImagePath);
-                    var grad = db.Gradovi.Find(igrac.GradID);
-                    u.Grad = grad != null ? grad.Naziv : null;
+                    var u = Get(igrac.ID);
 
                     return u;
                 }
@@ -440,13 +416,7 @@ namespace FIT_PONG.Services.Services
                 igrac.ProfileImagePath = "content/igraci/" + ProcesSpremanjaSlike(Slika);
                 db.SaveChanges();
 
-                var u = mapper.Map<SharedModels.Users>(igrac);
-                u.listaPrijava = GetPrijave(igrac.ID);
-                u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == u.ID).ToList());
-                u.ProfileImage = ProcesDobavljanjaSlike(igrac.ProfileImagePath);
-                var grad = db.Gradovi.Find(igrac.GradID);
-                u.Grad = grad != null ? grad.Naziv : null;
-                u.BrojPostovanja = db.Postovanja.Count(x => x.PostovaniID == u.ID);
+                var u = Get(igrac.ID);
 
 
                 return u;
@@ -548,7 +518,7 @@ namespace FIT_PONG.Services.Services
 
         private List<Prijave> GetPrijave(int userId)
         {
-            var prijaveIgraci = db.PrijaveIgraci.Include(p => p.Prijava).Where(d => d.IgracID == userId).ToList();
+            var prijaveIgraci = db.PrijaveIgraci.Include(p => p.Prijava).ThenInclude(d=>d.Takmicenje).Where(d => d.IgracID == userId).ToList();
             var prijave = new List<SharedModels.Prijave>();
 
             foreach (var pi in prijaveIgraci)
@@ -558,7 +528,8 @@ namespace FIT_PONG.Services.Services
                     ID = pi.PrijavaID,
                     Naziv = pi.Prijava.Naziv,
                     Igrac1ID = pi.IgracID,
-                    isTim = false
+                    isTim = false,
+                    Takmicenje = mapper.Map<SharedModels.Takmicenja>(pi.Prijava.Takmicenje)
                 };
 
                 if (pi.Prijava.isTim)

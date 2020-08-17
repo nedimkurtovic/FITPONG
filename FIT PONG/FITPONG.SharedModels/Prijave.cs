@@ -11,5 +11,6 @@ namespace FIT_PONG.SharedModels
         public string Naziv { get; set; }
         public int? Igrac1ID { get; set; }
         public int? Igrac2ID { get; set; }
+        public SharedModels.Takmicenja Takmicenje { get; set; }
     }
 }

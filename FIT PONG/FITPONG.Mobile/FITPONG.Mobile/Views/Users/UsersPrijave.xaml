@@ -2,14 +2,48 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:converters="clr-namespace:FIT_PONG.Mobile.Converters"
              mc:Ignorable="d"
              x:Class="FIT_PONG.Mobile.Views.Users.UsersPrijave">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Text="PRIJAVE" HorizontalTextAlignment="Center" FontSize="Medium" />
+            <Label x:Name="lblEmpty" Text="Trenutno nema prijava" HorizontalTextAlignment="Center" FontSize="Small"/>
+            <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="Center" Margin="20">
+                <Label Text="Naziv takmičenja" FontSize="Medium"/>
+                <Label Text="Naziv tima" FontSize="Medium"/>
+                <Label Text="Akcija" FontSize="Medium"/>
+            </FlexLayout>
+            <ListView ItemsSource="{Binding listaPrijava}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*"></ColumnDefinition>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0"
+                                               Grid.Column="0"
+                                               FontAttributes="Bold"
+                                                Text="{Binding Takmicenje.Naziv}" Margin="5"/>
+                                <Label Grid.Row="0"
+                                               Grid.Column="1"
+                                               FontAttributes="Bold"
+                                                Text="{Binding Naziv}" Margin="5"/>
+
+                                <Button x:Name="btnOtkazi" Grid.Row="0" Grid.Column="2" Text="Otkaži" Margin="5" 
+                                                Clicked="btnOtkazi_Clicked" BindingContext="{Binding ID}"></Button>
+                                <!--IsVisible="{Binding Takmicenje.Inicirano, Converter={StaticResource inverseBoolConv}}"-->
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

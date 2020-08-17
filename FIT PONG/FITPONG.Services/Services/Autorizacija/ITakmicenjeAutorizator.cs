@@ -1,4 +1,5 @@
-﻿using FIT_PONG.SharedModels.Requests.Takmicenja;
+﻿using FIT_PONG.SharedModels;
+using FIT_PONG.SharedModels.Requests.Takmicenja;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +15,8 @@ namespace FIT_PONG.Services.Services.Autorizacija
         bool AuthorizePrijavaBlok(int UserId, int PrijavaId);
         bool AuthorizeEvidencijaMeca(int UserId, EvidencijaMeca obj);
         void AuthorizePrijava(int UserId, PrijavaInsert obj);
+        void AuthorizeOtkaziPrijavu(int UserId, Prijave prijava);
+
 
     }
 }

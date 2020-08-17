@@ -85,15 +85,15 @@ namespace FIT_PONG.Mobile.ViewModels.Users
             var listaErrora = new List<string>();
 
             //email
-            if (String.IsNullOrEmpty(Email))
-                listaErrora.Add("Email je obavezan.");
-            else
-            {
-                var pattern = "[a-zA-Z0-9.]+@edu\\.fit\\.ba";
-                Match match = Regex.Match(Email, pattern);
-                if (!match.Success)
-                    listaErrora.Add("Email mora biti u formatu ime.prezime@edu.fit.ba");
-            }
+            //if (String.IsNullOrEmpty(Email))
+            //    listaErrora.Add("Email je obavezan.");
+            //else
+            //{
+            //    var pattern = "[a-zA-Z0-9.]+@edu\\.fit\\.ba";
+            //    Match match = Regex.Match(Email, pattern);
+            //    if (!match.Success)
+            //        listaErrora.Add("Email mora biti u formatu ime.prezime@edu.fit.ba");
+            //}
 
             //prikaznoIme
             if (String.IsNullOrEmpty(PrikaznoIme))

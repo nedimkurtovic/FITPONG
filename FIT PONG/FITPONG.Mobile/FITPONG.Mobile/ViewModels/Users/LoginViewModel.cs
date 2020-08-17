@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using FIT_PONG.SharedModels;
+using FIT_PONG.Mobile.Views.Users;
 
 namespace FIT_PONG.Mobile.ViewModels.Users
 {
@@ -37,7 +38,7 @@ namespace FIT_PONG.Mobile.ViewModels.Users
                 await Application.Current.MainPage.DisplayAlert("Greška", "Molimo popunite polja", "OK");
                 return;
             }
-            Login noviLogin = new Login
+            var noviLogin = new SharedModels.Requests.Account.Login
             {
                 UserName = this.Username,
                 Password = this.Password,

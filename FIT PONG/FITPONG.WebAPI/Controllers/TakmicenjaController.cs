@@ -175,6 +175,15 @@ namespace FIT_PONG.WebAPI.Controllers
             return prijaveService.Add(id, obj);
         }
 
+        [HttpDelete("{id}/prijava")]
+        public Prijave UkloniPrijavu(int id)
+        {
+            var userId = usersService.GetRequestUserID(HttpContext.Request);
+            var prijava = prijaveService.GetByID(id);
+            takmicenjeAutorizator.AuthorizeOtkaziPrijavu(userId, prijava);
+            return prijaveService.Delete(id);
+        }
+
 
         private PagedResponse<Takmicenja> GetPagedResponse(TakmicenjeSearch obj)
         {
