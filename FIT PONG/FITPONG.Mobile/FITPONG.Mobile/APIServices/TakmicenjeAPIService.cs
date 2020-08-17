@@ -150,7 +150,7 @@ namespace FIT_PONG.Mobile.APIServices
 
         public async Task<Prijave> OtkaziPrijavu(int id)
         {
-            var url = $"{APIUrl}/{resurs}/{id}/prijava";
+            var url = $"{APIUrl}/{Resurs}/{id}/prijava";
             try
             {
                 var rezult = await url.WithBasicAuth(Username, Password).DeleteAsync().ReceiveJson<Prijave>();

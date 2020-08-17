@@ -1,0 +1,50 @@
+version: '3'
+services:
+#mssql docker
+  fitpong-sql:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=F!tP0ng_2019
+      - MSSQL_PID=Developer
+    ports:
+      - 1401:1433
+    networks:
+      - fitpongnet
+
+  fitpong-api:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: FITPONG.WebAPI/Dockerfile 
+    environment: 
+    - ConnectionStrings:Plesk=Server=app.fit.ba,1431;Database=FIT_PONG;Trusted_Connection=False;MultipleActiveResultSets=True;User ID=fitpong;Password=F!tP0ng_2019;ConnectRetryCount=0
+    ports:
+      - 5766:5766
+    networks:
+      - fitpongnet      
+    links:
+      - fitpong-sql
+    depends_on:
+      - fitpong-sql
+    
+  fitpong-webapp:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: FITPONG.WebApp/Dockerfile
+    environment:
+      - ConnectionStrings:Plesk=Server=app.fit.ba,1431;Database=FIT_PONG;Trusted_Connection=False;MultipleActiveResultSets=True;User ID=fitpong;Password=F!tP0ng_2019;ConnectRetryCount=0
+    ports:
+      - 4260:4260
+    networks:
+      - fitpongnet      
+    links:
+      - fitpong-sql
+    depends_on:
+      - fitpong-sql
+
+networks:
+  fitpongnet:
+    driver: bridge      
