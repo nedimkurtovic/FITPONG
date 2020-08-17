@@ -24,7 +24,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             vidljiv = true;
             promjena = new Command(async => { _vidljiv = !_vidljiv; });
             prijaveVisible = _takmicenje.Inicirano == false && BaseAPIService.ID == _takmicenje.KreatorID ? true:false;
-            DodajPrijave(_takmicenje.Prijave);
+
         }
         public TakmicenjaDetaljiViewModel()
         {
@@ -63,20 +63,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             return rezultat;
         }
 
-        private void DodajPrijave(List<Prijava> prijave)
-        {
-            foreach (var item in prijave)
-                listaPrijava.Add(item);
-        }
 
-        public async Task<SharedModels.Prijave> BlokirajPrijavu(int id)
-        {
-            var rezultat = await takmicenjeAPIService.BlokirajPrijavu(Takmicenje.ID, id);
-            var p = listaPrijava.Where(d => d.ID == id).Single();
 
-            listaPrijava.Remove(p);
-
-            return rezultat;
-        }
     }
 }

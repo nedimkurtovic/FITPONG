@@ -25,7 +25,6 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
             else
                 DodatneOpcijeLayout.IsVisible = false;
 
-            lblEmpty.IsVisible = viewModel.listaPrijava.Count == 0;
             btnGenerisiRaspored.IsVisible = !vm.Takmicenje.Inicirano ?? true;
             btnPrijava.IsVisible = !vm.Takmicenje.Inicirano ?? true;
 
@@ -68,15 +67,8 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
 
         private async void btnPrijava_Clicked(object sender, EventArgs e)
         {
-
             await Navigation.PushAsync(new TakmicenjePrijava(viewModel.Takmicenje));
         }
 
-        private async void btnBlokiraj_Clicked(object sender, EventArgs e)
-        {
-            var x = ((Button)sender).BindingContext;
-
-            await viewModel.BlokirajPrijavu(int.Parse(x.ToString()));
-        }
     }
 }

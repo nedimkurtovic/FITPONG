@@ -188,11 +188,10 @@ namespace FIT_PONG.WebAPI.Controllers
         private PagedResponse<Takmicenja> GetPagedResponse(TakmicenjeSearch obj)
         {
             var listaTakmicenja = takmicenjeService.Get(obj);
-            PagedResponse<Takmicenja> respons = new PagedResponse<Takmicenja>
-            {
-                TotalPageCount = (int)Math.Ceiling((double)listaTakmicenja.Count() / (double)obj.Limit),
-                Stavke = listaTakmicenja.Skip((obj.Page - 1) * obj.Limit).Take(obj.Limit).ToList()
-            };
+            PagedResponse<Takmicenja> respons = new PagedResponse<Takmicenja>();
+
+            respons.TotalPageCount = (int)Math.Ceiling((double)listaTakmicenja.Count() / (double)obj.Limit);
+            respons.Stavke = listaTakmicenja.Skip((obj.Page - 1) * obj.Limit).Take(obj.Limit).ToList();
 
             TakmicenjeSearch iducaKlon = obj.Clone() as TakmicenjeSearch;
             iducaKlon.Page = (iducaKlon.Page + 1) > respons.TotalPageCount ? -1 : iducaKlon.Page + 1;
