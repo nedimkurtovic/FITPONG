@@ -184,6 +184,21 @@ namespace FIT_PONG.WebAPI.Controllers
             return prijaveService.Delete(id);
         }
 
+        [HttpGet("{id}/favoriti")]
+        public SharedModels.Favoriti GetFavoriti(int id)
+        {
+            var userId = usersService.GetRequestUserID(HttpContext.Request);
+            
+            return takmicenjeService.GetFavoriti(id, userId);
+        }
+
+        [HttpPost("{id}/favoriti")]
+        public SharedModels.Favoriti OznaciUtakmicu(int id)
+        {
+            var userId = usersService.GetRequestUserID(HttpContext.Request);
+
+            return takmicenjeService.OznaciUtakmicu(id, userId);
+        }
 
         private PagedResponse<Takmicenja> GetPagedResponse(TakmicenjeSearch obj)
         {

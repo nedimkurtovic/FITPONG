@@ -426,6 +426,43 @@ namespace FIT_PONG.Services.Services
             }
             throw new UserException("Ne postoji zapis u tabeli Prijava_Igrac.");
         }
+
+        public SharedModels.Favoriti GetFavoriti(int id, int userId)
+        {
+            var obj = GetFavoritiPomocna(id, userId);
+
+            return obj;
+        }
+
+        public SharedModels.Favoriti OznaciUtakmicu(int id, int userId)
+        {
+            var fav = db.Favoriti.Where(d => d.UserID == userId && d.UtakmicaId == id).SingleOrDefault();
+            var u = db.Utakmice.Include(d => d.Runda).ThenInclude(d => d.Bracket).Where(d => d.ID == id).SingleOrDefault();
+            if (u != null)
+            {
+                if (fav != null)
+                {
+                    db.Remove(fav);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var novi = new Database.DTOs.Favoriti
+                    {
+                        UserID = userId,
+                        UtakmicaId = id
+                    };
+
+                    db.Add(novi);
+                    db.SaveChanges();
+                }
+
+                var obj = GetFavoritiPomocna(u.Runda.Bracket.TakmicenjeID, userId);
+                return obj;
+            }
+            throw new UserException("Doslo je do greske prilikom spremanja favorita.");
+        }
+
         #endregion
 
         #region Pomagaci
@@ -461,6 +498,29 @@ namespace FIT_PONG.Services.Services
                 }
             }
 
+        }
+
+        private SharedModels.Favoriti GetFavoritiPomocna(int id, int userId)
+        {
+            List<Utakmica> utakmice = db.Utakmice.AsNoTracking()
+                .Include(x => x.UcescaNaUtakmici)
+                .Include(x => x.Runda).ThenInclude(x => x.Bracket).ThenInclude(x => x.Takmicenje)
+                .Where(x => x.Runda.Bracket.TakmicenjeID == id).ToList();
+
+            SharedModels.Favoriti obj = new SharedModels.Favoriti();
+
+            foreach (var item in utakmice)
+            {
+                var fav = db.Favoriti.Where(i => i.UserID == userId && i.UtakmicaId == item.ID).SingleOrDefault();
+
+                (string tim1, int? rez1, int? rez2, string tim2) par = evidentor.GetPar(item, id);
+                if (fav != null)
+                    obj.oznaceneUtakmice.Add((par.tim1, par.rez1, par.rez2, par.tim2, item.ID));
+                else
+                    obj.neoznaceneUtakmice.Add((par.tim1, par.rez1, par.rez2, par.tim2, item.ID));
+            }
+
+            return obj;
         }
         #endregion
         //=============================ZONA VALIDACIJE ISPOD, NASTAVITI S PAŽNJOM !==============================

@@ -48,6 +48,10 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
                 Children.Add(TakmicenjaPrijaveStranica);
             }
 
+            var TakmicenjaFavoritiStranica = new TakmicenjaFavoriti(model.Takmicenje);
+            TakmicenjaFavoritiStranica.Title = "Favoriti";
+            Children.Add(TakmicenjaFavoritiStranica);
+
             Title = model.Takmicenje.Naziv;
         }
 

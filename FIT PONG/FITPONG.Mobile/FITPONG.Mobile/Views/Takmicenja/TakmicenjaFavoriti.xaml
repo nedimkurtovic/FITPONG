@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FIT_PONG.Mobile.Views.Takmicenja.TakmicenjaFavoriti">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="FAVORITI" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" FontSize="Large"/>
+
+
+            <Label Text="Označene utakmice" HorizontalOptions="CenterAndExpand" FontSize="Medium"/>
+            <ListView ItemsSource="{Binding oznaceneUtakmice}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*"></ColumnDefinition>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0"
+                                               Grid.Column="0"
+                                               FontAttributes="Bold"
+                                                Text="{Binding NazivTima}" Margin="5"/>
+
+                                <Button x:Name="btnUkloni" Text="Ukloni" Grid.Row="0" Grid.Column="1" Margin="5" 
+                                       Clicked="btnDodajUkloni_Clicked" 
+                                       BindingContext="{Binding UtakmicaId}"
+                                        ClassId="ukloni"/>
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Label x:Name="lblBusy" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="Medium" FontAttributes="Bold" Text="Dobavljam favorite..." IsVisible="{Binding IsBusy}" />
+
+            <Label Text="Neoznačene utakmice" FontSize="Medium" HorizontalOptions="CenterAndExpand"/>
+            <ListView ItemsSource="{Binding neoznaceneUtakmice}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*"></ColumnDefinition>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0"
+                                               Grid.Column="0"
+                                               FontAttributes="Bold"
+                                                Text="{Binding NazivTima}" Margin="5"/>
+
+                                <Button x:Name="btnDodaj" Text="Dodaj" Grid.Row="0" Grid.Column="1" Margin="5" 
+                                        Clicked="btnDodajUkloni_Clicked"
+                                        BindingContext="{Binding UtakmicaId}"
+                                        ClassId="dodaj"/>
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

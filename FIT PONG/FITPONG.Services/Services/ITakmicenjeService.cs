@@ -25,5 +25,7 @@ namespace FIT_PONG.Services.Services
 		EvidencijaMeca GetIgraceZaEvidenciju(EvidencijaMeca obj, int takmid);
 		List<Users> GetBlokiraneIgrace(int takmId);
 		Prijave BlokirajPrijavu(int takmId, int prijavaId);
+		SharedModels.Favoriti GetFavoriti(int id, int userId);
+		SharedModels.Favoriti OznaciUtakmicu(int id, int userId);
 	}
 }
