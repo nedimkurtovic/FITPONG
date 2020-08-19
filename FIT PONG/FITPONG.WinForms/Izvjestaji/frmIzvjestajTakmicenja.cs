@@ -17,12 +17,15 @@ namespace FIT_PONG.WinForms.Izvjestaji
     {
         APIService apiService = new APIService("takmicenja");
         private string naziv;
+        private List<string> selektovani;
+
         private PagedResponse<Takmicenja> takmicenja = null;
 
-        public frmIzvjestajTakmicenja(string naziv)
+        public frmIzvjestajTakmicenja(string naziv, List<string> selektovani)
         {
             InitializeComponent();
             this.naziv = naziv;
+            this.selektovani = selektovani;
         }
 
         private async void frmIzvjestajTakmicenja_Load(object sender, EventArgs e)
@@ -30,6 +33,9 @@ namespace FIT_PONG.WinForms.Izvjestaji
             ReportParameterCollection rpc = new ReportParameterCollection();
             rpc.Add(new ReportParameter("Datum", DateTime.Now.ToString()));
             rpc.Add(new ReportParameter("Naziv", naziv));
+            rpc.Add(new ReportParameter("brojRundi_visible", selektovani.Contains("brojrundi") ? "True" : "False"));
+            rpc.Add(new ReportParameter("MinElo_visible", selektovani.Contains("minelo") ? "True" : "False"));
+
 
             takmicenja = await apiService.GetAll<PagedResponse<Takmicenja>>();
 

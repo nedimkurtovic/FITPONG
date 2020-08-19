@@ -19,11 +19,14 @@ namespace FIT_PONG.WinForms
     {
         UsersAPIService usersAPIService = new UsersAPIService();
         private string naziv;
+        private List<string> selektovani;
+
         private PagedResponse<Users> igraci = null;
-        public frmIzvjestajIgraci(string naziv)
+        public frmIzvjestajIgraci(string naziv, List<string> selektovani)
         {
             InitializeComponent();
             this.naziv = naziv;
+            this.selektovani = selektovani;
         }
 
         private async void frmIzvjestajIgraci_Load(object sender, EventArgs e)
@@ -31,6 +34,12 @@ namespace FIT_PONG.WinForms
             ReportParameterCollection rpc = new ReportParameterCollection();
             rpc.Add(new ReportParameter("Datum", DateTime.Now.ToString()));
             rpc.Add(new ReportParameter("Naziv", naziv));
+            rpc.Add(new ReportParameter("jacaRuka_visible", selektovani.Contains("jacaruka") ? "True" : "False"));
+            rpc.Add(new ReportParameter("spol_visible", selektovani.Contains("spol") ? "True" : "False"));
+            rpc.Add(new ReportParameter("visina_visible", selektovani.Contains("visina") ? "True" : "False"));
+            rpc.Add(new ReportParameter("elo_visible", selektovani.Contains("elo") ? "True" : "False"));
+            rpc.Add(new ReportParameter("brojPosjeta_visible", selektovani.Contains("brojposjeta") ? "True" : "False"));
+
 
             igraci = await usersAPIService.GetAll<PagedResponse<Users>>();
 
@@ -64,7 +73,7 @@ namespace FIT_PONG.WinForms
                     igraci = null;
                 }
 
-            } while (igraci !=null);
+            } while (igraci != null);
 
 
             ReportDataSource rds = new ReportDataSource();
@@ -78,5 +87,6 @@ namespace FIT_PONG.WinForms
 
             this.rpvIgraci.RefreshReport();
         }
+
     }
 }

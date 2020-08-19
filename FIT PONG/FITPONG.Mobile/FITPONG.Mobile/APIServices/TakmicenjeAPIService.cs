@@ -196,6 +196,22 @@ namespace FIT_PONG.Mobile.APIServices
             }
         }
 
+        public async Task<List<string>> GetListaUseraNotifikacije(int utakId)
+        {
+            var url = $"{APIUrl}/{Resurs}/{utakId}/lista-notifikacije";
+            try
+            {
+                var rezult = await url.WithBasicAuth(Username, Password).GetJsonAsync<List<string>>();
+                return rezult;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = GetErrore(ex).Result;
+                await Application.Current.MainPage.DisplayAlert("Greška", errori, "OK");
+                return default(List<string>);
+            }
+        }
+
         //public override async Task<T> Update<T>(int id, object request)
         //{
         //    var url = $"{APIUrl}/{resurs}/{id}";

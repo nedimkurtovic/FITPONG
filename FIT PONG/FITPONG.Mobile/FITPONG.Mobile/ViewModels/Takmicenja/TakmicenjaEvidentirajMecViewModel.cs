@@ -13,12 +13,15 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
     {
         public EvidencijaMeca evidencijaMeca { get; set; }
         public SharedModels.Takmicenja takmicenje { get; set; }
+        public NotifikacijeService notifikacijeService { get; set; }
 
 
         public TakmicenjaEvidentirajMecViewModel(EvidencijaMeca _evidencijaMeca, SharedModels.Takmicenja _takmicenje)
         {
             evidencijaMeca = _evidencijaMeca;
             takmicenje = _takmicenje;
+            notifikacijeService = new NotifikacijeService();
+            notifikacijeService.Init();
         }
         private int _rezultattim1;
         public int RezultatTim1 { get => _rezultattim1; set => SetProperty(ref _rezultattim1, value); }
@@ -39,10 +42,19 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             if(rezultat != default(EvidencijaMeca))
             {
                 await Application.Current.MainPage.DisplayAlert("Uspjeh", "Uspješno evidentiran meč", "OK");
+                var rez = await takmicenjeAPIService.GetListaUseraNotifikacije(rezultat.UtakmicaID);
+
+                if (rez != (default(List<string>)))
+                {
+                    await notifikacijeService.PosaljiNotifikacijeAsync(rez, rezultat.NazivTim1, rezultat.NazivTim2, rezultat.UtakmicaID);
+                    //await Application.Current.MainPage.DisplayAlert("Notifikacija", rez.ToString(), "OK");
+                }
+
                 return true;
             }
             return false;
         }
+
         private bool Validacija()
         {
             var listaErrora = new List<string>();

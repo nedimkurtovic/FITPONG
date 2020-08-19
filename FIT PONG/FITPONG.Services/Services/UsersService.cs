@@ -102,11 +102,11 @@ namespace FIT_PONG.Services.Services
 
             var u = mapper.Map<SharedModels.Users>(user);
             u.ProfileImage = ProcesDobavljanjaSlike(user.ProfileImagePath);
-            u.Grad = user.Grad!= null ? user.Grad.Naziv : null;
+            u.Grad = user.Grad != null ? user.Grad.Naziv : null;
             u.listaPrijava = GetPrijave(user.ID);
             u.statistike = mapper.Map<List<SharedModels.Statistike>>(db.Statistike.Where(d => d.IgracID == user.ID).ToList());
             u.BrojPostovanja = db.Postovanja.Count(x => x.PostovaniID == u.ID);
-            
+
             return mapper.Map<SharedModels.Users>(u);
         }
 
@@ -528,8 +528,7 @@ namespace FIT_PONG.Services.Services
                     ID = pi.PrijavaID,
                     Naziv = pi.Prijava.Naziv,
                     Igrac1ID = pi.IgracID,
-                    isTim = false,
-                    Takmicenje = mapper.Map<SharedModels.Takmicenja>(pi.Prijava.Takmicenje)
+                    isTim = false
                 };
 
                 if (pi.Prijava.isTim)

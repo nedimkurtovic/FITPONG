@@ -463,6 +463,19 @@ namespace FIT_PONG.Services.Services
             throw new UserException("Doslo je do greske prilikom spremanja favorita.");
         }
 
+        public List<string> GetListaUseraNotifikacije(int utakId)
+        {
+            var favoriti = db.Favoriti.Include(d => d.User).Where(d => d.UtakmicaId == utakId).ToList();
+
+            var lista = new List<string>();
+
+            foreach (var item in favoriti)
+            {
+                lista.Add(item.User.Email);
+            }
+            return lista;
+        }
+
         #endregion
 
         #region Pomagaci

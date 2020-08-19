@@ -27,6 +27,7 @@ namespace FIT_PONG.Mobile.Views.Takmicenja
             var rezultat = await viewModel.Evidencija();
             if(rezultat)
             {
+                
                 //ovaj dio koda treba napravit extenzijom, vec sam ga 3 puta koristio
                 var mainStranica = Navigation.NavigationStack[1];
                 Navigation.InsertPageBefore(new TakmicenjaMain(new TakmicenjaDetaljiViewModel(viewModel.takmicenje)), mainStranica);

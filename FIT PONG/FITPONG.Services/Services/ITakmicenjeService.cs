@@ -27,5 +27,6 @@ namespace FIT_PONG.Services.Services
 		Prijave BlokirajPrijavu(int takmId, int prijavaId);
 		SharedModels.Favoriti GetFavoriti(int id, int userId);
 		SharedModels.Favoriti OznaciUtakmicu(int id, int userId);
+		List<string> GetListaUseraNotifikacije(int utakId);
 	}
 }

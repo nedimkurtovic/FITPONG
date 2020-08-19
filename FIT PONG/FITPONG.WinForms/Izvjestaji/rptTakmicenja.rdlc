@@ -724,8 +724,16 @@
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
-                <TablixMember />
-                <TablixMember />
+                <TablixMember>
+                  <Visibility>
+                    <Hidden>=iif(Parameters!brojRundi_visible.Value = "True", false,true)</Hidden>
+                  </Visibility>
+                </TablixMember>
+                <TablixMember>
+                  <Visibility>
+                    <Hidden>=iif(Parameters!minElo_visible.Value = "True", false,true)</Hidden>
+                  </Visibility>
+                </TablixMember>
                 <TablixMember />
                 <TablixMember />
               </TablixMembers>
@@ -743,7 +751,7 @@
             <DataSetName>DSTakmicenja</DataSetName>
             <Top>1.355in</Top>
             <Left>0.11333in</Left>
-            <Height>0.53333in</Height>
+            <Height>0.53334in</Height>
             <Width>11.33241in</Width>
             <ZIndex>3</ZIndex>
             <Style>
@@ -775,6 +783,14 @@
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="brojRundi_visible">
+      <DataType>Boolean</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="minElo_visible">
+      <DataType>Boolean</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -790,6 +806,16 @@
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>0</RowIndex>
           <ParameterName>Naziv</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>brojRundi_visible</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>minElo_visible</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

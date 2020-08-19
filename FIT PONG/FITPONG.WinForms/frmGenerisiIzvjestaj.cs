@@ -35,14 +35,58 @@ namespace FIT_PONG.WinForms
 
             if (cmbIzvjestaj.SelectedItem.ToString() == "Igraci")
             {
-                frmIzvjestajIgraci izvjestajIgraci = new frmIzvjestajIgraci(txtNaziv.Text);
+                frmIzvjestajIgraci izvjestajIgraci = new frmIzvjestajIgraci(txtNaziv.Text, GetSelektovaneIgraci());
                 izvjestajIgraci.ShowDialog();
             }
             else if (cmbIzvjestaj.SelectedItem.ToString() == "Takmicenja")
             {
-                frmIzvjestajTakmicenja izvjestajTakmicenja = new frmIzvjestajTakmicenja(txtNaziv.Text);
+                frmIzvjestajTakmicenja izvjestajTakmicenja = new frmIzvjestajTakmicenja(txtNaziv.Text,GetSelektovaneTakmicenja());
                 izvjestajTakmicenja.ShowDialog();
             };
+        }
+
+        private List<string> GetSelektovaneIgraci()
+        {
+
+            var selektovani = new List<string>();
+            if (chbJacaruka.Checked)
+                selektovani.Add("jacaruka");
+            if (chbVisina.Checked)
+                selektovani.Add("visina");
+            if (chbSpol.Checked)
+                selektovani.Add("spol");
+            if (chbELO.Checked)
+                selektovani.Add("elo");
+            if (chbBrojPosjeta.Checked)
+                selektovani.Add("brojposjeta");
+            return selektovani;
+        }
+
+        private List<string> GetSelektovaneTakmicenja()
+        {
+
+            var selektovani = new List<string>();
+            if (chbBrojRundi.Checked)
+                selektovani.Add("brojrundi");
+            if (chbMinELO.Checked)
+                selektovani.Add("minelo");
+            return selektovani;
+        }
+
+        private void cmbIzvjestaj_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbIzvjestaj.SelectedItem.ToString() == "Igraci")
+            {
+                flwIgraci.Visible = true;
+                flwTakmicenja.Visible = false;
+            }
+
+            if (cmbIzvjestaj.SelectedItem.ToString() == "Takmicenja")
+            {
+                flwIgraci.Visible = false;
+                flwTakmicenja.Visible = true;
+            }
+
         }
     }
 }

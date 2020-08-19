@@ -200,6 +200,12 @@ namespace FIT_PONG.WebAPI.Controllers
             return takmicenjeService.OznaciUtakmicu(id, userId);
         }
 
+        [HttpGet("{utakId}/lista-notifikacije")]
+        public List<string> GetListaUseraNotifikacije(int utakId)
+        {
+            return takmicenjeService.GetListaUseraNotifikacije(utakId);
+        }
+
         private PagedResponse<Takmicenja> GetPagedResponse(TakmicenjeSearch obj)
         {
             var listaTakmicenja = takmicenjeService.Get(obj);
