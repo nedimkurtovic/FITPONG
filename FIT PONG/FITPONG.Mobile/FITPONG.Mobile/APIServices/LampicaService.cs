@@ -22,7 +22,7 @@ namespace FIT_PONG.Mobile.APIServices
         protected string hubUrl = "http://localhost:4260/lampica";
 #endif
 #if RELEASE
-        protected string hubUrl = "http://p1869.app.fit.ba/lampica";
+        protected string hubUrl = "http://localhost:4260/lampica";
 #endif
         public void Init()
         {

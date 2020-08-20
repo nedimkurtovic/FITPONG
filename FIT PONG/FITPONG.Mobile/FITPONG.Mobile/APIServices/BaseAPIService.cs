@@ -26,7 +26,7 @@ namespace FIT_PONG.Mobile.APIServices
         protected string APIUrl = "http://localhost:5766/api";
 #endif
 #if RELEASE
-        protected string APIUrl = "http://p1869.app.fit.ba/api";
+        protected string APIUrl = "http://localhost:5766/api";
 #endif
         public BaseAPIService(string _resurs)
         {

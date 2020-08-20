@@ -14,7 +14,7 @@ namespace FIT_PONG.Mobile.APIServices
         protected string hubUrl = "http://localhost:4260/notifikacije";
 #endif
 #if RELEASE
-        protected string hubUrl = "http://p1869.app.fit.ba/notifikacije";
+        protected string hubUrl = "http://localhost:4260/notifikacije";
 #endif
 
         public event EventHandler<MessageEventArgs> primiNotifikacije;

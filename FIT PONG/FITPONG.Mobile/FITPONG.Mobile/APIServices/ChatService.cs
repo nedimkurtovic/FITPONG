@@ -26,7 +26,7 @@ namespace FIT_PONG.Mobile.APIServices
         protected string hubUrl = "http://localhost:4260/chathub";
 #endif
 #if RELEASE
-        protected string hubUrl = "http://p1869.app.fit.ba/ChatHub";
+        protected string hubUrl = "http://localhost:4260/chathub";
 #endif
 
         public event EventHandler<FIT_PONG.Mobile.ViewModels.Chat.ChatPoruka> StiglaPoruka;
