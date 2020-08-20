@@ -11,13 +11,13 @@ namespace FIT_PONG.Mobile.APIServices
     public class NotifikacijeService
     {
 #if DEBUG
-        protected string hubUrl = "http://localhost:4260/NotifikacijeHub";
+        protected string hubUrl = "http://localhost:4260/notifikacije";
 #endif
 #if RELEASE
-        protected string hubUrl = "http://p1869.app.fit.ba/NotifikacijeHub";
+        protected string hubUrl = "http://p1869.app.fit.ba/notifikacije";
 #endif
 
-        public event EventHandler<string> primiNotifikacije;
+        public event EventHandler<MessageEventArgs> primiNotifikacije;
         public event EventHandler<MessageEventArgs> OnConnectionClosed;
 
 
@@ -69,7 +69,11 @@ namespace FIT_PONG.Mobile.APIServices
             hubKonekcija.On<string, string, int>("PrimiNotifikacije", (tim1, tim2, id) =>
             {
                 var notifikacija = "Evidentirana je utakmica izmedju " + tim1 + " i " + tim2;
-                primiNotifikacije?.Invoke(this, notifikacija);
+                primiNotifikacije?.Invoke(this, new MessageEventArgs(notifikacija));
+            });
+            hubKonekcija.On<List<string>,string, string, int>("startaj", (List<string> favoriti, string tim1, string tim2, int id) =>
+            {
+                _ = PosaljiNotifikacijeAsync(favoriti, tim1, tim2, id);
             });
         }
 
@@ -99,6 +103,13 @@ namespace FIT_PONG.Mobile.APIServices
                 return;
             var userName = BaseAPIService.Username;
             await hubKonekcija.InvokeAsync("PosaljiNotifikacije", favoriti, tim1, tim2, id);
+        }
+        public async Task DummyStartajAsync(List<string> favoriti, string tim1, string tim2, int id)
+        {
+            if (!IsConnected)
+                return;
+            var userName = BaseAPIService.Username;
+            await hubKonekcija.InvokeAsync("DummyStartaj", favoriti, tim1, tim2, id);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FIT_PONG.Mobile.APIServices;
+using FIT_PONG.Mobile.Views;
 using FIT_PONG.SharedModels.Requests.Takmicenja;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,13 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
     {
         public EvidencijaMeca evidencijaMeca { get; set; }
         public SharedModels.Takmicenja takmicenje { get; set; }
-        public NotifikacijeService notifikacijeService { get; set; }
 
 
         public TakmicenjaEvidentirajMecViewModel(EvidencijaMeca _evidencijaMeca, SharedModels.Takmicenja _takmicenje)
         {
             evidencijaMeca = _evidencijaMeca;
             takmicenje = _takmicenje;
-            notifikacijeService = new NotifikacijeService();
-            notifikacijeService.Init();
+
         }
         private int _rezultattim1;
         public int RezultatTim1 { get => _rezultattim1; set => SetProperty(ref _rezultattim1, value); }
@@ -46,7 +45,10 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
 
                 if (rez != (default(List<string>)))
                 {
-                    await notifikacijeService.PosaljiNotifikacijeAsync(rez, rezultat.NazivTim1, rezultat.NazivTim2, rezultat.UtakmicaID);
+                    var a = Application.Current.MainPage as MainPage;
+                    var kontekst = (MainPageViewModel)a.BindingContext;
+                    //await kontekst.notifikacijeService.PosaljiNotifikacijeAsync(rez, rezultat.NazivTim1, rezultat.NazivTim2, rezultat.UtakmicaID);
+                    await kontekst.notifikacijeService.DummyStartajAsync(rez, rezultat.NazivTim1, rezultat.NazivTim2, rezultat.UtakmicaID);
                     //await Application.Current.MainPage.DisplayAlert("Notifikacija", rez.ToString(), "OK");
                 }
 

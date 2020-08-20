@@ -58,6 +58,8 @@ namespace FIT_PONG
             services.AddScoped<FIT_PONG.Services.BL.ELOCalculator>();
             services.AddScoped<FIT_PONG.Services.BL.Evidentor>();
             services.AddScoped<FIT_PONG.Services.BL.iEmailServis, FIT_PONG.Services.BL.FITPONGGmail>();
+            services.AddScoped<ISuspenzijaService, SuspenzijaService>();
+
             services.AddScoped<NotifikacijeHub>();
             services.AddScoped<FIT_PONG.Services.IGradoviService, FIT_PONG.Services.GradoviService>();
             services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(opcije =>

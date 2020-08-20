@@ -8,6 +8,7 @@ using Xamarin.Forms.Xaml;
 using FIT_PONG.Mobile.Models;
 using FIT_PONG.Mobile.APIServices;
 using FIT_PONG.Mobile.Views.Users;
+using FIT_PONG.Mobile.ViewModels;
 
 namespace FIT_PONG.Mobile.Views
 {
@@ -18,12 +19,25 @@ namespace FIT_PONG.Mobile.Views
     {
         Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
         BaseAPIService apiServis = new BaseAPIService("users");
+        MainPageViewModel viewModel;
         public MainPage()
         {
             InitializeComponent();
 
             MasterBehavior = MasterBehavior.Popover;
+            BindingContext = viewModel = new MainPageViewModel();
+            _ = viewModel.notifikacijeService.ConnectAsync();
+            viewModel.notifikacijeService.primiNotifikacije += NotifikacijeService_primiNotifikacije;
 
+        }
+
+
+        private void NotifikacijeService_primiNotifikacije(object sender, MessageEventArgs e)
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Application.Current.MainPage.DisplayAlert("OBAVIJEST", e.Message, "OK");
+            });
         }
 
         public async Task NavigateFromMenu(int id)

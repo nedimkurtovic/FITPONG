@@ -3,6 +3,7 @@ using FIT_PONG.Services.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,16 +69,37 @@ namespace FIT_PONG.Hubs
             return ListaKonekcija.Select(x => x.username).ToList();
         }
 
-        public Task PosaljiNotifikacije(List<String> favoriti, string tim1, string tim2, int id)
+        public async Task PosaljiNotifikacije(List<String> favoriti, string tim1, string tim2, int id)
         {
             List<String> aktivneKonekcije = GetAktivneKonekcije();
+            string username = "anonim";
 
-            var userId = db.Users.Where(d => d.Email == Context.User.Identity.Name).FirstOrDefault().Id;
 
-            if (aktivneKonekcije.Contains(Context.User.Identity.Name) && favoriti.Contains(Context.User.Identity.Name))
-                return Clients.User(userId.ToString()).SendAsync("PrimiNotifikacije", tim1, tim2, id);
+            if (Context.User.Identity.Name == null)
+            {
+                var rezultatAuth = await ProvjeriAuth(Context.GetHttpContext().Request);
+                if (rezultatAuth == null)
+                {
+                    Context.Abort();
+                    return;
+                }
+                else
+                    username = rezultatAuth;
+            }
+            else
+                username = Context.User.Identity.Name;
 
-            return null;
+            var userId = db.Users.Where(d => d.Email == username).FirstOrDefault().Id;
+            var connectionid = ListaKonekcija.Where(x => x.username == username).FirstOrDefault().connectionid;
+            if (aktivneKonekcije.Contains(username) && favoriti.Contains(username)) {
+                //await Clients.User(userId.ToString()).SendAsync("PrimiNotifikacije", tim1, tim2, id);
+                await Clients.Client(connectionid).SendAsync("PrimiNotifikacije", tim1, tim2, id);
+            }
+            return;
+        }
+        public async Task DummyStartaj(List<string> favoriti, string tim1, string tim2, int id)
+        {
+            await Clients.All.SendAsync("startaj", favoriti, tim1, tim2, id);
         }
 
         public async Task<string> ProvjeriAuth(HttpRequest Request)
