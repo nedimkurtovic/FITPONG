@@ -31,11 +31,11 @@ namespace FIT_PONG.Mobile.ViewModels.Users
         public async Task<Prijave> OtkaziPrijavu(int id)
         {
             var p = listaPrijava.Where(d => d.ID == id).Single();
-            if (p.Takmicenje.Inicirano ?? true)
-            {
-                await Application.Current.MainPage.DisplayAlert("Greska", "Ne mozete otkazati takmicenje koje je vec inicirano.", "OK");
-                return default(SharedModels.Prijave);
-            }
+            //if (p.Takmicenje.Inicirano ?? true)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Greska", "Ne mozete otkazati takmicenje koje je vec inicirano.", "OK");
+            //    return default(SharedModels.Prijave);
+            //}
 
             var rezultat = await takmicenjeApiService.OtkaziPrijavu(id);
             listaPrijava.Remove(p);

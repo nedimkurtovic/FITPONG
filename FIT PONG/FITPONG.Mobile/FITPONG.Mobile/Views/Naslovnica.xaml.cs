@@ -24,7 +24,7 @@ namespace FIT_PONG.Mobile.Views
             viewModel.LampicaServis.StigloTrenutnoStanje += LampicaServis_StigloTrenutnoStanje;
             viewModel.LampicaServis.PromijenjenaSlika += LampicaServis_PromijenjenaSlika;
             viewModel.LampicaServis.PromijenjenaPoruka += LampicaServis_PromijenjenaPoruka;
-            
+            _ = viewModel.LampicaServis.GetTrenutnuSlikuAsync();
         }
         protected async override void OnAppearing()
         {
