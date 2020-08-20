@@ -138,11 +138,17 @@ namespace FIT_PONG.WinForms
 
         private void dgvTakmicenja_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            try { 
             var item = (TakmicenjeObjekat)dgvTakmicenja.SelectedRows[0].DataBoundItem;
             var takmicenje = takmicenja.Stavke
                 .Where(x => x.ID == item.Id).FirstOrDefault();
             frmTakmicenjaDetalji frmTakmicenjaDetalji= new frmTakmicenjaDetalji(takmicenje);
             frmTakmicenjaDetalji.ShowDialog();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Kliknite na cijeli red umjesto na kolonu");
+            }
         }
 
     }

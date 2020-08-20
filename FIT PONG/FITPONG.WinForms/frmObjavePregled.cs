@@ -37,11 +37,17 @@ namespace FIT_PONG.WinForms
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            try { 
             var item = (PomocniObjekat) dataGridView1.SelectedRows[0].DataBoundItem;
             var RealObjava = _ObjaveLista.Stavke
                 .Where(x => x.ID == item.ID).FirstOrDefault();
             frmObjavaDetalji frmDet = new frmObjavaDetalji(RealObjava);
             frmDet.ShowDialog();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Kliknite na cijeli red umjesto na kolonu");
+            }
         }
         private async void btnNaredna_Click(object sender, EventArgs e)
         {

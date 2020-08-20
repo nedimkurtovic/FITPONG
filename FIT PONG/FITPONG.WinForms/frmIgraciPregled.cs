@@ -83,11 +83,18 @@ namespace FIT_PONG.WinForms
 
         private void dgvIgraci_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            var item = (IgraciObjekat)dgvIgraci.SelectedRows[0].DataBoundItem;
-            var igrac = users.Stavke
-                .Where(x => x.ID == item.Id).FirstOrDefault();
-            frmIgracDetalji frmIgracDetalji= new frmIgracDetalji(igrac);
-            frmIgracDetalji.ShowDialog();
+            try
+            {
+                var item = (IgraciObjekat)dgvIgraci.SelectedRows[0].DataBoundItem;
+                var igrac = users.Stavke
+                    .Where(x => x.ID == item.Id).FirstOrDefault();
+                frmIgracDetalji frmIgracDetalji = new frmIgracDetalji(igrac);
+                frmIgracDetalji.ShowDialog();
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Kliknite na cijeli red umjesto na kolonu");
+            }
         }
     }
 }
