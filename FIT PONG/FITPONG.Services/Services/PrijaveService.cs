@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FIT_PONG.Services.Services.Autorizacija;
 
 namespace FIT_PONG.Services.Services
 {
@@ -14,11 +15,13 @@ namespace FIT_PONG.Services.Services
     {
         private readonly MyDb db;
         private readonly IMapper mapper;
+        private readonly ISuspenzijaService suspenzijaService;
 
-        public PrijaveService(MyDb db, IMapper mapper)
+        public PrijaveService(MyDb db, IMapper mapper, ISuspenzijaService _suspenzijaService)
         {
             this.db = db;
             this.mapper = mapper;
+            suspenzijaService = _suspenzijaService;
         }
 
         public Prijave Add(int TakmicenjeID, PrijavaInsert obj)

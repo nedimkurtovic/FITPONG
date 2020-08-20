@@ -14,5 +14,6 @@ namespace FIT_PONG.Services.Services.Autorizacija
         bool AuthorizeSuspenziju(string loggedInUsername);
         bool AuthorizeUkloniSlikuProfila(int logiraniKorisnikId, int userId);
         bool AuthorizeEditSlikuProfila(int logiraniKorisnikId, int userId);
+        bool AuthorizeLogin(int userId);
     }
 }

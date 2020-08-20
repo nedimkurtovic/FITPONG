@@ -64,7 +64,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
 
         public async Task<Prijave> DodajPrijavu()
         {
-            if (await Validacija()==false)
+            if (Validacija()==false)
                 return default(SharedModels.Prijave);
 
             PrijavaInsert obj = new PrijavaInsert
@@ -78,7 +78,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             return rezultat;
         }
 
-        private async Task<bool> Validacija()
+        private bool Validacija()
         {
             var listaErrora = new List<string>();
             if (Igrac1 == -1)
@@ -90,12 +90,12 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             if (isTim && String.IsNullOrEmpty(Naziv))
                 listaErrora.Add("Naziv je obavezno polje.");
 
-            var prijave = await takmicenjeApiService.GetPrijave(TakmicenjeID);
-            if (prijave.Where(d => d.Igrac1ID == Igrac1 || d.Igrac2ID == Igrac1).SingleOrDefault() != null || prijave.Where(d => d.Igrac1ID == Igrac2 || d.Igrac2ID == Igrac2).SingleOrDefault() != null)
-                listaErrora.Add("Vec ste prijaveljni na ovo takmicenje.");
+            //var prijave = await takmicenjeApiService.GetPrijave(TakmicenjeID);
+            //if (prijave.Where(d => d.Igrac1ID == Igrac1 || d.Igrac2ID == Igrac1).SingleOrDefault() != null || prijave.Where(d => d.Igrac1ID == Igrac2 || d.Igrac2ID == Igrac2).SingleOrDefault() != null)
+            //    listaErrora.Add("Vec ste prijavljeni na ovo takmicenje.");
 
-            if (prijave.Where(d => d.Naziv == Naziv).SingleOrDefault() != null)
-                listaErrora.Add("Naziv tima je zauzet.");
+            //if (prijave.Where(d => d.Naziv == Naziv).SingleOrDefault() != null)
+            //    listaErrora.Add("Naziv tima je zauzet.");
 
             if (listaErrora.Count == 0)
                 return true;
@@ -104,7 +104,7 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             foreach (var i in listaErrora)
                 novi.AppendLine(i);
              
-            await Application.Current.MainPage.DisplayAlert("Greška", novi.ToString(), "OK");
+            Application.Current.MainPage.DisplayAlert("Greška", novi.ToString(), "OK");
 
             return false;
         }

@@ -62,8 +62,8 @@ namespace FIT_PONG.WebAPI.Controllers
         [HttpPost]
         public Takmicenja Insert(TakmicenjaInsert obj)
         {
-            var userId = usersService.GetRequestUserID(HttpContext.Request);// nesto na ovaj fazon
-            // nesto na ovaj fazon
+            var userId = usersService.GetRequestUserID(HttpContext.Request);
+            takmicenjeAutorizator.AuthorizeInsert(userId);
             return takmicenjeService.Add(obj, userId);
         }
 
@@ -168,7 +168,7 @@ namespace FIT_PONG.WebAPI.Controllers
 
 
         [HttpPost("{id}/prijava")]
-        public Prijave Prijava(int id, PrijavaInsert obj)
+        public Prijave Prijava(int id,[FromBody] PrijavaInsert obj)
         {
             var userId = usersService.GetRequestUserID(HttpContext.Request);
             takmicenjeAutorizator.AuthorizePrijava(userId, obj);

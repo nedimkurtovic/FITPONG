@@ -8,10 +8,12 @@ namespace FIT_PONG.Services.Services.Autorizacija
     public class UsersAutorizator : IUsersAutorizator
     {
         private readonly MyDb db;
+        private readonly ISuspenzijaService suspenzijaServis;
 
-        public UsersAutorizator(MyDb db)
+        public UsersAutorizator(MyDb db, ISuspenzijaService _suspenzijaServis)
         {
             this.db = db;
+            suspenzijaServis = _suspenzijaServis;
         }
 
         public bool AuthorizeEditProfila(int logiraniKorisnikId, int userId)
@@ -60,6 +62,18 @@ namespace FIT_PONG.Services.Services.Autorizacija
         {
             if (loggedInUsername != "aldin.talic@edu.fit.ba" && loggedInUsername != "nedim.kurtovic@edu.fit.ba")
                 throw new AuthorizeException("Samo administrator je autorizovan za ovu radnju.");
+            return true;
+        }
+
+        public bool AuthorizeLogin(int userId)
+        {
+            var suspenzija = suspenzijaServis.ImaVazecuSuspenziju(userId, "Login");
+            if (suspenzija != null)
+            {
+                UserException ex = new UserException();
+                ex.AddError("Suspenzija", $"Suspendovani ste sa loginom do {suspenzija.DatumZavrsetka.ToString()}");
+                throw ex;
+            }
             return true;
         }
     }

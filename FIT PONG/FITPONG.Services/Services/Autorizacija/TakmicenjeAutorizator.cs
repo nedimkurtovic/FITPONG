@@ -15,10 +15,12 @@ namespace FIT_PONG.Services.Services.Autorizacija
     public class TakmicenjeAutorizator : ITakmicenjeAutorizator
     {
         private readonly MyDb db;
+        private readonly ISuspenzijaService suspenzijaService;
 
-        public TakmicenjeAutorizator(MyDb _db)
+        public TakmicenjeAutorizator(MyDb _db, ISuspenzijaService _suspenzijaService)
         {
             db = _db;
+            suspenzijaService = _suspenzijaService;
         }
 
         public bool AuthorizeUpdate(int UserId, int TakmicenjeId)
@@ -66,6 +68,14 @@ namespace FIT_PONG.Services.Services.Autorizacija
         {
             if (UserId != obj.Igrac1ID && UserId != obj.Igrac2ID)
                 throw new AuthorizeException("Niste autorizovani za takvu radnju.");
+            var suspenzija = suspenzijaService.ImaVazecuSuspenziju(UserId, "Prijava na takmičenja");
+            if (suspenzija != null)
+            {
+                UserException ex = new UserException();
+                ex.AddError("Suspenzija", $"Suspendovani ste sa prijavom na takmičenja do:  {suspenzija.DatumZavrsetka.ToString()}");
+                throw ex;
+            }
+
         }
 
         public void AuthorizeOtkaziPrijavu(int UserId, Prijave p)
@@ -81,6 +91,18 @@ namespace FIT_PONG.Services.Services.Autorizacija
                 .Where(x => x.ID == TakmicenjeId).FirstOrDefault();
             if (takmicenje.KreatorID != UserId)
                 throw new AuthorizeException("Niste autorizovani za ovu radnju!");
+            return true;
+        }
+
+        public bool AuthorizeInsert(int UserId)
+        {
+            var suspenzija = suspenzijaService.ImaVazecuSuspenziju(UserId, "Kreiranje takmičenja");
+            if (suspenzija != null)
+            {
+                UserException ex = new UserException();
+                ex.AddError("Suspenzija", $"Suspendovani ste sa kreiranjem takmičenja do:  {suspenzija.DatumZavrsetka.ToString()}");
+                throw ex;
+            }
             return true;
         }
     }

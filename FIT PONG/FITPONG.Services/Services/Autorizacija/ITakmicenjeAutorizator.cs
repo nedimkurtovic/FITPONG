@@ -8,6 +8,7 @@ namespace FIT_PONG.Services.Services.Autorizacija
 {
     public interface ITakmicenjeAutorizator
     {
+        bool AuthorizeInsert(int UserId);
         bool AuthorizeUpdate(int UserId, int TakmicenjeId);
         bool AuthorizeInit(int UserId, int TakmicenjeId);
         bool AuthorizeDelete(int UserId, int TakmicenjeId);

@@ -27,6 +27,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using FIT_PONG.WebAPI.Filters;
 using FIT_PONG.WebAPI.Services.Bazni;
 using FIT_PONG.WebAPI.Hubs;
+using FIT_PONG.Database.DTOs;
 
 namespace FIT_PONG.WebAPI
 {
@@ -96,6 +97,7 @@ namespace FIT_PONG.WebAPI
              {
                  opcije.Password.RequiredLength = 6;
                  opcije.Password.RequireUppercase = false;
+                 opcije.Password.RequireNonAlphanumeric = false;
                  opcije.Password.RequireDigit = false;
                  opcije.SignIn.RequireConfirmedEmail = true;
              })
@@ -105,6 +107,7 @@ namespace FIT_PONG.WebAPI
             
             //fina gradska raja
             services.AddScoped<FIT_PONG.Services.BL.InitTakmicenja>();
+            services.AddScoped<ISuspenzijaService, SuspenzijaService>();
             services.AddScoped<FIT_PONG.Services.BL.ELOCalculator>();
             services.AddScoped<FIT_PONG.Services.BL.Evidentor>();
             services.AddScoped<FIT_PONG.Services.BL.iEmailServis, FIT_PONG.Services.BL.FITPONGGmail>();

@@ -59,7 +59,9 @@ namespace FIT_PONG.WebAPI.Controllers
         [Route("login")]
         public async Task<Users> Login(Login obj)
         {
-            return await usersService.Login(obj);
+            var rezult = await usersService.Login(obj);
+            usersAutorizator.AuthorizeLogin(rezult.ID);
+            return rezult;
         }
 
         [Authorize(AuthenticationSchemes = "BasicAuthentication")]
