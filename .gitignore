@@ -1,20 +1,20 @@
-FIT PONG/.vs/
+﻿FIT PONG/.vs/
 ###################
 # compiled source #
 ###################
 *.com
 *.class
-*.dll
+#*.dll
 *.exe
 *.pdb
 *.dll.config
 *.cache
 *.suo
 # Include dlls if they’re in the NuGet packages directory
-#!/packages/*/lib/*.dll
-#!/packages/*/lib/*/*.dll
+!/packages/*/lib/*.dll
+!/packages/*/lib/*/*.dll
 # Include dlls if they're in the CommonReferences directory
-#!*CommonReferences/*.dll
+!*CommonReferences/*.dll
 ####################
 # VS Upgrade stuff #
 ####################
