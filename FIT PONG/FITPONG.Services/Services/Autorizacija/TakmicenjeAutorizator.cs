@@ -80,7 +80,7 @@ namespace FIT_PONG.Services.Services.Autorizacija
 
         public void AuthorizeOtkaziPrijavu(int UserId, Prijave p)
         {   
-            if(p!=null && p.Igrac1ID != null && p.Igrac1ID != UserId && p.Igrac2ID != -1 && p.Igrac2ID != UserId)
+            if(p!=null && p.Igrac1ID != null && p.Igrac1ID != UserId && p.Igrac2ID != UserId)
                 throw new AuthorizeException("Niste autorizovani za takvu radnju.");
         }
 

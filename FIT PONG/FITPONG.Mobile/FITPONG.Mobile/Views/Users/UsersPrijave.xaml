@@ -30,7 +30,7 @@
                                 <Label Grid.Row="0"
                                                Grid.Column="0"
                                                FontAttributes="Bold"
-                                                Text="{Binding Takmicenje.Naziv}" Margin="5"/>
+                                                Text="{Binding TakmicenjeNaziv}" Margin="5"/>
                                 <Label Grid.Row="0"
                                                Grid.Column="1"
                                                FontAttributes="Bold"

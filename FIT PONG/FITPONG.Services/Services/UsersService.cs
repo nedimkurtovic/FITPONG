@@ -527,7 +527,8 @@ namespace FIT_PONG.Services.Services
                     ID = pi.PrijavaID,
                     Naziv = pi.Prijava.Naziv,
                     Igrac1ID = pi.IgracID,
-                    isTim = false
+                    isTim = false,
+                    TakmicenjeNaziv = pi.Prijava.Takmicenje.Naziv
                 };
 
                 if (pi.Prijava.isTim)
