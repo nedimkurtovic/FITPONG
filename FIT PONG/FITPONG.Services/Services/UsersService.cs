@@ -87,7 +87,6 @@ namespace FIT_PONG.Services.Services
 
                 //    throw ex;
                 //}
-
                 list.Add(u);
             }
 
