@@ -64,7 +64,7 @@ namespace FIT_PONG.WinForms
 
         private async void btnFiltriraj_Click(object sender, EventArgs e)
         {
-
+            apiService = new APIService("takmicenja");
             TakmicenjeSearch obj = new TakmicenjeSearch
             {
                 Naziv = txtNaziv.Text,
@@ -82,7 +82,7 @@ namespace FIT_PONG.WinForms
             };
             if (!string.IsNullOrEmpty(txtMinimalniELO.Text))
                 obj.MinimalniELO = int.Parse(txtMinimalniELO.Text);
-            
+
             takmicenja = await apiService.GetAll<PagedResponse<Takmicenja>>(obj);
             PrikaziPodatke();
         }
@@ -100,10 +100,13 @@ namespace FIT_PONG.WinForms
                 DatumPocetka=x.DatumPocetka,
                 DatumZavrsetka=x.DatumZavrsetka
             }).ToList();
+            RegulisiButtone();
         }
 
         private async void btnNext_Click(object sender, EventArgs e)
         {
+            if (takmicenja == null)
+                return;
             if (takmicenja.IducaStranica != null)
             {
                 int pozicija = takmicenja.IducaStranica.ToString().LastIndexOf("/") + 1;
@@ -117,6 +120,8 @@ namespace FIT_PONG.WinForms
 
         private async void btnBack_Click(object sender, EventArgs e)
         {
+            if (takmicenja == null)
+                return;
             if (takmicenja.ProslaStranica != null)
             {
                 int pozicija = takmicenja.ProslaStranica.ToString().LastIndexOf("/") + 1;

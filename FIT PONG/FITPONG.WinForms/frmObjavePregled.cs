@@ -27,6 +27,7 @@ namespace FIT_PONG.WinForms
 
         private async void btnDobavi_Click(object sender, EventArgs e)
         {
+            _apiServis = new APIService("objave");
             ObjaveSearch obj = new ObjaveSearch
             {
                 Naziv = txtNaziv.Text
@@ -51,6 +52,8 @@ namespace FIT_PONG.WinForms
         }
         private async void btnNaredna_Click(object sender, EventArgs e)
         {
+            if (_ObjaveLista == null)
+                return;
             if (_ObjaveLista.IducaStranica != null)
             {
                 int pozicija = _ObjaveLista.IducaStranica.ToString().LastIndexOf("/") + 1;
@@ -65,6 +68,8 @@ namespace FIT_PONG.WinForms
 
         private async void btnPrethodna_Click(object sender, EventArgs e)
         {
+            if (_ObjaveLista == null)
+                return;
             if (_ObjaveLista.ProslaStranica != null)
             {
                 int pozicija = _ObjaveLista.ProslaStranica.ToString().LastIndexOf("/") + 1;
@@ -88,6 +93,7 @@ namespace FIT_PONG.WinForms
                 Naslov = x.Naziv,
                 Datum = x.DatumKreiranja
             }).ToList();
+            RegulisiButtone();
         }
         private void btnDodaj_Click(object sender, EventArgs e)
         {

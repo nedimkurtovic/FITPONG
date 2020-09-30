@@ -27,6 +27,7 @@ namespace FIT_PONG.WinForms
 
         private async void btnFiltriraj_Click(object sender, EventArgs e)
         {
+            apiService = new APIService("users");
             AccountSearchRequest obj = new AccountSearchRequest
             {
                 PrikaznoIme = txtPrikaznoIme.Text
@@ -45,10 +46,13 @@ namespace FIT_PONG.WinForms
                 ELO = x.ELO,
                 BrojPostovanja = x.BrojPostovanja
             }).ToList();
+            RegulisiButtone();
         }
 
         private async void btnNext_Click(object sender, EventArgs e)
         {
+            if (users == null)
+                return;
             if (users.IducaStranica != null)
             {
                 int pozicija = users.IducaStranica.ToString().LastIndexOf("/") + 1;
@@ -62,6 +66,8 @@ namespace FIT_PONG.WinForms
 
         private async void btnBack_Click(object sender, EventArgs e)
         {
+            if (users == null)
+                return;
             if (users.ProslaStranica != null)
             {
                 int pozicija = users.ProslaStranica.ToString().LastIndexOf("/") + 1;

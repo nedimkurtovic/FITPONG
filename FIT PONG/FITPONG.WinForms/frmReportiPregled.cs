@@ -27,6 +27,8 @@ namespace FIT_PONG.WinForms
 
         private async void btnDobavi_Click(object sender, EventArgs e)
         {
+            _apiServis = new APIService("reports");
+
             ReportsSearch req = new ReportsSearch {
                 Naslov = txtNaziv.Text,
                 Datum = dTPDatum.Value
@@ -53,7 +55,9 @@ namespace FIT_PONG.WinForms
 
         private async void btnNaredna_Click(object sender, EventArgs e)
         {
-            if(_reportsLista.IducaStranica != null)
+            if (_reportsLista == null)
+                return;
+            if (_reportsLista.IducaStranica != null)
             {
                 int pozicija = _reportsLista.IducaStranica.ToString().LastIndexOf("/") + 1;
                 string resurs = _reportsLista.IducaStranica.ToString().Substring(pozicija);
@@ -66,6 +70,8 @@ namespace FIT_PONG.WinForms
 
         private async void btnPrethodna_Click(object sender, EventArgs e)
         {
+            if (_reportsLista == null)
+                return;
             if (_reportsLista.ProslaStranica != null)
             {
                 int pozicija = _reportsLista.ProslaStranica.ToString().LastIndexOf("/") + 1;
@@ -91,6 +97,7 @@ namespace FIT_PONG.WinForms
                 Naslov = x.Naslov,
                 Datum = x.DatumKreiranja
             }).ToList();
+            RegulisiButtone();
         }
 
         private void chkZanemari_CheckedChanged(object sender, EventArgs e)
