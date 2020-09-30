@@ -406,9 +406,13 @@ namespace FIT_PONG.Services.BL
             if (s == null)
             {
                 s = new Statistika(id);
-                sp = new Stanje_Prijave(p.PrijavaID);
+                //sp nikad nece biti nula jer se uvijek kreira prilikom prijave na takmicenje ali evo dodat cu dio koda
                 db.Add(s);
-                db.Add(sp);
+                if(sp == null)
+                {
+                    sp = new Stanje_Prijave(p.PrijavaID);
+                    db.Add(sp);
+                }
                 db.SaveChanges();
             }
 

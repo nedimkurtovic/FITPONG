@@ -19,7 +19,7 @@ services:
       context: .
       dockerfile: FITPONG.WebAPI/Dockerfile 
     environment: 
-    - ConnectionStrings:Plesk=Server=app.fit.ba,1431;Database=FIT_PONG;Trusted_Connection=False;MultipleActiveResultSets=True;User ID=fitpong;Password=F!tP0ng_2019;ConnectRetryCount=0
+    - ConnectionStrings:docker=Server=fitpong-sql;Database=FIT_PONG_automatska;Trusted_Connection=False;MultipleActiveResultSets=True;User ID=sa;Password=F!tP0ng_2019;ConnectRetryCount=200
     ports:
       - 5766:5766
     networks:
@@ -35,7 +35,7 @@ services:
       context: .
       dockerfile: FITPONG.WebApp/Dockerfile
     environment:
-      - ConnectionStrings:Plesk=Server=app.fit.ba,1431;Database=FIT_PONG;Trusted_Connection=False;MultipleActiveResultSets=True;User ID=fitpong;Password=F!tP0ng_2019;ConnectRetryCount=0
+      - ConnectionStrings:docker=Server=fitpong-sql;Database=FIT_PONG_automatska;Trusted_Connection=False;MultipleActiveResultSets=True;User ID=sa;Password=F!tP0ng_2019;ConnectRetryCount=200
     ports:
       - 4260:4260
     networks:

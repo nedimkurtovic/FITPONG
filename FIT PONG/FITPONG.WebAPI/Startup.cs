@@ -89,7 +89,7 @@ namespace FIT_PONG.WebAPI
             });
 
             services.AddAutoMapper(typeof(Startup));
-            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
+            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("docker"), b=>b.MigrationsAssembly("FITPONG.Database")));
             services.AddAuthentication("BasicAuthentication")
                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 

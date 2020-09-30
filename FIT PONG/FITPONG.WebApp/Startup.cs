@@ -52,7 +52,7 @@ namespace FIT_PONG
             //konkretno ovaj DI kontenjer services se brine oko kreiranja servisa i disposeanja istih zavisno od njihovog vremena
             //trajanja,postoje scoped transient i singleton
             services.AddAutoMapper(typeof(Startup));
-            services.AddDbContext<FIT_PONG.Database.MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("Plesk")));
+            services.AddDbContext<FIT_PONG.Database.MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("docker")));
             services.AddScoped<FIT_PONG.Services.BL.InitTakmicenja>();
             services.AddScoped<FIT_PONG.Services.BL.TakmicenjeValidator>(); //potrebno testirat
             services.AddScoped<FIT_PONG.Services.BL.ELOCalculator>();
