@@ -60,9 +60,12 @@ namespace FIT_PONG.WinForms
             OtvoriChildFormu(new frmGenerisiIzvjestaj());
         }
 
-        private void btnStatistike_Click(object sender, EventArgs e)
+        private void btnLogout_Click(object sender, EventArgs e)
         {
-            OtvoriChildFormu(new frmStatistikaStranice());
+            APIService.Username = "";
+            APIService.Password = "";
+            var frmLog = new frmLogin();
+            Application.Restart();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)

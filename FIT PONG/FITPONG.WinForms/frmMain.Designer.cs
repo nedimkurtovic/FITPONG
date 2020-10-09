@@ -32,7 +32,7 @@
             this.pnlLijevi = new System.Windows.Forms.Panel();
             this.btnTakmicenja = new System.Windows.Forms.Button();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.btnStatistike = new System.Windows.Forms.Button();
+            this.btnLogout = new System.Windows.Forms.Button();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.btnIzvjestaji = new System.Windows.Forms.Button();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
@@ -63,7 +63,7 @@
             this.pnlLijevi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(173)))), ((int)(((byte)(239)))));
             this.pnlLijevi.Controls.Add(this.btnTakmicenja);
             this.pnlLijevi.Controls.Add(this.pictureBox5);
-            this.pnlLijevi.Controls.Add(this.btnStatistike);
+            this.pnlLijevi.Controls.Add(this.btnLogout);
             this.pnlLijevi.Controls.Add(this.pictureBox6);
             this.pnlLijevi.Controls.Add(this.btnIzvjestaji);
             this.pnlLijevi.Controls.Add(this.pictureBox7);
@@ -96,7 +96,7 @@
             // 
             // pictureBox5
             // 
-            this.pictureBox5.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox5.Image")));
+            this.pictureBox5.Image = global::FIT_PONG.WinForms.Properties.Resources.log_out;
             this.pictureBox5.Location = new System.Drawing.Point(0, 402);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(50, 50);
@@ -104,22 +104,22 @@
             this.pictureBox5.TabIndex = 12;
             this.pictureBox5.TabStop = false;
             // 
-            // btnStatistike
+            // btnLogout
             // 
-            this.btnStatistike.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.btnStatistike.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStatistike.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStatistike.Location = new System.Drawing.Point(56, 402);
-            this.btnStatistike.Name = "btnStatistike";
-            this.btnStatistike.Size = new System.Drawing.Size(144, 50);
-            this.btnStatistike.TabIndex = 11;
-            this.btnStatistike.Text = "Statistike";
-            this.btnStatistike.UseVisualStyleBackColor = true;
-            this.btnStatistike.Click += new System.EventHandler(this.btnStatistike_Click);
+            this.btnLogout.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogout.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLogout.Location = new System.Drawing.Point(56, 402);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(144, 50);
+            this.btnLogout.TabIndex = 11;
+            this.btnLogout.Text = "Logout";
+            this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
             // pictureBox6
             // 
-            this.pictureBox6.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox6.Image")));
+            this.pictureBox6.Image = global::FIT_PONG.WinForms.Properties.Resources.izvjestaji;
             this.pictureBox6.Location = new System.Drawing.Point(0, 346);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(50, 50);
@@ -142,7 +142,7 @@
             // 
             // pictureBox7
             // 
-            this.pictureBox7.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox7.Image")));
+            this.pictureBox7.Image = global::FIT_PONG.WinForms.Properties.Resources.objave;
             this.pictureBox7.Location = new System.Drawing.Point(0, 290);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(50, 50);
@@ -165,7 +165,7 @@
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
+            this.pictureBox4.Image = global::FIT_PONG.WinForms.Properties.Resources.reporti;
             this.pictureBox4.Location = new System.Drawing.Point(0, 234);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(50, 50);
@@ -188,7 +188,7 @@
             // 
             // pictureBox3
             // 
-            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
+            this.pictureBox3.Image = global::FIT_PONG.WinForms.Properties.Resources.korisnici;
             this.pictureBox3.Location = new System.Drawing.Point(0, 178);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(50, 50);
@@ -212,7 +212,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Image = global::FIT_PONG.WinForms.Properties.Resources.takmicenja;
             this.pictureBox2.Location = new System.Drawing.Point(0, 122);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(50, 50);
@@ -291,7 +291,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.PictureBox pictureBox5;
-        private System.Windows.Forms.Button btnStatistike;
+        private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.PictureBox pictureBox6;
         private System.Windows.Forms.Button btnIzvjestaji;
         private System.Windows.Forms.PictureBox pictureBox7;

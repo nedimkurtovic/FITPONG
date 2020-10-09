@@ -360,6 +360,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\FitpongLogo.jpg" />
+    <None Include="Assets\Icons\izvjestaji.png" />
+    <None Include="Assets\Icons\korisnici.png" />
+    <None Include="Assets\Icons\log-out.png" />
+    <None Include="Assets\Icons\objave.png" />
+    <None Include="Assets\Icons\reporti.png" />
+    <None Include="Assets\Icons\takmicenja.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
