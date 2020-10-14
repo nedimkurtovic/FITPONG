@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.pnlLijevi = new System.Windows.Forms.Panel();
+            this.pictureBox8 = new System.Windows.Forms.PictureBox();
+            this.btnStatistike = new System.Windows.Forms.Button();
             this.btnTakmicenja = new System.Windows.Forms.Button();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.btnLogout = new System.Windows.Forms.Button();
@@ -47,6 +49,7 @@
             this.lblNazivTrenutne = new System.Windows.Forms.Label();
             this.pnlChildForme = new System.Windows.Forms.Panel();
             this.pnlLijevi.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
@@ -61,6 +64,8 @@
             // 
             this.pnlLijevi.AllowDrop = true;
             this.pnlLijevi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(173)))), ((int)(((byte)(239)))));
+            this.pnlLijevi.Controls.Add(this.pictureBox8);
+            this.pnlLijevi.Controls.Add(this.btnStatistike);
             this.pnlLijevi.Controls.Add(this.btnTakmicenja);
             this.pnlLijevi.Controls.Add(this.pictureBox5);
             this.pnlLijevi.Controls.Add(this.btnLogout);
@@ -80,6 +85,29 @@
             this.pnlLijevi.Size = new System.Drawing.Size(200, 553);
             this.pnlLijevi.TabIndex = 0;
             // 
+            // pictureBox8
+            // 
+            this.pictureBox8.Image = global::FIT_PONG.WinForms.Properties.Resources.statistike;
+            this.pictureBox8.Location = new System.Drawing.Point(0, 402);
+            this.pictureBox8.Name = "pictureBox8";
+            this.pictureBox8.Size = new System.Drawing.Size(50, 50);
+            this.pictureBox8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox8.TabIndex = 15;
+            this.pictureBox8.TabStop = false;
+            // 
+            // btnStatistike
+            // 
+            this.btnStatistike.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnStatistike.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStatistike.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStatistike.Location = new System.Drawing.Point(56, 402);
+            this.btnStatistike.Name = "btnStatistike";
+            this.btnStatistike.Size = new System.Drawing.Size(144, 50);
+            this.btnStatistike.TabIndex = 14;
+            this.btnStatistike.Text = "Statistike";
+            this.btnStatistike.UseVisualStyleBackColor = true;
+            this.btnStatistike.Click += new System.EventHandler(this.btnStatistike_Click);
+            // 
             // btnTakmicenja
             // 
             this.btnTakmicenja.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
@@ -97,7 +125,7 @@
             // pictureBox5
             // 
             this.pictureBox5.Image = global::FIT_PONG.WinForms.Properties.Resources.log_out;
-            this.pictureBox5.Location = new System.Drawing.Point(0, 402);
+            this.pictureBox5.Location = new System.Drawing.Point(0, 458);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(50, 50);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -109,7 +137,7 @@
             this.btnLogout.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogout.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogout.Location = new System.Drawing.Point(56, 402);
+            this.btnLogout.Location = new System.Drawing.Point(56, 458);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Size = new System.Drawing.Size(144, 50);
             this.btnLogout.TabIndex = 11;
@@ -272,6 +300,7 @@
             this.Name = "frmMain";
             this.Text = "frmMain";
             this.pnlLijevi.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
@@ -304,5 +333,7 @@
         private System.Windows.Forms.Button btnTakmicenja;
         private System.Windows.Forms.Panel pnlChildForme;
         private System.Windows.Forms.Label lblNazivTrenutne;
+        private System.Windows.Forms.PictureBox pictureBox8;
+        private System.Windows.Forms.Button btnStatistike;
     }
 }

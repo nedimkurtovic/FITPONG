@@ -59,7 +59,10 @@ namespace FIT_PONG.WinForms
         {
             OtvoriChildFormu(new frmGenerisiIzvjestaj());
         }
-
+        private void btnStatistike_Click(object sender, EventArgs e)
+        {
+            OtvoriChildFormu(new frmStatistikaStranice());
+        }
         private void btnLogout_Click(object sender, EventArgs e)
         {
             APIService.Username = "";
@@ -76,5 +79,6 @@ namespace FIT_PONG.WinForms
             trenutnaChildform = null;
         }
 
+ 
     }
 }

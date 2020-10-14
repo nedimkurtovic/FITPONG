@@ -366,6 +366,7 @@
     <None Include="Assets\Icons\objave.png" />
     <None Include="Assets\Icons\reporti.png" />
     <None Include="Assets\Icons\takmicenja.png" />
+    <None Include="Assets\Icons\statistike.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

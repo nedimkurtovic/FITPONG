@@ -123,6 +123,7 @@ namespace FIT_PONG.WebAPI
             services.AddScoped<iEmailServis, FITPONGGmail>();
             services.AddScoped<ITakmicenjeService, TakmicenjeService>();
             services.AddScoped<IPrijaveService, PrijaveService>();
+            services.AddScoped<IAktivnostiService, AktivnostiService>();
 
             //combobox jarani
             services.AddScoped<IBaseService<FIT_PONG.SharedModels.KategorijeTakmicenja,object>,
@@ -145,6 +146,7 @@ namespace FIT_PONG.WebAPI
             services.AddScoped<IUsersAutorizator, UsersAutorizator>();
             services.AddScoped<IGradoviAutorizator, GradoviAutorizator>();
             services.AddScoped<IObjaveAutorizator, ObjaveAutorizator>();
+            services.AddScoped<IAktivnostiAutorizator, AktivnostiAutorizator>();
 
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

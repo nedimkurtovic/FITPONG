@@ -30,7 +30,7 @@ namespace FIT_PONG.Profiles
             CreateMap<Database.DTOs.Report, SharedModels.Reports>();
             CreateMap<SharedModels.Requests.Reports.ReportsInsert, Database.DTOs.Report>();
 
-
+            CreateMap<Database.DTOs.BrojKorisnikaLog, SharedModels.BrojKorisnikaLogs>();
 
             CreateMap<Database.DTOs.Takmicenje, SharedModels.Takmicenja>();
             CreateMap<SharedModels.Requests.Takmicenja.TakmicenjaUpdate, Database.DTOs.Takmicenje>();

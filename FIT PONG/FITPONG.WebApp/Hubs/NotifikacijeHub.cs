@@ -31,9 +31,7 @@ namespace FIT_PONG.Hubs
 
         public async override Task OnConnectedAsync()
         {
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
             string username = "anonim";
-#pragma warning restore IDE0059
 
             if (Context.User.Identity.Name == null)
             {
@@ -49,6 +47,8 @@ namespace FIT_PONG.Hubs
             else
                 username = Context.User.Identity.Name;
 
+            if(username != "anonim")
+                PromijeniBrojKorisnika(1);
             string connid = Context.ConnectionId;
             ListaKonekcija.Add((username, connid));
             await Clients.All.SendAsync("GetKonekcije", GetAktivneKonekcije());
@@ -58,6 +58,10 @@ namespace FIT_PONG.Hubs
         {
             (string username, string connid) nadjeni = ListaKonekcija
                 .Where(x => x.connectionid == Context.ConnectionId).FirstOrDefault();
+            
+            if(nadjeni != (null,null))
+                PromijeniBrojKorisnika(-1);
+
             ListaKonekcija.Remove(nadjeni);
 
             Clients.All.SendAsync("GetKonekcije", GetAktivneKonekcije());
@@ -133,6 +137,33 @@ namespace FIT_PONG.Hubs
                 return null;
             return user.PrikaznoIme;
         }
-
+        private void PromijeniBrojKorisnika(int operacija)
+        {
+            var KorisnikLog = db.BrojKorisnikaLog.Where(x => x.Datum.Date == DateTime.Now.Date).FirstOrDefault();
+            if (KorisnikLog == null)
+            {
+                PromijeniPrethodnu(); // ako je bila promjena datuma onda ce ostati broj aktivnih korisnika
+                KorisnikLog = new Database.DTOs.BrojKorisnikaLog
+                {
+                    MaxBrojKorisnika = ListaKonekcija.Count(),
+                    Datum = DateTime.Now.Date
+                };
+                db.BrojKorisnikaLog.Add(KorisnikLog);    
+            }
+            KorisnikLog.BrojKorisnika = ListaKonekcija.Count(); // u slucaju pada servera, da ne bude da je nastavio od zadnje vrijednosti
+            if (KorisnikLog.BrojKorisnika == 0 && operacija == -1)//za svaki slucaj ovaj uslov
+                return;
+            KorisnikLog.BrojKorisnika += operacija;
+            if (KorisnikLog.BrojKorisnika > KorisnikLog.MaxBrojKorisnika)
+                KorisnikLog.MaxBrojKorisnika = KorisnikLog.BrojKorisnika;
+            db.SaveChanges();
+        }
+        private void PromijeniPrethodnu()
+        {
+            var KorisnikLog = db.BrojKorisnikaLog.OrderByDescending(x => x.ID).FirstOrDefault();
+            if (KorisnikLog != null)
+                KorisnikLog.BrojKorisnika = 0;
+            db.SaveChanges();
+        }
     }
 }

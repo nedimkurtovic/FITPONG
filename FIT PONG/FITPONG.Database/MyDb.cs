@@ -49,7 +49,7 @@ namespace FIT_PONG.Database
         public DbSet<Favoriti> Favoriti { get; set; }
         public DbSet<Suspenzija> Suspenzije { get; set; }
         public DbSet<VrstaSuspenzije> VrsteSuspenzije { get; set; }
-
+        public DbSet<BrojKorisnikaLog> BrojKorisnikaLog { get; set; }
 
         //ostaje pitanje za razmotrit kako ce se ovo ponasat sa identitycontextom jer cemo morat mijenjat ono sto nasljedjuje
         //nas kontekst(taj konteskt dodaje one tabele i to),vjerujem da i on nasljedjuje context

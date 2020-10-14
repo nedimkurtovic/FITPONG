@@ -38,6 +38,8 @@ namespace FIT_PONG.WebAPI.Profiles
 
             CreateMap<Database.DTOs.Prijava, SharedModels.Prijave>();
 
+            CreateMap<Database.DTOs.BrojKorisnikaLog, SharedModels.BrojKorisnikaLogs>();
+
             //combos
             CreateMap<Database.DTOs.Kategorija, SharedModels.KategorijeTakmicenja>();
             CreateMap<Database.DTOs.Vrsta_Takmicenja, SharedModels.VrsteTakmicenja>();
