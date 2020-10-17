@@ -518,7 +518,7 @@ namespace FIT_PONG.Services.Services
             List<Utakmica> utakmice = db.Utakmice.AsNoTracking()
                 .Include(x => x.UcescaNaUtakmici)
                 .Include(x => x.Runda).ThenInclude(x => x.Bracket).ThenInclude(x => x.Takmicenje)
-                .Where(x => x.Runda.Bracket.TakmicenjeID == id).ToList();
+                .Where(x => x.Runda.Bracket.TakmicenjeID == id && !x.IsEvidentirana).ToList();
 
             SharedModels.Favoriti obj = new SharedModels.Favoriti();
 
