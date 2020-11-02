@@ -1,33 +1,16 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
-using FIT_PONG.Database;
-using FIT_PONG.Services.BL;
-using FIT_PONG.Services.Services;
-using FIT_PONG.WebAPI;
 using FIT_PONG.WebAPI.Security;
 using Microsoft.AspNetCore.Authentication;
-using FIT_PONG.Services.Services.Autorizacija;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using FIT_PONG.WebAPI.Filters;
-using FIT_PONG.WebAPI.Services.Bazni;
 using FIT_PONG.WebAPI.Hubs;
-using FIT_PONG.Database.DTOs;
+using FIT_PONG.WebAPI.Installers;
 
 namespace FIT_PONG.WebAPI
 {
@@ -57,11 +40,8 @@ namespace FIT_PONG.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(x => x.Filters.Add<Filterko>());
-            services.AddControllers().AddNewtonsoftJson(opcije => {
-                opcije.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            });
-
+            services.InstallServicesInAssembly(Configuration);
+            
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -87,69 +67,10 @@ namespace FIT_PONG.WebAPI
                     }
                 });
             });
-
-            services.AddAutoMapper(typeof(Startup));
-            services.AddDbContext<MyDb>(opcije => opcije.UseSqlServer(Configuration.GetConnectionString("docker"), b=>b.MigrationsAssembly("FITPONG.Database")));
+           
             services.AddAuthentication("BasicAuthentication")
                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
-            services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(opcije =>
-             {
-                 opcije.Password.RequiredLength = 6;
-                 opcije.Password.RequireUppercase = false;
-                 opcije.Password.RequireNonAlphanumeric = false;
-                 opcije.Password.RequireDigit = false;
-                 opcije.SignIn.RequireConfirmedEmail = true;
-             })
-                .AddEntityFrameworkStores<FIT_PONG.Database.MyDb>()
-                .AddDefaultTokenProviders();
-
-            
-            //fina gradska raja
-            services.AddScoped<FIT_PONG.Services.BL.InitTakmicenja>();
-            services.AddScoped<ISuspenzijaService, SuspenzijaService>();
-            services.AddScoped<FIT_PONG.Services.BL.ELOCalculator>();
-            services.AddScoped<FIT_PONG.Services.BL.Evidentor>();
-            services.AddScoped<FIT_PONG.Services.BL.iEmailServis, FIT_PONG.Services.BL.FITPONGGmail>();
-            services.AddScoped<FIT_PONG.Services.BL.TakmicenjeValidator>();
-
-            //ciste puno linija koda, negdje i obraz!
-            services.AddScoped<IFeedsService, FeedsService>();
-            services.AddScoped<IReportsService, ReportsService>();
-            services.AddScoped<IGradoviService, GradoviService>();
-            services.AddScoped<IObjaveService, ObjaveService>();
-            services.AddScoped<IUsersService, UsersService>();
-            services.AddScoped<IStatistikeService, StatistikeService>();
-            services.AddScoped<iEmailServis, FITPONGGmail>();
-            services.AddScoped<ITakmicenjeService, TakmicenjeService>();
-            services.AddScoped<IPrijaveService, PrijaveService>();
-            services.AddScoped<IAktivnostiService, AktivnostiService>();
-
-            //combobox jarani
-            services.AddScoped<IBaseService<FIT_PONG.SharedModels.KategorijeTakmicenja,object>,
-                BaseService<SharedModels.KategorijeTakmicenja, Database.DTOs.Kategorija, object>>();
-            
-            services.AddScoped<IBaseService<FIT_PONG.SharedModels.VrsteTakmicenja, object>,
-                BaseService<SharedModels.VrsteTakmicenja, Database.DTOs.Vrsta_Takmicenja, object>>();
-            
-            services.AddScoped<IBaseService<FIT_PONG.SharedModels.SistemiTakmicenja, object>,
-                BaseService<SharedModels.SistemiTakmicenja, Database.DTOs.Sistem_Takmicenja, object>>();
-            
-            services.AddScoped<IBaseService<FIT_PONG.SharedModels.StatusiTakmicenja, object>,
-                BaseService<SharedModels.StatusiTakmicenja, Database.DTOs.Status_Takmicenja, object>>();
-
-            services.AddScoped<IBaseService<FIT_PONG.SharedModels.VrsteSuspenzija, object>,
-                BaseService<SharedModels.VrsteSuspenzija, Database.DTOs.VrstaSuspenzije, object>>();
-
-            //SIPA
-            services.AddScoped<ITakmicenjeAutorizator, TakmicenjeAutorizator>();
-            services.AddScoped<IUsersAutorizator, UsersAutorizator>();
-            services.AddScoped<IGradoviAutorizator, GradoviAutorizator>();
-            services.AddScoped<IObjaveAutorizator, ObjaveAutorizator>();
-            services.AddScoped<IAktivnostiAutorizator, AktivnostiAutorizator>();
-
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             //{
             //    builder.AllowAnyMethod()
