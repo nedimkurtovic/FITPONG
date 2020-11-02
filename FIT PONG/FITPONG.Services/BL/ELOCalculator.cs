@@ -37,6 +37,18 @@ namespace FIT_PONG.Services.BL
             //nismo implementirali funkciju evidencija rezultata iz koje ce se ovo ionako pozivati, tako da podlozno je promjenama
            
         }
+        public double GetVjerovatnoca(int timA, int timB)
+        {
+            if (timA == 0)
+                return 0;
+            if (timB == 0)
+                return 1;
+
+            double R1 = Math.Pow(10, ((double)timA / (double)400));
+            double R2 = Math.Pow(10, ((double)timB / (double)400));
+            double E = R1 / (R1 + R2);
+            return E;
+        }
         public double Prosjek(int a, int b)
         {
             //lafo osigurava da ne bude overflow, mada izgleda da ovo nije potpuno rjesenje

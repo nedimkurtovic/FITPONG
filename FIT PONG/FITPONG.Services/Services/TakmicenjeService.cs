@@ -22,15 +22,17 @@ namespace FIT_PONG.Services.Services
         private readonly InitTakmicenja initTakmicenja;
         private readonly TakmicenjeValidator validator;
         private readonly IMapper mapko;
+        private readonly ELOCalculator eloCalculator;
 
         public TakmicenjeService(MyDb _db, Evidentor _evidentor, InitTakmicenja _initTakmicenja,
-            TakmicenjeValidator _validator, IMapper _mapko)
+            TakmicenjeValidator _validator, IMapper _mapko, ELOCalculator _EloCalculator)
         {
             db = _db;
             evidentor = _evidentor;
             initTakmicenja = _initTakmicenja;
             validator = _validator;
             mapko = _mapko;
+            eloCalculator = _EloCalculator;
         }
         #region RealDeal
         public List<Takmicenja> Get(TakmicenjeSearch obj)
@@ -476,9 +478,135 @@ namespace FIT_PONG.Services.Services
             return lista;
         }
 
+        public List<(Prijave prijava, double vjerovatnoca)> PredictWinners(int takmId)
+        {
+            var takmicenje = db.Takmicenja
+                .Include(x => x.Sistem)
+                .Where(x=>x.ID == takmId).FirstOrDefault();
+
+            if (takmicenje == null)
+                throw new UserException("Takmicenje ne postoji u bazi.");
+
+            ValidirajPredictWinners(takmicenje);
+
+            List<(Prijava prijava, int Elo)> PrijaveLista = GetPrijaveSaElom(takmId);
+            double [,] MatricaVjerovatnoca  = new double[PrijaveLista.Count,PrijaveLista.Count];
+            for(int i = 0; i < PrijaveLista.Count-1; i++)
+            {
+                for (int j = i+1; j < PrijaveLista.Count; j++)
+                {
+                    double vjerovatnocaA = eloCalculator.GetVjerovatnoca(PrijaveLista[i].Elo, PrijaveLista[j].Elo);
+                    double vjerovatnocaB = eloCalculator.GetVjerovatnoca(PrijaveLista[j].Elo, PrijaveLista[i].Elo);
+                    MatricaVjerovatnoca[i,j] = vjerovatnocaA;
+                    MatricaVjerovatnoca[j,i] = vjerovatnocaB;
+                }
+            }
+
+            int brojRundi = initTakmicenja.pomocnaFunkcijaIzracunajRunde(takmicenje.Sistem, PrijaveLista.Count).BrojRundi;
+            //RED SE ODNOSI NA SLOTNUM - 1 DAKLE NIJE PO RANKU SORTIRANO NEGO KAKO UTAKMICE IDU
+            double[,] VjerovatnocePobjedeRunde = new double[PrijaveLista.Count, brojRundi];
+            List<(Prijava pr, double vjerovatnoca)> finalnaLista = new List<(Prijava pr, double vjerovatnoca)>();
+            for (int r = 0; r < brojRundi; r++)
+            {
+                for (int i = 0; i < PrijaveLista.Count; i++)
+                {
+                    double vjerovatnocaProslu = GetProsluVjerovatnocu( i, r - 1, VjerovatnocePobjedeRunde);
+                    int v = GetSlotNumber(i+1, r+1) - 1;
+                    int u = v + (int)Math.Round(Math.Pow(2, r)) - 1;
+                    double suma = 0;
+                    for (int k = v; k <= u; k++)
+                    {
+                        suma += (MatricaVjerovatnoca[i,k] *
+                            GetProsluVjerovatnocu(k, r-1 ,VjerovatnocePobjedeRunde));
+                    }
+                    suma *= vjerovatnocaProslu;
+                    VjerovatnocePobjedeRunde[i, r] = suma;
+                    if(r == brojRundi - 1)
+                        finalnaLista.Add((PrijaveLista[i].prijava, suma));               
+                }
+            }
+            finalnaLista = finalnaLista.OrderByDescending(x => x.vjerovatnoca).ToList();
+            var povratna = new List<(Prijave prijava, double vjerovatnoca)>();
+            for (int i = 0; i < 3; i++)
+            {
+                if (i >= finalnaLista.Count)
+                    break;
+                var prijavaMap = mapko.Map<Prijave>(finalnaLista[i].pr);
+                povratna.Add((prijavaMap, finalnaLista[i].vjerovatnoca));
+            }
+            return povratna;
+        }
+
         #endregion
 
         #region Pomagaci
+        private int GetSlotNumber(int igrac, int runda)
+        {
+            double prvi = Math.Round(Math.Pow(2, runda - 1));
+            double drugi = Math.Round(Math.Pow(2, runda + 1));
+            double treci = Math.Round(Math.Pow(2, runda));
+
+            int vrijednost = 1 + (int)prvi +
+                 (int)Math.Round(drugi * Math.Floor((double)(igrac - 1) / treci)) -
+                 (int)Math.Round(prvi * Math.Floor((double)(igrac - 1) / prvi));
+            
+            return vrijednost;
+        }
+        private double GetProsluVjerovatnocu(int i, int runda, double[,] _vjerovatnoce)
+        {
+            if (runda < 0)
+                return 1;
+            return _vjerovatnoce[i,runda];
+        }
+        private List<(Prijava ,int)> GetPrijaveSaElom(int takmId)
+        {
+            var lista = new List<(Prijava, int)>();
+   
+            var utakmiceNaTakm = db.Utakmice
+                .Include(x => x.Runda).ThenInclude(x => x.Bracket).ThenInclude(x => x.Takmicenje)
+                .Include(x => x.UcescaNaUtakmici)
+                .Where(x=>x.Runda.Bracket.TakmicenjeID==takmId && x.Runda.BrojRunde == 1)
+                .OrderBy(x=>x.BrojUtakmice)
+                .ToList();
+
+            List<Prijava> listaPrijava = db.Takmicenja.Include(x => x.Prijave)
+                .Where(x => x.ID == takmId).Select(x => x.Prijave).FirstOrDefault();
+            
+            foreach (var i in utakmiceNaTakm)
+            {
+                bool dodanNull = false;
+                foreach (var j in i.UcescaNaUtakmici)
+                {
+                    Prijava prijava = null;
+                    if (j.IgracID != null)
+                        prijava = evidentor.GetPrijavuZaUcesce(j, takmId, listaPrijava);
+                    bool pronadjena = false;
+                    for (int c = 0; c < lista.Count; c++)
+                    {
+                        if (dodanNull && lista[c].Item1 == null && prijava == null)
+                        {
+                            pronadjena = true;
+                            break;
+                        }
+                        else if (lista[c].Item1 != null && prijava != null && lista[c].Item1.ID == prijava.ID)
+                        {
+                            var novaVrijednost = (lista[c].Item2 + j.PristupniElo.GetValueOrDefault()) / 2;
+                            lista[c] = (prijava, novaVrijednost);
+                            pronadjena = true;
+                            break;
+                        }
+                    }
+                    if (!pronadjena)
+                    {
+                        lista.Add((prijava, j.PristupniElo.GetValueOrDefault(0)));
+                        if (prijava == null)
+                            dodanNull = true;
+                    }
+
+                }
+            }
+            return lista;
+        }
         private void UbaciUTabelu((string tim1, int? rez1, int? rez2, string tim2) par
             , ref List<TabelaStavka> parovi)
         {
@@ -579,6 +707,17 @@ namespace FIT_PONG.Services.Services
             RegulisiListuErrora(PrevedenaLista);
             return true;
         }
+        private bool ValidirajPredictWinners(Takmicenje bazaObj)
+        {
+            var listaErrora = new List<(string key, string msg)>();
+            if (!bazaObj.Inicirano)
+                listaErrora.Add((nameof(bazaObj.Inicirano), "Predikcija je moguća samo ako je generisan raspored"));
+            if(bazaObj.Sistem.Opis != "Single elimination")
+                listaErrora.Add((nameof(bazaObj.Sistem), "Trenutno je samo za Single elimination implementirana predikcija"));
+            
+            RegulisiListuErrora(listaErrora);
+            return true;
+        }
         //ideja za ime -> private bool CistaListaErrora, to bi genijalno bilo, raja ce poludit kad vidi
         private void RegulisiListuErrora(List<(string key, string msg)> listaErrora)
         {
@@ -590,8 +729,8 @@ namespace FIT_PONG.Services.Services
                 throw ex;
             }
         }
+        
 
-       
         #endregion
     }
 }

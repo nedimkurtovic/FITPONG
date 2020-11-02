@@ -311,9 +311,11 @@ namespace FIT_PONG.Services.BL
 
 
         }
-        public Prijava GetPrijavuZaUcesce(Igrac_Utakmica ucesce, int takmID)
+        public Prijava GetPrijavuZaUcesce(Igrac_Utakmica ucesce, int takmID, List<Prijava> proslijedjenePrijave = null)
         {
-            List<Prijava> listaPrijava = db.Takmicenja.Include(x => x.Prijave).Where(x => x.ID == takmID).Select(x => x.Prijave).FirstOrDefault();
+            List<Prijava> listaPrijava = proslijedjenePrijave;
+            if(listaPrijava == null)
+                listaPrijava = db.Takmicenja.Include(x => x.Prijave).Where(x => x.ID == takmID).Select(x => x.Prijave).FirstOrDefault();
             foreach (Prijava i in listaPrijava)
             {
                 List<Prijava_igrac> prijavljeniIgraci = db.PrijaveIgraci.Where(x => x.PrijavaID == i.ID).ToList();

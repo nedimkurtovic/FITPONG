@@ -28,5 +28,6 @@ namespace FIT_PONG.Services.Services
 		SharedModels.Favoriti GetFavoriti(int id, int userId);
 		SharedModels.Favoriti OznaciUtakmicu(int id, int userId);
 		List<string> GetListaUseraNotifikacije(int utakId);
+		List<(Prijave prijava, double vjerovatnoca)> PredictWinners(int takmId);
 	}
 }
