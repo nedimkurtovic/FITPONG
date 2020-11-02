@@ -49,7 +49,7 @@ namespace FIT_PONG.Controllers
             this.notifikacijeHub = notifikacijeHub;
             mapko = _mapko;
         }
-        public IActionResult Index(int page = 1, string sortExpression= "-DatumKreiranja")
+        public IActionResult Index(int page = 1, string sortExpression= "-ID")
         {
             List<TakmicenjeVM> takmicenja = db.Takmicenja
                 .Include(tak => tak.Kategorija)
@@ -63,7 +63,7 @@ namespace FIT_PONG.Controllers
             foreach (TakmicenjeVM i in takmicenja)
                 i.BrojPrijavljenih = db.Prijave.Where(s => s.TakmicenjeID == i.ID).Count();
             var qry = takmicenja.OrderByDescending(X=>X.ID).ToList();
-            var takmicenja1 = PagingList.Create(qry, 5, page, sortExpression, "ID");
+            var takmicenja1 = PagingList.Create(qry, 5, page, sortExpression, "-ID");
 
             return View(takmicenja1);
         }
@@ -77,7 +77,11 @@ namespace FIT_PONG.Controllers
             //potreban query za broj rundi,u bracketima se nalazi takmicenjeID ,bar bi trebalo opotrebna migracija
             TakmicenjeVM obj = GetTakmicenjeVM(id);
             if (obj != null)
+            {
+                
                 return View(obj);
+
+            }
 
             return Redirect("/Takmicenje/Neuspjeh");
         }
@@ -705,9 +709,7 @@ namespace FIT_PONG.Controllers
                     return VratiNijeAutorizovan();
                 }
 
-                //ovdje bi trebala nova klasa odnosno pardon, kad dodje servis, nece bit nista ovog errori count, vec samo dole
-                //poziv direktno na servis a on ce bacit exception ako bude errora
-                EvidencijaMeca objekatZaEvidentor = mapko.Map<EvidencijaMeca>(obj); 
+                EvidencijaMeca objekatZaEvidentor = mapko.Map<EvidencijaMeca>(obj);
                 List<string> errori = evidentor.VratiListuErrora(objekatZaEvidentor);
                 if (errori.Count() == 0)
                 {
