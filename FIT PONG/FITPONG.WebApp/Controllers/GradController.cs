@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FIT_PONG.Services;
-using Microsoft.AspNetCore.Mvc;
-using FIT_PONG.Database.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
 using FIT_PONG.SharedModels.Requests.Gradovi;
-using FIT_PONG.Filters;
+using FIT_PONG.Services.Services;
+using FIT_PONG.Services;
 
 namespace FIT_PONG.Controllers
 {

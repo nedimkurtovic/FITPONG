@@ -6,45 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20191119151848_TakmicenjeFeed.cs" />
-    <Compile Remove="Migrations\20191119151848_TakmicenjeFeed.Designer.cs" />
-    <Compile Remove="Migrations\20191206125946_TakmicenjeFeedovi.cs" />
-    <Compile Remove="Migrations\20191206125946_TakmicenjeFeedovi.Designer.cs" />
-    <Compile Remove="Migrations\20191206130624_NullableFeedID.cs" />
-    <Compile Remove="Migrations\20191206130624_NullableFeedID.Designer.cs" />
-    <Compile Remove="Migrations\20191210221716_ProbaMigracija.cs" />
-    <Compile Remove="Migrations\20191210221716_ProbaMigracija.Designer.cs" />
-    <Compile Remove="Migrations\20191211083639_IgracTabelaTPT.cs" />
-    <Compile Remove="Migrations\20191211083639_IgracTabelaTPT.Designer.cs" />
-    <Compile Remove="Migrations\20191211085141_IgracTabelaTPT.cs" />
-    <Compile Remove="Migrations\20191211085141_IgracTabelaTPT.Designer.cs" />
-    <Compile Remove="Migrations\20191212160335_ReportAttachmenti.cs" />
-    <Compile Remove="Migrations\20191212160335_ReportAttachmenti.Designer.cs" />
-    <Compile Remove="Migrations\20191213174914_Talatest.cs" />
-    <Compile Remove="Migrations\20191213174914_Talatest.Designer.cs" />
-    <Compile Remove="Migrations\20191218084251_BracketKaoListaUTakmicenju.cs" />
-    <Compile Remove="Migrations\20191218084251_BracketKaoListaUTakmicenju.Designer.cs" />
-    <Compile Remove="Migrations\20191218084421_RundeUnutarBracketaLista.cs" />
-    <Compile Remove="Migrations\20191218084421_RundeUnutarBracketaLista.Designer.cs" />
-    <Compile Remove="Migrations\20191218084704_ListeUForeignKeyTabelama.cs" />
-    <Compile Remove="Migrations\20191218084704_ListeUForeignKeyTabelama.Designer.cs" />
-    <Compile Remove="Migrations\20191218202819_TestiranjeNOvo.cs" />
-    <Compile Remove="Migrations\20191218202819_TestiranjeNOvo.Designer.cs" />
-    <Compile Remove="Migrations\20191220121140_IgracUtakmicaPreostaloNuliranje.cs" />
-    <Compile Remove="Migrations\20191220121140_IgracUtakmicaPreostaloNuliranje.Designer.cs" />
-    <Compile Remove="Migrations\20191220121438_IgracUtakmicaNuliranje.cs" />
-    <Compile Remove="Migrations\20191220121438_IgracUtakmicaNuliranje.Designer.cs" />
-    <Compile Remove="Migrations\20191220121629_IgracUtakmiceNuliranje.cs" />
-    <Compile Remove="Migrations\20191220121629_IgracUtakmiceNuliranje.Designer.cs" />
-    <Compile Remove="Migrations\20191220122101_IgraciUtakmicePromjenaPKNuliranje.cs" />
-    <Compile Remove="Migrations\20191220122101_IgraciUtakmicePromjenaPKNuliranje.Designer.cs" />
-    <Compile Remove="Migrations\20191219205430_blokiraniIgraci_u_Takmicenju.cs" />
-    <Compile Remove="Migrations\20191219205430_blokiraniIgraci_u_Takmicenju.Designer.cs" />
-    <Compile Remove="Migrations\20200221165323_AddingIdentity.cs" />
-    <Compile Remove="Migrations\20200221165323_AddingIdentity.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\fitpong.jpg" />
   </ItemGroup>
 
