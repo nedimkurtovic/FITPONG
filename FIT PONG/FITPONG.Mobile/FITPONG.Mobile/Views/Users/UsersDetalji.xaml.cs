@@ -43,28 +43,52 @@ namespace FIT_PONG.Mobile.Views.Users
         private async void btnPostovanje_Clicked(object sender, EventArgs e)
         {
             var rezultat = await viewModel.Postovanje();
-            
-            if(rezultat != default(SharedModels.Users))
-            {
-                var mainStranica = Navigation.NavigationStack[1];
-                Navigation.InsertPageBefore(new UsersMain(rezultat), mainStranica);
-                bool brisi = false;
 
-                List<Page> listaBrisanja = new List<Page>();
-                foreach (var i in Navigation.NavigationStack)
+            if (rezultat != default(SharedModels.Users))
+            {
+                Page mainStranica = null;
+                int pozicijaListe = -1;
+                for (int i = 0; i < Navigation.NavigationStack.Count; i++)
                 {
-                    if (brisi)
-                        listaBrisanja.Add(i);
-                    if (i is UsersMain && !brisi)
-                        brisi = true;
+                    if (Navigation.NavigationStack[i] is UsersLista)
+                        pozicijaListe = i;
+                    if (Navigation.NavigationStack[i] is UsersMain)
+                    {
+                        mainStranica = Navigation.NavigationStack[i];
+                        break;
+                    }
                 }
-                //kad naleti na prvu main stavlja na true i sve ostale stranice brise poslije
-                var a = Navigation.NavigationStack[0].BindingContext as UsersListaViewModel;
-                if (a != null && a.DobaviUsere.CanExecute(null))
-                    a.DobaviUsere.Execute(null);
-                foreach (var i in listaBrisanja)
-                    Navigation.RemovePage(i);
+                if (mainStranica != null)
+                {
+                    Navigation.InsertPageBefore(new UsersMain(rezultat), mainStranica);
+                    bool brisi = false;
+
+                    List<Page> listaBrisanja = new List<Page>();
+                    foreach (var i in Navigation.NavigationStack)
+                    {
+                        if (brisi)
+                            listaBrisanja.Add(i);
+                        if (i is UsersMain && !brisi)
+                            brisi = true;
+                    }
+                    UpdateListu(pozicijaListe);
+                    foreach (var i in listaBrisanja)
+                        Navigation.RemovePage(i);
+                }
+                else
+                {
+                    await Navigation.PushAsync(new UsersMain(rezultat));
+                    UpdateListu(pozicijaListe);
+                }
             }
+        }
+        private void UpdateListu(int pozicija)
+        {
+            if (pozicija == -1)
+                return;
+            var a = Navigation.NavigationStack[pozicija].BindingContext as UsersListaViewModel;
+            if (a != null && a.DobaviUsere.CanExecute(null))
+                a.DobaviUsere.Execute(null);
         }
     }
 }
