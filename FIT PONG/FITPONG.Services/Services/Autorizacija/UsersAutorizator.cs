@@ -60,7 +60,8 @@ namespace FIT_PONG.Services.Services.Autorizacija
 
         private bool IsAdministrator(string loggedInUsername)
         {
-            if (loggedInUsername != "aldin.talic@edu.fit.ba" && loggedInUsername != "nedim.kurtovic@edu.fit.ba")
+            if (loggedInUsername != "aldin.talic@edu.fit.ba" && loggedInUsername != "nedim.kurtovic@edu.fit.ba"
+                && loggedInUsername != "desktop")
                 throw new AuthorizeException("Samo administrator je autorizovan za ovu radnju.");
             return true;
         }
