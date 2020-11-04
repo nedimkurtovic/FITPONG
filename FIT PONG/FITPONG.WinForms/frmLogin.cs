@@ -58,7 +58,7 @@ namespace FIT_PONG.WinForms
             foreach (var i in listaErrora)
                 sb.AppendLine(i);
 
-            MessageBox.Show("Greška", sb.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(sb.ToString(), "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return false;
         }
     }
