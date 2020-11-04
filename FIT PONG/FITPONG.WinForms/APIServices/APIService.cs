@@ -91,16 +91,20 @@ namespace FIT_PONG.WinForms
         }
         protected async Task<string> GetErrore(FlurlHttpException ex)
         {
-            var errori = await ex.GetResponseJsonAsync<Dictionary<string, string[]>>();
-            if (errori != null)
+            try
             {
-                var _stringBilder = new StringBuilder();
-                foreach (var i in errori)
+                var errori = await ex.GetResponseJsonAsync<Dictionary<string, string[]>>();
+                if (errori != null)
                 {
-                    _stringBilder.AppendLine($"{string.Join("\n", i.Value)}");
+                    var _stringBilder = new StringBuilder();
+                    foreach (var i in errori)
+                    {
+                        _stringBilder.AppendLine($"{string.Join("\n", i.Value)}");
+                    }
+                    return _stringBilder.ToString();
                 }
-                return _stringBilder.ToString();
             }
+            catch (Exception) { }
             return "Greška prilikom povezivanja";
         }
     }
