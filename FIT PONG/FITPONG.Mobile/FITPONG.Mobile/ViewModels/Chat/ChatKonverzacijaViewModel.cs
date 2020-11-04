@@ -84,8 +84,7 @@ namespace FIT_PONG.Mobile.ViewModels.Chat
         {
             if (!IsConnected)
             {
-                await Application.Current.MainPage.DisplayAlert("Niste konektovani", "Pokušajte se konektovati pa onda poslati poruku.", "OK");
-                return;
+                _ = ChatServis.ConnectAsync();
             }
             try
             {

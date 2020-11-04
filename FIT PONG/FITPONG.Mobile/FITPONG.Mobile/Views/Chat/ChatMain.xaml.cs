@@ -31,17 +31,39 @@ namespace FIT_PONG.Mobile.Views.Chat
 
             viewModel.ChatServis.StiglaPoruka += (sender, args) =>
             {
-                //ako zelim da promijenim odma na stranicu kad se pojavi nova poruka, onda trebam samo 
-                //pozvati ovu funkciju promijeni stranicu, bez pozivanja kreiraj stranicu jer se ona unutar
-                //nje poziva
-                var stranica = KreirajStranicu(args.Primatelj);
-                var kontekstStranice = (ChatKonverzacijaViewModel)stranica.BindingContext;
-                kontekstStranice.SendLocalMessage(args);
-                var stranicaKaoChatKonvo = (ChatKonverzacija)stranica;
-                stranicaKaoChatKonvo.SkrolajNaDno();
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    var stranica = KreirajStranicu(args.Primatelj);
+                    var kontekstStranice = (ChatKonverzacijaViewModel)stranica.BindingContext;
+                    kontekstStranice.SendLocalMessage(args);
+                    var stranicaKaoChatKonvo = (ChatKonverzacija)stranica;
+                    stranicaKaoChatKonvo.SkrolajNaDno();
+                });
             };
         }
-
+        protected override void OnDisappearing()
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                _ = viewModel.ChatServis.DisconnectAsync();
+                base.OnDisappearing();
+            });
+        }
+        protected override void OnAppearing()
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                _ = viewModel.ChatServis.ConnectAsync();
+                base.OnAppearing();
+            });
+        }
+        public void UgasiChat()
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                _ = viewModel.ChatServis.DisconnectAsync();
+            });
+        }
         private Page PostojiKanalOtvoren(string naziv)
         {
             foreach(var i in Children)

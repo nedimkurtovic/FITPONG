@@ -57,15 +57,7 @@ namespace FIT_PONG.Mobile.APIServices
             {
                 OnConnectionClosed?.Invoke(this, new MessageEventArgs("Disconnected.."));
                 IsConnected = false;
-                await Task.Delay(random.Next(0, 5) * 1000);
-                try
-                {
-                    await ConnectAsync();
-                }
-                catch (Exception)
-                {
-                    // Exception!
-                }
+                
             };
             hubKonekcija.On<List<string>>("GetKonekcije", (_listaKonekcija) =>
             {
