@@ -57,7 +57,7 @@ namespace FIT_PONG.WebAPI.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<Users> Login(Login obj)
+        public async Task<Users> Login([FromBody]Login obj)
         {
             var rezult = await usersService.Login(obj);
             usersAutorizator.AuthorizeLogin(rezult.ID);
@@ -67,7 +67,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [Authorize(AuthenticationSchemes = "BasicAuthentication")]
         [HttpPut("{id}")]
         [AllowAnonymous]
-        public Users Edit(int id, AccountUpdate obj)
+        public Users Edit(int id, [FromBody] AccountUpdate obj)
         {
             usersAutorizator.AuthorizeEditProfila(usersService.GetRequestUserID(HttpContext.Request), id);
             return usersService.EditujProfil(id, obj);
@@ -76,7 +76,7 @@ namespace FIT_PONG.WebAPI.Controllers
 
         [HttpPost]
         [Route("mail")]
-        public async Task<SharedModels.Users> PonovoPosaljiMail(Email_Password_Request obj)
+        public async Task<SharedModels.Users> PonovoPosaljiMail([FromBody] Email_Password_Request obj)
         {
             return await usersService.SendConfirmationEmail(obj);
         }
@@ -92,14 +92,14 @@ namespace FIT_PONG.WebAPI.Controllers
 
         [HttpPost]
         [Route("password")]
-        public async Task<SharedModels.Users> ResetujPassword(Email_Password_Request obj)
+        public async Task<SharedModels.Users> ResetujPassword([FromBody] Email_Password_Request obj)
         {
             return await usersService.SendPasswordChange(obj);
         }
 
         [HttpPost]
         [Route("password-potvrda")]
-        public async Task<SharedModels.Users> ConfirmPasswordChange(PasswordPromjena obj)
+        public async Task<SharedModels.Users> ConfirmPasswordChange([FromBody] PasswordPromjena obj)
         {
             var loggedInUserName = obj.Email ?? usersService.GetRequestUserName(HttpContext.Request);
 
@@ -119,7 +119,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [Authorize(AuthenticationSchemes = "BasicAuthentication")]
         [HttpPut]
         [Route("{userId}/akcije/slika")]
-        public SharedModels.Users PromijeniSliku(int userId, SlikaPromjenaRequest obj)
+        public SharedModels.Users PromijeniSliku(int userId, [FromBody] SlikaPromjenaRequest obj)
         {
             var loggedInUserName = usersService.GetRequestUserName(HttpContext.Request);
 
@@ -152,7 +152,7 @@ namespace FIT_PONG.WebAPI.Controllers
         [Authorize(AuthenticationSchemes = "BasicAuthentication")]
         [HttpPost]
         [Route("{userId}/akcije/suspenduj")]
-        public Users Suspenduj(int userId, SuspenzijaRequest obj)
+        public Users Suspenduj(int userId, [FromBody] SuspenzijaRequest obj)
         {
             usersAutorizator.AuthorizeSuspenziju(usersService.GetRequestUserName(HttpContext.Request));
 

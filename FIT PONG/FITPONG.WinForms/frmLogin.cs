@@ -1,21 +1,16 @@
 ﻿using FIT_PONG.SharedModels;
 using FIT_PONG.SharedModels.Requests.Account;
-using Flurl.Http;
+using FIT_PONG.WinForms.APIServices;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FIT_PONG.WinForms
 {
     public partial class frmLogin : Form
     {
-        private APIService apiServis = new APIService("users/login");
+        private UsersAPIService apiServis = new UsersAPIService();
         public bool UspjesnoPrijavljen { get; private set; } = false;
         public frmLogin()
         {
@@ -31,9 +26,13 @@ namespace FIT_PONG.WinForms
                 Password = txtPassword.Text,
                 UserName = txtEmail.Text
             };
-            //mislim da bi lijepo bilo da se napravi custom service ili bar metoda
-            //u postojeci da se doda koja se zove Login i vraca bool 
-            var rezultat = await apiServis.Insert<Users>(obj);
+
+            if (!isModelValid(obj))
+            {
+                return;
+            }
+
+            var rezultat = await apiServis.Login(obj);
             if(rezultat != default(Users))
             {
                 MessageBox.Show("Uspješan login");
@@ -41,9 +40,26 @@ namespace FIT_PONG.WinForms
                 APIService.Password = obj.Password;
                 UspjesnoPrijavljen = true;
                 this.Close();
-            }
-            //else
-            //    MessageBox.Show("Neispravni podaci", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }          
+        }
+        private bool isModelValid(Login obj)
+        {
+            List<string> listaErrora = new List<string>();
+
+            if (String.IsNullOrEmpty(obj.UserName) || String.IsNullOrWhiteSpace(obj.UserName))
+                listaErrora.Add("Morate unijeti email");
+            if (String.IsNullOrEmpty(obj.Password) || String.IsNullOrWhiteSpace(obj.Password))
+                listaErrora.Add("Morate unijeti password");
+
+            if (listaErrora.Count == 0)
+                return true;
+
+            StringBuilder sb = new StringBuilder();
+            foreach (var i in listaErrora)
+                sb.AppendLine(i);
+
+            MessageBox.Show("Greška", sb.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return false;
         }
     }
 }

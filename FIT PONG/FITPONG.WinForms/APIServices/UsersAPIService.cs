@@ -30,5 +30,20 @@ namespace FIT_PONG.WinForms.APIServices
                 return default(Users);
             }
         }
+        public async Task<Users> Login(Login obj)
+        {
+            var url = $"{APIUrl}/{resurs}/login";
+            try
+            {
+                var rezult = await url.PostJsonAsync(obj).ReceiveJson<Users>();
+                return rezult;
+            }
+            catch (FlurlHttpException ex)
+            {
+                var errori = await GetErrore(ex);
+                MessageBox.Show(errori, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return default(Users);
+            }
+        }
     }
 }
