@@ -15,9 +15,11 @@ namespace FIT_PONG.Mobile.ViewModels.Users
     {
         public TakmicenjeAPIService takmicenjeApiService { get; set; } = new TakmicenjeAPIService();
 
+        public bool IsVlasnik { get; set; }
         public UsersPrijaveViewModel(SharedModels.Users user)
         {
             DodajPrijave(user.listaPrijava);
+            IsVlasnik = user.ID == BaseAPIService.ID;
         }
 
         public ObservableCollection<Prijave> listaPrijava { get; set; } = new ObservableCollection<Prijave>();
@@ -30,17 +32,19 @@ namespace FIT_PONG.Mobile.ViewModels.Users
 
         public async Task<Prijave> OtkaziPrijavu(int id)
         {
+            if (!Validacija())
+                return default(Prijave);
             var p = listaPrijava.Where(d => d.ID == id).Single();
-            //if (p.Takmicenje.Inicirano ?? true)
-            //{
-            //    await Application.Current.MainPage.DisplayAlert("Greska", "Ne mozete otkazati takmicenje koje je vec inicirano.", "OK");
-            //    return default(SharedModels.Prijave);
-            //}
-
+         
             var rezultat = await takmicenjeApiService.OtkaziPrijavu(id);
-            listaPrijava.Remove(p);
+            if(rezultat != default(Prijave))
+                listaPrijava.Remove(p);
 
             return rezultat;
+        }
+        private bool Validacija()
+        {
+            return IsVlasnik;
         }
 
     }
