@@ -31,7 +31,16 @@ namespace FIT_PONG.Mobile.Views
 
         }
 
-
+        public NavigationPage GetMenuPage(int id)
+        {
+            if (id < 0 || id > MenuPages.Count)
+                return null;
+            return MenuPages[id];
+        }
+        public async void UgasiNotifikacije()
+        {
+            await viewModel.notifikacijeService.DisconnectAsync();
+        }
         private void NotifikacijeService_primiNotifikacije(object sender, MessageEventArgs e)
         {
             Device.BeginInvokeOnMainThread(() =>
