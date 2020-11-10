@@ -146,8 +146,15 @@ namespace FIT_PONG.Services.Services
                 db.Add(igrac);
                 db.SaveChanges();
 
-                var token = await usermanager.GenerateEmailConfirmationTokenAsync(user);
-                mailservis.PosaljiKonfirmacijskiMejl(token, user.Email, "api");
+                try
+                {
+                    var token = await usermanager.GenerateEmailConfirmationTokenAsync(user);
+                    mailservis.PosaljiKonfirmacijskiMejl(token, user.Email, "api");
+                }
+                catch(Exception){} 
+                // da imamo logger ovo bi samo loggovalo, posto nemamo nikom nista, ako nije stiglo korisnik posalje
+                //zahtjev za ponovno slanje mejla i to je to
+
                 return userTemp;
             }
             else
@@ -248,11 +255,18 @@ namespace FIT_PONG.Services.Services
 
             if (user != null && !user.EmailConfirmed)
             {
-                var token = await usermanager.GenerateEmailConfirmationTokenAsync(user);
-                mailservis.PosaljiKonfirmacijskiMejl(token, user.Email, "api");
+                try
+                {
+                    var token = await usermanager.GenerateEmailConfirmationTokenAsync(user);
+                    mailservis.PosaljiKonfirmacijskiMejl(token, user.Email, "api");
 
-                var i = db.Igraci.Find(user.Id);
-                return mapper.Map<SharedModels.Users>(i);
+                    var i = db.Igraci.Find(user.Id);
+                    return mapper.Map<SharedModels.Users>(i);
+                }
+                catch (Exception)
+                {
+                    throw new UserException("Došlo je do greške prilikom slanja mejla, pokušajte opet");
+                }
             }
             else
             {
@@ -276,7 +290,7 @@ namespace FIT_PONG.Services.Services
                 }
                 catch (Exception)
                 {
-                    throw new UserException("Doslo je do greske prilikom promjene passworda.");
+                    throw new UserException("Došlo je do greške prilikom slanja mejla. Pokušajte ponovo");
                 }
             }
             throw new UserException("Korisnik ne postoji ili nije povrdio mail.");
