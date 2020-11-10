@@ -3,6 +3,7 @@ using FIT_PONG.Mobile.Views.Users;
 using FIT_PONG.SharedModels.Requests.Account;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
@@ -13,7 +14,7 @@ namespace FIT_PONG.Mobile.ViewModels.Users
     class UnesiMejlViewModel : BaseViewModel
     {
         private readonly UsersAPIService usersService = new UsersAPIService();
-
+        public INavigation Navigacija { get; set; }
         public UnesiMejlViewModel(string tip)
         {
             PotvrdiKomanda = new Command(() => PosaljiKonfirmacijskiMejl());
@@ -42,7 +43,13 @@ namespace FIT_PONG.Mobile.ViewModels.Users
                     if (rezultat == default(SharedModels.Users))
                         await Application.Current.MainPage.DisplayAlert("Greska", "Doslo je do greske prilikom slanja mejla.", "OK");
                     else
-                        Application.Current.MainPage = new PotvrdiMejlPassword(rezultat.ID, "resetMail", null);
+                    {
+                        var trenutna = Navigacija.NavigationStack.LastOrDefault();
+                        await Navigacija.PushAsync(new PotvrdiMejlPassword(rezultat.ID, "resetMail", null));
+                        if(trenutna != default(Page))
+                            Navigacija.RemovePage(trenutna);
+                    }
+                        
                 }
                 else if (Tip == "resetPassword")
                 {
@@ -51,7 +58,12 @@ namespace FIT_PONG.Mobile.ViewModels.Users
                     if (rezultat == default(SharedModels.Users))
                         await Application.Current.MainPage.DisplayAlert("Greska", "Doslo je do greske prilikom slanja mejla.", "OK");
                     else
-                        Application.Current.MainPage = new PotvrdiMejlPassword(rezultat.ID, "resetPassword", Email);
+                    {
+                        var trenutna = Navigacija.NavigationStack.LastOrDefault();
+                        await Navigacija.PushAsync(new PotvrdiMejlPassword(rezultat.ID, "resetPassword", Email));
+                        if (trenutna != default(Page))
+                            Navigacija.RemovePage(trenutna);
+                    }
                 }
             }
         }

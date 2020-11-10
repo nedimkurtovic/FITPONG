@@ -32,7 +32,7 @@ namespace FIT_PONG.Mobile.ViewModels.Users
         public bool isPasswordReset { get; set; }
 
         public ICommand PotvrdiKomanda { get; set; }
-        
+        public INavigation Navigacija { get; set; }
 
         public async void PotvrdiMejlPoziv()
         {
@@ -53,7 +53,10 @@ namespace FIT_PONG.Mobile.ViewModels.Users
                     if (rezultat == default(SharedModels.Users))
                         await Application.Current.MainPage.DisplayAlert("Greska", "Doslo je do greske prilikom potvrde passworda.", "OK");
                     else
-                        Application.Current.MainPage = new Views.Users.Login();
+                    {
+                        await Navigacija.PopToRootAsync();
+                        //Application.Current.MainPage = new Views.Users.Login();
+                    }
                 }
                 else
                 {
@@ -62,7 +65,10 @@ namespace FIT_PONG.Mobile.ViewModels.Users
                     if (rezultat == default(SharedModels.Users))
                         await Application.Current.MainPage.DisplayAlert("Greska", "Doslo je do greske prilikom potvrde mejla.", "OK");
                     else
-                        Application.Current.MainPage = new Views.Users.Login();
+                    {
+                        await Navigacija.PopToRootAsync();
+                        //Application.Current.MainPage = new Views.Users.Login();
+                    }
                 }
             }
         }

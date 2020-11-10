@@ -47,7 +47,7 @@ namespace FIT_PONG.Mobile.Views
                     BaseAPIService.ID = default;
                     BaseAPIService.User = default;
                     RootPage.UgasiNotifikacije();
-                    Application.Current.MainPage = new Mobile.Views.Users.Login();
+                    Application.Current.MainPage = new NavigationPage(new Mobile.Views.Users.Login());
                 }
                 else
                 {

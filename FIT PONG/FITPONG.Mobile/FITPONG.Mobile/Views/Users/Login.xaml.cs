@@ -21,19 +21,22 @@ namespace FIT_PONG.Mobile.Views.Users
             BindingContext = viewModel = new LoginViewModel();
         }
 
-        private void btnRegistracija_Clicked(object sender, EventArgs e)
+        private async void btnRegistracija_Clicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new Registracija();
+            await Navigation.PushAsync(new Registracija());
+            
         }
 
-        private void btnResendMail_Clicked(object sender, EventArgs e)
+        private async void btnResendMail_Clicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new UnesiMejl("resetMail");
+            await Navigation.PushAsync(new UnesiMejl("resetMail"));
+            
         }
 
-        private void btnResetPassword_Clicked(object sender, EventArgs e)
+        private async void btnResetPassword_Clicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new UnesiMejl("resetPassword");
+            await Navigation.PushAsync(new UnesiMejl("resetPassword"));
+            //Application.Current.MainPage = new UnesiMejl("resetPassword");
         }
     }
 }

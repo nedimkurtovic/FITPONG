@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
@@ -24,7 +25,7 @@ namespace FIT_PONG.Mobile.ViewModels.Users
             RegistracijaKomanda = new Command(() => Registracija());
         }
 
-
+        public INavigation Navigacija { get; set; }
         public ObservableCollection<string> Spolovi { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> JacaRukaLista { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<Gradovi> Gradovi { get; set; } = new ObservableCollection<Gradovi>();
@@ -73,10 +74,13 @@ namespace FIT_PONG.Mobile.ViewModels.Users
 
                 if (result != default(SharedModels.Users))
                 {
-                    Application.Current.MainPage = new PotvrdiMejlPassword(result.ID, "resetMail", null);
+                    var trenutna = Navigacija.NavigationStack.LastOrDefault();
+                    await Navigacija.PushAsync(new PotvrdiMejlPassword(result.ID, "resetMail", null));
+                    if(trenutna != default(Page))
+                        Navigacija.RemovePage(trenutna);
                     return;
                 }
-                await Application.Current.MainPage.DisplayAlert("Greska", "Greska prilikom registracije.", "OK"); 
+              
             }
         }
 

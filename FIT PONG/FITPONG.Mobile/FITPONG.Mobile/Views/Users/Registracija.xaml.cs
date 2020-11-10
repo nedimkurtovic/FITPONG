@@ -20,6 +20,7 @@ namespace FIT_PONG.Mobile.Views.Users
         public Registracija()
         {
             BindingContext = viewModel = new RegistracijaViewModel();
+            viewModel.Navigacija = Navigation;
             InitializeComponent();
             //container.Margin = new Thickness(20, 0);
             //container.Padding = new Thickness(40, 0);

@@ -18,6 +18,7 @@ namespace FIT_PONG.Mobile.Views.Users
         public PotvrdiMejlPassword(int userId,string tip, string email)
         {
             BindingContext = viewModel = new PotvrdiMejlPasswordViewModel(userId, tip, email);
+            viewModel.Navigacija = Navigation;
             InitializeComponent();
         }
     }
