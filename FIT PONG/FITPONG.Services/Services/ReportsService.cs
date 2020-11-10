@@ -95,7 +95,11 @@ namespace FIT_PONG.Services.Services
                         db.SaveChanges();
                         transakcija.Commit();
                         //ovdje treba pozvati email servis i obavijestiti adminsitratora o novom reportu
-                        emailServis.PosaljiMejlReport(bazaObj);
+                        try
+                        {
+                            emailServis.PosaljiMejlReport(bazaObj);
+                        }
+                        catch (Exception) { }
                         var povratni = new SharedModels.Reports
                         {
                             ID = bazaObj.ID,
