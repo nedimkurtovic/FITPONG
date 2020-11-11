@@ -8,9 +8,6 @@ namespace FIT_PONG.Services.Services.Autorizacija
     {
 
         bool AuthorizeEditProfila(int logiraniKorisnikId, int userId);
-        bool AuthorizePromjenaPasswordaMail();
-        bool AuthorizePromjenaPasswordaPotvrda();
-        bool AuthorizePostovanje();
         bool AuthorizeSuspenziju(string loggedInUsername);
         bool AuthorizeUkloniSlikuProfila(int logiraniKorisnikId, int userId);
         bool AuthorizeEditSlikuProfila(int logiraniKorisnikId, int userId);

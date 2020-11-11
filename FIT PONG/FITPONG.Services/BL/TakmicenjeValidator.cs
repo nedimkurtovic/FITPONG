@@ -176,5 +176,11 @@ namespace FIT_PONG.Services.BL
 
             return listaErrora;
         }
+        public bool IsTakmicenjeInicirano(string naziv)
+        {
+            var takmicenje = db.Takmicenja.Where(x => x.Naziv == naziv).SingleOrDefault();
+
+            return takmicenje.Inicirano;
+        }
     }
 }

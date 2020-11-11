@@ -26,20 +26,6 @@ namespace FIT_PONG.Services.Services.Autorizacija
             return IsLogiraniKorisnik(logiraniKorisnikId, userId);
         }
 
-        public bool AuthorizePostovanje()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool AuthorizePromjenaPasswordaMail()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool AuthorizePromjenaPasswordaPotvrda()
-        {
-            throw new NotImplementedException();
-        }
 
         public bool AuthorizeSuspenziju(string loggedInUsername)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper.Configuration.Conventions;
+using FIT_PONG.Services.BL;
 using FIT_PONG.Services.Services;
 using FIT_PONG.Services.Services.Autorizacija;
 using FIT_PONG.SharedModels;
@@ -24,6 +25,7 @@ namespace FIT_PONG.WebAPI.Controllers
         private readonly IUsersService usersService;
         private readonly IPrijaveService prijaveService;
         private readonly ITakmicenjeAutorizator takmicenjeAutorizator;
+        private readonly TakmicenjeValidator takmicenjeValidator;
 
         //treba razdvojiti logiku, tj valjalo bi imati TakmicenjeAutorizacijaService, koji ce se iskljucivo
         //baviti autorizacijom, nema smisla, bukvalno u 90% slucajeva trazi se od takmicenje servisa da se
@@ -38,13 +40,18 @@ namespace FIT_PONG.WebAPI.Controllers
 
             //ALI Treba voditi ogromnog racuna o ovome : DA LI SE SALJE PRIKAZNOIME(Igrac) ILI USERNAME(User)
             //u auth headeru kao username, potrebno sto prije rijesiti tu dilemu
-        public TakmicenjaController(ITakmicenjeService _takmicenjeService, IUsersService _usersService,
-            ITakmicenjeAutorizator _takmicenjeAutorizator, IPrijaveService prijaveService)
+        public TakmicenjaController(
+            ITakmicenjeService _takmicenjeService, 
+            IUsersService _usersService,
+            ITakmicenjeAutorizator _takmicenjeAutorizator, 
+            IPrijaveService prijaveService,
+            TakmicenjeValidator takmicenjeValidator)
         {
             takmicenjeService = _takmicenjeService;
             usersService = _usersService;
             takmicenjeAutorizator = _takmicenjeAutorizator;
             this.prijaveService = prijaveService;
+            this.takmicenjeValidator = takmicenjeValidator;
         }
 
         [HttpGet]
@@ -181,7 +188,9 @@ namespace FIT_PONG.WebAPI.Controllers
             var userId = usersService.GetRequestUserID(HttpContext.Request);
             var prijava = prijaveService.GetByID(id);
             takmicenjeAutorizator.AuthorizeOtkaziPrijavu(userId, prijava);
-            return prijaveService.Delete(id);
+            if(!takmicenjeValidator.IsTakmicenjeInicirano(prijava.TakmicenjeNaziv))
+                return prijaveService.Delete(id);
+            return null;
         }
 
         [HttpGet("{id}/favoriti")]
