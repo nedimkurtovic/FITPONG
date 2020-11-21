@@ -8,7 +8,7 @@ namespace FIT_PONG.SharedModels.Requests.Takmicenja
 {
     public class TakmicenjaInsert
     {
-        [Required, StringLength(45, ErrorMessage = "Naziv ne može imati više od 45 karaktera")]
+        [Required, StringLength(100, ErrorMessage = "Naziv ne može imati više od 100 karaktera")]
         public string Naziv { get; set; }
         [DisplayName("Pocetak prijava")]
         public DateTime? RokPocetkaPrijave { get; set; }

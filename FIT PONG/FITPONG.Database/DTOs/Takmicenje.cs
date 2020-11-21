@@ -11,7 +11,7 @@ namespace FIT_PONG.Database.DTOs
     {
         [Required]
         public int ID { get; set; }
-        [Required, StringLength(50)]
+        [Required, StringLength(100)]
         public string Naziv { get; set; }
         public DateTime? RokPocetkaPrijave { get; set; }
         public DateTime? RokZavrsetkaPrijave { get; set; }

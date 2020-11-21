@@ -9,7 +9,7 @@ namespace FIT_PONG.Database.DTOs
     public class Bracket
     {
         public int ID { get; set; }
-        [StringLength(40)]
+        [StringLength(110)]
         public string Naziv { get; set; }
 
         public int TakmicenjeID { get; set; }

@@ -135,6 +135,8 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             var listaErrora = new List<string>();
             if (String.IsNullOrEmpty(Naziv) || String.IsNullOrWhiteSpace(Naziv))
                 listaErrora.Add("Morate unijeti naziv");
+            if(Naziv.Length > 100)
+                listaErrora.Add("Naziv ne može sadržavati više od 100 karaktera");
             if (!ListaKategorija.Select(x => x.ID).Contains(KategorijaID))
                 listaErrora.Add("Morate odabrati kategoriju");
             if (!ListaVrsta.Select(x => x.ID).Contains(VrstaID))

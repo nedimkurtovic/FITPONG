@@ -90,6 +90,8 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             if (isTim && String.IsNullOrEmpty(Naziv))
                 listaErrora.Add("Naziv je obavezno polje.");
 
+            if (isTim && Naziv.Length > 50)
+                listaErrora.Add("Naziv ne smije sadržavati više od 50 karaktera.");
             //var prijave = await takmicenjeApiService.GetPrijave(TakmicenjeID);
             //if (prijave.Where(d => d.Igrac1ID == Igrac1 || d.Igrac2ID == Igrac1).SingleOrDefault() != null || prijave.Where(d => d.Igrac1ID == Igrac2 || d.Igrac2ID == Igrac2).SingleOrDefault() != null)
             //    listaErrora.Add("Vec ste prijavljeni na ovo takmicenje.");

@@ -38,6 +38,9 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
         public bool DatumiPrijavaVisible() { return !Takmicenje.Inicirano ?? true; }
         public async Task<SharedModels.Takmicenja> PozoviApi()
         {
+            if (!Validacija()) 
+                return default(SharedModels.Takmicenja);
+
             var obj = new SharedModels.Requests.Takmicenja.TakmicenjaUpdate
             {
                 DatumPocetka = this.DatumPocetka,
@@ -48,6 +51,21 @@ namespace FIT_PONG.Mobile.ViewModels.Takmicenja
             };
             var rezultat = await takmicenjeAPIService.Update<SharedModels.Takmicenja>(Takmicenje.ID, obj,"PATCH");
             return rezultat;
+        }
+        public bool Validacija()
+        {
+            var listaErrora = new List<string>();
+
+            if (Naziv.Length > 100)
+                listaErrora.Add("Naziv ne može sadržavati više od 100 karaktera.");
+
+            if (listaErrora.Count == 0)
+                return true;
+            StringBuilder novi = new StringBuilder();
+            foreach (var i in listaErrora)
+                novi.AppendLine(i);
+            Application.Current.MainPage.DisplayAlert("Greška", novi.ToString(), "OK");
+            return false;
         }
     }
 }

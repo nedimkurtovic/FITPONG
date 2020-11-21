@@ -14,7 +14,7 @@ namespace FIT_PONG.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Naziv = table.Column<string>(maxLength: 40, nullable: true)
+                    Naziv = table.Column<string>(maxLength: 110, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -365,7 +365,7 @@ namespace FIT_PONG.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Naziv = table.Column<string>(maxLength: 50, nullable: false),
+                    Naziv = table.Column<string>(maxLength: 100, nullable: false),
                     DatumPocetka = table.Column<DateTime>(nullable: false),
                     DatumZavrsetka = table.Column<DateTime>(nullable: false),
                     RokPocetkaPrijave = table.Column<DateTime>(nullable: false),

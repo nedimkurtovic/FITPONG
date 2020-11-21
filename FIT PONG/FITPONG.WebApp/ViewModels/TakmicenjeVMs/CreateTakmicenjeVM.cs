@@ -11,7 +11,7 @@ namespace FIT_PONG.ViewModels.TakmicenjeVMs
     {
         [Required]
         public int ID { get; set; }
-        [Required, StringLength(45,ErrorMessage ="Naziv ne može imati više od 45 karaktera")]
+        [Required, StringLength(100,ErrorMessage ="Naziv ne može imati više od 100 karaktera")]
         public string Naziv { get; set; }
         [DisplayName("Pocetak prijava")]
         public DateTime? RokPocetkaPrijave { get; set; }
