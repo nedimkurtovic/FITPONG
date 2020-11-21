@@ -123,21 +123,23 @@ namespace FIT_PONG.Mobile.APIServices
         }
         protected async Task<string> GetErrore(FlurlHttpException ex)
         {
-            //var staje = ex.GetResponseJsonAsync();
-            //var errori2 = await ex.GetResponseStringAsync();
-            //var errori3 = ex.Data;
-            
-            var errori = await ex.GetResponseJsonAsync<Dictionary<string, string[]>>();
-            if (errori != null)
+            try
             {
-                var _stringBilder = new StringBuilder();
-                foreach (var i in errori)
+                var errori = await ex.GetResponseJsonAsync<Dictionary<string, string[]>>();
+                if (errori != null)
                 {
-                    _stringBilder.AppendLine($"{string.Join("\n", i.Value)}");
+                    var _stringBilder = new StringBuilder();
+                    foreach (var i in errori)
+                    {
+                        _stringBilder.AppendLine($"{string.Join("\n", i.Value)}");
+                    }
+                    return _stringBilder.ToString();
                 }
-                return _stringBilder.ToString();
+                return "Greška prilikom povezivanja";
             }
-            return "Greška prilikom povezivanja";
+            catch (Exception) { }
+            return "Greška prilikom procesiranja zahtjeva";
+            
         }
     }
 }
