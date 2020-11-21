@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FIT_PONG.Services.Services.Autorizacija;
+using Microsoft.EntityFrameworkCore;
 
 namespace FIT_PONG.Services.Services
 {
@@ -50,10 +51,12 @@ namespace FIT_PONG.Services.Services
 
         public Prijave Delete(int id)
         {
-            var prijava = db.Prijave.Find(id);
+            var prijava = db.Prijave.Include(x=>x.Takmicenje).Where(x=>x.ID == id).FirstOrDefault();
 
             if (prijava == null)
                 throw new UserException("Prijava ne postoji u bazi.");
+            if(prijava.Takmicenje.Inicirano)
+                throw new UserException("Nemoguće otkazati prijavu. Raspored je već generisan!");
 
             var sp = db.StanjaPrijave.Where(x => x.PrijavaID == id).SingleOrDefault();
             if (sp != null)

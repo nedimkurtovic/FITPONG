@@ -187,10 +187,8 @@ namespace FIT_PONG.WebAPI.Controllers
         {
             var userId = usersService.GetRequestUserID(HttpContext.Request);
             var prijava = prijaveService.GetByID(id);
-            takmicenjeAutorizator.AuthorizeOtkaziPrijavu(userId, prijava);
-            if(!takmicenjeValidator.IsTakmicenjeInicirano(prijava.TakmicenjeNaziv))
-                return prijaveService.Delete(id);
-            return null;
+            takmicenjeAutorizator.AuthorizeOtkaziPrijavu(userId, prijava);           
+            return prijaveService.Delete(id);
         }
 
         [HttpGet("{id}/favoriti")]

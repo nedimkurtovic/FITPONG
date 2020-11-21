@@ -28,6 +28,8 @@ namespace FIT_PONG.Services.BL
             List<(string key, string error)> listaErrora = new List<(string key, string error)>();
             if (PostojiTakmicenje(objekat.Naziv))
                 listaErrora.Add(("", "Već postoji takmičenje u bazi"));
+            if(objekat.Naziv.Length > 100)
+                listaErrora.Add(("Naziv", "Naziv ne može sadržavati više od 100 karaktera"));
             if (!objekat.RucniOdabir)
             {
                 if (objekat.RokZavrsetkaPrijave != null && objekat.RokZavrsetkaPrijave != null &&
@@ -161,6 +163,8 @@ namespace FIT_PONG.Services.BL
                                                 //OVDJE CE BITI PROSLIJEDJEN ID PARAMETAR OVOJ FUNKCIJI
             if (TakmicenjaViseOd(objekat.Naziv, ID, ListaTakmicenja))
                 listaErrora.Add((nameof(objekat.Naziv), "Već postoji takmičenje u bazi"));
+            if (objekat.Naziv.Length > 100)
+                listaErrora.Add(("Naziv", "Naziv ne može sadržavati više od 100 karaktera"));
             if (!bazaObj.Inicirano)
             {
                 if (objekat.RokZavrsetkaPrijave != null && objekat.RokPocetkaPrijave != null &&
@@ -176,11 +180,6 @@ namespace FIT_PONG.Services.BL
 
             return listaErrora;
         }
-        public bool IsTakmicenjeInicirano(string naziv)
-        {
-            var takmicenje = db.Takmicenja.Where(x => x.Naziv == naziv).SingleOrDefault();
 
-            return takmicenje.Inicirano;
-        }
     }
 }
