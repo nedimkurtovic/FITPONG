@@ -111,15 +111,16 @@ namespace FIT_PONG.Services.Services
         {
             var exception = new UserException();
 
+            var takmicenje = db.Takmicenja.Where(x => x.ID == takmicenjeId).Include(x => x.Vrsta).SingleOrDefault();
+            if (takmicenje == null)
+                exception.AddError("", "Takmicenje ne postoji u bazi.");
+            
             var igrac1 = db.Igraci.Find(obj.Igrac1ID);
             var igrac2 = db.Igraci.Find(obj.Igrac2ID);
 
-            if (igrac1 == null || igrac2 == null)
+            if (igrac1 == null || (takmicenje != null && takmicenje.Vrsta.Naziv == "Double" && igrac2 == null))
                 exception.AddError("", "Igrac ne postoji u bazi.");
 
-            var takmicenje = db.Takmicenja.Find(takmicenjeId);
-            if (takmicenje == null)
-                exception.AddError("", "Takmicenje ne postoji u bazi.");
 
             if (takmicenje.RokZavrsetkaPrijave >= DateTime.Now)
             {
