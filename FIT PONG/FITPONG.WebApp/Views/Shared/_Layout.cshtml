@@ -7,48 +7,43 @@
     <title>@ViewData["Title"] - FIT PONG</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.js" async></script>
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
-
+    <script src="https://kit.fontawesome.com/bbac55c116.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <header >
+    <header>
 
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FIT PONG</a>
+                <a class="navbar-brand" id="home-fitpong" asp-area="" asp-controller="Home" asp-action="Index">FIT PONG</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex ">
                     <ul class="navbar-nav ml-auto flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Takmicenje" asp-action="Index">Takmičenja</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Igrac" asp-action="Index">Igrači</a>
-                        </li>
 
                         @if (signinMenadjer.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <a asp-action="Index" class="nav-link text-light" asp-controller="Chat">Chat</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Takmicenje" asp-action="Index"><i class="fas fa-trophy"></i>Takmičenja</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Igrac" asp-action="Index"><i class="fas fa-users"></i>Igrači</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a asp-action="Index" class="nav-link text-light" asp-controller="Chat"><i class="fas fa-comment"></i>Chat</a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Report" asp-action="Dodaj">Prijavi grešku</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Report" asp-action="Dodaj"><i class="fas fa-bug"></i>Prijavi grešku</a>
                         </li>
-                        @*OVO JE SAMO PRIVREMENO DOK SE NE RIJESI MICROSOFT IDENTITY, SLUZI SAMO ZA PROVJERU DODAVANJA I OSTALIH TESTIRANJA*@
-                        @*<li class="nav-item" style="position:absolute; right:20px;">
-            <a class="nav-link text-light" asp-area="" asp-controller="Igrac" asp-action="Dodaj">Registruj se</a>
-        </li>*@
+                        <li class="nav-item">
+                            <a class="nav-link text-light" target="_blank" href="https://www.ittf.com/wp-content/uploads/2019/11/2019ITTFHandbook_v2.pdf"><i class="far fa-list-alt"></i>Pravilnik</a>
+                        </li>                    
                     </ul>
-                    <ul class="navbar-nav mr-auto flex-grow-1">
+                    <ul class="navbar-nav">
                         @if (signinMenadjer.IsSignedIn(User))
                         {
                             <li class="nav-item" style="padding-top:2px;">
@@ -57,15 +52,7 @@
                                         Logout <span id="PrikaznoIme"></span>
                                     </button>
                                 </form>
-                            </li>
-
-                            <li class="nav-item">
-                                <form class="navbar-form navbar-left" role="search">
-                                    <span class="form-group">
-                                        <input type="text" name="search" class="form-control awesomplete" placeholder="Search here...">
-                                    </span>
-                                </form>
-                            </li>
+                            </li>                            
                         }
                     </ul>
                 </div>
@@ -83,24 +70,26 @@
 
     </div>
     <footer class="border-top footer text-muted badge-dark">
-        <div class="container text-light" style="text-align:left;float:left;">
+        <div class="container text-light" style="text-align:center">
             &copy; 2019 - FIT_PONG - Nedim Kurtović & Aldin Talić
-        </div>
-        <div style="float:right;">
-            <a class="btn btn-link" href="https://www.ittf.com/wp-content/uploads/2019/11/2019ITTFHandbook_v2.pdf">PRAVILNIK</a>
         </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @*<script src="~/lib/jquery/dist/jquery-1.6.2.min.js"></script>*@
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.11.1/jquery.bracket.min.js"></script>
     <script src="~/js/JFIT.js"></script>
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/notifikacije.js"></script>
+    @if (signinMenadjer.IsSignedIn(User))
+    {
+
+        <script src="~/js/notifikacije.js"></script>
+    }
     <script src="~/js/GetPrikaznoIme.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.11.1/jquery.bracket.min.css" />
+
     @RenderSection("Scripts", required: false)
 
 </body>
