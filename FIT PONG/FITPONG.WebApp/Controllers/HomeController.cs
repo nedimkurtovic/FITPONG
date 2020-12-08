@@ -41,7 +41,7 @@ namespace FIT_PONG.Controllers
                     model.ZadnjeObjave.Add((item, t));
                 }
             }
-            //model.TopIgraci = evidentor.GetNajboljeOveSedmice();
+            model.TopIgraci = GetNajboljeOveSedmice();
             model.ZadnjiRezultati = evidentor.GetZadnjeUtakmice(10);
             return View(model);
         }
@@ -85,6 +85,57 @@ namespace FIT_PONG.Controllers
                 }
             }
             return funfacts;
+        }
+        //ovo za sad na apiju ne znam da li ima smisla, tj ima sigurno samo onda treba skontati gdje bi klasa TopIgraci
+        //tj u koji bi se folder smjestila, da li to pripada takmicenju ili nekom ipak drugom servisu? Jer getnajboljiovesedmice
+        //nema bas veze sa evidencijom
+        private List<TopIgraciVM> GetNajboljeOveSedmice()
+        {
+            DateTime prosliPonedjeljak = GetProsliPonedjeljak(DateTime.Now);
+            List<Utakmica> utakmiceUSedmici = db.Utakmice.AsNoTracking().Include(x => x.UcescaNaUtakmici)
+                .Where(x => x.IsEvidentirana && x.DatumVrijeme >= prosliPonedjeljak && x.DatumVrijeme <= DateTime.Now)
+                .ToList();
+            List<TopIgraciVM> listaPovratnih = new List<TopIgraciVM>();
+            foreach (Utakmica i in utakmiceUSedmici)
+            {
+                foreach (Igrac_Utakmica j in i.UcescaNaUtakmici)
+                {
+                    if (listaPovratnih.Where(x => x.IgracId == j.IgracID).Count() == 0)
+                    {
+                        Igrac_Utakmica ucesceNatekmi = db.IgraciUtakmice
+                            .Include(x => x.TipRezultata).Include(x => x.Igrac)
+                            .Where(x => x.IgID == j.IgID).FirstOrDefault();
+                        listaPovratnih.Add(new TopIgraciVM
+                        {
+                            BrojOsvojenihSetova = 0,
+                            BrojPobjeda = 0,
+                            BrojPoraza = 0,
+                            ELO = ucesceNatekmi.Igrac.ELO,
+                            IgracId = ucesceNatekmi.IgracID.GetValueOrDefault(),
+                            Naziv = ucesceNatekmi.Igrac.PrikaznoIme
+                        });
+                    }
+                    Igrac_Utakmica ucesce = db.IgraciUtakmice.Include(x => x.TipRezultata)
+                            .Where(x => x.IgID == j.IgID).FirstOrDefault();
+                    TopIgraciVM obj = listaPovratnih.Where(x => x.IgracId == j.IgracID).FirstOrDefault();
+                    bool pobjeda = (ucesce.TipRezultata.Naziv == "Pobjeda") ? true : false;
+                    if (pobjeda)
+                        obj.BrojPobjeda++;
+                    else
+                        obj.BrojPoraza++;
+                    obj.BrojOsvojenihSetova += j.OsvojeniSetovi.GetValueOrDefault();
+                }
+            }
+            return listaPovratnih.OrderByDescending(x => x.BrojOsvojenihSetova).ToList();
+        }
+        private DateTime GetProsliPonedjeljak(DateTime trenutno)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                if (trenutno.AddDays(-i).DayOfWeek == DayOfWeek.Monday)
+                    return trenutno.AddDays(-i).Date;
+            }
+            return new DateTime(1000, 1, 1);
         }
     }
 }
