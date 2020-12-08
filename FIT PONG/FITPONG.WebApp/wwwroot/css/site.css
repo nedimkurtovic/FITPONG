@@ -68,18 +68,41 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
   height:100%;
+  overflow-y:auto;
+  margin:0 auto;
 }
 .footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  height:50px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    background: #475B5A;
 }
-
+#glavniNav {
+    padding: 0rem 1rem;
+    /*background: #475B5A!important;*/
+}
 .nav-item {
     margin-right: 15px;
 }
 i {
     margin-right: 10px;
 }
+
+/* scrollbar-------------------------------------------------- */
+body::-webkit-scrollbar {
+    width: 0.8rem;
+   
+}
+body::-webkit-scrollbar-track {
+    background: #343a40;
+}
+body::-webkit-scrollbar-thumb {
+    background: #BBBBBF;
+   
+}
+
+/* scrollbar-------------------------------------------------- */
