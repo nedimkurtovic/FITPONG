@@ -2,7 +2,8 @@
     #LijevaStrana {
         float: left;
         width: 70%;
-        height: 30%;
+        height: 500px;
+        margin-bottom:1px;
     }
 
     #ListaUsera {
@@ -23,10 +24,19 @@
         padding: 6px 12px;
         border: 1px solid #ccc;
         border-top: none;
-        height: 450px;
-        overflow: scroll;
+        height: 446px;
+        overflow: auto;
     }
+        .tabsadrzaj::-webkit-scrollbar {
+            width: 0.5rem;
+        }
+            .tabsadrzaj::-webkit-scrollbar-thumb {
+                background: #BBBBBF;
+            }
 
+        .tabsadrzaj::-webkit-scrollbar-track {
+            background: #475B5A;
+        }
     .tab button.active {
         background-color: #ccc;
     }
@@ -77,7 +87,26 @@
             }
 
     #batnposalji {
+     
         height: 50px;
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        align-items:center;
+        float: left;
+        border-radius: 50%;
+        background-color: #52D1DC;
+        border: 0px;
+        padding-left:4px;
+    }
+        #batnposalji:hover {
+            background-color: #2f9fa8;
+        }
+        #batnposalji:focus{
+            outline:0;
+        }
+    #batnposalji i{
+        margin-right:3px;
     }
 
     .zatvori {
@@ -98,31 +127,43 @@
         position: relative;
     }
     #Input textarea{
-        width:1054px;
+        width:90%;
+        float:left;
+        border-radius:7px;
+        
     }
+    .omotac{
+        height:100%;
+        width:100%;
+    }
+    
 </style>
 
 
-<div id="LijevaStrana">
-    <div id="tabovi" class="tab">
-        <button class="tablinks" id="linkMain" onclick="PrebaciTab(event,'sadrzajMain','linkMain')">Main</button>
-    </div>
-    <div id="sadrzajtabova">
-        <div class="tabsadrzaj" id="sadrzajMain">
-            <span class="text-success">Dobrodosli!</span>
-            <br />
+<div class="omotac">
+    <div id="LijevaStrana">
+        <div id="tabovi" class="tab">
+            <button class="tablinks" id="linkMain" onclick="PrebaciTab(event,'sadrzajMain','linkMain')">Main</button>
+        </div>
+        <div id="sadrzajtabova">
+            <div class="tabsadrzaj" id="sadrzajMain">
+                <span class="text-success">Dobrodosli!</span>
+                <br />
+            </div>
         </div>
     </div>
-</div>
-<div id="ListaUsera">
-    <span>Aktivni su</span>
-    <br />
-    <ul>
-    </ul>
-</div>
-<div id="Input">
-    <textarea cols="155" rows="4"></textarea>
-    <button id="batnposalji">Posalji</button>
+    <div id="ListaUsera">
+        <span>Aktivni su</span>
+        <br />
+        <ul>
+        </ul>
+    </div>
+    <div id="Input">
+        <textarea placeholder="Napišite nešto"></textarea>
+        <button id="batnposalji">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
 </div>
 
 @section Scripts{
@@ -131,6 +172,7 @@
     <script src="~/js/ChatSituacija.js"></script>
     <script>
         function PrebaciTab(event, sadrzajDiv, linkButton) {
+            event.preventDefault();
             var tabovi = $(".tablinks");
             for (var i = 0; i < tabovi.length; i++)
                 tabovi[i].className = tabovi[i].className.replace(" active", "");
