@@ -13,9 +13,9 @@
 <body>
     <header>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+        <nav id="glavniNav" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" id="home-fitpong" asp-area="" asp-controller="Home" asp-action="Index">FIT PONG</a>
+                <a class="navbar-brand" id="home-fitpong" asp-area="" asp-controller="Home" asp-action="Index">FITPONG</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -41,7 +41,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" target="_blank" href="https://www.ittf.com/wp-content/uploads/2019/11/2019ITTFHandbook_v2.pdf"><i class="far fa-list-alt"></i>Pravilnik</a>
-                        </li>                    
+                        </li>
                     </ul>
                     <ul class="navbar-nav">
                         @if (signinMenadjer.IsSignedIn(User))
@@ -52,7 +52,8 @@
                                         Logout <span id="PrikaznoIme"></span>
                                     </button>
                                 </form>
-                            </li>                            
+                            </li>
+
                         }
                     </ul>
                 </div>
@@ -69,7 +70,7 @@
         </main>
 
     </div>
-    <footer class="border-top footer text-muted badge-dark">
+    <footer class="border-top footer text-muted badge-dark bg-dark">
         <div class="container text-light" style="text-align:center">
             &copy; 2019 - FIT_PONG - Nedim Kurtović & Aldin Talić
         </div>
@@ -84,10 +85,10 @@
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     @if (signinMenadjer.IsSignedIn(User))
     {
-
-        <script src="~/js/notifikacije.js"></script>
+        <script src="~/js/notifikacije.js"></script>       
+        <script src="~/js/GetPrikaznoIme.js"></script>
     }
-    <script src="~/js/GetPrikaznoIme.js"></script>
+
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.11.1/jquery.bracket.min.css" />
 
     @RenderSection("Scripts", required: false)
