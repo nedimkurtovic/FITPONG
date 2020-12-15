@@ -16,10 +16,11 @@ namespace FIT_PONG.Services.BL
         private readonly MyDb db;
         private readonly ELOCalculator ELOCalculator;
         public InitTakmicenja inicijalizator { get; set; }
-        public Evidentor(MyDb instanca, ELOCalculator _ELOCalculator)
+        public Evidentor(MyDb instanca, ELOCalculator _ELOCalculator, InitTakmicenja _incijalizator)
         {
             db = instanca;
             ELOCalculator = _ELOCalculator;
+            inicijalizator = _incijalizator;
         }
 
         public List<string> VratiListuErrora(EvidencijaMeca obj)
