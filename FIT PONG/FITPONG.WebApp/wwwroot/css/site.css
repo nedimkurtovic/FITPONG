@@ -1,15 +1,19 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
 }
-
+#home-fitpong{
+    font-size:24px;
+    margin-right:25px;
+}
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 .btn-primary {
@@ -64,11 +68,41 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
   height:100%;
+  overflow-y:auto;
+  margin:0 auto;
 }
 .footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  height:50px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    background: #475B5A;
 }
+#glavniNav {
+    padding: 0rem 1rem;
+    /*background: #475B5A!important;*/
+}
+.nav-item {
+    margin-right: 15px;
+}
+i {
+    margin-right: 10px;
+}
+
+/* scrollbar-------------------------------------------------- */
+body::-webkit-scrollbar {
+    width: 0.8rem;
+   
+}
+body::-webkit-scrollbar-track {
+    background: #343a40;
+}
+body::-webkit-scrollbar-thumb {
+    background: #BBBBBF;
+   
+}
+
+/* scrollbar-------------------------------------------------- */

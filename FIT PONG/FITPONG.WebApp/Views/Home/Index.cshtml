@@ -20,8 +20,8 @@
         margin-right: 20px;
     }
 
-    #fitpong{
-        width:90%;
+    #fitpong {
+        width: 90%;
     }
 
     .divZaLogine {
@@ -30,14 +30,14 @@
 
     .lijevaStrana {
         width: 50%;
-        height:100%;
+        height: 100%;
         float: left;
-        padding-bottom:20px;
+        padding-bottom: 20px;
     }
 
     .desnaStrana {
         float: left;
-        height:100%;
+        height: 100%;
         width: 45%;
         margin-left: 4%;
     }
@@ -58,7 +58,7 @@
             list-style: none;
             margin-bottom: 5px;
         }
-        
+
     /* [SLIDER] */
     .slider, .slider .slide {
         width: 100%;
@@ -95,13 +95,15 @@
 
     #sliderRezultati, #rezultati {
         width: 95%;
-        height: 130px;
+        height: 110px;
     }
 
     h1 {
         text-align: center;
     }
-
+    #sliderRezultati{
+        margin-bottom:26px;
+    }
     /* [ANIMATION] */
     @@keyframes slide-animation {
         0% {
@@ -196,20 +198,20 @@
     }
 
     #podij {
-        border: 1px solid black;
+        /*border: 1px solid black;*/
         width: 100%;
-        height:100%;
+        height: 100%;
     }
 
     #podijDiv {
         position: relative;
         width: 100%;
-        height:350px;
+        height: 350px;
     }
 
         #podijDiv div {
             position: absolute;
-            border: 1px solid black;
+            /*border: 1px solid black;*/
             /*width:130px;*/
             width: 30%;
             height: 35%;
@@ -245,21 +247,21 @@
         top: 40%;
     }
 
-    #wrapper{
-        width:100%;
-        padding:10px;
-        position:absolute;
+    #wrapper {
+        width: 100%;
+        padding: 10px;
+        position: absolute;
     }
 
     @@media screen and (max-width: 800px) {
-       
+
         * {
             margin: 0;
             padding: 0;
         }
 
-        html, body{
-            min-height:135%;
+        html, body {
+            min-height: 135%;
         }
 
         .lijevaStrana {
@@ -267,16 +269,16 @@
             clear: both;
         }
 
-        .desnaStrana{
-            width:95%;
-            clear:both;
-            margin:0;
-            padding:0;
+        .desnaStrana {
+            width: 95%;
+            clear: both;
+            margin: 0;
+            padding: 0;
         }
 
-        #wrapper{
-            min-height:200px;
-            overflow:hidden;
+        #wrapper {
+            min-height: 200px;
+            overflow: hidden;
         }
 
         .footer {
@@ -288,33 +290,33 @@
     }
 
     @@media screen and (max-width: 600px) {
-       html,body{
-           min-height:140%;
-       }
+        html, body {
+            min-height: 140%;
+        }
 
-       #wrapper{
-           width:90%;
-       }
+        #wrapper {
+            width: 90%;
+        }
 
-       .header{
-           width:100%;
-       }
+        .header {
+            width: 100%;
+        }
 
-       h1{
-           font-size:18px;
-       }
+        h1 {
+            font-size: 18px;
+        }
 
-       h3{
-           font-size:15px;
-       }
+        h3 {
+            font-size: 15px;
+        }
 
-       p{
-           font-size:13px;
-       }
+        p {
+            font-size: 13px;
+        }
 
-       small{
-           font-size:11px;
-       }
+        small {
+            font-size: 11px;
+        }
     }
 </style>
 
@@ -323,7 +325,7 @@
 
     <div class="text-center">
         <h2 class="display-4">Dobrodošli</h2>
-        <img src="~/homelogo.jpg" id="fitpong"/>
+        <img src="~/homelogo.jpg" id="fitpong" />
 
     </div>
     <div class="text-center divZaLogine">
@@ -383,9 +385,9 @@ else
                     }
                 </div>
             </div>
-            <h2 class="text-center">
+            <h1 class="text-center">
                 Top ove sedmice
-            </h2>
+            </h1>
             <div>
                 <div class="container" id="rez">
                     <div id="podijDiv">
@@ -426,8 +428,10 @@ else
         </div>
     </div>
 }
-
-<script src="~/lib/signalr/dist/browser/signalr.js"></script>
-<script src="~/lampice/lampice.js"></script>
-
-
+@if (signinMenadjer.IsSignedIn(User))
+{
+    @section Scripts
+    {
+        <script src="~/lampice/lampice.js"></script>
+    }
+}
