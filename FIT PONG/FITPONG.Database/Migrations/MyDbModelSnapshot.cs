@@ -58,7 +58,7 @@ namespace FIT_PONG.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Naziv")
-                        .HasMaxLength(40);
+                        .HasMaxLength(110);
 
                     b.Property<int>("TakmicenjeID");
 
@@ -479,7 +479,7 @@ namespace FIT_PONG.Migrations
 
                     b.Property<string>("Naziv")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(100);
 
                     b.Property<DateTime?>("RokPocetkaPrijave");
 
