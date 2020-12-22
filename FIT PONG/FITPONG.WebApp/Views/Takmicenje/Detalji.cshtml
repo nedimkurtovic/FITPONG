@@ -1,105 +1,200 @@
 ﻿@model FIT_PONG.ViewModels.TakmicenjeVMs.TakmicenjeVM
 @{
     Layout = null;
+    var lista = Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ListaPredikcije,Newtonsoft.Json.Formatting.Indented));
 }
 
 <style>
     #btns {
-        width:700px;
-        display:inline-block;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: center;
     }
-    #btns a{
-        width:150px;
+
+        #btns a {
+            width: 150px;
+        }
+
+    .row {
+        display: flex;
+        justify-content: center;
+    }
+
+    .form-control .col {
+        width: 300px;
+    }
+    .grafikon{
+        height:300px;
+        width:400px;
+        margin:0 auto;
+    }
+    #MyChart{
+        display:none;
     }
 </style>
 <br />
-<div class="row">
-    <div class="col-4 justify-content-start">
-        @if (Model.DatumPocetkaPrijava != null)/*nije dobra praksa if-ovi u viewu ali eto*/
-        {
-            <div class="form-group row ">
-                <label class="col">Pocetak prijava</label>
-                <div class="form-control col">@Model.DatumPocetkaPrijava.ToString()</div>
-            </div>
-            <div class="form-group row">
-                <label class="col">Kraj prijava</label>
-                <div class="form-control col">@Model.DatumZavrsetkaPrijava.ToString()</div>
-            </div>
-            <div class="form-group row">
-                <label class="col">Minimalni ELO</label>
-                <div class="form-control col">@Model.MinimalniELO</div>
-            </div>
-        }
-        <div class="form-group row">
-            <label class="col">Kategorija</label>
-            <div class="form-control col">@Model.Kategorija</div>
-        </div>
-        <div class="form-group row">
-            <label class="col">Sistem</label>
-            <div class="form-control col">@Model.Sistem</div>
-        </div>
-        <div class="form-group row">
-            <label class="col">Vrsta</label>
-            <div class="form-control col">@Model.Vrsta</div>
-        </div>
-        <div class="form-group row">
-            <label class="col">Status</label>
-            <div class="form-control col">@Model.Status</div>
-        </div>
-        <div class="form-group row">
-            <label class="col">Datum pocetka</label>
-            <div class="form-control col">@Model.DatumPocetka.ToString()</div>
-        </div>
-        <div class="form-group row">
-            <label class="col">Datum zavrsetka</label>
-            <div class="form-control col">@Model.DatumZavrsetka.ToString()</div>
-        </div>
-    </div>
-    <div class="col-3">
 
+<div>
+    @if (Model.DatumPocetkaPrijava != null)
+    {
+        <div class="form-row justify-content-md-center">
+            <div class="col-md-3">
+                <div class="md-form form-group">
+                    <label>Pocetak prijava</label>
+                    <div class="form-control col">@Model.DatumPocetkaPrijava.ToString()</div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="md-form form-group">
+                    <labels>Kraj prijava</labels>
+                    <div class="form-control col">@Model.DatumZavrsetkaPrijava.ToString()</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row justify-content-md-center">
+            <div class="col-md-6">
+                <div class="md-form form-group">
+                    <label>Minimalni ELO</label>
+                    <div class="form-control col">@Model.MinimalniELO</div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="form-row justify-content-md-center">
+        <div class="col-md-6">
+            <div class="md-form form-group">
+                <label>Kategorija</label>
+                <div class="form-control">@Model.Kategorija</div>
+            </div>
+        </div>
     </div>
-    <div class="col-5 align-items-end">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Prijava ID</th>
-                    <th>Naziv tima</th>
-                    <th>Blokiraj</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Prijave)
-                {
+    <div class="form-row justify-content-md-center">
+        <div class="col-md-6">
+            <div class="md-form form-group">
+                <label>Sistem</label>
+                <div class="form-control col">@Model.Sistem</div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row justify-content-md-center">
+        <div class="col-md-6">
+            <div class="md-form form-group">
+                <label>Vrsta</label>
+                <div class="form-control col">@Model.Vrsta</div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row justify-content-md-center">
+        <div class="col-md-6">
+            <div class="md-form form-group">
+                <label>Status</label>
+                <div class="form-control col">@Model.Status</div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row justify-content-md-center">
+        <div class="col-md-3">
+            <div class="md-form form-group">
+                <label>Datum pocetka</label>
+                <div class="form-control col">@Model.DatumPocetka.ToString()</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="md-form form-group">
+                <label>Datum zavrsetka</label>
+                <div class="form-control col">@Model.DatumZavrsetka.ToString()</div>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-5 align-items-end">
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-                        <td class="text-center">@item.ID</td>
-                        <td class="text-center">@item.Naziv</td>
-                        <td class="text-center"><a href="/Takmicenje/BlokirajPrijavu?prijavaID=@item.ID&nazivTima=@item.Naziv" id="blok-@item.ID" class="btn btn-outline-danger" onclick="return confirm('Da li ste sigurni da želite blokirati prijavu?')">Blokiraj</a></td>
+                        <th>Prijava ID</th>
+                        <th>Naziv tima</th>
+                        <th>Blokiraj</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Prijave)
+                    {
+                        <tr>
+                            <td class="text-center">@item.ID</td>
+                            <td class="text-center">@item.Naziv</td>
+                            <td class="text-center"><a href="/Takmicenje/BlokirajPrijavu?prijavaID=@item.ID&nazivTima=@item.Naziv" id="blok-@item.ID" class="btn btn-outline-danger" onclick="return confirm('Da li ste sigurni da želite blokirati prijavu?')">Blokiraj</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>*@
+    <br />
+    <br />
+    <div id="btns">
+        @if (Model.IsVlasnik)
+        {
+            <a asp-controller="Takmicenje" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a>
+            <a asp-controller="Takmicenje" asp-action="Obrisi" asp-route-id="@Model.ID" class="btn btn-outline-danger">Obrisi</a>
+        }
+        @if (Model.DatumPocetkaPrijava != null && Model.DatumZavrsetkaPrijava > DateTime.Now)
+        {
+            <a asp-controller="Takmicenje" asp-action="Prijava" asp-route-takmID="@Model.ID" class="btn btn-outline-primary">Prijavi se</a>
+        }
+        else
+        {
+            <button class="btn btn-outline-secondary" disabled>Završene prijave</button>
+        }
+        @if (!Model.Inicirano.GetValueOrDefault() && Model.IsVlasnik)
+        {
+            <a class="btn btn-outline-primary" asp-controller="Takmicenje" asp-action="Init" asp-route-id="@Model.ID">Generisi raspored</a>
+        }
     </div>
+    <div id="grafikon-id">
+        <canvas id="MyChart"></canvas>
+    </div>
+</div>
 
-</div>
-<br />
-<br />
-<div id="btns">
-    <a asp-controller="Takmicenje" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info">Edit</a>
-    <a asp-controller="Takmicenje" asp-action="Obrisi" asp-route-id="@Model.ID" class="btn btn-outline-danger">Obrisi</a>
-    @if (Model.DatumPocetkaPrijava != null && Model.DatumZavrsetkaPrijava > DateTime.Now)
-    {
-        <a asp-controller="Takmicenje" asp-action="Prijava" asp-route-takmID="@Model.ID" class="btn btn-outline-primary">Prijavi se</a>
-    }
-    else
-    {
-        <button class="btn btn-outline-secondary" disabled>Završene prijave</button>
-    }
-    @if(!Model.Inicirano.GetValueOrDefault())
-    {
-        <a class="btn btn-outline-primary" asp-controller="Takmicenje" asp-action="Init" asp-route-id="@Model.ID">Generisi raspored</a>
-    }
-</div>
+
 <div style="clear:both;">
 
 </div>
+@if (Model.ListaPredikcije.Count > 2)
+{
+<script>
+        let funkcija = () => {
+            var lista2 = JSON.parse(`@lista`);
+            var kanvas = document.getElementById("MyChart");
+            kanvas.style.display = "block";
+            var grafdiv = document.getElementById("grafikon-id");
+            grafdiv.classList.add("grafikon");
+            var imena = {
+                nazivi: lista2.map(x => x.Item1.Naziv),
+                podaci: lista2.map(x => Math.round(x.Item2*100))
+            };
+            var grafikon = new Chart(kanvas, {
+                type: "pie",
+                data: {
 
+                    labels: [...imena.nazivi],
+                    datasets: [{
+                        label: "Procentualna jačina pobjede",
+                        data: [...imena.podaci],
+                        backgroundColor: [
+                            "#3e95cd",
+                            "#3cba9f",
+                            "#c45850",
+                        ]
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "Predikcija pobjednika na takmičenju"
+                    }
+                }
+            });
+        };
+        funkcija();
+
+</script>
+}
