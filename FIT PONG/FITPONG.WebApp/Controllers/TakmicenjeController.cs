@@ -17,6 +17,7 @@ using System.Text.RegularExpressions;
 using FIT_PONG.Database.DTOs;
 using AutoMapper;
 using FIT_PONG.SharedModels.Requests.Takmicenja;
+using FIT_PONG.Services.Services;
 
 namespace FIT_PONG.Controllers
 {
@@ -30,6 +31,7 @@ namespace FIT_PONG.Controllers
         private readonly FIT_PONG.Services.BL.TakmicenjeValidator validator;
         private readonly IHubContext<NotifikacijeHub> notifikacijeHub;
         private readonly IMapper mapko;
+        private readonly ITakmicenjeService takmicenjeService;
 
         public TakmicenjeController(FIT_PONG.Database.MyDb instanca,
             FIT_PONG.Services.BL.InitTakmicenja instancaInita,
@@ -37,17 +39,18 @@ namespace FIT_PONG.Controllers
             FIT_PONG.Services.BL.Evidentor _evidentor,
             FIT_PONG.Services.BL.TakmicenjeValidator _validator,
             IHubContext<NotifikacijeHub> notifikacijeHub,
-            IMapper _mapko)
+            IMapper _mapko,
+            ITakmicenjeService _takmicenjeService)
         {
             db = instanca;
             inicijalizator = instancaInita;
             this.ELOCalculator = ELOCalculator;
             evidentor = _evidentor;
             validator = _validator;
-            evidentor.inicijalizator = instancaInita;//ne znam koliko je ovo sigurno i ima smisla, pokusat cu, samo jednu funkciju koristim 
-            //ako bude frke izbacit cu ga skroz djeni zeve
+            evidentor.inicijalizator = instancaInita;//ovo je razlog 9ke na ispitu a ne 10ke, nikad ne vjeruj manualnoj dodjeli
             this.notifikacijeHub = notifikacijeHub;
             mapko = _mapko;
+            takmicenjeService = _takmicenjeService;
         }
         public IActionResult Index(int page = 1, string sortExpression= "-ID")
         {
@@ -655,7 +658,16 @@ namespace FIT_PONG.Controllers
                 .ThenInclude(x => x.Igrac)
                 .SingleOrDefault(y => y.ID == id);
             if (obj != null)
-                return new TakmicenjeVM(obj);
+            {
+                var povratniObj = new TakmicenjeVM(obj);
+                try
+                {
+                    povratniObj.ListaPredikcije = takmicenjeService.PredictWinners(obj.ID);
+                }
+                catch (Exception) { }
+                povratniObj.IsVlasnik = takmicenjeService.IsVlasnik(obj.ID, HttpContext.User.Identity.Name);
+                return povratniObj;
+            }
             return null;
         }
 
@@ -810,7 +822,15 @@ namespace FIT_PONG.Controllers
 
             return PartialView(model);
         }
-
+        public IActionResult GetPrijave(int ID)
+        {
+            if (!takmicenjeService.IsVlasnik(ID, HttpContext.User.Identity.Name))
+                return PartialView("Neuspjeh", new List<string> { "Niste autorizovani za ovu radnju"});
+            var takmicenjeObj = db.Takmicenja.Include(x => x.Prijave).Where(x => x.ID == ID).FirstOrDefault();
+            if(takmicenjeObj == null)
+                return PartialView("Neuspjeh", new List<string> { "Takmičenje ne postoji" });
+            return PartialView(takmicenjeObj.Prijave);
+        }
         public IActionResult OznaciUtakmicu(int id)
         {
             var userId = db.Users.Where(d => d.Email == User.Identity.Name).FirstOrDefault().Id;

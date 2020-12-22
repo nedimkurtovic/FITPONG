@@ -36,6 +36,7 @@
    
     .tabcontent {
         display: none;
+        margin-bottom:50px;
         padding: 6px 12px;
         border: 1px solid #ccc;
         border-top: none;
@@ -51,6 +52,10 @@
     <button class="tablinks" onclick="openTab(event, 'Feed')">Objave</button>
     <button class="tablinks" onclick="openTab(event, 'Tabela')">Tabela</button>
     <button class="tablinks" onclick="openTab(event, 'Favoriti')">Favoriti</button>
+    @if (Model.IsVlasnik)
+    {
+        <button class="tablinks" onclick="openTab(event, 'Prijave')">Prijave</button>
+    }
 </div>
 
 <!-- Tab content -->
@@ -68,35 +73,37 @@
 </div>
 <div id="Favoriti" class="tabcontent">
 </div>
-
+<div id="Prijave" class="tabcontent">
+</div>
 
 
 @section Scripts{
 
     <script>
         function openTab(evt, tabName) {
-           
+
             var i, tabcontent, tablinks;
 
-            
+
             tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
 
-          
+
             tablinks = document.getElementsByClassName("tablinks");
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
 
-     
+
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
 
             var myUrl = "RezultatiSingleDouble";
             if ("@Model.Sistem" == "Round robin")
                 myUrl = "RezultatiRoundRobin";
+
             if (tabName == "EvidencijaMeca")
                 myUrl = tabName;
             if (tabName == "Detalji")
@@ -107,18 +114,19 @@
                 myUrl = "GetTabela"
             if (tabName == "Favoriti")
                 myUrl = "GetFavoriti"
+            if (tabName == "Prijave") {
+                myUrl = "GetPrijave";
+            }
 
 
-            //treba izmijeniti url tako da odgovara i akciji evidentiraj mec.... neki univerzalan nacin
             $.ajax({
-                async: false,
+            async: false,
                 url: "/Takmicenje/"+myUrl+"/"+@Model.ID,
                 type: "Get",
                 success: function (data) {
                  $("#"+tabName).html(data);
                 }
-            });
-
+            });      
         }
         $(document).ready(function () {
             $.ajax({

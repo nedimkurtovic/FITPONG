@@ -28,7 +28,8 @@ namespace FIT_PONG.ViewModels.TakmicenjeVMs
         public bool? Inicirano { get; set; }
         public List<Prijava> Prijave { get; set; }
         public List<Bracket> Bracketi { get; set; }
-
+        public List<(SharedModels.Prijave prijava, double vjerovatnoca)> ListaPredikcije { get; set; } = new List<(SharedModels.Prijave prijava, double vjerovatnoca)>();
+        public bool IsVlasnik { get; set; }
         public TakmicenjeVM(Takmicenje obj, int brojPrijavljenih = 0)
         {
             ID = obj.ID;

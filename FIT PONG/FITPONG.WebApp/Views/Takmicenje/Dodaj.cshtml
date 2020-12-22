@@ -7,7 +7,6 @@
 <link href="~/css/jquery.mentionsInput.css" rel="stylesheet" />
 <style>
     tr td {
-  
         width: 50%;
     }
 
@@ -21,7 +20,7 @@
     .Toggle {
         display: table-row-group;
         opacity: 1;
-        max-height: 100px; 
+        max-height: 100px;
         overflow: visible;
     }
 
@@ -63,12 +62,13 @@
             background: #4183C4;
             text-decoration: none;
         }
-    .RegistracijeRed{
-        margin-bottom:30px;
-    }
-    #RucniIgraciRed{
-        margin-bottom:30px;
 
+    .RegistracijeRed {
+        margin-bottom: 30px;
+    }
+
+    #RucniIgraciRed {
+        margin-bottom: 30px;
     }
 </style>
 
@@ -107,7 +107,7 @@
             <div id="RucniIgraciRed" class="Default form-group">
                 <div>
                     <label asp-for="RucnoOdabraniIgraci"></label>
-                    <textarea id="zonaMentions" style="height:100%;width:100%"  rows="10" asp-for="RucnoOdabraniIgraci"></textarea>
+                    <textarea id="zonaMentions" style="height:100%;width:100%" rows="10" asp-for="RucnoOdabraniIgraci"></textarea>
                     <span class="text-danger" asp-validation-for="RucnoOdabraniIgraci"></span>
                 </div>
             </div>
@@ -118,13 +118,13 @@
             <div class="form-group">
                 <label asp-for="KategorijaID"></label>
                 @Html.DropDownListFor(n => n.KategorijaID, new SelectList(ViewBag.kategorije, "ID", "Opis"),
-                    "Odaberite kategoriju",new {@class="form-control" })
+                    "Odaberite kategoriju", new { @class = "form-control" })
                 <span asp-validation-for="KategorijaID" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SistemID"></label>
                 @Html.DropDownListFor(n => n.SistemID, new SelectList(ViewBag.sistemi, "ID", "Opis")
-                       ,"Odaberite sistem", new {@class="form-control" })
+                       , "Odaberite sistem", new { @class = "form-control" })
                 <span asp-validation-for="SistemID" class="text-danger"></span>
             </div>
 
@@ -132,7 +132,7 @@
                 <label asp-for="VrstaID"></label>
 
                 @Html.DropDownListFor(n => n.VrstaID, new SelectList(ViewBag.vrste, "ID", "Opis")
-                    , "Odaberite vrstu", new {@class="form-control" })
+                    , "Odaberite vrstu", new { @class = "form-control" })
                 <span asp-validation-for="VrstaID" class="text-danger"></span>
 
             </div>
@@ -140,7 +140,7 @@
             <div class="form-group">
                 <label asp-for="StatusID"></label>
                 @Html.DropDownListFor(n => n.StatusID, new SelectList(ViewBag.statusi, "ID", "Opis")
-                     , "Odaberite status" , new {@class="form-control" })
+                     , "Odaberite status", new { @class = "form-control" })
                 <span asp-validation-for="StatusID" class="text-danger"></span>
             </div>
 
@@ -151,7 +151,7 @@
             </div>
 
 
-            <div class="form-group text-center"> 
+            <div class="form-group text-center">
                 <input type="submit" class="btn btn-info" value="Dodaj" />
             </div>
         </form>

@@ -1,0 +1,36 @@
+﻿@model List<Prijava>
+
+@{
+    ViewData["Title"] = "GetPrijave";
+
+}
+@if (Model == null || Model.Count == 0)
+{
+    <h2>Trenutno nema prijavljenih učesnika!</h2>
+}
+else
+{
+
+
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Prijava ID</th>
+                    <th>Naziv tima</th>
+                    <th>Blokiraj</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">@item.ID</td>
+                        <td class="text-center">@item.Naziv</td>
+                        <td class="text-center"><a href="/Takmicenje/BlokirajPrijavu?prijavaID=@item.ID&nazivTima=@item.Naziv" id="blok-@item.ID" class="btn btn-outline-danger" onclick="return confirm('Da li ste sigurni da želite blokirati prijavu?')">Blokiraj</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

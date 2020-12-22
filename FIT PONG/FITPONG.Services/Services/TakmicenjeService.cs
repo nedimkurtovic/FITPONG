@@ -537,6 +537,15 @@ namespace FIT_PONG.Services.Services
             return povratna;
         }
 
+        public bool IsVlasnik(int takmicenjeId, string username)
+        {
+            var takmObj = db.Takmicenja.Where(x => x.ID == takmicenjeId).FirstOrDefault();
+            if (takmObj == null)
+                throw new UserException("Takmičenje ne postoji");
+            var korisnik = db.Users.Where(x => x.UserName == username).FirstOrDefault();
+            return takmObj.KreatorID == korisnik.Id;
+        }
+
         #endregion
 
         #region Pomagaci
@@ -729,7 +738,8 @@ namespace FIT_PONG.Services.Services
                 throw ex;
             }
         }
-        
+
+       
 
         #endregion
     }
