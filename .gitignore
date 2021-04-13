@@ -66,11 +66,11 @@ Thumbs.db
 *.user
 *.[Cc]ache
 *[Rr]esharper*
-#packages
+packages
 #NuGet.exe
 _[Ss]cripts
 *.exe
 #*.dll
-#*.nupkg
+*.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
